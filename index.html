@@ -21,7 +21,24 @@ header h1{font-size:16px;margin:0;font-weight:700;white-space:nowrap}
 header h1 span{color:var(--pink)}
 header .song{color:var(--muted);font-size:13px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .layout{display:grid;grid-template-columns:minmax(0,1fr) 400px;gap:16px;padding:16px;max-width:1680px;margin:0 auto}
-@media (max-width:1000px){.layout{grid-template-columns:1fr}}
+.layout>section{min-width:0}
+@media (min-width:1001px){
+  html,body{height:100%;overflow:hidden}
+  body{height:100dvh;display:flex;flex-direction:column}
+  header{flex:none}
+  .layout{flex:1;min-height:0;width:100%;grid-template-rows:minmax(0,1fr)}
+  .layout>section{display:flex;flex-direction:column;min-height:0}
+  .layout #stage{flex:1;min-height:0;aspect-ratio:auto}
+  .layout .bar,.layout .opts,.layout .dance-controls{flex:none}
+  .layout .panel{min-height:0;overflow-y:auto;overscroll-behavior:contain;scrollbar-gutter:stable}
+  .layout .panel>.card{flex:none}
+}
+@media (max-width:1000px){
+  .layout{grid-template-columns:1fr;padding:12px;gap:12px}
+  header{padding:12px;gap:10px}
+  .bar{flex-wrap:wrap;gap:8px}
+  #seek{flex-basis:100%;order:1}
+}
 
 /* ---------- stage ---------- */
 #stage{position:relative;aspect-ratio:16/9;background:#000;border-radius:14px;overflow:hidden;container-type:inline-size;user-select:none;-webkit-user-select:none}
@@ -38,14 +55,23 @@ header .song{color:var(--muted);font-size:13px;white-space:nowrap;overflow:hidde
 #dim.off{opacity:0}
 #fx,#dance{position:absolute;inset:0;width:100%;height:100%;pointer-events:none}
 #dance[hidden]{display:none}
+#stage.dancing #cover .art{opacity:.12;filter:blur(3px);height:100%;top:50%}
+#stage.dancing #cover .bg{filter:blur(38px) brightness(.25) saturate(1.2)}
+#stage.dancing #titlecard{justify-content:flex-start;padding-top:3%}
+#stage.dancing #titlecard .t1{font-size:3.5cqw}
+#stage.dancing #titlecard .t2{font-size:1.3cqw;margin-top:.5cqw}
+.dance-controls{display:flex;flex-wrap:wrap;gap:12px;align-items:center;margin-top:10px;padding:10px 14px;border:1px solid var(--line);border-radius:12px;background:var(--panel)}
+.dance-controls[hidden]{display:none}
+.dance-controls select{max-width:160px;padding:5px;border:1px solid var(--line);border-radius:6px;background:var(--panel2)}
+#danceStatus{font-size:12px;color:var(--sky)}
 #catcher{position:absolute;inset:0;cursor:pointer}
 #lyrics{position:absolute;left:4%;right:4%;bottom:8%;pointer-events:none;display:flex;flex-direction:column;align-items:center;gap:1.1cqw}
-.slot{display:grid;width:100%;justify-items:center;align-items:end}
+.slot{display:grid;grid-template-columns:minmax(0,1fr);min-width:0;width:100%;justify-items:center;align-items:end}
 .slot>.line{grid-area:1/1}
-.line{--scale:1;max-width:100%;font-family:"Zen Maru Gothic",sans-serif;font-weight:900;font-size:calc(4.6cqw*var(--scale));line-height:1.35;text-align:center;letter-spacing:.04em;
+.line{--scale:1;--fit:1;width:max-content;max-width:96%;font-family:"Zen Maru Gothic",sans-serif;font-weight:900;font-size:calc(4.6cqw*var(--scale)*var(--fit));line-height:1.35;text-align:center;letter-spacing:.04em;text-wrap:balance;
   filter:drop-shadow(0 .14cqw 0 rgba(40,0,30,.65)) drop-shadow(0 0 1.1cqw rgba(0,0,0,.5))}
 .ch{display:inline-block;white-space:pre}
-#next{font-family:"Zen Maru Gothic",sans-serif;font-weight:700;font-size:calc(2.1cqw*var(--scale,1));color:rgba(255,255,255,.6);min-height:1.4em;transition:opacity .35s;filter:drop-shadow(0 0 .5cqw rgba(0,0,0,.9));text-align:center}
+#next,.next-measure{--fit:1;max-width:96%;font-family:"Zen Maru Gothic",sans-serif;font-weight:700;font-size:calc(2.1cqw*var(--scale,1)*var(--fit));line-height:1.4;color:rgba(255,255,255,.6);min-height:1.4em;transition:opacity .35s;filter:drop-shadow(0 0 .5cqw rgba(0,0,0,.9));text-align:center;text-wrap:balance}
 #next.off{opacity:0}
 
 /* title card */
@@ -175,6 +201,7 @@ kbd{background:var(--panel2);border:1px solid var(--line);border-bottom-width:2p
 #songs li:hover .del{opacity:1}
 #toast{position:fixed;left:50%;bottom:28px;translate:-50% 0;background:#2b2236;border:1px solid #4a3d5a;padding:10px 18px;border-radius:10px;opacity:0;transition:opacity .25s;pointer-events:none;z-index:9}
 #toast.show{opacity:1}
+@media (max-width:1000px){#seek{flex:1 0 100%;order:1}}
 </style>
 </head>
 <body>
@@ -223,6 +250,12 @@ kbd{background:var(--panel2);border:1px solid var(--line);border-bottom-width:2p
       <label class="opt"><input type="checkbox" id="dimChk"> 背景暗化</label>
       <label class="opt"><input type="checkbox" id="nextChk"> 下一句預覽</label>
       <label class="opt"><input type="checkbox" id="danceChk"> 載歌載舞</label>
+    </div>
+    <div class="dance-controls" id="danceControls">
+      <label class="opt">人物 <select id="danceStyle"><option value="anime">參考人物</option><option value="chibi">Q 版偶像</option></select></label>
+      <label class="opt">主唱 <select id="danceLead"><option value="auto">歌曲預設</option><option value="0">小日向理瀬</option><option value="1">葉山陽和</option><option value="2">前原純華</option><option value="3">小鷹咲希</option><option value="4">橘雪乃</option><option value="5">御社智</option></select></label>
+      <label class="opt">舞動強度 <input id="danceEnergy" type="range" min="0.3" max="1.8" step="0.1" value="1"></label>
+      <span id="danceStatus" role="status">載入人物素材…</span>
     </div>
   </section>
 
@@ -275,7 +308,7 @@ const store = {
   get(k){ try{ return JSON.parse(localStorage.getItem(k)); }catch{ return null; } },
   set(k,v){ try{ localStorage.setItem(k, JSON.stringify(v)); }catch{} }
 };
-const prefs = Object.assign({effect:'karaoke', scale:1, particles:true, dim:true, next:true, dance:true}, store.get('lyricfx:prefs') || {});
+const prefs = Object.assign({effect:'karaoke', scale:1, particles:true, dim:true, next:true, dance:true, danceStyle:'anime', danceLead:'auto', danceEnergy:1}, store.get('lyricfx:prefs') || {});
 const savePrefs = () => store.set('lyricfx:prefs', prefs);
 
 let mediaKey = 'yt:C3G_fAPgQNk';
@@ -328,7 +361,7 @@ window.onYouTubeIframeAPIReady = () => {
       onStateChange(){ updateTitleFromYt(); },
       onError(e){
         const why = {2:'影片 ID 無效', 5:'播放器錯誤', 100:'找不到影片', 101:'影片擁有者禁止嵌入播放', 150:'影片擁有者禁止嵌入播放', 153:'需要透過 http://localhost 開啟本頁'}[e.data] || ('錯誤碼 ' + e.data);
-        showMsg(`無法播放這支 YouTube 影片：${why}<br>可改用右側「本機影音檔」載入音源，歌詞特效照常運作。`);
+        if(media.kind === 'yt') showMsg(`無法播放這支 YouTube 影片：${why}<br>可改用右側「本機影音檔」載入音源，歌詞特效照常運作。`);
       }
     }
   });
@@ -353,13 +386,13 @@ function showMsg(html){ const m = $('#msg'); m.innerHTML = html; m.classList.tog
 const DEFAULT_SONGS = [
   {id: 'C3G_fAPgQNk', title: '大好きだよって叫ぶんだ [小日向理瀬ver.]',
    audio: '大好きだよって叫ぶんだ [小日向理瀬ver.].mp3',
-   subs: 'Subtitle_この想いは止められないよ いつだって眩...も_1790793102916.srt'},
+   subs: 'Subtitle_この想いは止められないよ いつだって眩...も_1790793102916.srt', lead: 0},
   {id: 'UkGtRu6X72E', title: 'SUNRISE [小日向理瀬ver.]',
    audio: 'SUNRISE [小日向理瀬ver.].mp3',
-   subs: 'Subtitle_《SUN RISE…》手をとっては競い...…_1790794218236.srt'},
+   subs: 'Subtitle_《SUN RISE…》手をとっては競い...…_1790794218236.srt', lead: 0},
   {id: '1BV6fsfu7ZU', title: 'HELLO HERO [御社 智ver.]',
    audio: 'HELLO HERO [御社 智ver.].mp3',
-   subs: 'Subtitle_これまでもこれからも　変わらずいるよヨ...る_1790795207681.srt', lead: 2}
+   subs: 'Subtitle_これまでもこれからも　変わらずいるよヨ...る_1790795207681.srt', lead: 5}
 ];
 // 每首歌的字幕／音訊檔放在同一個資料夾，執行時才讀取
 const cfgOf = id => DEFAULT_SONGS.find(d => d.id === id) || {};
@@ -704,6 +737,42 @@ function tokenize(text){
 }
 const plainText = t => t.replace(/([\u4e00-\u9fff々〆ヶ]+)[(（][\u3041-\u309f\u30a0-\u30ff]+[)）]/gu, '$1')
   .replace(/^[［《\[](.*?)[］》\]]$/, '$1').replace(/[［《\[](.*?)[］》\]]/g, ' ($1)');
+function fitLyricText(el, preview = false){
+  if(!el || !el.textContent.trim() || !stage.clientWidth || !stage.clientHeight) return;
+  // Measure plain typography so animated transforms do not change the fitted size.
+  const probe = el.cloneNode(true);
+  probe.removeAttribute('id');
+  probe.className = preview ? 'next-measure' : 'line' + (el.classList.contains('allbk') ? ' allbk' : '');
+  Object.assign(probe.style, {position:'absolute', visibility:'hidden', pointerEvents:'none',
+    width:'max-content', maxWidth:'none', whiteSpace:'nowrap', left:'0', top:'0'});
+  probe.style.setProperty('--scale', prefs.scale);
+  probe.style.setProperty('--fit', 1);
+  probe.setAttribute('aria-hidden', 'true');
+  stage.appendChild(probe);
+  const naturalWidth = probe.getBoundingClientRect().width;
+  const naturalHeight = probe.offsetHeight;
+  const availableWidth = slot.clientWidth * .96;
+  const maxHeight = stage.clientHeight * (preview ? .12 : .28);
+  const oneLineFit = Math.min(1, availableWidth / Math.max(1, naturalWidth));
+  const maxLines = oneLineFit >= .74 ? 1 : 2;
+  let fit = Math.min(1, oneLineFit * maxLines, maxHeight / Math.max(1, naturalHeight * maxLines));
+  probe.style.maxWidth = availableWidth + 'px';
+  probe.style.whiteSpace = 'normal';
+  for(let i = 0; i < 8; i++){
+    probe.style.setProperty('--fit', fit);
+    const heightLimit = Math.min(maxHeight, naturalHeight * fit * maxLines + 2);
+    if(probe.scrollWidth <= availableWidth + 1 && probe.offsetHeight <= heightLimit + 1) break;
+    fit *= Math.min(.94, availableWidth / Math.max(1, probe.scrollWidth), heightLimit / Math.max(1, probe.offsetHeight));
+  }
+  probe.remove();
+  el.style.setProperty('--scale', prefs.scale);
+  el.style.setProperty('--fit', fit);
+}
+function fitDisplayedLyrics(){
+  slot.querySelectorAll('.line').forEach(el => fitLyricText(el));
+  fitLyricText(nextEl, true);
+}
+document.fonts?.ready.then(fitDisplayedLyrics);
 function showLine(L){
   curLine = L; redraw = false;
   if(curEl){ const old = curEl; old.classList.add('leave'); setTimeout(() => old.remove(), 750); curEl = null; }
@@ -726,6 +795,7 @@ function showLine(L){
     });
     el._dur = lineSpan(L);
     slot.appendChild(el); curEl = el;
+    fitLyricText(el);
     if(prefs.particles && media.playing()){
       requestAnimationFrame(() => {
         const r = el.getBoundingClientRect(), sr = stage.getBoundingClientRect();
@@ -750,6 +820,7 @@ const COLORS = ['#ff6fae', '#ff9ccc', '#ffd1e6', '#8fd3ff', '#ffffff', '#c9a7ff'
 new ResizeObserver(() => {
   const r = stage.getBoundingClientRect(), d = devicePixelRatio || 1;
   W = r.width; H = r.height; cv.width = W*d; cv.height = H*d; cx.setTransform(d, 0, 0, d, 0, 0);
+  fitDisplayedLyrics();
 }).observe(stage);
 const rnd = (a, b) => a + Math.random()*(b - a);
 const pick = a => a[Math.random()*a.length | 0];
@@ -846,7 +917,7 @@ function frame(ts){
     const k = L ? timed.indexOf(L) + 1 : 0, nx = timed[k];
     if(nx && nx.text && (L || now > nx.t - 4)) nt = plainText(nx.text);
   }
-  if(nt !== nextText){ nextText = nt; nextEl.textContent = nt || ' '; nextEl.classList.toggle('off', !nt); }
+  if(nt !== nextText){ nextText = nt; nextEl.textContent = nt || ' '; nextEl.classList.toggle('off', !nt); fitLyricText(nextEl, true); }
 
   // 片頭標題卡：還沒有字幕時顯示
   $('#titlecard').classList.toggle('show', !L && (!timed.length || now < timed[0].t - 4) && !tapping);
@@ -870,7 +941,7 @@ $('#fsBtn').onclick = toggleFs;
 document.querySelectorAll('#effects button').forEach(b => {
   b.onclick = () => { prefs.effect = b.dataset.fx; savePrefs(); syncOpts(); redraw = true; };
 });
-$('#scale').oninput = e => { prefs.scale = +e.target.value; savePrefs(); document.querySelectorAll('.line').forEach(l => l.style.setProperty('--scale', prefs.scale)); nextEl.style.setProperty('--scale', prefs.scale); };
+$('#scale').oninput = e => { prefs.scale = +e.target.value; savePrefs(); fitDisplayedLyrics(); };
 $('#partChk').onchange = e => { prefs.particles = e.target.checked; savePrefs(); };
 $('#dimChk').onchange = e => { prefs.dim = e.target.checked; savePrefs(); syncOpts(); };
 $('#nextChk').onchange = e => { prefs.next = e.target.checked; savePrefs(); };
@@ -890,6 +961,17 @@ function syncOpts(){
   $('#partChk').checked = prefs.particles; $('#dimChk').checked = prefs.dim; $('#nextChk').checked = prefs.next;
   $('#dim').classList.toggle('off', !prefs.dim);
   $('#danceChk').checked = prefs.dance; $('#dance').hidden = !prefs.dance;
+  stage.classList.toggle('dancing', prefs.dance);
+  $('#danceControls').hidden = !prefs.dance;
+  $('#danceStyle').value = prefs.danceStyle;
+  $('#danceLead').value = prefs.danceLead;
+  $('#danceEnergy').value = prefs.danceEnergy;
+}
+for(const [id, key] of [['danceStyle','danceStyle'], ['danceLead','danceLead'], ['danceEnergy','danceEnergy']]){
+  $('#'+id).addEventListener(key === 'danceEnergy' ? 'input' : 'change', e => {
+    prefs[key] = key === 'danceEnergy' ? +e.target.value : e.target.value;
+    savePrefs();
+  });
 }
 
 // 點過的按鈕失去焦點，避免 Space 又觸發按鈕
@@ -926,6 +1008,7 @@ if(location.protocol === 'file:') showMsg('YouTube 需要透過網址開啟本�
 const s = document.createElement('script'); s.src = 'https://www.youtube.com/iframe_api'; document.head.appendChild(s);
 requestAnimationFrame(frame);
 </script>
+<script src="dance-sprites.js"></script>
 <script src="dance.js"></script>
 </body>
 </html>

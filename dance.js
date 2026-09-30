@@ -1,4 +1,4 @@
-/* 載歌載舞：原創 Q 版偶像舞者跟著節拍跳舞，中間的主唱依歌聲對嘴 */
+/* 載歌載舞：六位參考人物／Q 版舞者，主唱以音量驅動嘴型開合。 */
 (() => {
 const cv = document.getElementById('dance'), g = cv.getContext('2d');
 let CW = 0, CH = 0;
@@ -9,20 +9,21 @@ new ResizeObserver(() => {
 
 const SKIN = '#ffe4d4', MOUTH = '#b8324a';
 const MEMBERS = [
-  {hair: '#e89a4f', costume: '#ff8a3d', accent: '#fff1a8', eye: '#3a7bd5', style: 'ponytail'},
+  {hair: '#8a704d', costume: '#4fcf93', accent: '#e2ffec', eye: '#3a7bd5', style: 'ponytail'},
   {hair: '#6b4535', costume: '#ff6fae', accent: '#ffd6ea', eye: '#8a4fd6', style: 'twintail'},
+  {hair: '#a8703f', costume: '#46b0ff', accent: '#d9f1ff', eye: '#3a7bd5', style: 'bob'},
+  {hair: '#6b4535', costume: '#f3bc47', accent: '#fff1a8', eye: '#2e8b57', style: 'long'},
   {hair: '#35284f', costume: '#8a6cff', accent: '#e9e0ff', eye: '#2f9bd8', style: 'long'},
-  {hair: '#a8703f', costume: '#46b0ff', accent: '#d9f1ff', eye: '#2e8b57', style: 'bob'},
-  {hair: '#f1cf72', costume: '#4fcf93', accent: '#e2ffec', eye: '#3a6fd8', style: 'short'}
+  {hair: '#f1cf72', costume: '#58c2d5', accent: '#d9faff', eye: '#2e8b57', style: 'long'}
 ];
-MEMBERS.forEach(m => { m.blinkAt = 1 + Math.random()*3; m.blinkT = 0; });
+MEMBERS.forEach((m,index) => { m.index=index; m.blinkAt = 1 + Math.random()*3; m.blinkT = 0; });
 
 /* ---------- 音訊分析（MP3 模式） ---------- */
 let ac = null, an = null, freq = null;
 function ensureAudio(){
-  if(ac || !window.AudioContext) return;
+  if(ac || !(window.AudioContext || window.webkitAudioContext)) return;
   try{
-    ac = new AudioContext();
+    ac = new (window.AudioContext || window.webkitAudioContext)();
     const src = ac.createMediaElementSource(vid);
     an = ac.createAnalyser(); an.fftSize = 1024; an.smoothingTimeConstant = .5;
     src.connect(an); an.connect(ac.destination);
@@ -33,6 +34,7 @@ vid.addEventListener('play', () => { ensureAudio(); if(ac && ac.state === 'suspe
 
 let clock = 0, beatBase = 0, sinceBeat = 0, interval = .5, intervals = [], lastBeatClock = -9;
 let env = 0, bassAvg = 0, level = .5, vocal = 0, noteAcc = 0;
+let previousSong = null, previousTime = 0, lastStatus = '', info = {};
 const phase = () => beatBase + sinceBeat/interval;
 function onBeat(){
   const iv = clock - lastBeatClock;
@@ -89,6 +91,14 @@ function bow(x, y, sz, col, edge){
 }
 
 function drawDancer(m, x, y, s, st){
+  if(prefs.danceStyle === 'anime' && window.SpriteDancers?.ready){
+    const fit=Math.min(1, CW/CH/2.05);
+    SpriteDancers.draw(g,m.index,x,y,CH*(st.mic ? .53 : .43)*fit,{
+      wave:st.armWave,energy:st.energy,hop:st.hopY*CH/155,
+      tilt:st.tilt,squash:st.squash*.45,mouth:st.mouth,lead:st.mic
+    });
+    return st;
+  }
   const sw = st.sway;
   g.save();
   g.translate(x, y);
@@ -178,6 +188,12 @@ function drawDancer(m, x, y, s, st){
 }
 
 function drawLights(){
+  const bg=g.createLinearGradient(0,0,0,CH);
+  bg.addColorStop(0,'rgba(15,18,42,.76)');bg.addColorStop(.65,'rgba(29,16,44,.86)');bg.addColorStop(1,'rgba(10,9,26,.98)');
+  g.fillStyle=bg;g.fillRect(0,0,CW,CH);
+  const floor=g.createLinearGradient(0,CH*.58,0,CH);
+  floor.addColorStop(0,'rgba(143,100,206,.18)');floor.addColorStop(1,'rgba(23,15,38,0)');
+  g.fillStyle=floor;g.beginPath();g.ellipse(CW/2,CH*.77,CW*.7,CH*.2,0,0,Math.PI*2);g.fill();
   const hues = [330, 200, 48, 280];
   g.globalCompositeOperation = 'lighter';
   hues.forEach((h, k) => {
@@ -190,6 +206,11 @@ function drawLights(){
     g.beginPath(); g.moveTo(ox - 4, -5); g.lineTo(ox + 4, -5); g.lineTo(tx + sp, L); g.lineTo(tx - sp, L); g.closePath(); g.fill();
   });
   g.globalCompositeOperation = 'source-over';
+  for(let i=0;i<24;i++){
+    const x=CW*(i+.5)/24, yy=CH*.57;
+    g.fillStyle=`hsla(${200+i*7} 95% 75% / ${.22+env*.5})`;
+    g.beginPath();g.roundRect(x-CW*.012,yy,CW*.024,CH*.014,CH*.005);g.fill();
+  }
   const fy = CH*.63, grd = g.createRadialGradient(CW/2, fy, 0, CW/2, fy, CW*.45);
   grd.addColorStop(0, `rgba(255,140,200,${.22 + env*.2})`); grd.addColorStop(1, 'rgba(255,140,200,0)');
   g.fillStyle = grd; g.beginPath(); g.ellipse(CW/2, fy, CW*.45, CH*.09, 0, 0, Math.PI*2); g.fill();
@@ -198,17 +219,25 @@ function drawLights(){
 const art = () => document.querySelector('#cover .art');
 function frame(dt, playing){
   if(!prefs.dance || !CW){ return; }
-  const singing = !!(curLine && curLine.text);
+  const raw=media.time();
+  if(curSong!==previousSong || Math.abs(raw-previousTime)>1.5){
+    clock=raw;interval=.5;intervals=[];beatBase=Math.floor(raw/interval);sinceBeat=raw%interval;
+    lastBeatClock=raw-.5;bassAvg=0;vocal=0;env=0;noteAcc=0;
+    previousSong=curSong;
+  }
+  previousTime=raw;
+  const singing = timed.length ? !!(curLine && curLine.text) : playing;
   analyse(dt, playing, singing);
   g.clearRect(0, 0, CW, CH);
   drawLights();
   const a = art(); if(a) a.style.transform = `scale(${1 + env*.025})`;
 
   const song = typeof cfgOf === 'function' && curSong ? cfgOf(curSong) : {};
-  const lead = song.lead || 0;
-  const order = [1, 3, 4, 2].map(k => (lead + k) % 5);          // 伴舞
+  const lead = prefs.danceLead === 'auto' ? (song.lead || 0) : Math.max(0,Math.min(5,+prefs.danceLead || 0));
+  const order = [1, 2, 3, 4, 5].map(k => (lead + k) % 6);
   const p = phase(), moveFn = MOVES[Math.floor(p/8) % MOVES.length];
-  const amp = playing ? 1.6 + 2.6*clamp(level, 0, 1) : 0;
+  const strength=+prefs.danceEnergy || 1;
+  const amp = playing ? (1.6 + 2.6*clamp(level, 0, 1))*strength : 0;
   const breath = Math.sin(performance.now()/600)*.3;
   const unit = CH/38;
 
@@ -219,7 +248,7 @@ function frame(dt, playing){
     m.blinkT = Math.max(0, m.blinkT - dt);
   }
 
-  const slots = [[.13, .60], [.31, .58], [.69, .58], [.87, .60]];
+  const slots = [[.10, .66], [.27, .65], [.40, .63], [.74, .65], [.90, .66]];
   order.forEach((mi, k) => {
     const [fx, fy] = slots[k], left = fx < .5;
     const pk = p - k*.05;
@@ -228,7 +257,8 @@ function frame(dt, playing){
     drawDancer(MEMBERS[mi], CW*fx, CH*fy, unit*.3, {
       la: left ? mv.ra : mv.la, ra: left ? mv.la : mv.ra, tilt: (left ? -1 : 1)*mv.tilt,
       hopY: hop, squash: playing ? .05*Math.pow(1 - AS(pk), 6)*level : 0, flare: hop*.25,
-      sway: S(pk/2), happy: playing && mv.happy && env > .3, blink: MEMBERS[mi].blinkT > 0, mouth: 0
+      sway: S(pk/2), armWave:S(pk/2),energy:playing ? strength : 0,
+      happy: playing && mv.happy && env > .3, blink: MEMBERS[mi].blinkT > 0, mouth: 0
     });
   });
 
@@ -236,12 +266,18 @@ function frame(dt, playing){
   const mv = moveFn(p);
   const mouth = singing && playing ? clamp((vocal - .1)*3.2, 0, 1) : 0;
   const hopL = playing ? AS(p)*amp*.55*mv.hop : Math.max(0, breath);
-  const sx = CW*.5, sy = CH*.65, ss = unit*.38;
+  const sx = CW*.55, sy = CH*.72, ss = unit*.38;
   drawDancer(MEMBERS[lead], sx, sy, ss, {
     la: singing ? mv.la : mv.la, ra: 2.72 + .08*S(p), tilt: mv.tilt*.5,
     hopY: hopL, squash: playing ? .04*Math.pow(1 - AS(p), 6)*level : 0, flare: hopL*.25,
-    sway: S(p/2), happy: false, blink: MEMBERS[lead].blinkT > 0 && !mouth, mouth, mic: true
+    sway: S(p/2),armWave:S(p/2),energy:playing ? strength : 0,
+    happy: false, blink: MEMBERS[lead].blinkT > 0 && !mouth, mouth, mic: true
   });
+  const activeStyle=prefs.danceStyle === 'anime' && window.SpriteDancers?.ready ? 'anime' : 'chibi';
+  const mode=an && media.kind==='file' ? 'MP3 音量／節拍驅動' : '固定 120 BPM';
+  const label=(activeStyle==='anime' ? '六位參考人物' : '六位 Q 版偶像')+' · '+(playing ? mode : '按播放開始');
+  if(label!==lastStatus){lastStatus=label;const el=document.getElementById('danceStatus');if(el)el.textContent=label;}
+  info={style:activeStyle,count:MEMBERS.length,lead,playing,singing,mouth,phase:p,mode};
 
   // 音符
   if(prefs.particles && singing && playing && mouth > .15){
@@ -249,13 +285,14 @@ function frame(dt, playing){
     while(noteAcc > 1){
       noteAcc--;
       const u = W/100;
-      P.push({x: sx + ss*(4 + Math.random()*3), y: sy - (hopL + 30)*ss, vx: (Math.random()*.8 + .4)*6*u*(Math.random() < .5 ? -1 : 1),
+      const headY=activeStyle==='anime' ? sy-CH*.47*Math.min(1,CW/CH/2.05)-hopL*CH/155 : sy-(hopL+30)*ss;
+      P.push({x: sx + ss*(4 + Math.random()*3), y: headY, vx: (Math.random()*.8 + .4)*6*u*(Math.random() < .5 ? -1 : 1),
         vy: -(5 + Math.random()*5)*u, g: 0, drag: .97, life: 0, max: 1.6 + Math.random(), size: (1 + Math.random()*.8)*u,
         rot: (Math.random() - .5)*.6, vr: (Math.random() - .5)*1.5, sway: 1.5*u, ph: Math.random()*6,
         kind: 'note', ch: Math.random() < .5 ? '♪' : '♫', color: ['#ff8cc6', '#8fd3ff', '#ffe08a', '#c9a7ff'][Math.random()*4 | 0]});
     }
   }
 }
-function clear(){ g.clearRect(0, 0, CW, CH); const a = art(); if(a) a.style.transform = ''; }
-window.Dance = {frame, clear};
+function clear(){ g.clearRect(0, 0, CW, CH); noteAcc=0;const a = art(); if(a) a.style.transform = ''; }
+window.Dance = {frame, clear, inspect:()=>({...info})};
 })();
