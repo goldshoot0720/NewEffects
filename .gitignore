@@ -1,0 +1,7 @@
+# 影音與字幕檔（有版權，只放本機）
+*.mp3
+*.srt
+*.lrc
+
+.DS_Store
+.claude/
