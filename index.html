@@ -67,12 +67,15 @@ header .song{color:var(--muted);font-size:13px;white-space:nowrap;overflow:hidde
 #catcher{position:absolute;inset:0;cursor:pointer}
 #lyrics{position:absolute;left:4%;right:4%;bottom:8%;pointer-events:none;display:flex;flex-direction:column;align-items:center;gap:1.1cqw}
 .slot{display:grid;grid-template-columns:minmax(0,1fr);min-width:0;width:100%;justify-items:center;align-items:end}
-.slot>.line{grid-area:1/1}
+.slot>.linewrap{grid-area:1/1}
+.linewrap{display:flex;flex-direction:column;align-items:center;gap:.8cqw;min-width:0;max-width:100%}
 .line{--scale:1;--fit:1;width:max-content;max-width:96%;font-family:"Zen Maru Gothic",sans-serif;font-weight:900;font-size:calc(4.6cqw*var(--scale)*var(--fit));line-height:1.35;text-align:center;letter-spacing:.04em;text-wrap:balance;
   filter:drop-shadow(0 .14cqw 0 rgba(40,0,30,.65)) drop-shadow(0 0 1.1cqw rgba(0,0,0,.5))}
 .ch{display:inline-block;white-space:pre}
 #next,.next-measure{--fit:1;max-width:96%;font-family:"Zen Maru Gothic",sans-serif;font-weight:700;font-size:calc(2.1cqw*var(--scale,1)*var(--fit));line-height:1.4;color:rgba(255,255,255,.6);min-height:1.4em;transition:opacity .35s;filter:drop-shadow(0 0 .5cqw rgba(0,0,0,.9));text-align:center;text-wrap:balance}
 #next.off{opacity:0}
+#nextZh,.zh-preview{--fit:1;max-width:96%;font-family:"Noto Sans TC",sans-serif;font-weight:500;font-size:calc(1.75cqw*var(--scale,1)*var(--fit));line-height:1.4;color:rgba(255,255,255,.55);min-height:1.3em;transition:opacity .35s;filter:drop-shadow(0 0 .5cqw rgba(0,0,0,.9));text-align:center;text-wrap:balance}
+#nextZh.off{opacity:0}
 
 /* title card */
 #titlecard{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;pointer-events:none;opacity:0;transition:opacity .8s;text-align:center;padding:0 6%}
@@ -135,7 +138,14 @@ header .song{color:var(--muted);font-size:13px;white-space:nowrap;overflow:hidde
 .fx-pop .ch.bk,.fx-type .ch.bk{color:#9edcff}
 .fx-neon .ch.bk{--neon:#3fb8ff}
 
-.line.leave{animation:leave .7s ease forwards}
+/* 中文翻譯行：隨時間由左至右填色 */
+.zhline{--p:0;display:block;max-width:96%;font-family:"Noto Sans TC",sans-serif;font-weight:700;font-size:calc(2.45cqw*var(--scale,1)*var(--fit,1));line-height:1.4;text-align:center;letter-spacing:.06em;text-wrap:balance;
+  background:linear-gradient(90deg,hsl(var(--h,330) 100% 84%) calc(var(--p)*100%),rgba(255,255,255,.78) 0);-webkit-background-clip:text;background-clip:text;color:transparent;
+  filter:drop-shadow(0 .12cqw 0 rgba(40,0,30,.6)) drop-shadow(0 0 1cqw rgba(0,0,0,.55));
+  animation:zhIn .55s ease backwards;animation-delay:.12s}
+@keyframes zhIn{from{opacity:0;translate:0 .4em}}
+
+.linewrap.leave>*{animation:leave .7s ease forwards}
 @keyframes leave{to{opacity:0;transform:translateY(-1.5em) scale(.9);filter:blur(8px)}}
 
 /* ---------- controls ---------- */
@@ -220,7 +230,7 @@ kbd{background:var(--panel2);border:1px solid var(--line);border-bottom-width:2p
       <canvas id="dance"></canvas>
       <canvas id="fx"></canvas>
       <div id="titlecard"><div class="t1"></div><div class="t2"></div></div>
-      <div id="lyrics"><div class="slot" id="slot"></div><div id="next"></div></div>
+      <div id="lyrics"><div class="slot" id="slot"></div><div id="next"></div><div id="nextZh" class="off"></div></div>
       <div id="catcher" title="點擊播放／暫停，雙擊全螢幕"></div>
       <div id="tapBadge"><span class="dot"></span><span>打點中</span><span class="nx" id="tapNext"></span></div>
       <div id="msg"></div>
@@ -280,6 +290,7 @@ kbd{background:var(--panel2);border:1px solid var(--line);border-bottom-width:2p
         <button class="b" id="markBtn">插入間奏</button>
         <button class="b" id="clearBtn">清除時間</button>
         <button class="b" id="exportBtn">匯出 LRC</button>
+        <button class="b" id="exportSrtBtn">匯出雙語 SRT</button>
         <label class="btn">匯入 LRC／SRT<input type="file" id="lrcInput" accept=".lrc,.srt,.txt,text/plain" hidden></label>
       </div>
       <p class="keys">
@@ -298,7 +309,7 @@ kbd{background:var(--panel2);border:1px solid var(--line);border-bottom-width:2p
 
 <script>
 const $ = s => document.querySelector(s);
-const stage = $('#stage'), slot = $('#slot'), nextEl = $('#next'), listEl = $('#list'), ta = $('#lyricsText');
+const stage = $('#stage'), slot = $('#slot'), nextEl = $('#next'), nextZhEl = $('#nextZh'), listEl = $('#list'), ta = $('#lyricsText');
 const vid = $('#localVideo');
 const HUES = [330, 290, 200, 345, 265, 185, 315];
 const ICON_PLAY = '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M7 4.5v15l13-7.5z"/></svg>';
@@ -403,8 +414,11 @@ async function preloadFiles(){
     try{
       const r = await fetch(encodeURIComponent(d.subs), {cache: 'no-cache'});
       if(!r.ok) return;
-      const lrc = toLRC(parse(await r.text()));
-      fileLrc[d.id] = {lrc, hash: hashStr(lrc)};
+      const ls = parse(await r.text());
+      const lrc = toLRC(ls);
+      const zh = {};
+      for(const l of ls) if(l.zh) zh[l.text] = l.zh;
+      fileLrc[d.id] = {lrc, hash: hashStr(lrc), zh};
     }catch{}
   }));
 }
@@ -538,10 +552,14 @@ function parseSrt(text){
     const ls = block.split('\n').filter(x => x.trim());
     const i = ls.findIndex(x => x.includes('-->')); if(i < 0) continue;
     const [a, e] = ls[i].split('-->').map(tt); if(a == null) continue;
-    const body = ls.slice(i + 1).join(' ').replace(/<[^>]+>/g, '').trim();
+    const body = ls.slice(i + 1).map(x => x.replace(/<[^>]+>/g, '').trim()).filter(Boolean);
+    // 雙語字幕：第二行若不含假名就視為中文翻譯
+    let zh = '';
+    if(body.length > 1 && !/[\u3040-\u30ff]/.test(body[body.length - 1])) zh = body.pop();
+    const text = body.join(' ');
     // 兩句之間空隔超過 1 秒就插入間奏，讓字幕消失
     if(prevEnd != null && a - prevEnd > 1) out.push({t: +prevEnd.toFixed(2), text: ''});
-    if(body) out.push({t: +a.toFixed(2), text: body});
+    if(text) out.push(zh ? {t: +a.toFixed(2), text, zh} : {t: +a.toFixed(2), text});
     prevEnd = e;
   }
   if(prevEnd != null) out.push({t: +prevEnd.toFixed(2), text: ''});
@@ -576,9 +594,10 @@ function switchKey(key){
   offset = d?.offset || 0; curSrcHash = d?.srcHash || null; $('#offLbl').textContent = offset.toFixed(1) + 's';
   ta.value = d?.lrc || '';
   lines = parse(ta.value);
+  zhMap = (key.startsWith('yt:') && fileLrc[key.slice(3)]?.zh) || {};
   stopTap(true);
-  slot.replaceChildren(); curLine = null; curEl = null; nextText = null;
-  nextEl.textContent = '';
+  slot.replaceChildren(); curLine = null; curEl = null; curWrap = null; curZh = null; nextText = null; nextZhText = null;
+  nextEl.textContent = ''; nextZhEl.textContent = '';
   commit(true);
 }
 let taTimer;
@@ -706,6 +725,28 @@ $('#exportBtn').onclick = () => {
   a.download = songTitle.replace(/[\\/:*?"<>|]/g, '_') + '.lrc';
   a.click(); setTimeout(() => URL.revokeObjectURL(a.href), 2000);
 };
+$('#exportSrtBtn').onclick = () => {
+  const cues = timed.filter(l => l.text !== '');
+  if(!cues.length){ toast('還沒有任何時間標記'); return; }
+  const srtTime = t => {
+    let ms = Math.max(0, Math.round(t*1000));
+    const h = (ms/3600000)|0; ms -= h*3600000;
+    const m = (ms/60000)|0; ms -= m*60000;
+    const s = (ms/1000)|0; ms -= s*1000;
+    return String(h).padStart(2,'0') + ':' + String(m).padStart(2,'0') + ':' + String(s).padStart(2,'0') + ',' + String(ms).padStart(3,'0');
+  };
+  const out = [];
+  cues.forEach((l, i) => {
+    const nx = timed[timed.indexOf(l) + 1];
+    out.push(String(i + 1), `${srtTime(l.t)} --> ${srtTime(Math.max(l.t + .5, (nx ? nx.t : l.t + 4) - .05))}`, l.text);
+    if(zhMap[l.text]) out.push(zhMap[l.text]);
+    out.push('');
+  });
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(new Blob([out.join('\r\n')], {type: 'text/plain;charset=utf-8'}));
+  a.download = songTitle.replace(/[\\/:*?"<>|]/g, '_') + '.中日雙語.srt';
+  a.click(); setTimeout(() => URL.revokeObjectURL(a.href), 2000);
+};
 $('#lrcInput').onchange = async e => {
   const f = e.target.files[0]; if(!f) return;
   ta.value = await f.text(); e.target.value = '';
@@ -714,7 +755,8 @@ $('#lrcInput').onchange = async e => {
 };
 
 /* ---------------- lyric rendering ---------------- */
-let curLine = null, curEl = null, redraw = false, nextText = null;
+let curLine = null, curEl = null, curWrap = null, curZh = null, redraw = false, nextText = null, nextZhText = null;
+let zhMap = {};
 
 function lineSpan(L){
   const k = timed.indexOf(L), nx = timed[k + 1];
@@ -737,12 +779,13 @@ function tokenize(text){
 }
 const plainText = t => t.replace(/([\u4e00-\u9fff々〆ヶ]+)[(（][\u3041-\u309f\u30a0-\u30ff]+[)）]/gu, '$1')
   .replace(/^[［《\[](.*?)[］》\]]$/, '$1').replace(/[［《\[](.*?)[］》\]]/g, ' ($1)');
-function fitLyricText(el, preview = false){
+function fitLyricText(el, kind = ''){
   if(!el || !el.textContent.trim() || !stage.clientWidth || !stage.clientHeight) return;
+  const preview = kind === 'preview' || kind === 'zhpreview';
   // Measure plain typography so animated transforms do not change the fitted size.
   const probe = el.cloneNode(true);
   probe.removeAttribute('id');
-  probe.className = preview ? 'next-measure' : 'line' + (el.classList.contains('allbk') ? ' allbk' : '');
+  probe.className = kind === 'preview' ? 'next-measure' : kind === 'zhpreview' ? 'zh-preview' : kind === 'zh' ? 'zhline' : 'line' + (el.classList.contains('allbk') ? ' allbk' : '');
   Object.assign(probe.style, {position:'absolute', visibility:'hidden', pointerEvents:'none',
     width:'max-content', maxWidth:'none', whiteSpace:'nowrap', left:'0', top:'0'});
   probe.style.setProperty('--scale', prefs.scale);
@@ -770,14 +813,19 @@ function fitLyricText(el, preview = false){
 }
 function fitDisplayedLyrics(){
   slot.querySelectorAll('.line').forEach(el => fitLyricText(el));
-  fitLyricText(nextEl, true);
+  slot.querySelectorAll('.zhline').forEach(el => fitLyricText(el, 'zh'));
+  fitLyricText(nextEl, 'preview');
+  fitLyricText(nextZhEl, 'zhpreview');
 }
 document.fonts?.ready.then(fitDisplayedLyrics);
 function showLine(L){
   curLine = L; redraw = false;
-  if(curEl){ const old = curEl; old.classList.add('leave'); setTimeout(() => old.remove(), 750); curEl = null; }
+  if(curWrap){ const old = curWrap; old.classList.add('leave'); setTimeout(() => old.remove(), 750); curWrap = null; curEl = null; curZh = null; }
   if(L && L.text){
     const k = timed.indexOf(L), hue = HUES[k % HUES.length];
+    const wrap = document.createElement('div');
+    wrap.className = 'linewrap';
+    wrap.style.setProperty('--h', hue);
     const el = document.createElement('div');
     el.className = 'line fx-' + prefs.effect;
     el.style.setProperty('--scale', prefs.scale);
@@ -794,8 +842,18 @@ function showLine(L){
       el.appendChild(s); return s;
     });
     el._dur = lineSpan(L);
-    slot.appendChild(el); curEl = el;
+    wrap.appendChild(el);
+    const zh = zhMap[L.text];
+    if(zh){
+      const z = document.createElement('div');
+      z.className = 'zhline';
+      z.textContent = zh;
+      wrap.appendChild(z);
+      curZh = z;
+    }
+    slot.appendChild(wrap); curWrap = wrap; curEl = el;
     fitLyricText(el);
+    if(curZh) fitLyricText(curZh, 'zh');
     if(prefs.particles && media.playing()){
       requestAnimationFrame(() => {
         const r = el.getBoundingClientRect(), sr = stage.getBoundingClientRect();
@@ -811,6 +869,7 @@ function setProgress(el, p){
     const c = +clamp(p*n - i, 0, 1).toFixed(3);
     if(c !== cs[i]._c){ cs[i]._c = c; cs[i].style.setProperty('--c', c); }
   }
+  if(curZh) curZh.style.setProperty('--p', p.toFixed(3));
 }
 
 /* ---------------- particles ---------------- */
@@ -912,12 +971,13 @@ function frame(ts){
   }
 
   // 下一句預覽
-  let nt = '';
+  let nt = '', ntz = '';
   if(prefs.next){
     const k = L ? timed.indexOf(L) + 1 : 0, nx = timed[k];
-    if(nx && nx.text && (L || now > nx.t - 4)) nt = plainText(nx.text);
+    if(nx && nx.text && (L || now > nx.t - 4)){ nt = plainText(nx.text); ntz = zhMap[nx.text] || ''; }
   }
-  if(nt !== nextText){ nextText = nt; nextEl.textContent = nt || ' '; nextEl.classList.toggle('off', !nt); fitLyricText(nextEl, true); }
+  if(nt !== nextText){ nextText = nt; nextEl.textContent = nt || ' '; nextEl.classList.toggle('off', !nt); fitLyricText(nextEl, 'preview'); }
+  if(ntz !== nextZhText){ nextZhText = ntz; nextZhEl.textContent = ntz || ' '; nextZhEl.classList.toggle('off', !ntz); fitLyricText(nextZhEl, 'zhpreview'); }
 
   // 片頭標題卡：還沒有字幕時顯示
   $('#titlecard').classList.toggle('show', !L && (!timed.length || now < timed[0].t - 4) && !tapping);
