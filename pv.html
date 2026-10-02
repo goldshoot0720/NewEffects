@@ -1,0 +1,40 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>BEST 4U PV</title>
+<style>
+:root{color-scheme:dark}
+html,body{margin:0;height:100%;background:#000;color:#eee;font-family:"PingFang TC","Hiragino Sans",sans-serif;overflow:hidden}
+body{display:grid;place-items:center}
+#pv{width:min(100vw,calc(100vh*16/9));height:auto;aspect-ratio:16/9;display:block;background:#000}
+#ui{position:fixed;left:50%;bottom:16px;translate:-50% 0;display:flex;gap:10px;align-items:center;padding:10px 14px;
+  border-radius:14px;background:rgba(18,18,28,.82);backdrop-filter:blur(8px);box-shadow:0 6px 24px rgba(0,0,0,.4);
+  width:min(920px,calc(100vw - 32px));box-sizing:border-box;transition:opacity .4s}
+#ui.idle{opacity:0}
+#ui select,#ui button{font:inherit;font-size:14px;color:#fff;background:#2c2c40;border:1px solid #47476a;border-radius:8px;padding:6px 10px;cursor:pointer}
+#ui button:disabled{opacity:.5;cursor:wait}
+#seek{flex:1;min-width:80px;accent-color:#f6a531}
+#time{font:13px Menlo,monospace;white-space:nowrap}
+#ui a{color:#9fd2ff;font-size:13px;white-space:nowrap}
+#msg{position:fixed;top:16px;left:50%;translate:-50% 0;font-size:14px;background:rgba(0,0,0,.6);padding:6px 12px;border-radius:8px}
+#msg:empty{display:none}
+body.render #ui,body.render #msg{display:none}
+@media (max-width:600px){#ui{flex-wrap:wrap}#seek{order:5;flex-basis:100%}}
+</style>
+</head>
+<body>
+<canvas id="pv" width="1920" height="1080"></canvas>
+<div id="ui">
+  <select id="song" aria-label="歌曲"></select>
+  <button id="play" disabled>載入中…</button>
+  <input id="seek" type="range" min="0" max="1000" value="0" aria-label="播放位置">
+  <span id="time">0:00 / 0:00</span>
+  <a href="index.html">← 播放器</a>
+</div>
+<div id="msg"></div>
+<script src="dance-sprites.js"></script>
+<script src="pv.js"></script>
+</body>
+</html>

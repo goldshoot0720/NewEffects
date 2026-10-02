@@ -23,6 +23,15 @@ macOS 也可雙擊 `啟動播放器.command`，會在終端機啟動伺服器並
 - 打點對時：貼上歌詞後按「開始打點」，每句開始時按 Space，可匯出 LRC
 - 支援匯入 LRC／SRT，歌曲清單可新增 YouTube 網址；歌詞面板的「匯出雙語 SRT」可輸出目前時間軸的中日雙語字幕
 
+## 歌詞 PV
+
+`pv.html` 是每首歌的歌詞 PV（1920×1080），用同一套 `pv.js` 在瀏覽器即時預覽，或輸出成 MP4：
+
+- 預覽：開啟 `http://127.0.0.1:8765/pv.html?song=0`（0 大好きだよって叫ぶんだ、1 SUNRISE、2 HELLO HERO）
+- 輸出：`node render-pv.mjs`（全部三首同時輸出到 `pv/`），或 `node render-pv.mjs 1 --from 60 --to 72` 只輸出片段。需要 Google Chrome 與 ffmpeg
+
+鏡頭依歌詞與音訊自動編排：片頭立體貼紙字標題、膠卷逐字歌詞（左日文右中文）、成員視窗＋搜尋列歌詞、大字逐字蹦出、副歌舞台（LED 螢幕、聚光燈、彩帶）、尾聲拍立得。節拍由 MP3 偵測，舞步、轉場與 HUD（時間碼、小節、段落）都跟著節拍走。封面圖放在 `assets/best4u-cover.webp`（有版權，不進 repo）。
+
 ## 歌曲檔案
 
 MP3 與字幕檔（SRT／LRC）有版權，不放在這個 repo（見 `.gitignore`）。
