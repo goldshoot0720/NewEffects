@@ -4,6 +4,8 @@
 'use strict';
 const W = 1920, H = 1080, FPS = 30;
 const params = new URLSearchParams(location.search);
+const CHARACTER_PV = params.get('mode') === 'characters';
+const CHARACTER_LENGTH = 60;
 const RENDER = params.has('render');
 const JOB = params.get('job') || '0';
 const cv = document.getElementById('pv');
@@ -65,12 +67,19 @@ const ART = ARTS[song.art], AW = ART.crop[2], AH = ART.crop[3], FACES = ART.face
 // 成員：0 是主唱；名字未知的成員以編號標示
 const MEMBERS = song.cast.map(([sheet, idx, name, color], i) => ({sheet, idx, name: name || `No.${pad(i + 1)}`, color, img: null, meta: null}));
 const OTHERS = MEMBERS.map((_, i) => i).slice(1);
+const CHARACTER_GROUPS = [
+  {sheet:'casual',title:'十二人 · 制服與便服',src:'assets/ref/lineup12.webp',colors:['#11bbde','#ff86b1'],count:12},
+  {sheet:'rooftop',title:'屋頂六人 · SUNRISE',src:'assets/ref/rooftop6.webp',colors:['#70ccff','#bdf1bc'],count:6},
+  {sheet:'idol',title:'RISE 五人 · 演出服',src:'assets/ref/rise5.webp',colors:['#284b92','#f1c265'],count:5},
+  {sheet:'stage',title:'舞台九人 · 黃昏演出',src:'assets/ref/stage9.webp',colors:['#918be8','#f9b38e'],count:9}
+];
 let A = null, cues = [], sections = [], shots = [], TJ = [], TZ = [], C = {};
 
 /* ---------------- 音訊分析：節拍、低中頻能量 ---------------- */
 async function analyse(buf){
   const SR = 22050;
-  const ab = await new OfflineAudioContext(1, 1, SR).decodeAudioData(buf);
+  // Decoding may detach the input buffer; retain the original for preview audio.
+  const ab = await new OfflineAudioContext(1, 1, SR).decodeAudioData(buf.slice(0));
   const filtered = async chain => {
     const oc = new OfflineAudioContext(1, ab.length, SR);
     const src = oc.createBufferSource(); src.buffer = ab;
@@ -221,6 +230,7 @@ function buildSections(){
 const sectionAt = t => { let r = sections[0]; for(const s of sections){ if(s.start <= t) r = s; else break; } return r; };
 
 function buildShots(){
+  if(CHARACTER_PV) return CHARACTER_GROUPS.map((group,i)=>({type:'characters',group:i,start:i*15,end:(i+1)*15,seed:i+1}));
   const out = [], snap = t => A.beat0 + Math.round((t - A.beat0)/A.spb)*A.spb;
   const add = (type, start, end, o = {}) => { if(end - start > .05) out.push({type, start, end, seed: out.length + 1, ...o}); };
   const n = {film: 0, typo: 0, stage: 0, windows: 0, verse: 0};
@@ -405,7 +415,7 @@ function danceState(i, t, o = {}){
 }
 // 去背角色的舞動：腳踩地、上半身分條側彎，加上跳躍、壓縮與傾斜（2D 切圖動畫）
 function drawDancer(i, x, y, h, st){
-  const m = MEMBERS[i]; if(!m?.img) return;
+  const m = st.actor || MEMBERS[i]; if(!m?.img) return;
   const img = m.img, iw = img.width, ih = img.height, k = h/ih, w = iw*k;
   const hop = st.hop*h/420, sq = st.squash*4;
   g.save(); g.translate(x, y);
@@ -861,7 +871,54 @@ function shotOutro(t, sh, u){
   g.restore();
   karaoke(t, {cx: W/2, y: 120, size: 52, maxW: 1500, zhSize: 30});
 }
-const SHOTS = {film: shotFilm, typo: shotTypo, windows: shotWindows, stage: shotStage, outro: shotOutro};
+// 四張參考圖的角色展示：每組保留全身，按節拍逐位入場與切換聚光。
+function shotCharacters(t,sh,u){
+  const group=CHARACTER_GROUPS[sh.group], local=t-sh.start, actors=group.members;
+  g.drawImage(group.backdrop,0,0);
+  const pl=pulse(t), floor=g.createLinearGradient(0,600,0,H);
+  floor.addColorStop(0,'rgba(255,255,255,0)');floor.addColorStop(1,'rgba(8,14,40,.8)');
+  g.fillStyle=floor;g.fillRect(0,450,W,H-450);
+  for(let i=0;i<5;i++){
+    const x=W*(i+.5)/5, sway=Math.sin(t*.6+i)*240;
+    const light=g.createLinearGradient(x,0,x+sway,880);
+    light.addColorStop(0,'rgba(255,255,255,.16)');light.addColorStop(1,'rgba(255,255,255,0)');
+    g.fillStyle=light;g.beginPath();g.moveTo(x-6,0);g.lineTo(x+6,0);g.lineTo(x+sway+130,900);g.lineTo(x+sway-130,900);g.closePath();g.fill();
+  }
+  const sizes={casual:[1774,815],rooftop:[1536,1024],idol:[1536,1024],stage:[1774,887]};
+  const [sourceW,sourceH]=sizes[group.sheet],scale=Math.min((W-160)/sourceW,740/sourceH);
+  const originX=(W-sourceW*scale)/2,originY=150;
+  if(group.matte){
+    // 相互遮擋的裙襬採用完整透明群像，保持接縫完整；群像以分條側彎同步呼吸。
+    const strips=32,wave=Math.sin(Math.PI*beatPos(t))*energy(t)*7;
+    for(let s=0;s<strips;s++){
+      const v=s/strips,sy=v*sourceH,sh=Math.min(sourceH/strips+1,sourceH-sy);
+      g.drawImage(group.matte,0,sy,sourceW,sh,originX+wave*Math.pow(1-v,1.7),originY+sy*scale,sourceW*scale,sh*scale);
+    }
+  }
+  const focus=Math.floor(Math.max(0,local-2)/2)%actors.length;
+  actors.forEach((actor,i)=>{
+    const x=originX+(actor.meta.source[0]+actor.meta.w/2)*scale;
+    const y=originY+(actor.meta.source[1]+actor.meta.h)*scale;
+    const h=actor.meta.h*scale;
+    const entry=easeOut((local-i*.045)/.65);
+    const state=danceState(i,t,{e:.23,alt:true});state.actor=actor;
+    state.hop=Math.min(state.hop,8);
+    g.save();g.globalAlpha=entry;
+    if(i===focus){g.globalCompositeOperation='lighter';glow(x,y-h*.5,h*.48,group.colors[0],.18+.12*pl);g.globalCompositeOperation='source-over';}
+    if(!group.matte) drawDancer(i,x+(1-entry)*(i%2 ? 100 : -100),y,h*entry,state);
+    g.restore();
+    g.save();g.textAlign='center';g.font=`600 16px ${FONT.mono}`;g.fillStyle='rgba(255,255,255,.65)';
+    g.globalAlpha=entry;g.fillText(pad(i+1),x,y+24);g.restore();
+  });
+  g.save();g.fillStyle='rgba(9,12,34,.5)';roundRect(42,30,620,96,18);g.fill();
+  g.fillStyle='#fff';g.font=`700 34px ${FONT.zh}`;g.fillText(group.title,66,76);
+  g.font=`500 18px ${FONT.mono}`;g.fillStyle=group.colors[1];g.fillText(`CHARACTER PV  ·  ${pad(sh.group+1)} / 04`,68,106);
+  g.textAlign='right';g.font=`600 24px ${FONT.mono}`;g.fillStyle='#fff';g.fillText(`${group.count} MEMBERS`,W-60,74);g.restore();
+  sparkles(t,20,sh.group+20,[40,110,W-80,740]);
+  lyricShade(908,.78);
+  karaoke(t,{cx:W/2,y:989,size:48,maxW:1700,zhSize:28});
+}
+const SHOTS = {film: shotFilm, typo: shotTypo, windows: shotWindows, stage: shotStage, outro: shotOutro, characters:shotCharacters};
 
 /* ---------------- 覆蓋層：片頭標題、轉場、HUD ---------------- */
 function titleCard(t){
@@ -948,12 +1005,12 @@ function render(t){
   SHOTS[sh.type](t, sh, u);
   g.restore();
   g.setTransform(1, 0, 0, 1, 0, 0); g.globalAlpha = 1; g.globalCompositeOperation = 'source-over';
-  titleCard(t);
+  if(!CHARACTER_PV) titleCard(t);
   transition(t);
   g.drawImage(C.vig, 0, 0);
   g.save(); g.globalAlpha = .045; g.translate(-Math.floor(hash(Math.floor(t*FPS))*256), -Math.floor(hash(Math.floor(t*FPS) + .5)*256));
   g.fillStyle = C.noise; g.fillRect(0, 0, W + 256, H + 256); g.restore();
-  hud(t, sh);
+  if(!CHARACTER_PV) hud(t, sh);
   const fade = Math.max(1 - clamp(t/.8), clamp((t - (A.dur - 2.5))/2.4));
   if(fade > 0){ g.fillStyle = `rgba(0,0,0,${fade})`; g.fillRect(0, 0, W, H); }
 }
@@ -968,7 +1025,10 @@ async function init(){
   if(RENDER) document.body.classList.add('render');
   const sel = $('#song');
   SONGS.forEach((s, i) => sel.add(new Option(`${s.title}（${s.ver}）`, i, false, s === song)));
-  sel.onchange = () => { location.search = `?song=${sel.value}`; };
+  sel.onchange = () => { location.search = `?song=${sel.value}${CHARACTER_PV ? '&mode=characters' : ''}`; };
+  $('#modeLink').href=CHARACTER_PV ? `index.html?song=${SONGS.indexOf(song)}` : `index.html?song=${SONGS.indexOf(song)}&mode=characters`;
+  $('#modeLink').textContent=CHARACTER_PV ? '歌詞 PV' : '人物 PV';
+  if(CHARACTER_PV) document.title='人物動畫 PV · '+song.title;
   msg('載入音訊與素材…');
   const loadImg = src => new Promise((ok, no) => { const im = new Image(); im.onload = () => ok(im); im.onerror = () => no(new Error('找不到 ' + src)); im.src = src; });
   const get = async (name, kind) => { const r = await fetch(encodeURIComponent(name)); if(!r.ok) throw new Error('找不到 ' + name); return r[kind](); };
@@ -977,8 +1037,18 @@ async function init(){
     .map(f => document.fonts.load(f, 'あ漢字ABC')));
   const castJson = await fetch('assets/ref/cast/cast.json').then(r => { if(!r.ok) throw new Error('找不到角色切圖，請先執行 node tools/cutout.mjs'); return r.json(); });
   await Promise.all(MEMBERS.map(async m => { m.meta = castJson[m.sheet][m.idx]; m.img = await loadImg('assets/ref/cast/' + m.meta.file); }));
+  if(CHARACTER_PV) await Promise.all(CHARACTER_GROUPS.map(async group=>{
+    if(castJson[group.sheet]?.length!==group.count) throw new Error(`${group.title}切圖未完成，請執行 node tools/cutout.mjs`);
+    group.members=await Promise.all(castJson[group.sheet].map(async meta=>({meta,img:await loadImg('assets/ref/cast/'+meta.file)})));
+    group.art=await loadImg(group.src);
+    if(group.sheet==='stage') group.matte=await loadImg('assets/ref/stage9-matte.png');
+    group.backdrop=mk(W,H);const ctx=group.backdrop.getContext('2d'),gradient=ctx.createLinearGradient(0,0,W,H);
+    gradient.addColorStop(0,group.colors[0]);gradient.addColorStop(1,group.colors[1]);ctx.fillStyle=gradient;ctx.fillRect(0,0,W,H);
+    ctx.fillStyle='rgba(7,12,34,.48)';ctx.fillRect(0,0,W,H);
+  }));
   msg('分析節拍…');
   A = await analyse(buf);
+  if(CHARACTER_PV){A.sourceDur=A.dur;A.dur=Math.min(CHARACTER_LENGTH,A.dur);}
   cues = parseSrt(srt);
   if(!cues.length) throw new Error('字幕是空的');
   cues.forEach((c, i) => {
@@ -991,15 +1061,17 @@ async function init(){
   sections = buildSections();
   shots = buildShots();
   prepare(cover);
+  window.PV.ready=true;
   console.log(`BPM ${A.bpm.toFixed(2)} 拍點 ${A.beat0.toFixed(3)}s 段落`, sections.map(s => `${s.label}@${s.start.toFixed(1)}`).join(' '));
   msg('');
   if(RENDER) return renderAll();
-  preview();
+  preview(buf);
 }
 async function renderAll(){
   const from = +(params.get('from') || 0), to = Math.min(A.dur, +(params.get('to') || A.dur));
+  if(!Number.isFinite(from)||!Number.isFinite(to)||from<0||from>=to) throw new Error('輸出時間範圍無效');
   const f0 = Math.round(from*FPS), f1 = Math.round(to*FPS);
-  await post('meta', JSON.stringify({title: song.title, ver: song.ver, audio: song.audio, file: song.file, frames: f1 - f0, from, to, fps: FPS, bpm: A.bpm,
+  await post('meta', JSON.stringify({title: CHARACTER_PV ? '四組造型人物動畫' : song.title, ver: song.ver, audio: song.audio, file: CHARACTER_PV ? '人物動畫（四組造型） - '+song.title : song.file, frames: f1 - f0, from, to, fps: FPS, bpm: A.bpm,
     shots: shots.map(s => `${s.type}${s.variant ? ':' + s.variant : ''}@${s.start.toFixed(2)}`).join(' ')}));
   for(let f = f0; f < f1; f++){
     render(f/FPS);
@@ -1009,20 +1081,28 @@ async function renderAll(){
   }
   await post('done', '');
 }
-function preview(){
-  const audio = new Audio(encodeURIComponent(song.audio));
+function preview(buf){
+  const audioURL=URL.createObjectURL(new Blob([buf],{type:'audio/mpeg'}));
+  const audio = new Audio(audioURL);
+  addEventListener('pagehide',()=>URL.revokeObjectURL(audioURL),{once:true});
   const play = $('#play'), seek = $('#seek'), time = $('#time');
   const fmt = s => `${Math.floor(s/60)}:${pad(Math.floor(s % 60))}`;
   play.disabled = false; play.textContent = '▶ 播放';
-  play.onclick = () => audio.paused ? audio.play() : audio.pause();
+  play.onclick = () => {
+    window.PV.hold=false;
+    if(audio.currentTime>=A.dur) audio.currentTime=0;
+    audio.paused ? audio.play().catch(e=>msg('播放失敗：'+e.message)) : audio.pause();
+  };
   audio.onplay = () => { play.textContent = '❚❚ 暫停'; };
   audio.onpause = () => { play.textContent = '▶ 播放'; };
-  seek.oninput = () => { audio.currentTime = seek.value/1000*A.dur; };
-  const start = +(params.get('t') || 0); if(start) audio.currentTime = start;
+  seek.oninput = () => { window.PV.hold=false;audio.currentTime = seek.value/1000*A.dur; };
+  const start = clamp(+(params.get('t') || 0),0,A.dur);
+  audio.addEventListener('loadedmetadata',()=>{audio.currentTime=start;},{once:true});
   addEventListener('keydown', e => { if(e.code === 'Space' && e.target === document.body){ e.preventDefault(); play.click(); } });
   let idle = 0; addEventListener('pointermove', () => { idle = performance.now(); $('#ui').classList.remove('idle'); });
   const loop = () => {
-    const t = audio.currentTime || start;
+    const t = Math.min(audio.readyState ? audio.currentTime : start,A.dur);
+    if(audio.currentTime>=A.dur && !audio.paused) audio.pause();
     if(!window.PV.hold) render(Math.min(t, A.dur - 1/FPS));
     if(document.activeElement !== seek) seek.value = Math.round(t/A.dur*1000);
     time.textContent = `${fmt(t)} / ${fmt(A.dur)}`;
@@ -1031,6 +1111,6 @@ function preview(){
   };
   loop();
 }
-window.PV = {hold: false, render: t => { window.PV.hold = true; render(t); }, get shots(){ return shots; }, get analysis(){ return A; }, get sections(){ return sections; }};
+window.PV = {ready:false,hold: false, render: t => {if(!A || !shots.length) throw new Error('PV 尚未載入'); window.PV.hold = true; render(t); }, get shots(){ return shots; }, get analysis(){ return A; }, get sections(){ return sections; },get groups(){return CHARACTER_GROUPS.map(({sheet,count,members})=>({sheet,count,loaded:members?.length||0}));}};
 init().catch(e => { console.error(e); msg('錯誤：' + e.message); if(RENDER) post('error', String(e.stack || e)); });
 })();

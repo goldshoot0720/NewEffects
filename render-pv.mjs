@@ -13,8 +13,13 @@ const ROOT = path.dirname(fileURLToPath(import.meta.url));
 const args = process.argv.slice(2);
 const opt = name => { const i = args.indexOf('--' + name); if(i < 0) return null; const v = args[i + 1]; args.splice(i, 2); return v; };
 const from = opt('from'), to = opt('to');
+const mode=opt('mode') || 'lyrics';
+if(!['lyrics','characters'].includes(mode)){console.error('--mode 為 lyrics 或 characters');process.exit(1);}
+if([from,to].some(v=>v!==null && (!Number.isFinite(+v)||+v<0)) || (from!==null && to!==null && +to<=+from)){
+  console.error('--from / --to 必須為非負秒數，結束時間必須晚於開始時間');process.exit(1);
+}
 const outDir = path.resolve(ROOT, opt('out') || 'pv');
-const songs = args.length ? args.map(Number) : [0, 1, 2];
+const songs = args.length ? [...new Set(args.map(Number))] : mode==='characters' ? [0] : [0, 1, 2];
 if(songs.some(n => !Number.isInteger(n) || n < 0 || n > 2)){ console.error('歌曲編號為 0–2'); process.exit(1); }
 const CHROME = process.env.CHROME || ['/Applications/Google Chrome.app/Contents/MacOS/Google Chrome', '/Applications/Chromium.app/Contents/MacOS/Chromium', '/usr/bin/google-chrome']
   .find(p => fs.existsSync(p));
@@ -54,6 +59,7 @@ function runJob(index){
     const id = String(index), profile = fs.mkdtempSync(path.join(os.tmpdir(), 'pv-chrome-'));
     let ff = null, meta = null, count = 0, done = false, t0 = Date.now(), lastLog = 0, outFile = '';
     const query = new URLSearchParams({song: index, render: 1, job: id});
+    if(mode==='characters') query.set('mode','characters');
     if(from) query.set('from', from);
     if(to) query.set('to', to);
     const chrome = spawn(CHROME, ['--headless=new', `--user-data-dir=${profile}`, '--no-first-run', '--no-default-browser-check', '--mute-audio',
@@ -65,10 +71,11 @@ function runJob(index){
         meta = m;
         const part = from || to ? ` (${m.from.toFixed(0)}-${m.to.toFixed(0)}s)` : '';
         outFile = path.join(outDir, `${m.file} PV${part}.mp4`);
-        const audioArgs = from || to ? ['-ss', String(m.from), '-t', String(m.to - m.from)] : [];
+        const audioArgs = ['-ss', String(m.from), '-t', String(m.to - m.from)];
+        const fades=mode==='characters' ? ['-af',`afade=t=in:st=0:d=0.4,afade=t=out:st=${Math.max(0,m.to-m.from-2.4)}:d=2.4`] : [];
         ff = spawn('ffmpeg', ['-y', '-loglevel', 'error', '-f', 'image2pipe', '-framerate', String(m.fps), '-c:v', 'mjpeg', '-i', 'pipe:0',
           ...audioArgs, '-i', path.join(ROOT, m.audio), '-map', '0:v', '-map', '1:a', '-c:v', 'libx264', '-preset', 'medium', '-crf', '18',
-          '-pix_fmt', 'yuv420p', '-c:a', 'aac', '-b:a', '192k', '-shortest', '-movflags', '+faststart', outFile], {stdio: ['pipe', 'inherit', 'inherit']});
+          '-pix_fmt', 'yuv420p', '-c:a', 'aac', '-b:a', '192k',...fades, '-shortest', '-movflags', '+faststart', outFile], {stdio: ['pipe', 'inherit', 'inherit']});
         ff.on('exit', code => {
           cleanup();
           if(code === 0 && done){ console.log(`✔ ${path.relative(ROOT, outFile)}  (${count} 格，${((Date.now() - t0)/1000).toFixed(0)} 秒)`); resolve(outFile); }

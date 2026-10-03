@@ -1,0 +1,40 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>人物切圖一覽</title>
+<style>
+:root{color-scheme:dark}*{box-sizing:border-box}body{margin:0;background:#101522;color:#edf3ff;font-family:"PingFang TC",system-ui,sans-serif}
+header{padding:24px 5vw;display:flex;flex-wrap:wrap;gap:18px;align-items:center;border-bottom:1px solid #2d3c55}
+h1{font-size:22px;margin:0}a{color:#a5d7ff;text-decoration:none}main{max-width:1500px;margin:auto;padding:24px}
+section{margin-bottom:40px}h2{font-size:18px}.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:14px}
+figure{margin:0;padding:12px;border:1px solid #35435c;border-radius:12px;background:linear-gradient(135deg,#273548,#1a2536)}
+img{width:100%;height:310px;object-fit:contain;display:block}figcaption{display:flex;justify-content:space-between;gap:8px;margin-top:12px;font-size:13px;color:#bbc9dc}
+#status{color:#b5cbdf;font-size:14px}@media(max-width:500px){main{padding:16px}.grid{grid-template-columns:repeat(2,minmax(0,1fr))}img{height:250px}figure{padding:8px}}
+</style>
+</head>
+<body>
+<header><h1>人物切圖一覽</h1><a href="index.html?mode=characters">播放人物 PV →</a><a href="index.html">歌詞 PV</a><a href="v2.html">歌詞播放器</a><span id="status" role="status">載入切圖…</span></header>
+<main id="gallery"></main>
+<script>
+const groups=[['casual','制服與便服',12],['rooftop','屋頂制服',6],['idol','RISE 演出服',5],['stage','黃昏舞台服',9]];
+(async()=>{
+  const response=await fetch('assets/ref/cast/cast.json');if(!response.ok)throw new Error('找不到人物清單');
+  const cast=await response.json();let count=0,loaded=0;
+  for(const [key,title,expected] of groups){
+    const list=cast[key];if(list?.length!==expected)throw new Error(title+'切圖未齊全');
+    const section=document.createElement('section'),heading=document.createElement('h2'),grid=document.createElement('div');
+    heading.textContent=`${title} · ${list.length} 張`;grid.className='grid';section.append(heading,grid);document.getElementById('gallery').append(section);
+    for(const [i,item] of list.entries()){
+      const figure=document.createElement('figure'),image=document.createElement('img'),caption=document.createElement('figcaption'),name=document.createElement('span'),link=document.createElement('a');
+      image.src='assets/ref/cast/'+item.file;image.alt=`${title}人物 ${i+1}`;
+      image.onload=()=>{loaded++;document.getElementById('status').textContent=`${loaded} / 32 張透明 PNG 已載入`;};
+      image.onerror=()=>{document.getElementById('status').textContent='素材讀取失敗：'+item.file;};
+      name.textContent=`${String(i+1).padStart(2,'0')} · ${item.w}×${item.h}`;link.href=image.src;link.download=item.file;link.textContent='下載';
+      caption.append(name,link);figure.append(image,caption);grid.append(figure);count++;
+    }
+  }
+  document.getElementById('status').textContent=`共 ${count} 張透明 PNG`;
+})().catch(e=>{document.getElementById('status').textContent='錯誤：'+e.message;});
+</script>
+</body></html>
