@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 // 把 PV 首頁（index.html）逐格渲染成 MP4：本機伺服器提供檔案並接收 JPEG 影格，無頭 Chrome 執行 pv.js，ffmpeg 編碼並合併音訊。
-// 用法：node render-pv.mjs [歌曲編號…] [--from 秒] [--to 秒] [--out 資料夾]
+// 用法：node render-pv.mjs [歌曲編號…] [--mode lyrics|characters] [--from 秒] [--to 秒] [--out 資料夾] [--encoder libx264|h264_videotoolbox]
 //   不指定歌曲就輸出全部（0 大好きだよって叫ぶんだ、1 SUNRISE、2 HELLO HERO），三首同時進行。
 import http from 'node:http';
 import fs from 'node:fs';
@@ -15,11 +15,14 @@ const opt = name => { const i = args.indexOf('--' + name); if(i < 0) return null
 const from = opt('from'), to = opt('to');
 const mode=opt('mode') || 'lyrics';
 if(!['lyrics','characters'].includes(mode)){console.error('--mode 為 lyrics 或 characters');process.exit(1);}
+const encoder=opt('encoder') || 'libx264';
+if(!['libx264','h264_videotoolbox'].includes(encoder)){console.error('--encoder 為 libx264 或 h264_videotoolbox');process.exit(1);}
+const videoArgs=encoder==='libx264' ? ['-c:v','libx264','-preset','medium','-crf','18'] : ['-c:v','h264_videotoolbox','-b:v','16M'];
 if([from,to].some(v=>v!==null && (!Number.isFinite(+v)||+v<0)) || (from!==null && to!==null && +to<=+from)){
   console.error('--from / --to 必須為非負秒數，結束時間必須晚於開始時間');process.exit(1);
 }
 const outDir = path.resolve(ROOT, opt('out') || 'pv');
-const songs = args.length ? [...new Set(args.map(Number))] : mode==='characters' ? [0] : [0, 1, 2];
+const songs = args.length ? [...new Set(args.map(Number))] : [0, 1, 2];
 if(songs.some(n => !Number.isInteger(n) || n < 0 || n > 2)){ console.error('歌曲編號為 0–2'); process.exit(1); }
 const CHROME = process.env.CHROME || ['/Applications/Google Chrome.app/Contents/MacOS/Google Chrome', '/Applications/Chromium.app/Contents/MacOS/Chromium', '/usr/bin/google-chrome']
   .find(p => fs.existsSync(p));
@@ -74,7 +77,7 @@ function runJob(index){
         const audioArgs = ['-ss', String(m.from), '-t', String(m.to - m.from)];
         const fades=mode==='characters' ? ['-af',`afade=t=in:st=0:d=0.4,afade=t=out:st=${Math.max(0,m.to-m.from-2.4)}:d=2.4`] : [];
         ff = spawn('ffmpeg', ['-y', '-loglevel', 'error', '-f', 'image2pipe', '-framerate', String(m.fps), '-c:v', 'mjpeg', '-i', 'pipe:0',
-          ...audioArgs, '-i', path.join(ROOT, m.audio), '-map', '0:v', '-map', '1:a', '-c:v', 'libx264', '-preset', 'medium', '-crf', '18',
+          ...audioArgs, '-i', path.join(ROOT, m.audio), '-map', '0:v', '-map', '1:a', ...videoArgs,
           '-pix_fmt', 'yuv420p', '-c:a', 'aac', '-b:a', '192k',...fades, '-shortest', '-movflags', '+faststart', outFile], {stdio: ['pipe', 'inherit', 'inherit']});
         ff.on('exit', code => {
           cleanup();

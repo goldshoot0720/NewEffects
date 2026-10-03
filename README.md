@@ -37,10 +37,11 @@ macOS 也可雙擊 `啟動播放器.command`，會在終端機啟動伺服器並
 ![四組造型人物動畫 PV 預覽](assets/ref/character-pv-preview.png)
 
 - 開啟 `http://127.0.0.1:8770/index.html?mode=characters` 或從首頁按「人物 PV」。也可使用 `serve.sh` 的 8765 埠。
-- 60 秒、1920×1080、30 fps；十二人制服與便服、屋頂六人、RISE 五人演出服、黃昏九人舞台服各展示 15 秒，以歌曲前 60 秒驅動節拍、側擺、微跳、聚光與轉場。
+- 完整歌曲、1920×1080、30 fps；十二人制服與便服、屋頂六人、RISE 五人演出服、黃昏九人舞台服每 15 秒輪替，持續到配樂結束，並隨整首歌曲驅動節拍、側擺、微跳、聚光與轉場。
 - `cast.html` 可檢查與下載全部 32 張透明 PNG，四組分別為 `casual`（12）、`rooftop`（6）、`idol`（5）、`stage`（9）。這是四組造型切圖數量，包含重複人物。
 - 屋頂與黃昏原圖背景先使用內建 imagegen 分離，透明圖層保存在 `assets/ref/*-matte.png`；切圖工具保留 alpha 並依連通區塊分配人物。去背提示記錄於 [assets/ref/CUTOUTS.md](assets/ref/CUTOUTS.md)。原圖中互相遮擋的部分未補畫；黃昏段落用完整透明群像側彎，保留相連裙襬的接縫。
-- 輸出：`node render-pv.mjs --mode characters --out pv/characters`；會輸出一支含音樂淡入淡出的 MP4。可指定一首歌曲編號切換配樂，例如 `node render-pv.mjs 1 --mode characters`。
+- 輸出：`node render-pv.mjs --mode characters --out pv/characters/full`；預設輸出三首完整歌曲 MP4，含音樂淡入淡出。可指定一首歌曲編號，例如 `node render-pv.mjs 1 --mode characters`；需要短片段時使用 `--from` / `--to`。
+- macOS 可加 `--encoder h264_videotoolbox` 使用硬體 H.264 編碼（16 Mbps）；預設仍使用 `libx264`。
 - 播放進度支援跳轉；切換配樂保留人物模式。MP4 依既有規則留在本機，程式與切圖提交 Git。
 
 鏡頭依歌詞與音訊自動編排：片頭立體貼紙字標題、膠卷逐字歌詞（左日文右中文）、成員視窗＋搜尋列歌詞、大字逐字蹦出、副歌舞台（LED 螢幕、聚光燈、彩帶）、尾聲拍立得。節拍由 MP3 偵測，舞步、轉場與 HUD（時間碼、小節、段落）都跟著節拍走。BEST 4U 封面在 `assets/best4u-cover.webp`。輸出的 MP4 在 `pv/`，不進 repo。

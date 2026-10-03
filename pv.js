@@ -5,7 +5,7 @@
 const W = 1920, H = 1080, FPS = 30;
 const params = new URLSearchParams(location.search);
 const CHARACTER_PV = params.get('mode') === 'characters';
-const CHARACTER_LENGTH = 60;
+const CHARACTER_SHOT_LENGTH = 15;
 const RENDER = params.has('render');
 const JOB = params.get('job') || '0';
 const cv = document.getElementById('pv');
@@ -230,7 +230,16 @@ function buildSections(){
 const sectionAt = t => { let r = sections[0]; for(const s of sections){ if(s.start <= t) r = s; else break; } return r; };
 
 function buildShots(){
-  if(CHARACTER_PV) return CHARACTER_GROUPS.map((group,i)=>({type:'characters',group:i,start:i*15,end:(i+1)*15,seed:i+1}));
+  if(CHARACTER_PV){
+    const out=[];
+    for(let start=0,i=0;start<A.dur;start+=CHARACTER_SHOT_LENGTH,i++){
+      const end=Math.min(start+CHARACTER_SHOT_LENGTH,A.dur);
+      // Keep a short song tail in the preceding shot instead of flashing a new group.
+      if(end-start<2 && out.length){out[out.length-1].end=end;break;}
+      out.push({type:'characters',group:i%CHARACTER_GROUPS.length,start,end,seed:i+1});
+    }
+    return out;
+  }
   const out = [], snap = t => A.beat0 + Math.round((t - A.beat0)/A.spb)*A.spb;
   const add = (type, start, end, o = {}) => { if(end - start > .05) out.push({type, start, end, seed: out.length + 1, ...o}); };
   const n = {film: 0, typo: 0, stage: 0, windows: 0, verse: 0};
@@ -871,7 +880,7 @@ function shotOutro(t, sh, u){
   g.restore();
   karaoke(t, {cx: W/2, y: 120, size: 52, maxW: 1500, zhSize: 30});
 }
-// 四張參考圖的角色展示：每組保留全身，按節拍逐位入場與切換聚光。
+// 四張參考圖的角色展示：每組保留全身，輪替至整首歌曲結束。
 function shotCharacters(t,sh,u){
   const group=CHARACTER_GROUPS[sh.group], local=t-sh.start, actors=group.members;
   g.drawImage(group.backdrop,0,0);
@@ -1048,7 +1057,6 @@ async function init(){
   }));
   msg('分析節拍…');
   A = await analyse(buf);
-  if(CHARACTER_PV){A.sourceDur=A.dur;A.dur=Math.min(CHARACTER_LENGTH,A.dur);}
   cues = parseSrt(srt);
   if(!cues.length) throw new Error('字幕是空的');
   cues.forEach((c, i) => {
@@ -1071,7 +1079,7 @@ async function renderAll(){
   const from = +(params.get('from') || 0), to = Math.min(A.dur, +(params.get('to') || A.dur));
   if(!Number.isFinite(from)||!Number.isFinite(to)||from<0||from>=to) throw new Error('輸出時間範圍無效');
   const f0 = Math.round(from*FPS), f1 = Math.round(to*FPS);
-  await post('meta', JSON.stringify({title: CHARACTER_PV ? '四組造型人物動畫' : song.title, ver: song.ver, audio: song.audio, file: CHARACTER_PV ? '人物動畫（四組造型） - '+song.title : song.file, frames: f1 - f0, from, to, fps: FPS, bpm: A.bpm,
+  await post('meta', JSON.stringify({title: CHARACTER_PV ? song.title+' · 全曲人物動畫' : song.title, ver: song.ver, audio: song.audio, file: CHARACTER_PV ? '全曲人物動畫（四組造型） - '+song.title : song.file, frames: f1 - f0, from, to, fps: FPS, bpm: A.bpm,
     shots: shots.map(s => `${s.type}${s.variant ? ':' + s.variant : ''}@${s.start.toFixed(2)}`).join(' ')}));
   for(let f = f0; f < f1; f++){
     render(f/FPS);
