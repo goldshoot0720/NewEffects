@@ -10,13 +10,25 @@ const cv = document.getElementById('pv');
 const g = cv.getContext('2d');
 const $ = s => document.querySelector(s);
 
+// 主視覺：參考圖與臉部座標（Ken Burns 鏡頭的目標）；cast 第一位是主唱，sprite 由 tools/cutout.mjs 從參考圖去背
+const ARTS = {
+  best4u: {src: 'assets/best4u-cover.webp', crop: [0, 38, 673, 537],
+    faces: [[118, 110], [195, 160], [272, 124], [372, 127], [455, 157], [533, 102], [238, 234], [305, 242], [385, 224]]},
+  rooftop: {src: 'assets/ref/rooftop6.webp', crop: [0, 0, 1536, 1024],
+    faces: [[195, 195], [400, 190], [680, 140], [925, 250], [1165, 225], [1385, 250]]},
+  stage: {src: 'assets/ref/stage9.webp', crop: [0, 0, 1774, 887],
+    faces: [[195, 165], [345, 200], [510, 195], [690, 195], [860, 215], [1060, 205], [1235, 215], [1400, 205], [1580, 190]]}
+};
 const SONGS = [
   {title: '大好きだよって叫ぶんだ', ver: '小日向理瀬 ver.', file: '大好きだよって叫ぶんだ [小日向理瀬ver.]',
-   subs: 'Subtitle_この想いは止められないよ いつだって眩...も_1790793102916.srt', lead: 0, theme: 'summer'},
+   subs: 'Subtitle_この想いは止められないよ いつだって眩...も_1790793102916.srt', theme: 'summer', art: 'best4u',
+   cast: [['idol', 0, '理瀬', '#f6a531'], ['idol', 1, '純華', '#2ba6e1'], ['idol', 2, '陽和', '#ee5b97'], ['idol', 3, '咲希', '#3cc39a'], ['idol', 4, '雪乃', '#8d6ad6']]},
   {title: 'SUNRISE', ver: '小日向理瀬 ver.', file: 'SUNRISE [小日向理瀬ver.]',
-   subs: 'Subtitle_《SUN RISE…》手をとっては競い...…_1790794218236.srt', lead: 0, theme: 'sunrise'},
+   subs: 'Subtitle_《SUN RISE…》手をとっては競い...…_1790794218236.srt', theme: 'sunrise', art: 'rooftop',
+   cast: [['casual', 4, '理瀬', '#f6a531'], ['casual', 1, '陽和', '#ee5b97'], ['casual', 0, '純華', '#2ba6e1'], ['casual', 2, '咲希', '#3cc39a'], ['casual', 3, '雪乃', '#8d6ad6'], ['casual', 11, '智', '#f0c23a']]},
   {title: 'HELLO HERO', ver: '御社 智 ver.', file: 'HELLO HERO [御社 智ver.]',
-   subs: 'Subtitle_これまでもこれからも　変わらずいるよヨ...る_1790795207681.srt', lead: 5, theme: 'twilight'}
+   subs: 'Subtitle_これまでもこれからも　変わらずいるよヨ...る_1790795207681.srt', theme: 'twilight', art: 'stage',
+   cast: [['casual', 11, '智', '#f0c23a'], ['casual', 7, '', '#e0524f'], ['casual', 8, '', '#ee5b97'], ['casual', 9, '', '#f4a6b8'], ['casual', 10, '', '#2ba6e1']]}
 ];
 // 每首歌一組配色：夏日向日葵、日出、黃昏星空
 const THEMES = {
@@ -26,10 +38,6 @@ const THEMES = {
 };
 const LOGO = [['B', '#2ba6e1'], ['E', '#f6a531'], ['S', '#ee5b97'], ['T', '#2ba6e1'], [' ', ''], ['4', '#f6a531'], ['U', '#8d6ad6']];
 const POP = ['#ee5b97', '#2ba6e1', '#f6a531', '#8d6ad6', '#3cc39a', '#f08a4b'];
-const MEMBERS = [
-  {name: '理瀬', color: '#f6a531'}, {name: '陽和', color: '#ee5b97'}, {name: '純華', color: '#2ba6e1'},
-  {name: '咲希', color: '#f08a4b'}, {name: '雪乃', color: '#8d6ad6'}, {name: '智', color: '#36b6a0'}
-];
 const FONT = {
   jp: '"Hiragino Sans","Hiragino Kaku Gothic ProN",sans-serif',
   mincho: '"Hiragino Mincho ProN",serif',
@@ -39,10 +47,6 @@ const FONT = {
   cond: '"Avenir Next Condensed","Avenir Next",sans-serif',
   logo: '"Avenir Next",sans-serif'
 };
-// 封面裁掉上方標題字與下方 LOGO；臉部座標以裁切後的畫面為準
-const CROP = [0, 38, 673, 537], AW = CROP[2], AH = CROP[3];
-const FACES = [[118, 148], [195, 198], [272, 162], [372, 165], [455, 195], [533, 140], [238, 272], [305, 280], [385, 262]]
-  .map(([x, y]) => [x, y - CROP[1]]);
 
 const clamp = (v, a = 0, b = 1) => v < a ? a : v > b ? b : v;
 const lerp = (a, b, u) => a + (b - a)*u;
@@ -57,6 +61,10 @@ const mk = (w, h) => { const c = document.createElement('canvas'); c.width = w; 
 const song = SONGS[clamp(+(params.get('song') || 0) | 0, 0, SONGS.length - 1)];
 song.audio = song.file + '.mp3';
 const T = THEMES[song.theme];
+const ART = ARTS[song.art], AW = ART.crop[2], AH = ART.crop[3], FACES = ART.faces;
+// 成員：0 是主唱；名字未知的成員以編號標示
+const MEMBERS = song.cast.map(([sheet, idx, name, color], i) => ({sheet, idx, name: name || `No.${pad(i + 1)}`, color, img: null, meta: null}));
+const OTHERS = MEMBERS.map((_, i) => i).slice(1);
 let A = null, cues = [], sections = [], shots = [], TJ = [], TZ = [], C = {};
 
 /* ---------------- 音訊分析：節拍、低中頻能量 ---------------- */
@@ -215,7 +223,6 @@ const sectionAt = t => { let r = sections[0]; for(const s of sections){ if(s.sta
 function buildShots(){
   const out = [], snap = t => A.beat0 + Math.round((t - A.beat0)/A.spb)*A.spb;
   const add = (type, start, end, o = {}) => { if(end - start > .05) out.push({type, start, end, seed: out.length + 1, ...o}); };
-  const others = [0, 1, 2, 3, 4, 5].filter(i => i !== song.lead);
   const n = {film: 0, typo: 0, stage: 0, windows: 0, verse: 0};
   const first = cues[0], last = cues[cues.length - 1];
   const outroStart = Math.min(last.end, A.dur - 7);
@@ -233,9 +240,9 @@ function buildShots(){
       const k = n[type]++;
       const o = {cue: c};
       if(type === 'stage') o.variant = ['wide', 'close', 'screen', 'close2'][k % 4];
-      if(type === 'typo'){ o.member = k % 2 ? others[(k >> 1) % 5] : song.lead; o.side = k % 2; }
-      if(type === 'film'){ const a = Math.floor(hash(k*3 + 1)*9); o.faceA = FACES[a]; o.faceB = FACES[(a + 1 + Math.floor(hash(k*5 + 2)*7)) % 9]; o.zoomIn = k % 2 === 0; }
-      if(type === 'windows'){ o.members = [song.lead, others[(k*2) % 5], others[(k*2 + 1) % 5]]; o.layout = k % 2; }
+      if(type === 'typo'){ o.member = k % 2 ? OTHERS[(k >> 1) % OTHERS.length] : 0; o.side = k % 2; }
+      if(type === 'film'){ const nf = FACES.length, a = Math.floor(hash(k*3 + 1)*nf); o.faceA = FACES[a]; o.faceB = FACES[(a + 1 + Math.floor(hash(k*5 + 2)*(nf - 2))) % nf]; o.zoomIn = k % 2 === 0; }
+      if(type === 'windows'){ o.members = [0, OTHERS[(k*2) % OTHERS.length], OTHERS[(k*2 + 1) % OTHERS.length]]; o.layout = k % 2; }
       add(type, s, e, o);
     }
     if(next && next.start - c.end > 1 && c.end < outroStart) add('stage', c.end, Math.min(next.start, outroStart), {variant: 'break'});
@@ -251,7 +258,7 @@ function shotAt(t){
 
 /* ---------------- 預先繪製的素材 ---------------- */
 function prepare(cover){
-  const art = mk(AW, AH); art.getContext('2d').drawImage(cover, CROP[0], CROP[1], AW, AH, 0, 0, AW, AH);
+  const art = mk(AW, AH); art.getContext('2d').drawImage(cover, ART.crop[0], ART.crop[1], AW, AH, 0, 0, AW, AH);
   const blurred = (scale, px) => { const c = mk(Math.round(AW*scale), Math.round(AH*scale)), x = c.getContext('2d'); x.filter = `blur(${px}px)`; x.drawImage(art, -AW*scale*.05, -AH*scale*.05, AW*scale*1.1, AH*scale*1.1); return c; };
   C.art = art; C.bloom = blurred(.5, 5); C.blur = blurred(.6, 16);
   const sky = mk(W, H), sx = sky.getContext('2d'), gr = sx.createLinearGradient(0, 0, 0, H);
@@ -396,14 +403,24 @@ function danceState(i, t, o = {}){
   else { wave = (Math.floor(p) % 2 ? 1 : -1)*(.55 + .45*Math.cos(Math.PI*fr)); hop = Math.pow(1 - fr, 2)*18; }
   return {wave, energy: en, hop: hop*en, squash: Math.max(0, 1 - fr*6)*.035*en, tilt: .05*Math.sin(Math.PI*p/2), mouth: o.mouth || 0, lead: !!o.lead};
 }
-function mouthAt(t){ const c = activeCue(t); return c && t >= c.start && t < c.end ? clamp((sample(A.mid, t) - .22)*1.6) : 0; }
+// 去背角色的舞動：腳踩地、上半身分條側彎，加上跳躍、壓縮與傾斜（2D 切圖動畫）
 function drawDancer(i, x, y, h, st){
-  if(!window.SpriteDancers?.ready) return;
-  const base = h > 700 ? 900 : h > 380 ? 480 : 300, k = h/base;
-  g.save(); g.translate(x, y); g.scale(k, k);
-  SpriteDancers.draw(g, i, 0, 0, base, st);
+  const m = MEMBERS[i]; if(!m?.img) return;
+  const img = m.img, iw = img.width, ih = img.height, k = h/ih, w = iw*k;
+  const hop = st.hop*h/420, sq = st.squash*4;
+  g.save(); g.translate(x, y);
+  g.fillStyle = 'rgba(0,0,0,.28)'; g.beginPath(); g.ellipse(0, 0, w*.32*(1 - Math.min(.35, hop/h*3)), h*.02, 0, 0, Math.PI*2); g.fill();
+  g.translate(0, -hop); g.rotate(st.tilt*.6); g.scale(1 + sq*.5, 1 - sq);
+  const strips = 28, sway = st.wave*st.energy*h*.035, breathe = 1 + .012*Math.sin(beatPos(T0)*Math.PI);
+  for(let s = 0; s < strips; s++){
+    const v0 = s/strips, v1 = (s + 1)/strips, v = (v0 + v1)/2;
+    const bend = sway*Math.pow(1 - v, 1.7), sy = v0*ih, sh = (v1 - v0)*ih + 1;
+    const sx = v < .62 ? breathe : 1;
+    g.drawImage(img, 0, sy, iw, Math.min(sh, ih - sy), -w*sx/2 + bend, -h + v0*h, w*sx, (v1 - v0)*h + 1);
+  }
   g.restore();
 }
+let T0 = 0;
 
 /* 文字排版：依寬度斷行，必要時縮小字級 */
 const layoutCache = new Map();
@@ -640,7 +657,7 @@ function shotTypo(t, sh, u){
   const mx = left ? 470 : W - 470, m = sh.member;
   g.save(); g.globalCompositeOperation = 'lighter'; glow(mx, 520, 560, MEMBERS[m].color, .45); g.restore();
   const enter = easeOut((t - sh.start)/.5);
-  drawDancer(m, mx + (left ? -1 : 1)*(1 - enter)*200, 120 + 1500, 1500, danceState(m, t, {e: .7, mouth: m === song.lead ? mouthAt(t) : 0, lead: m === song.lead}));
+  drawDancer(m, mx + (left ? -1 : 1)*(1 - enter)*200, 110 + 1350, 1350, danceState(m, t, {e: .6}));
   // 成員名牌
   g.save(); g.globalAlpha = enter; g.font = `700 30px ${FONT.jp}`;
   const tag = `${MEMBERS[m].name}`, tx = left ? 70 : W - 70 - g.measureText(tag).width - 40;
@@ -707,7 +724,7 @@ function shotWindows(t, sh, u){
     g.fillStyle = cg; g.fillRect(x, y + bar, w, h - bar);
     g.save(); g.beginPath(); g.rect(x, y + bar, w, h - bar); g.clip();
     g.globalCompositeOperation = 'lighter'; glow(0, y + bar + 150, 260, '#ffffff', .5); g.globalCompositeOperation = 'source-over';
-    drawDancer(m, 0, y + bar + 40 + 980, 980, danceState(m, t, {e: .8, alt: true, mouth: m === song.lead ? mouthAt(t) : 0, lead: m === song.lead}));
+    drawDancer(m, 0, y + bar + 30 + 1000, 1000, danceState(m, t, {e: .8, alt: true}));
     g.restore();
     g.fillStyle = T.deep; g.fillRect(x, y + bar - 3, w, 3);
     g.restore();
@@ -764,8 +781,8 @@ function shotStage(t, sh, u){
   const sx = 410, sy = 60, sw = 1100, shh = 540;
   g.save(); g.shadowColor = T.accent2; g.shadowBlur = 40; roundRect(sx - 14, sy - 14, sw + 28, shh + 28, 16); g.fillStyle = '#0a0a16'; g.fill(); g.restore();
   g.save(); g.beginPath(); g.rect(sx, sy, sw, shh); g.clip();
-  const fi = Math.floor(hash(sh.seed*1.7)*9);
-  artView(sx, sy, sw, shh, [AW/2, 120], FACES[fi], 1, 1.25, u, t, .35);
+  const fi = Math.floor(hash(sh.seed*1.7)*FACES.length);
+  artView(sx, sy, sw, shh, [AW/2, FACES[0][1]], FACES[fi % FACES.length], 1, 1.25, u, t, .35);
   const sheen = g.createLinearGradient(sx, sy, sx + sw, sy + shh);
   sheen.addColorStop(0, 'rgba(255,255,255,.16)'); sheen.addColorStop(.45, 'rgba(255,255,255,0)'); sheen.addColorStop(1, 'rgba(255,255,255,.06)');
   g.fillStyle = sheen; g.fillRect(sx, sy, sw, shh);
@@ -800,12 +817,13 @@ function shotStage(t, sh, u){
     g.globalAlpha = 1;
   }
   // 舞者：後排三人、前排兩人加中央主唱
-  const others = [0, 1, 2, 3, 4, 5].filter(i => i !== song.lead);
-  const spots = [[.31, 790, 380, others[0]], [.5, 775, 370, others[1]], [.69, 790, 380, others[2]], [.17, 925, 450, others[3]], [.83, 925, 450, others[4]], [.5, 975, 520, song.lead]];
+  const O = OTHERS, spots = O.length >= 5
+    ? [[.31, 790, 400, O[0]], [.5, 775, 390, O[1]], [.69, 790, 400, O[2]], [.17, 935, 480, O[3]], [.83, 935, 480, O[4]], [.5, 985, 560, 0]]
+    : [[.34, 790, 400, O[0]], [.66, 790, 400, O[1]], [.15, 935, 480, O[2]], [.85, 935, 480, O[3]], [.5, 985, 560, 0]];
   const intro = sh.variant === 'intro' ? clamp((t - .5)/1.5) : 1;
   spots.forEach(([fx, y, h, m], k) => {
-    if(close && k === 1) return;  // 特寫時後排中央被主唱擋住，不畫以免頭部從主唱後方冒出
-    const delay = k*.08, st = danceState(m, t, {alt: true, mouth: m === song.lead ? mouthAt(t) : 0, lead: m === song.lead, e: m === song.lead ? 1 : .9});
+    if(close && O.length >= 5 && k === 1) return;  // 特寫時後排中央被主唱擋住，不畫以免頭部從主唱後方冒出
+    const delay = k*.08, st = danceState(m, t, {alt: true, e: m === 0 ? 1 : .9});
     g.save(); g.globalAlpha = easeOut((intro - delay)/.5 + (intro >= 1 ? 1 : 0));
     g.globalCompositeOperation = 'lighter'; glow(fx*W, y - h*.5, h*.7, MEMBERS[m].color, .18 + .2*pl); g.globalCompositeOperation = 'source-over';
     drawDancer(m, fx*W, y, h, st);
@@ -923,6 +941,7 @@ function hud(t, sh){
 function render(t){
   g.setTransform(1, 0, 0, 1, 0, 0); g.globalAlpha = 1; g.globalCompositeOperation = 'source-over'; g.filter = 'none';
   g.textAlign = 'left'; g.textBaseline = 'alphabetic'; g.letterSpacing = '0px'; g.shadowBlur = 0;
+  T0 = t;
   const sh = shotAt(t), u = clamp((t - sh.start)/(sh.end - sh.start));
   const z = 1 + (sh.type === 'stage' ? .016 : .006)*pulse(t)*energy(t);
   g.save(); g.translate(W/2, H/2); g.scale(z, z); g.translate(-W/2, -H/2);
@@ -953,11 +972,11 @@ async function init(){
   msg('載入音訊與素材…');
   const loadImg = src => new Promise((ok, no) => { const im = new Image(); im.onload = () => ok(im); im.onerror = () => no(new Error('找不到 ' + src)); im.src = src; });
   const get = async (name, kind) => { const r = await fetch(encodeURIComponent(name)); if(!r.ok) throw new Error('找不到 ' + name); return r[kind](); };
-  const [cover, srt, buf] = await Promise.all([loadImg('assets/best4u-cover.webp'), get(song.subs, 'text'), get(song.audio, 'arrayBuffer')]);
+  const [cover, srt, buf] = await Promise.all([loadImg(ART.src), get(song.subs, 'text'), get(song.audio, 'arrayBuffer')]);
   await Promise.all([jpFont(40), zhFont(40), `300 40px ${FONT.mincho}`, `40px ${FONT.maru}`, `italic 800 40px ${FONT.logo}`, `600 40px ${FONT.cond}`]
     .map(f => document.fonts.load(f, 'あ漢字ABC')));
-  for(let i = 0; i < 200 && !window.SpriteDancers?.ready && !window.SpriteDancers?.error; i++) await new Promise(r => setTimeout(r, 50));
-  if(!window.SpriteDancers?.ready) throw new Error('人物素材無法載入：' + (window.SpriteDancers?.error || '逾時'));
+  const castJson = await fetch('assets/ref/cast/cast.json').then(r => { if(!r.ok) throw new Error('找不到角色切圖，請先執行 node tools/cutout.mjs'); return r.json(); });
+  await Promise.all(MEMBERS.map(async m => { m.meta = castJson[m.sheet][m.idx]; m.img = await loadImg('assets/ref/cast/' + m.meta.file); }));
   msg('分析節拍…');
   A = await analyse(buf);
   cues = parseSrt(srt);

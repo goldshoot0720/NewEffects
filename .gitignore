@@ -6,8 +6,6 @@
 .DS_Store
 .claude/
 
-# PV 輸出與官方參考圖（有版權，只放本機）
+# PV 輸出影片（檔案大，只放本機）
 pv/
 *.mp4
-assets/best4u-cover.webp
-assets/ref/

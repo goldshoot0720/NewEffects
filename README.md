@@ -30,7 +30,9 @@ macOS 也可雙擊 `啟動播放器.command`，會在終端機啟動伺服器並
 - 預覽：開啟 `http://127.0.0.1:8765/pv.html?song=0`（0 大好きだよって叫ぶんだ、1 SUNRISE、2 HELLO HERO）
 - 輸出：`node render-pv.mjs`（全部三首同時輸出到 `pv/`），或 `node render-pv.mjs 1 --from 60 --to 72` 只輸出片段。需要 Google Chrome 與 ffmpeg
 
-鏡頭依歌詞與音訊自動編排：片頭立體貼紙字標題、膠卷逐字歌詞（左日文右中文）、成員視窗＋搜尋列歌詞、大字逐字蹦出、副歌舞台（LED 螢幕、聚光燈、彩帶）、尾聲拍立得。節拍由 MP3 偵測，舞步、轉場與 HUD（時間碼、小節、段落）都跟著節拍走。封面圖放在 `assets/best4u-cover.webp`（有版權，不進 repo）。
+人物用官方參考圖去背切出來：把參考圖放進 `assets/ref/`（`rise5.webp` 五人演出服白底、`lineup12.webp` 十二人色條底、`rooftop6.webp`、`stage9.webp`），執行 `node tools/cutout.mjs` 產生 `assets/ref/cast/` 的角色 PNG 與 `cast.json`。每首歌的主視覺與成員在 `pv.js` 的 `ARTS`、`SONGS[].cast` 設定（第一位是主唱）：大好きだよって叫ぶんだ 用 RISE 演出服，SUNRISE 用制服，HELLO HERO 用智的隊伍。角色以切圖分條彎曲、跳躍、壓縮做出跟拍舞動。
+
+鏡頭依歌詞與音訊自動編排：片頭立體貼紙字標題、膠卷逐字歌詞（左日文右中文）、成員視窗＋搜尋列歌詞、大字逐字蹦出、副歌舞台（LED 螢幕、聚光燈、彩帶）、尾聲拍立得。節拍由 MP3 偵測，舞步、轉場與 HUD（時間碼、小節、段落）都跟著節拍走。BEST 4U 封面在 `assets/best4u-cover.webp`。輸出的 MP4 在 `pv/`，不進 repo。
 
 ## 歌曲檔案
 
@@ -54,4 +56,4 @@ MP3 與字幕檔（SRT／LRC）有版權，不放在這個 repo（見 `.gitignor
 
 ## 人物素材
 
-`assets/rise-dancers.png` 使用內建 imagegen 依提供的參考圖重新繪製並去背，保留透明圖層。生成提示記錄於 [assets/README.md](assets/README.md)。`dance-sprites.js` 以 WebGL 網格變形驅動人物；若素材或 WebGL 無法使用，自動改用 Canvas Q 版舞者。
+播放器的「參考人物」和 PV 共用 `assets/ref/cast/` 的去背切圖（由 `node tools/cutout.mjs` 從 `assets/ref/` 的參考圖產生）。`dance-sprites.js` 依主唱選單順序載入小日向理瀬、葉山陽和、前原純華、小鷹咲希、橘雪乃、御社智六人，以分條側彎、跳躍與壓縮做出舞動；素材無法載入時自動改用 Canvas Q 版舞者。

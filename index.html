@@ -20,6 +20,8 @@ header{display:flex;align-items:baseline;gap:14px;padding:14px 20px;border-botto
 header h1{font-size:16px;margin:0;font-weight:700;white-space:nowrap}
 header h1 span{color:var(--pink)}
 header .song{color:var(--muted);font-size:13px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+header .pv-link{margin-left:auto;align-self:center;flex:none;font-size:13px;font-weight:700;color:#fff;text-decoration:none;padding:5px 12px;border-radius:999px;background:var(--pink)}
+header .pv-link:hover{filter:brightness(1.1)}
 .layout{display:grid;grid-template-columns:minmax(0,1fr) 400px;gap:16px;padding:16px;max-width:1680px;margin:0 auto}
 .layout>section{min-width:0}
 @media (min-width:1001px){
@@ -218,6 +220,7 @@ kbd{background:var(--panel2);border:1px solid var(--line);border-bottom-width:2p
 <header>
   <h1>動態歌詞<span>♡</span>播放器</h1>
   <div class="song" id="songLbl">大好きだよって叫ぶんだ [小日向理瀬ver.]</div>
+  <a class="pv-link" href="pv.html">🎬 觀看 PV</a>
 </header>
 
 <main class="layout">

@@ -13,8 +13,10 @@ fs.mkdirSync(OUT, {recursive: true});
 // 每張圖：背景類型、裁掉腳下倒影的高度、角色數，以及（必要時）角色之間的分割線 x 座標
 const SHEETS = [
   {file: 'rise5.webp', name: 'idol', bg: 'white', count: 5, splits: [296, 614, 878, 1146]},
-  {file: 'lineup12.webp', name: 'casual', bg: 'stripes', cutY: 822, count: 12,
-   splits: [166, 315, 450, 617, 740, 892, 1046, 1182, 1355, 1459, 1626]}
+  {file: 'lineup12.webp', name: 'casual', bg: 'stripes', cutY: 815, count: 12,
+   splits: [166, 315, 450, 617, 740, 892, 1046, 1182, 1355, 1459, 1626],
+   // 橘色帽T、粉色開襟衫跟背後色條同色，這兩欄不挖封閉洞
+   keepHoles: [[617, 740], [1355, 1459]]}
 ];
 
 function load(file){
@@ -36,7 +38,7 @@ function cut(sheet){
     palette = [];
     for(let x = 0; x < w; x++) palette.push([rgb[x*3 + 3*w*4], rgb[x*3 + 1 + 3*w*4], rgb[x*3 + 2 + 3*w*4]]);
   }
-  const T = sheet.bg === 'white' ? 34 : 46;
+  const T = sheet.bg === 'white' ? 34 : 24;
   const bgDist = i => {
     const r = rgb[i*3], g = rgb[i*3 + 1], b = rgb[i*3 + 2];
     if(sheet.bg === 'white'){
@@ -47,6 +49,11 @@ function cut(sheet){
     // 色條底：只跟這一欄自己的色條比，避免衣服顏色剛好像別的色條而被吃掉
     const x = i % w; let best = 1e9;
     for(let k = Math.max(0, x - 2); k <= Math.min(w - 1, x + 2); k++) best = Math.min(best, d2(r, g, b, palette[k]));
+    // 腳邊地板的陰影：與色條同色相、只是比較暗
+    if(i >= w*Math.floor(h*.93)){
+      const c = palette[x], k = (r*c[0] + g*c[1] + b*c[2])/(c[0]**2 + c[1]**2 + c[2]**2);
+      if(k > .45 && k < 1.08) best = Math.min(best, d2(r, g, b, c.map(v => v*k))*2.2);
+    }
     return Math.sqrt(best);
   };
   // 從四邊做背景填充；色條圖在分割線上也當作牆，避免越過鄰居
@@ -65,6 +72,7 @@ function cut(sheet){
   const seen = new Uint8Array(w*h);
   for(let s = 0; s < w*h && sheet.bg !== 'white'; s++){
     if(bg[s] || seen[s] || !close(s)) continue;
+    if((sheet.keepHoles || []).some(([a, b]) => s % w >= a && s % w < b)) continue;
     qh = 0; qt = 0; q[qt++] = s; seen[s] = 1;
     while(qh < qt){
       const i = q[qh++], x = i % w, y = (i - x)/w;
@@ -73,34 +81,36 @@ function cut(sheet){
     }
     if(qt > 150) for(let k = 0; k < qt; k++) bg[q[k]] = 1;
   }
-  // 前景連通區塊
-  const label = new Int32Array(w*h).fill(-1), comps = [];
-  const wall = new Uint8Array(w); for(const s of sheet.splits || []) wall[s] = 1;
-  for(let s = 0; s < w*h; s++){
-    if(bg[s] || label[s] >= 0) continue;
-    const id = comps.length, c = {id, n: 0, x0: w, x1: 0, y0: h, y1: 0, sx: 0};
-    label[s] = id; qh = 0; qt = 0; q[qt++] = s;
-    while(qh < qt){
-      const i = q[qh++], x = i % w, y = (i - x)/w;
-      if(wall[x] || wall[x + 1] || x === 0 || x === w - 1) c.edge = true;
-      c.n++; c.sx += x; if(x < c.x0) c.x0 = x; if(x > c.x1) c.x1 = x; if(y < c.y0) c.y0 = y; if(y > c.y1) c.y1 = y;
-      const nb = [];
-      if(x > 0 && !wall[x]) nb.push(i - 1); if(x < w - 1 && !wall[x + 1]) nb.push(i + 1);
-      if(y > 0) nb.push(i - w); if(y < h - 1) nb.push(i + w);
-      for(const j of nb) if(!bg[j] && label[j] < 0){ label[j] = id; q[qt++] = j; }
+  // 分配給角色：從每位角色身體中段（兩條分割線中間）同時往外擴，前景像素歸給沿著身體最先走到的那位
+  const cuts = [0, ...(sheet.splits || []), w];
+  const label = new Int32Array(w*h).fill(-1);
+  qh = 0; qt = 0;
+  for(let k = 0; k < sheet.count; k++){
+    const cx = Math.round((cuts[k] + cuts[k + 1])/2);
+    for(let y = Math.round(h*.2); y < h*.985; y++) for(let x = cx - 10; x <= cx + 10; x++){
+      const i = y*w + x; if(!bg[i] && label[i] < 0){ label[i] = k; q[qt++] = i; }
     }
-    comps.push(c);
   }
-  const chars = comps.filter(c => c.n > 4000).sort((a, b) => b.n - a.n).slice(0, sheet.count).sort((a, b) => a.sx/a.n - b.sx/b.n);
-  if(chars.length < sheet.count) throw new Error(`${sheet.file}: 只找到 ${chars.length} 位角色`);
-  // 小碎片（髮絲、手指間隙）歸給包住它的角色
-  const owner = new Int32Array(comps.length).fill(-1);
-  chars.forEach((c, k) => owner[c.id] = k);
-  for(const c of comps){
-    if(owner[c.id] >= 0 || c.n > 4000 || c.edge) continue;  // 貼著分割線的是鄰居的碎片
-    const cx = c.sx/c.n, k = chars.findIndex(m => cx > m.x0 && cx < m.x1 && c.y0 >= m.y0 && c.y1 <= m.y1);
-    if(k >= 0) owner[c.id] = k;
+  // 第一輪只在自己那一欄內擴張，第二輪才允許越線（伸出去的手、頭髮）
+  const cellOf = new Int32Array(w); for(let k = 0; k < sheet.count; k++) for(let x = cuts[k]; x < cuts[k + 1]; x++) cellOf[x] = k;
+  for(const cross of [false, true]){
+    if(cross){ qt = 0; for(let i = 0; i < w*h; i++) if(label[i] >= 0) q[qt++] = i; }
+    qh = 0;
+    while(qh < qt){
+      const i = q[qh++], x = i % w, y = (i - x)/w, k = label[i];
+      for(const j of [x > 0 ? i - 1 : -1, x < w - 1 ? i + 1 : -1, y > 0 ? i - w : -1, y < h - 1 ? i + w : -1])
+        if(j >= 0 && !bg[j] && label[j] < 0 && (cross || cellOf[j % w] === k)){ label[j] = k; q[qt++] = j; }
+    }
   }
+  const chars = [];
+  for(let k = 0; k < sheet.count; k++) chars.push({n: 0, x0: w, x1: 0, y0: h, y1: 0});
+  for(let i = 0; i < w*h; i++){
+    const k = label[i]; if(k < 0) continue;
+    const c = chars[k], x = i % w, y = (i - x)/w;
+    c.n++; if(x < c.x0) c.x0 = x; if(x > c.x1) c.x1 = x; if(y < c.y0) c.y0 = y; if(y > c.y1) c.y1 = y;
+  }
+  if(chars.some(c => c.n < 4000)) throw new Error(`${sheet.file}: 有角色沒切到`);
+  const owner = Array.from({length: sheet.count}, (_, k) => k);
   return chars.map((c, k) => {
     const pad = 6, x0 = Math.max(0, c.x0 - pad), x1 = Math.min(w - 1, c.x1 + pad), y0 = Math.max(0, c.y0 - pad), y1 = Math.min(h - 1, c.y1);
     const cw = x1 - x0 + 1, ch = y1 - y0 + 1, out = Buffer.alloc(cw*ch*4);
@@ -114,9 +124,26 @@ function cut(sheet){
         const edge = (x > 0 && bg[i - 1]) || (x < w - 1 && bg[i + 1]) || (y > 0 && bg[i - w]) || (y < h - 1 && bg[i + w]);
         if(edge) a = Math.max(0, Math.min(255, Math.round((bgDist(i) - T*.5)/(T*1.6)*255)));
       }
+      // 邊緣兩像素內去掉背景色溢色：c = (p - (1 - α)·bg) / α
+      const near = a > 0 && [-2, -1, 1, 2].some(d => (x + d >= 0 && x + d < w && bg[i + d]) || (y + d >= 0 && y + d < h && bg[i + d*w]));
+      if(near){
+        const bgc = palette[sheet.bg === 'white' ? 0 : x], al = Math.max(.35, Math.min(1, a/255*.85));
+        for(let ch3 = 0; ch3 < 3; ch3++) rgb[i*3 + ch3] = Math.max(0, Math.min(255, Math.round((rgb[i*3 + ch3] - (1 - al)*bgc[ch3])/al)));
+      }
       if(a && y - c.y0 < (c.y1 - c.y0)*.12){ topSum += x - x0; topN++; }
       out[o] = rgb[i*3]; out[o + 1] = rgb[i*3 + 1]; out[o + 2] = rgb[i*3 + 2]; out[o + 3] = a;
     }
+    // 鄰居越過分割線的殘片：從邊緣往內找第一條幾乎全空的欄，邊緣那一側整段清掉
+    const colN = new Int32Array(cw);
+    for(let y = 0; y < ch; y++) for(let x = 0; x < cw; x++) if(out[(y*cw + x)*4 + 3] > 40) colN[x]++;
+    const trim = (from, dir) => {
+      for(let d = 0; d < 40; d++){
+        const x = from + dir*d;
+        if(x < 0 || x >= cw) return;
+        if(colN[x] <= 2){ for(let e = 0; e <= d; e++){ const xx = from + dir*e; for(let y = 0; y < ch; y++) out[(y*cw + xx)*4 + 3] = 0; } return; }
+      }
+    };
+    trim(pad, 1); trim(cw - 1 - pad, -1);
     const file = `${sheet.name}-${k}.png`;
     savePng(path.join(OUT, file), cw, ch, out);
     return {file, w: cw, h: ch, headX: Math.round(topSum/Math.max(1, topN)), headY: Math.round((c.y1 - c.y0)*.09) + (c.y0 - y0), source: [x0, y0]};

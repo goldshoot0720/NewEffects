@@ -1,0 +1,193 @@
+{
+ "idol": [
+  {
+   "file": "idol-0.png",
+   "w": 295,
+   "h": 925,
+   "headX": 166,
+   "headY": 89,
+   "source": [
+    7,
+    63
+   ]
+  },
+  {
+   "file": "idol-1.png",
+   "w": 341,
+   "h": 988,
+   "headX": 173,
+   "headY": 94,
+   "source": [
+    279,
+    0
+   ]
+  },
+  {
+   "file": "idol-2.png",
+   "w": 276,
+   "h": 959,
+   "headX": 130,
+   "headY": 92,
+   "source": [
+    608,
+    32
+   ]
+  },
+  {
+   "file": "idol-3.png",
+   "w": 280,
+   "h": 940,
+   "headX": 139,
+   "headY": 90,
+   "source": [
+    872,
+    41
+   ]
+  },
+  {
+   "file": "idol-4.png",
+   "w": 383,
+   "h": 989,
+   "headX": 136,
+   "headY": 94,
+   "source": [
+    1140,
+    1
+   ]
+  }
+ ],
+ "casual": [
+  {
+   "file": "casual-0.png",
+   "w": 199,
+   "h": 760,
+   "headX": 98,
+   "headY": 74,
+   "source": [
+    0,
+    55
+   ]
+  },
+  {
+   "file": "casual-1.png",
+   "w": 163,
+   "h": 761,
+   "headX": 79,
+   "headY": 74,
+   "source": [
+    159,
+    54
+   ]
+  },
+  {
+   "file": "casual-2.png",
+   "w": 147,
+   "h": 749,
+   "headX": 78,
+   "headY": 73,
+   "source": [
+    309,
+    66
+   ]
+  },
+  {
+   "file": "casual-3.png",
+   "w": 179,
+   "h": 751,
+   "headX": 74,
+   "headY": 73,
+   "source": [
+    444,
+    64
+   ]
+  },
+  {
+   "file": "casual-4.png",
+   "w": 135,
+   "h": 749,
+   "headX": 65,
+   "headY": 73,
+   "source": [
+    611,
+    66
+   ]
+  },
+  {
+   "file": "casual-5.png",
+   "w": 165,
+   "h": 731,
+   "headX": 85,
+   "headY": 71,
+   "source": [
+    733,
+    84
+   ]
+  },
+  {
+   "file": "casual-6.png",
+   "w": 174,
+   "h": 765,
+   "headX": 93,
+   "headY": 74,
+   "source": [
+    886,
+    50
+   ]
+  },
+  {
+   "file": "casual-7.png",
+   "w": 153,
+   "h": 740,
+   "headX": 73,
+   "headY": 72,
+   "source": [
+    1039,
+    75
+   ]
+  },
+  {
+   "file": "casual-8.png",
+   "w": 186,
+   "h": 762,
+   "headX": 95,
+   "headY": 74,
+   "source": [
+    1176,
+    53
+   ]
+  },
+  {
+   "file": "casual-9.png",
+   "w": 141,
+   "h": 731,
+   "headX": 68,
+   "headY": 71,
+   "source": [
+    1339,
+    84
+   ]
+  },
+  {
+   "file": "casual-10.png",
+   "w": 189,
+   "h": 743,
+   "headX": 96,
+   "headY": 72,
+   "source": [
+    1453,
+    72
+   ]
+  },
+  {
+   "file": "casual-11.png",
+   "w": 176,
+   "h": 736,
+   "headX": 88,
+   "headY": 72,
+   "source": [
+    1598,
+    79
+   ]
+  }
+ ]
+}
