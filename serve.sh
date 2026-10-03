@@ -16,7 +16,7 @@ open_page() {
   else echo "請在瀏覽器開啟 $TASK_URL"; fi
 }
 if command -v lsof >/dev/null 2>&1 && lsof -nP -iTCP:"$TASK_PORT" -sTCP:LISTEN >/dev/null 2>&1; then
-  if curl -fsS --connect-timeout 1 --max-time 2 "$TASK_URL/index.html" 2>/dev/null | grep -q 'id="dance"'; then
+  if curl -fsS --connect-timeout 1 --max-time 2 "$TASK_URL/index.html" 2>/dev/null | grep -q 'id="pv"'; then
     echo "播放器已啟動：$TASK_URL"
     open_page
     exit 0

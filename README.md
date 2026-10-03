@@ -1,6 +1,6 @@
 # NewEffects
 
-動態歌詞播放器：在 YouTube 影片或本機 MP3 上疊加動態歌詞特效，並提供六位參考人物與 Q 版偶像的「載歌載舞」舞台。
+首頁是 BEST 4U 歌詞 PV（`index.html`）；第二版本 `v2.html` 是動態歌詞播放器：在 YouTube 影片或本機 MP3 上疊加動態歌詞特效，並提供六位參考人物與 Q 版偶像的「載歌載舞」舞台。
 
 ## 啟動
 
@@ -25,9 +25,9 @@ macOS 也可雙擊 `啟動播放器.command`，會在終端機啟動伺服器並
 
 ## 歌詞 PV
 
-`pv.html` 是每首歌的歌詞 PV（1920×1080），用同一套 `pv.js` 在瀏覽器即時預覽，或輸出成 MP4：
+首頁 `index.html` 是每首歌的歌詞 PV（1920×1080），用同一套 `pv.js` 在瀏覽器即時預覽，或輸出成 MP4；原本的動態歌詞播放器改為第二版本 `v2.html`，兩頁互相有連結：
 
-- 預覽：開啟 `http://127.0.0.1:8765/pv.html?song=0`（0 大好きだよって叫ぶんだ、1 SUNRISE、2 HELLO HERO）
+- 預覽：開啟 `http://127.0.0.1:8765/?song=0`（0 大好きだよって叫ぶんだ、1 SUNRISE、2 HELLO HERO）
 - 輸出：`node render-pv.mjs`（全部三首同時輸出到 `pv/`），或 `node render-pv.mjs 1 --from 60 --to 72` 只輸出片段。需要 Google Chrome 與 ffmpeg
 
 人物用官方參考圖去背切出來：把參考圖放進 `assets/ref/`（`rise5.webp` 五人演出服白底、`lineup12.webp` 十二人色條底、`rooftop6.webp`、`stage9.webp`），執行 `node tools/cutout.mjs` 產生 `assets/ref/cast/` 的角色 PNG 與 `cast.json`。每首歌的主視覺與成員在 `pv.js` 的 `ARTS`、`SONGS[].cast` 設定（第一位是主唱）：大好きだよって叫ぶんだ 用 RISE 演出服，SUNRISE 用制服，HELLO HERO 用智的隊伍。角色以切圖分條彎曲、跳躍、壓縮做出跟拍舞動。
@@ -37,7 +37,7 @@ macOS 也可雙擊 `啟動播放器.command`，會在終端機啟動伺服器並
 ## 歌曲檔案
 
 MP3 與字幕檔（SRT／LRC）有版權，不放在這個 repo（見 `.gitignore`）。
-把檔案放在與 `index.html` 同一個資料夾，並在 `index.html` 的 `DEFAULT_SONGS` 設定檔名：
+把檔案放在與 `index.html` 同一個資料夾，並在 `v2.html` 的 `DEFAULT_SONGS`（播放器）與 `pv.js` 的 `SONGS`（PV）設定檔名：
 
 ```js
 {id: 'YouTube 影片 ID', title: '歌名', audio: '歌曲.mp3', subs: '字幕.srt', lead: 0}

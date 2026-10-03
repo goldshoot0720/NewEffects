@@ -16,13 +16,21 @@ const SHEETS = [
   {file: 'lineup12.webp', name: 'casual', bg: 'stripes', cutY: 815, count: 12,
    splits: [166, 315, 450, 617, 740, 892, 1046, 1182, 1355, 1459, 1626],
    // 橘色帽T、粉色開襟衫跟背後色條同色，這兩欄不挖封閉洞
-   keepHoles: [[617, 740], [1355, 1459]]}
+   keepHoles: [[617, 740], [1355, 1459]]},
+  {file: 'rooftop6-matte.png', name: 'rooftop', bg: 'alpha', count: 6,
+   splits: [320, 540, 817, 1074, 1296]},
+  {file: 'stage9-matte.png', name: 'stage', bg: 'alpha', count: 9,
+   splits: [257, 419, 590, 780, 972, 1153, 1320, 1496]}
 ];
 
 function load(file){
   const [w, h] = execFileSync('ffprobe', ['-v', 'error', '-show_entries', 'stream=width,height', '-of', 'csv=p=0', file]).toString().trim().split(',').map(Number);
-  const rgb = execFileSync('ffmpeg', ['-v', 'error', '-i', file, '-f', 'rawvideo', '-pix_fmt', 'rgb24', '-'], {maxBuffer: 1 << 30});
-  return {w, h, rgb};
+  const rgba = execFileSync('ffmpeg', ['-v', 'error', '-i', file, '-f', 'rawvideo', '-pix_fmt', 'rgba', '-'], {maxBuffer: 1 << 30});
+  const rgb = Buffer.alloc(w*h*3), alpha = new Uint8Array(w*h);
+  for(let i=0;i<w*h;i++){
+    rgb[i*3]=rgba[i*4];rgb[i*3+1]=rgba[i*4+1];rgb[i*3+2]=rgba[i*4+2];alpha[i]=rgba[i*4+3];
+  }
+  return {w, h, rgb, alpha};
 }
 function savePng(file, w, h, rgba){
   execFileSync('ffmpeg', ['-v', 'error', '-y', '-f', 'rawvideo', '-pix_fmt', 'rgba', '-s', `${w}x${h}`, '-i', '-', '-compression_level', '9', file], {input: rgba});
@@ -30,7 +38,7 @@ function savePng(file, w, h, rgba){
 const d2 = (r, g, b, c) => (r - c[0])**2 + (g - c[1])**2 + (b - c[2])**2;
 
 function cut(sheet){
-  const {w, h: fullH, rgb} = load(path.join(REF, sheet.file));
+  const {w, h: fullH, rgb, alpha} = load(path.join(REF, sheet.file));
   const h = Math.min(fullH, sheet.cutY || fullH);
   // 背景色：白底取白／淺灰；色條底取最上排的色條顏色
   let palette = [[254, 254, 254]];
@@ -40,6 +48,7 @@ function cut(sheet){
   }
   const T = sheet.bg === 'white' ? 34 : 24;
   const bgDist = i => {
+    if(sheet.bg === 'alpha') return alpha[i] < 8 ? 0 : 255;
     const r = rgb[i*3], g = rgb[i*3 + 1], b = rgb[i*3 + 2];
     if(sheet.bg === 'white'){
       // 白底加上腳下的淺灰陰影
@@ -58,6 +67,7 @@ function cut(sheet){
   };
   // 從四邊做背景填充；色條圖在分割線上也當作牆，避免越過鄰居
   const bg = new Uint8Array(w*h), q = new Int32Array(w*h);
+  if(sheet.bg === 'alpha') for(let i=0;i<w*h;i++) bg[i]=alpha[i]<8 ? 1 : 0;
   let qh = 0, qt = 0;
   const seed = i => { if(!bg[i] && bgDist(i) < T){ bg[i] = 1; q[qt++] = i; } };
   for(let x = 0; x < w; x++){ for(let y = 0; y < 12; y++) seed(y*w + x); seed((h - 1)*w + x); }
@@ -70,7 +80,7 @@ function cut(sheet){
   // 白底的衣服也是白色，只對色條底做（色條是完全平塗，容差收緊）
   const close = i => bgDist(i) < 10;
   const seen = new Uint8Array(w*h);
-  for(let s = 0; s < w*h && sheet.bg !== 'white'; s++){
+  for(let s = 0; s < w*h && sheet.bg === 'stripes'; s++){
     if(bg[s] || seen[s] || !close(s)) continue;
     if((sheet.keepHoles || []).some(([a, b]) => s % w >= a && s % w < b)) continue;
     qh = 0; qt = 0; q[qt++] = s; seen[s] = 1;
@@ -119,14 +129,14 @@ function cut(sheet){
       const i = y*w + x, o = ((y - y0)*cw + (x - x0))*4, l = label[i];
       let a = 0;
       if(l >= 0 && owner[l] === k){
-        a = 255;
+        a = sheet.bg === 'alpha' ? alpha[i] : 255;
         // 邊緣反鋸齒：貼著背景的像素依與背景色的距離給半透明，並去掉背景色的溢色
         const edge = (x > 0 && bg[i - 1]) || (x < w - 1 && bg[i + 1]) || (y > 0 && bg[i - w]) || (y < h - 1 && bg[i + w]);
-        if(edge) a = Math.max(0, Math.min(255, Math.round((bgDist(i) - T*.5)/(T*1.6)*255)));
+        if(edge && sheet.bg !== 'alpha') a = Math.max(0, Math.min(255, Math.round((bgDist(i) - T*.5)/(T*1.6)*255)));
       }
       // 邊緣兩像素內去掉背景色溢色：c = (p - (1 - α)·bg) / α
       const near = a > 0 && [-2, -1, 1, 2].some(d => (x + d >= 0 && x + d < w && bg[i + d]) || (y + d >= 0 && y + d < h && bg[i + d*w]));
-      if(near){
+      if(near && sheet.bg !== 'alpha'){
         const bgc = palette[sheet.bg === 'white' ? 0 : x], al = Math.max(.35, Math.min(1, a/255*.85));
         for(let ch3 = 0; ch3 < 3; ch3++) rgb[i*3 + ch3] = Math.max(0, Math.min(255, Math.round((rgb[i*3 + ch3] - (1 - al)*bgc[ch3])/al)));
       }
@@ -146,12 +156,16 @@ function cut(sheet){
     trim(pad, 1); trim(cw - 1 - pad, -1);
     const file = `${sheet.name}-${k}.png`;
     savePng(path.join(OUT, file), cw, ch, out);
-    return {file, w: cw, h: ch, headX: Math.round(topSum/Math.max(1, topN)), headY: Math.round((c.y1 - c.y0)*.09) + (c.y0 - y0), source: [x0, y0]};
+    return {file, w: cw, h: ch, headX: Math.round(topSum/Math.max(1, topN)), headY: Math.round((c.y1 - c.y0)*.09) + (c.y0 - y0), source: [x0, y0], sheet: sheet.file};
   });
 }
 
-const manifest = {};
+const manifest = fs.existsSync(path.join(OUT,'cast.json')) ? JSON.parse(fs.readFileSync(path.join(OUT,'cast.json'),'utf8')) : {};
 for(const s of SHEETS){
+  if(!fs.existsSync(path.join(REF,s.file))){
+    if(s.bg==='alpha'){console.log(`略過 ${s.file}：請先放入透明人物圖層`);continue;}
+    throw new Error('找不到 '+s.file);
+  }
   manifest[s.name] = cut(s);
   console.log(`${s.file}: ${manifest[s.name].map(c => `${c.w}x${c.h}`).join(' ')}`);
 }

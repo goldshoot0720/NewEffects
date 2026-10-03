@@ -9,7 +9,8 @@
    "source": [
     7,
     63
-   ]
+   ],
+   "sheet": "rise5.webp"
   },
   {
    "file": "idol-1.png",
@@ -20,7 +21,8 @@
    "source": [
     279,
     0
-   ]
+   ],
+   "sheet": "rise5.webp"
   },
   {
    "file": "idol-2.png",
@@ -31,7 +33,8 @@
    "source": [
     608,
     32
-   ]
+   ],
+   "sheet": "rise5.webp"
   },
   {
    "file": "idol-3.png",
@@ -42,7 +45,8 @@
    "source": [
     872,
     41
-   ]
+   ],
+   "sheet": "rise5.webp"
   },
   {
    "file": "idol-4.png",
@@ -53,7 +57,8 @@
    "source": [
     1140,
     1
-   ]
+   ],
+   "sheet": "rise5.webp"
   }
  ],
  "casual": [
@@ -66,7 +71,8 @@
    "source": [
     0,
     55
-   ]
+   ],
+   "sheet": "lineup12.webp"
   },
   {
    "file": "casual-1.png",
@@ -77,7 +83,8 @@
    "source": [
     159,
     54
-   ]
+   ],
+   "sheet": "lineup12.webp"
   },
   {
    "file": "casual-2.png",
@@ -88,7 +95,8 @@
    "source": [
     309,
     66
-   ]
+   ],
+   "sheet": "lineup12.webp"
   },
   {
    "file": "casual-3.png",
@@ -99,7 +107,8 @@
    "source": [
     444,
     64
-   ]
+   ],
+   "sheet": "lineup12.webp"
   },
   {
    "file": "casual-4.png",
@@ -110,7 +119,8 @@
    "source": [
     611,
     66
-   ]
+   ],
+   "sheet": "lineup12.webp"
   },
   {
    "file": "casual-5.png",
@@ -121,7 +131,8 @@
    "source": [
     733,
     84
-   ]
+   ],
+   "sheet": "lineup12.webp"
   },
   {
    "file": "casual-6.png",
@@ -132,7 +143,8 @@
    "source": [
     886,
     50
-   ]
+   ],
+   "sheet": "lineup12.webp"
   },
   {
    "file": "casual-7.png",
@@ -143,7 +155,8 @@
    "source": [
     1039,
     75
-   ]
+   ],
+   "sheet": "lineup12.webp"
   },
   {
    "file": "casual-8.png",
@@ -154,7 +167,8 @@
    "source": [
     1176,
     53
-   ]
+   ],
+   "sheet": "lineup12.webp"
   },
   {
    "file": "casual-9.png",
@@ -165,7 +179,8 @@
    "source": [
     1339,
     84
-   ]
+   ],
+   "sheet": "lineup12.webp"
   },
   {
    "file": "casual-10.png",
@@ -176,7 +191,8 @@
    "source": [
     1453,
     72
-   ]
+   ],
+   "sheet": "lineup12.webp"
   },
   {
    "file": "casual-11.png",
@@ -187,7 +203,192 @@
    "source": [
     1598,
     79
-   ]
+   ],
+   "sheet": "lineup12.webp"
+  }
+ ],
+ "rooftop": [
+  {
+   "file": "rooftop-0.png",
+   "w": 320,
+   "h": 827,
+   "headX": 191,
+   "headY": 80,
+   "source": [
+    6,
+    121
+   ],
+   "sheet": "rooftop6-matte.png"
+  },
+  {
+   "file": "rooftop-1.png",
+   "w": 232,
+   "h": 813,
+   "headX": 108,
+   "headY": 79,
+   "source": [
+    314,
+    135
+   ],
+   "sheet": "rooftop6-matte.png"
+  },
+  {
+   "file": "rooftop-2.png",
+   "w": 286,
+   "h": 866,
+   "headX": 152,
+   "headY": 83,
+   "source": [
+    534,
+    88
+   ],
+   "sheet": "rooftop6-matte.png"
+  },
+  {
+   "file": "rooftop-3.png",
+   "w": 252,
+   "h": 806,
+   "headX": 86,
+   "headY": 78,
+   "source": [
+    820,
+    148
+   ],
+   "sheet": "rooftop6-matte.png"
+  },
+  {
+   "file": "rooftop-4.png",
+   "w": 239,
+   "h": 857,
+   "headX": 107,
+   "headY": 83,
+   "source": [
+    1051,
+    98
+   ],
+   "sheet": "rooftop6-matte.png"
+  },
+  {
+   "file": "rooftop-5.png",
+   "w": 191,
+   "h": 781,
+   "headX": 76,
+   "headY": 76,
+   "source": [
+    1304,
+    177
+   ],
+   "sheet": "rooftop6-matte.png"
+  }
+ ],
+ "stage": [
+  {
+   "file": "stage-0.png",
+   "w": 263,
+   "h": 830,
+   "headX": 139,
+   "headY": 80,
+   "source": [
+    0,
+    3
+   ],
+   "sheet": "stage9-matte.png"
+  },
+  {
+   "file": "stage-1.png",
+   "w": 174,
+   "h": 713,
+   "headX": 79,
+   "headY": 70,
+   "source": [
+    251,
+    121
+   ],
+   "sheet": "stage9-matte.png"
+  },
+  {
+   "file": "stage-2.png",
+   "w": 183,
+   "h": 720,
+   "headX": 103,
+   "headY": 70,
+   "source": [
+    413,
+    117
+   ],
+   "sheet": "stage9-matte.png"
+  },
+  {
+   "file": "stage-3.png",
+   "w": 202,
+   "h": 744,
+   "headX": 113,
+   "headY": 72,
+   "source": [
+    584,
+    93
+   ],
+   "sheet": "stage9-matte.png"
+  },
+  {
+   "file": "stage-4.png",
+   "w": 205,
+   "h": 725,
+   "headX": 98,
+   "headY": 71,
+   "source": [
+    774,
+    115
+   ],
+   "sheet": "stage9-matte.png"
+  },
+  {
+   "file": "stage-5.png",
+   "w": 193,
+   "h": 722,
+   "headX": 99,
+   "headY": 70,
+   "source": [
+    966,
+    117
+   ],
+   "sheet": "stage9-matte.png"
+  },
+  {
+   "file": "stage-6.png",
+   "w": 200,
+   "h": 700,
+   "headX": 85,
+   "headY": 68,
+   "source": [
+    1147,
+    139
+   ],
+   "sheet": "stage9-matte.png"
+  },
+  {
+   "file": "stage-7.png",
+   "w": 211,
+   "h": 726,
+   "headX": 106,
+   "headY": 71,
+   "source": [
+    1314,
+    113
+   ],
+   "sheet": "stage9-matte.png"
+  },
+  {
+   "file": "stage-8.png",
+   "w": 284,
+   "h": 817,
+   "headX": 165,
+   "headY": 79,
+   "source": [
+    1490,
+    20
+   ],
+   "sheet": "stage9-matte.png"
   }
  ]
 }
