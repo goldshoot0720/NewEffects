@@ -371,7 +371,15 @@ window.onYouTubeIframeAPIReady = () => {
     videoId: mediaKey.startsWith('yt:') ? mediaKey.slice(3) : undefined,
     playerVars: {controls:0, disablekb:1, fs:0, rel:0, playsinline:1, iv_load_policy:3, modestbranding:1, origin: location.origin},
     events: {
-      onReady(){ media.ready = true; updateTitleFromYt(); },
+      onReady(){
+        media.ready = true;
+        const pending = pendingYt; pendingYt = null;
+        if(pending){
+          const action = pending.autoplay ? 'loadVideoById' : 'cueVideoById';
+          media.yt[action]({videoId:pending.id, startSeconds:pending.at});
+        }
+        updateTitleFromYt();
+      },
       onStateChange(){ updateTitleFromYt(); },
       onError(e){
         const why = {2:'影片 ID 無效', 5:'播放器錯誤', 100:'找不到影片', 101:'影片擁有者禁止嵌入播放', 150:'影片擁有者禁止嵌入播放', 153:'需要透過 http://localhost 開啟本頁'}[e.data] || ('錯誤碼 ' + e.data);
@@ -468,9 +476,10 @@ $('#songs').addEventListener('click', e => {
   }
   playSong(id);
 });
-let curSong = null;
+let curSong = null, pendingYt = null;
 const srcOf = id => cfgOf(id).audio && (prefs.src?.[id] ?? 'mp3') === 'mp3' ? 'mp3' : 'yt';
 function applySource(id, autoplay, at = 0){
+  pendingYt = null;
   const ytEl = document.getElementById('yt');
   showMsg('');
   if(srcOf(id) === 'mp3'){
@@ -483,7 +492,13 @@ function applySource(id, autoplay, at = 0){
       vid._song = id; vid.removeAttribute('src');
       audioUrl(id).then(url => {
         if(vid._song !== id) return;
-        if(!url){ showMsg(`找不到音訊檔：${cfgOf(id).audio}`); return; }
+        if(!url){
+          delete audioUrls[id];
+          prefs.src = {...(prefs.src || {}), [id]:'yt'}; savePrefs();
+          applySource(id, autoplay, at);
+          showMsg('找不到本機 MP3，已切換到 YouTube 音源。');
+          return;
+        }
         vid.src = url; vid.addEventListener('loadedmetadata', go, {once: true});
       });
     } else go();
@@ -494,6 +509,7 @@ function applySource(id, autoplay, at = 0){
     if(ytEl) ytEl.style.visibility = prefs.dance ? 'hidden' : '';
     showCover(prefs.dance ? id : null);
     if(media.ready) autoplay ? media.yt.loadVideoById({videoId: id, startSeconds: at}) : media.yt.cueVideoById({videoId: id, startSeconds: at});
+    else pendingYt = {id, autoplay, at};
   }
   const seg = $('#srcSeg');
   seg.hidden = !cfgOf(id).audio;
