@@ -49,10 +49,10 @@ macOS 也可雙擊 `啟動播放器.command`，會在終端機啟動伺服器並
 
 ## 歌曲檔案
 
-本機 MP3 與字幕檔（SRT／LRC）通常不放在這個 repo（見 `.gitignore`）。「風の中は走るっきゃないっ！」的 MP3 已納入 repo 供部署版播放；其他音訊與所有字幕仍需本機提供。
+本機 MP3 與字幕檔（SRT／LRC）通常不放在這個 repo（見 `.gitignore`）。「風の中は走るっきゃないっ！」的 MP3 和日中雙語 SRT 已納入 repo，供部署版播放及顯示字幕；其他音訊與字幕仍由使用者本機提供。
 把檔案放在與 `index.html` 同一個資料夾，並在 `v2.html` 的 `DEFAULT_SONGS`（播放器）與 `pv.js` 的 `SONGS`（PV）設定檔名：
 
-部署版若沒有本機 MP3，播放器會自動切換到該歌曲的 YouTube 音源；本機 MP3 可用時仍可選擇 MP3。部署版不含預設 SRT／LRC，請在歌詞面板匯入字幕檔。
+部署版若缺少其他歌曲的本機 MP3，播放器會自動切換到該曲的 YouTube 音源；部署版未附其他歌曲的 SRT／LRC，請在歌詞面板匯入字幕檔。
 
 ```js
 {id: 'YouTube 影片 ID', title: '歌名', audio: '歌曲.mp3', subs: '字幕.srt', lead: 0}
