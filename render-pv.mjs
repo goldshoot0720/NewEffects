@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 // 把 PV 首頁（index.html）逐格渲染成 MP4：本機伺服器提供檔案並接收 JPEG 影格，無頭 Chrome 執行 pv.js，ffmpeg 編碼並合併音訊。
 // 用法：node render-pv.mjs [歌曲編號…] [--mode lyrics|characters] [--from 秒] [--to 秒] [--out 資料夾] [--encoder libx264|h264_videotoolbox]
-//   不指定歌曲就輸出全部（0 大好きだよって叫ぶんだ、1 SUNRISE、2 HELLO HERO），三首同時進行。
+//   不指定歌曲就輸出 pv.js 裡的全部歌曲，同時進行。
 import http from 'node:http';
 import fs from 'node:fs';
 import path from 'node:path';
@@ -22,8 +22,11 @@ if([from,to].some(v=>v!==null && (!Number.isFinite(+v)||+v<0)) || (from!==null &
   console.error('--from / --to 必須為非負秒數，結束時間必須晚於開始時間');process.exit(1);
 }
 const outDir = path.resolve(ROOT, opt('out') || 'pv');
-const songs = args.length ? [...new Set(args.map(Number))] : [0, 1, 2];
-if(songs.some(n => !Number.isInteger(n) || n < 0 || n > 2)){ console.error('歌曲編號為 0–2'); process.exit(1); }
+const pvSrc = fs.readFileSync(path.join(ROOT, 'pv.js'), 'utf8');
+const songsBlock = pvSrc.match(/const SONGS = \[([\s\S]*?)\n\];/);
+const songCount = songsBlock ? (songsBlock[1].match(/\{title:/g) || []).length : 0;
+const songs = args.length ? [...new Set(args.map(Number))] : [...Array(songCount).keys()];
+if(!songCount || songs.some(n => !Number.isInteger(n) || n < 0 || n >= songCount)){ console.error(`歌曲編號為 0–${Math.max(0, songCount - 1)}`); process.exit(1); }
 const CHROME = process.env.CHROME || ['/Applications/Google Chrome.app/Contents/MacOS/Google Chrome', '/Applications/Chromium.app/Contents/MacOS/Chromium', '/usr/bin/google-chrome']
   .find(p => fs.existsSync(p));
 if(!CHROME){ console.error('找不到 Google Chrome，可用 CHROME=路徑 指定'); process.exit(1); }

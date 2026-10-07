@@ -161,6 +161,7 @@ function cut(sheet){
 }
 
 const manifest = fs.existsSync(path.join(OUT,'cast.json')) ? JSON.parse(fs.readFileSync(path.join(OUT,'cast.json'),'utf8')) : {};
+// anaru 是「生徒会にも穴はある！」已去背的單張立繪，不從合圖重切；重跑時沿用 manifest.anaru。
 for(const s of SHEETS){
   if(!fs.existsSync(path.join(REF,s.file))){
     if(s.bg==='alpha'){console.log(`略過 ${s.file}：請先放入透明人物圖層`);continue;}

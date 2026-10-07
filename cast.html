@@ -17,10 +17,11 @@ img{width:100%;height:310px;object-fit:contain;display:block}figcaption{display:
 <header><h1>人物切圖一覽</h1><a href="index.html?mode=characters">播放人物 PV →</a><a href="index.html">歌詞 PV</a><a href="v2.html">歌詞播放器</a><span id="status" role="status">載入切圖…</span></header>
 <main id="gallery"></main>
 <script>
-const groups=[['casual','制服與便服',12],['rooftop','屋頂制服',6],['idol','RISE 演出服',5],['stage','黃昏舞台服',9]];
+const groups=[['casual','制服與便服',12],['rooftop','屋頂制服',6],['idol','RISE 演出服',5],['stage','黃昏舞台服',9],['anaru','生徒会六人',6]];
 (async()=>{
   const response=await fetch('assets/ref/cast/cast.json');if(!response.ok)throw new Error('找不到人物清單');
   const cast=await response.json();let count=0,loaded=0;
+  const total=groups.reduce((sum,group)=>sum+group[2],0);
   for(const [key,title,expected] of groups){
     const list=cast[key];if(list?.length!==expected)throw new Error(title+'切圖未齊全');
     const section=document.createElement('section'),heading=document.createElement('h2'),grid=document.createElement('div');
@@ -28,7 +29,7 @@ const groups=[['casual','制服與便服',12],['rooftop','屋頂制服',6],['ido
     for(const [i,item] of list.entries()){
       const figure=document.createElement('figure'),image=document.createElement('img'),caption=document.createElement('figcaption'),name=document.createElement('span'),link=document.createElement('a');
       image.src='assets/ref/cast/'+item.file;image.alt=`${title}人物 ${i+1}`;
-      image.onload=()=>{loaded++;document.getElementById('status').textContent=`${loaded} / 32 張透明 PNG 已載入`;};
+      image.onload=()=>{loaded++;document.getElementById('status').textContent=`${loaded} / ${total} 張透明 PNG 已載入`;};
       image.onerror=()=>{document.getElementById('status').textContent='素材讀取失敗：'+item.file;};
       name.textContent=`${String(i+1).padStart(2,'0')} · ${item.w}×${item.h}`;link.href=image.src;link.download=item.file;link.textContent='下載';
       caption.append(name,link);figure.append(image,caption);grid.append(figure);count++;

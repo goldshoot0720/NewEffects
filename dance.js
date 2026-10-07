@@ -233,6 +233,7 @@ function frame(dt, playing){
   const a = art(); if(a) a.style.transform = `scale(${1 + env*.025})`;
 
   const song = typeof cfgOf === 'function' && curSong ? cfgOf(curSong) : {};
+  if(window.SpriteDancers?.use) SpriteDancers.use(song.cast || 'best4u');
   const lead = prefs.danceLead === 'auto' ? (song.lead || 0) : Math.max(0,Math.min(5,+prefs.danceLead || 0));
   const order = [1, 2, 3, 4, 5].map(k => (lead + k) % 6);
   const p = phase(), moveFn = MOVES[Math.floor(p/8) % MOVES.length];

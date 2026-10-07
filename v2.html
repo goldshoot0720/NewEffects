@@ -406,7 +406,10 @@ const DEFAULT_SONGS = [
    subs: 'Subtitle_《SUN RISE…》手をとっては競い...…_1790794218236.srt', lead: 0},
   {id: '1BV6fsfu7ZU', title: 'HELLO HERO [御社 智ver.]',
    audio: 'HELLO HERO [御社 智ver.].mp3',
-   subs: 'Subtitle_これまでもこれからも　変わらずいるよヨ...る_1790795207681.srt', lead: 5}
+   subs: 'Subtitle_これまでもこれからも　変わらずいるよヨ...る_1790795207681.srt', lead: 5},
+  {id: 'rNbXIeLdU0M', title: '風の中は走るっきゃないっ！ [三月のパンタシア]',
+   audio: '風の中は走るっきゃないっ！ [三月のパンタシア].mp3',
+   subs: '風の中は走るっきゃないっ！.srt', lead: 0, cast: 'anaru'}
 ];
 // 每首歌的字幕／音訊檔放在同一個資料夾，執行時才讀取
 const cfgOf = id => DEFAULT_SONGS.find(d => d.id === id) || {};
@@ -512,9 +515,18 @@ $('#srcSeg').addEventListener('click', e => {
   prefs.src = {...prefs.src, [curSong]: b.dataset.src}; savePrefs();
   applySource(curSong, was, t);
 });
+const LEAD_NAMES = {
+  best4u: ['小日向理瀬', '葉山陽和', '前原純華', '小鷹咲希', '橘雪乃', '御社智'],
+  anaru: ['水之江梅', '古都吹寿子', '陸奥こころ', '尾鳥たん', '照井有栖', '平塚敏深']
+};
+function syncLeadMenu(id){
+  const names = LEAD_NAMES[cfgOf(id).cast] || LEAD_NAMES.best4u;
+  [...$('#danceLead').options].forEach(o => { if(o.value !== 'auto') o.textContent = names[+o.value] || o.textContent; });
+}
 function playSong(id, autoplay = true){
   const s = songs.find(x => x.id === id);
   curSong = id;
+  syncLeadMenu(id);
   applySource(id, autoplay);
   songTitle = s ? s.title : songTitle; setTitle();
   prefs.lastSong = id; savePrefs();

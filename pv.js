@@ -19,7 +19,9 @@ const ARTS = {
   rooftop: {src: 'assets/ref/rooftop6.webp', crop: [0, 0, 1536, 1024],
     faces: [[195, 195], [400, 190], [680, 140], [925, 250], [1165, 225], [1385, 250]]},
   stage: {src: 'assets/ref/stage9.webp', crop: [0, 0, 1774, 887],
-    faces: [[195, 165], [345, 200], [510, 195], [690, 195], [860, 215], [1060, 205], [1235, 215], [1400, 205], [1580, 190]]}
+    faces: [[195, 165], [345, 200], [510, 195], [690, 195], [860, 215], [1060, 205], [1235, 215], [1400, 205], [1580, 190]]},
+  anaru: {src: 'assets/ref/anaru6.png', crop: [0, 0, 1920, 1080],
+    faces: [[181, 369], [588, 377], [919, 402], [1216, 372], [1486, 367], [1726, 380]]}
 };
 const SONGS = [
   {title: '大好きだよって叫ぶんだ', ver: '小日向理瀬 ver.', file: '大好きだよって叫ぶんだ [小日向理瀬ver.]',
@@ -30,13 +32,18 @@ const SONGS = [
    cast: [['casual', 4, '理瀬', '#f6a531'], ['casual', 1, '陽和', '#ee5b97'], ['casual', 0, '純華', '#2ba6e1'], ['casual', 2, '咲希', '#3cc39a'], ['casual', 3, '雪乃', '#8d6ad6'], ['casual', 11, '智', '#f0c23a']]},
   {title: 'HELLO HERO', ver: '御社 智 ver.', file: 'HELLO HERO [御社 智ver.]',
    subs: 'Subtitle_これまでもこれからも　変わらずいるよヨ...る_1790795207681.srt', theme: 'twilight', art: 'stage',
-   cast: [['casual', 11, '智', '#f0c23a'], ['casual', 7, '', '#e0524f'], ['casual', 8, '', '#ee5b97'], ['casual', 9, '', '#f4a6b8'], ['casual', 10, '', '#2ba6e1']]}
+   cast: [['casual', 11, '智', '#f0c23a'], ['casual', 7, '', '#e0524f'], ['casual', 8, '', '#ee5b97'], ['casual', 9, '', '#f4a6b8'], ['casual', 10, '', '#2ba6e1']]},
+  {title: '風の中は走るっきゃないっ！', ver: '三月のパンタシア', file: '風の中は走るっきゃないっ！ [三月のパンタシア]',
+   subs: '風の中は走るっきゃないっ！.srt', theme: 'wind', art: 'anaru',
+   series: '三月のパンタシア', kicker: 'TVアニメ「生徒会にも穴はある！」OP',
+   cast: [['anaru', 0, '梅', '#e07a45'], ['anaru', 1, '寿子', '#e0893a'], ['anaru', 2, 'こころ', '#f08aaa'], ['anaru', 3, 'たん', '#6ecf9a'], ['anaru', 4, '有栖', '#7aa2ff'], ['anaru', 5, '敏深', '#d7c4a8']]}
 ];
-// 每首歌一組配色：夏日向日葵、日出、黃昏星空
+// 每首歌一組配色：夏日向日葵、日出、黃昏星空、晴空疾風
 const THEMES = {
   summer:   {sky: ['#0b3d74', '#2f8fe0', '#bfeaff'], pastel: ['#fff8dc', '#d6f0ff'], accent: '#ffd23f', accent2: '#ff7b54', cool: '#5fd0ff', deep: '#0b2d55', particle: 'petal'},
   sunrise:  {sky: ['#22164a', '#b8487d', '#ffbf7a'], pastel: ['#fff1e6', '#ffe0ef'], accent: '#ffc35c', accent2: '#ff5f93', cool: '#a99bff', deep: '#2a1640', particle: 'spark'},
-  twilight: {sky: ['#050820', '#2b2366', '#d0677a'], pastel: ['#eef0ff', '#ffe6ea'], accent: '#ffd56b', accent2: '#9c7bff', cool: '#62d4ff', deep: '#14123a', particle: 'star'}
+  twilight: {sky: ['#050820', '#2b2366', '#d0677a'], pastel: ['#eef0ff', '#ffe6ea'], accent: '#ffd56b', accent2: '#9c7bff', cool: '#62d4ff', deep: '#14123a', particle: 'star'},
+  wind:     {sky: ['#0e3a66', '#49b4ef', '#e8f8ff'], pastel: ['#f3fbff', '#e5fff6'], accent: '#ffe14a', accent2: '#3ec6ff', cool: '#d7f6ff', deep: '#0c2748', particle: 'wind'}
 };
 const LOGO = [['B', '#2ba6e1'], ['E', '#f6a531'], ['S', '#ee5b97'], ['T', '#2ba6e1'], [' ', ''], ['4', '#f6a531'], ['U', '#8d6ad6']];
 const POP = ['#ee5b97', '#2ba6e1', '#f6a531', '#8d6ad6', '#3cc39a', '#f08a4b'];
@@ -67,12 +74,15 @@ const ART = ARTS[song.art], AW = ART.crop[2], AH = ART.crop[3], FACES = ART.face
 // 成員：0 是主唱；名字未知的成員以編號標示
 const MEMBERS = song.cast.map(([sheet, idx, name, color], i) => ({sheet, idx, name: name || `No.${pad(i + 1)}`, color, img: null, meta: null}));
 const OTHERS = MEMBERS.map((_, i) => i).slice(1);
-const CHARACTER_GROUPS = [
+const BASE_CHARACTER_GROUPS = [
   {sheet:'casual',title:'十二人 · 制服與便服',src:'assets/ref/lineup12.webp',colors:['#11bbde','#ff86b1'],count:12},
   {sheet:'rooftop',title:'屋頂六人 · SUNRISE',src:'assets/ref/rooftop6.webp',colors:['#70ccff','#bdf1bc'],count:6},
   {sheet:'idol',title:'RISE 五人 · 演出服',src:'assets/ref/rise5.webp',colors:['#284b92','#f1c265'],count:5},
   {sheet:'stage',title:'舞台九人 · 黃昏演出',src:'assets/ref/stage9.webp',colors:['#918be8','#f9b38e'],count:9}
 ];
+const CHARACTER_GROUPS = song.art === 'anaru'
+  ? [{sheet:'anaru', title:'生徒会六人', src:'assets/ref/anaru6.png', colors:['#49b4ef','#ffe14a'], count:6}]
+  : BASE_CHARACTER_GROUPS;
 let A = null, cues = [], sections = [], shots = [], TJ = [], TZ = [], C = {};
 
 /* ---------------- 音訊分析：節拍、低中頻能量 ---------------- */
@@ -336,6 +346,11 @@ function particles(t, n, layer = 0, kind = T.particle){
       const life = 5 + h3*5, age = frac(t/life + h1), x = h2*W + Math.sin(t*.6 + i)*30, y = H*(1.05 - age*1.25);
       g.globalCompositeOperation = 'lighter';
       glow(x, y, 6 + h4*16, h4 > .5 ? T.accent : T.accent2, Math.sin(age*Math.PI)*.8);
+    } else if(kind === 'wind'){
+      const life = 2.2 + h3*1.6, age = frac(t/life + h1);
+      const y = 40 + h2*H*.85, x = -80 + age*(W + 220);
+      g.globalAlpha = .5*Math.sin(age*Math.PI); g.strokeStyle = h4 > .55 ? '#ffffff' : T.cool; g.lineWidth = 2 + h3*3;
+      g.beginPath(); g.moveTo(x, y); g.lineTo(x - 26 - h4*46, y + (h3 - .5)*14); g.stroke();
     } else {
       const life = 7 + h3*6, age = frac(t/life + h1), x = h2*W*1.2 - age*320 + Math.sin(t*1.3 + i)*25, y = -60 + age*(H + 120);
       g.globalCompositeOperation = 'source-over';
@@ -874,7 +889,8 @@ function shotOutro(t, sh, u){
   g.drawImage(C.art, -cw/2, -ch/2, cw, ch);
   g.restore();
   sparkles(t, 14, 11);
-  logo(W/2, 900, 150, sh.start + .6, t);
+  if(song.series) stickerText(song.series, W/2, 900, 78, [T.accent, '#ffffff', T.cool, T.accent2], sh.start + .6, t);
+  else logo(W/2, 900, 150, sh.start + .6, t);
   g.save(); g.globalAlpha = clamp((lt - 1.4)/.6); g.textAlign = 'center';
   g.font = `600 34px ${FONT.jp}`; g.fillStyle = '#fff'; g.fillText(`${song.title}  ／  ${song.ver}`, W/2, 1010);
   g.restore();
@@ -893,7 +909,7 @@ function shotCharacters(t,sh,u){
     light.addColorStop(0,'rgba(255,255,255,.16)');light.addColorStop(1,'rgba(255,255,255,0)');
     g.fillStyle=light;g.beginPath();g.moveTo(x-6,0);g.lineTo(x+6,0);g.lineTo(x+sway+130,900);g.lineTo(x+sway-130,900);g.closePath();g.fill();
   }
-  const sizes={casual:[1774,815],rooftop:[1536,1024],idol:[1536,1024],stage:[1774,887]};
+  const sizes={casual:[1774,815],rooftop:[1536,1024],idol:[1536,1024],stage:[1774,887],anaru:[1920,1080]};
   const [sourceW,sourceH]=sizes[group.sheet],scale=Math.min((W-160)/sourceW,740/sourceH);
   const originX=(W-sourceW*scale)/2,originY=150;
   if(group.matte){
@@ -921,7 +937,7 @@ function shotCharacters(t,sh,u){
   });
   g.save();g.fillStyle='rgba(9,12,34,.5)';roundRect(42,30,620,96,18);g.fill();
   g.fillStyle='#fff';g.font=`700 34px ${FONT.zh}`;g.fillText(group.title,66,76);
-  g.font=`500 18px ${FONT.mono}`;g.fillStyle=group.colors[1];g.fillText(`CHARACTER PV  ·  ${pad(sh.group+1)} / 04`,68,106);
+  g.font=`500 18px ${FONT.mono}`;g.fillStyle=group.colors[1];g.fillText(`CHARACTER PV  ·  ${pad(sh.group+1)} / ${pad(CHARACTER_GROUPS.length)}`,68,106);
   g.textAlign='right';g.font=`600 24px ${FONT.mono}`;g.fillStyle='#fff';g.fillText(`${group.count} MEMBERS`,W-60,74);g.restore();
   sparkles(t,20,sh.group+20,[40,110,W-80,740]);
   lyricShade(908,.78);
@@ -938,10 +954,11 @@ function titleCard(t){
   g.fillStyle = `rgba(8,6,24,${.45*a})`; g.fillRect(0, 0, W, H);
   g.globalAlpha = a; g.translate(0, -out*60);
   g.textAlign = 'center'; g.font = `600 24px ${FONT.cond}`; g.letterSpacing = '8px'; g.fillStyle = 'rgba(255,255,255,.85)';
-  g.globalAlpha = a*clamp((t - .3)/.6); g.fillText('EXH KANAGAWA TOURNAMENT 2048 · TOP-4 TEAM COMPILATION ALBUM', W/2, 250); g.letterSpacing = '0px';
+  g.globalAlpha = a*clamp((t - .3)/.6); g.fillText(song.kicker || 'EXH KANAGAWA TOURNAMENT 2048 · TOP-4 TEAM COMPILATION ALBUM', W/2, 250); g.letterSpacing = '0px';
   g.globalAlpha = a;
   sparkleFade = a; sparkles(t, 12, 12, [200, 180, 1520, 700]); sparkleFade = 1;
-  logo(W/2, 360, 120, .5, t);
+  if(song.series) stickerText(song.series, W/2, 360, 72, [T.accent, '#ffffff', T.cool, T.accent2], .5, t);
+  else logo(W/2, 360, 120, .5, t);
   const size = Math.min(200, 1600/[...song.title].length/.96);
   stickerText(song.title, W/2, 590, size, POP, 1.1, t);
   const pa = easeBack((t - 1.9)/.5);
@@ -982,7 +999,7 @@ function hud(t, sh){
   }
   const sec = sectionAt(t), b = beatPos(t), bar = Math.max(1, Math.floor((b - A.barOff)/4) + 1), total = Math.floor((beatPos(A.dur) - A.barOff)/4) + 1;
   g.font = `600 22px ${FONT.cond}`; g.letterSpacing = '3px';
-  g.fillText(`BEST 4U  /  ${song.title}`, 60, 70);
+  g.fillText(`${song.series || 'BEST 4U'}  /  ${song.title}`, 60, 70);
   g.font = `15px ${FONT.mono}`; g.letterSpacing = '1px';
   g.fillText(`SEC.${pad(sec.no)}  ${sec.label}`, 60, 96);
   g.textAlign = 'right';

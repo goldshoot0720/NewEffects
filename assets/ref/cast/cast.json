@@ -390,5 +390,79 @@
    ],
    "sheet": "stage9-matte.png"
   }
+ ],
+ "anaru": [
+  {
+   "file": "anaru-0.png",
+   "w": 286,
+   "h": 740,
+   "headX": 134,
+   "headY": 70,
+   "source": [
+    56,
+    308
+   ],
+   "sheet": "anaru6.png"
+  },
+  {
+   "file": "anaru-1.png",
+   "w": 353,
+   "h": 740,
+   "headX": 206,
+   "headY": 63,
+   "source": [
+    360,
+    308
+   ],
+   "sheet": "anaru6.png"
+  },
+  {
+   "file": "anaru-2.png",
+   "w": 269,
+   "h": 740,
+   "headX": 174,
+   "headY": 61,
+   "source": [
+    731,
+    308
+   ],
+   "sheet": "anaru6.png"
+  },
+  {
+   "file": "anaru-3.png",
+   "w": 352,
+   "h": 740,
+   "headX": 200,
+   "headY": 63,
+   "source": [
+    1018,
+    308
+   ],
+   "sheet": "anaru6.png"
+  },
+  {
+   "file": "anaru-4.png",
+   "w": 197,
+   "h": 740,
+   "headX": 99,
+   "headY": 68,
+   "source": [
+    1388,
+    308
+   ],
+   "sheet": "anaru6.png"
+  },
+  {
+   "file": "anaru-5.png",
+   "w": 260,
+   "h": 740,
+   "headX": 111,
+   "headY": 66,
+   "source": [
+    1603,
+    308
+   ],
+   "sheet": "anaru6.png"
+  }
  ]
 }

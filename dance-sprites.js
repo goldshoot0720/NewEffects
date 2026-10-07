@@ -2,32 +2,45 @@
 (() => {
   'use strict';
   const status = document.getElementById('danceStatus');
-  // 依主唱選單順序：小日向理瀬、葉山陽和、前原純華、小鷹咲希、橘雪乃、御社智（制服／便服切圖）
-  const CAST = [4, 1, 0, 2, 3, 11];
-  const actors = [];
-  const api = window.SpriteDancers = {ready: false, error: null, draw};
+  // best4u 依主唱選單：小日向理瀬、葉山陽和、前原純華、小鷹咲希、橘雪乃、御社智
+  // anaru 是「生徒会にも穴はある！」六人，只在該首歌使用
+  const SETS = {
+    best4u: {sheet: 'casual', idx: [4, 1, 0, 2, 3, 11]},
+    anaru: {sheet: 'anaru', idx: [0, 1, 2, 3, 4, 5]}
+  };
+  const actors = {best4u: [], anaru: []};
+  let active = 'best4u';
+  const api = window.SpriteDancers = {ready: false, error: null, draw, use};
+  function use(name){ if(actors[name]?.length === 6) active = name; }
   function fail(message){
     api.error = message;
     if(status) status.textContent = '人物素材無法載入，使用 Q 版舞者';
     console.warn(message);
   }
+  function loadSet(cast, spec){
+    return Promise.all(spec.idx.map(i => new Promise((ok, no) => {
+      const meta = cast[spec.sheet][i], img = new Image();
+      img.onload = () => ok({img, meta});
+      img.onerror = () => no(new Error('找不到 ' + (meta && meta.file)));
+      img.src = 'assets/ref/cast/' + meta.file;
+    })));
+  }
   fetch('assets/ref/cast/cast.json')
     .then(r => { if(!r.ok) throw new Error('找不到 assets/ref/cast/cast.json'); return r.json(); })
-    .then(cast => Promise.all(CAST.map(i => new Promise((ok, no) => {
-      const meta = cast.casual[i], img = new Image();
-      img.onload = () => ok({img, meta});
-      img.onerror = () => no(new Error('找不到 ' + meta.file));
-      img.src = 'assets/ref/cast/' + meta.file;
-    }))))
-    .then(list => {
-      actors.push(...list);
+    .then(cast => Promise.all([
+      loadSet(cast, SETS.best4u),
+      loadSet(cast, SETS.anaru).catch(e => { console.warn(e); return []; })
+    ]))
+    .then(([best, anaru]) => {
+      actors.best4u.push(...best);
+      actors.anaru.push(...anaru);
       api.ready = true;
       if(status) status.textContent = '六位人物已就緒 · 按播放開始';
     })
     .catch(e => fail('人物素材讀取失敗：' + e.message));
 
   function draw(ctx, index, x, y, height, state){
-    const actor = actors[index];
+    const actor = actors[active][index];
     if(!api.ready || !actor) return;
     const {img} = actor, iw = img.width, ih = img.height, w = iw*height/ih;
     const wave = state.wave || 0, energy = state.energy || 0, squash = state.squash || 0;
