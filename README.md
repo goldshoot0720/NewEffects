@@ -27,7 +27,7 @@ macOS 也可雙擊 `啟動播放器.command`，會在終端機啟動伺服器並
 
 首頁 `index.html` 是每首歌的歌詞 PV（1920×1080），用同一套 `pv.js` 在瀏覽器即時預覽，或輸出成 MP4；原本的動態歌詞播放器改為第二版本 `v2.html`，兩頁互相有連結：
 
-- 預覽：開啟 `http://127.0.0.1:8765/?song=0`（0 大好きだよって叫ぶんだ、1 SUNRISE、2 HELLO HERO、3 風の中は走るっきゃないっ！）
+- 預覽：開啟 `http://127.0.0.1:8765/?song=0`（0 大好きだよって叫ぶんだ、1 SUNRISE、2 HELLO HERO、3 風の中は走るっきゃないっ！、4 ぴ）
 - 輸出：`node render-pv.mjs`（`pv.js` 裡的全部歌曲同時輸出到 `pv/`），或 `node render-pv.mjs 1 --from 60 --to 72` 只輸出片段。需要 Google Chrome 與 ffmpeg
 
 人物由使用者提供的參考圖去背切出來：把參考圖放進 `assets/ref/`（`rise5.webp` 五人演出服白底、`lineup12.webp` 十二人色條底、`rooftop6.webp`、`stage9.webp`），執行 `node tools/cutout.mjs` 產生 `assets/ref/cast/` 的角色 PNG 與 `cast.json`。每首歌的主視覺與成員在 `pv.js` 的 `ARTS`、`SONGS[].cast` 設定（第一位是主唱）：大好きだよって叫ぶんだ 用 RISE 演出服，SUNRISE 用制服，HELLO HERO 用智的隊伍，風の中は走るっきゃないっ！ 用生徒会六人（`assets/ref/cast/anaru-*.png`，主視覺 `assets/ref/anaru6.png`）。角色以切圖分條彎曲、跳躍、壓縮做出跟拍舞動。
@@ -49,7 +49,9 @@ macOS 也可雙擊 `啟動播放器.command`，會在終端機啟動伺服器並
 
 ## 歌曲檔案
 
-本機 MP3 與字幕檔（SRT／LRC）通常不放在這個 repo（見 `.gitignore`）。「風の中は走るっきゃないっ！」的 MP3 和日中雙語 SRT 已納入 repo，供部署版播放及顯示字幕；其他音訊與字幕仍由使用者本機提供。
+本機 MP3 與字幕檔（SRT／LRC）通常不放在這個 repo（見 `.gitignore`）。「風の中は走るっきゃないっ！」與「ぴ [ナナヲアカリ]」的 MP3 和日中雙語 SRT 已納入 repo，供部署版播放及顯示字幕；其他音訊與字幕仍由使用者本機提供。
+
+「ぴ」的 SRT 是拿官方歌詞對本機 MP3 做強制對齊產生的：日中逐句雙語，中文行用「嗶」代替日文歌詞裡的「ぴ」（播放器以「是否含假名」判斷哪一行是翻譯，中文行若含假名會失效）。
 把檔案放在與 `index.html` 同一個資料夾，並在 `v2.html` 的 `DEFAULT_SONGS`（播放器）與 `pv.js` 的 `SONGS`（PV）設定檔名：
 
 部署版若缺少其他歌曲的本機 MP3，播放器會自動切換到該曲的 YouTube 音源；部署版未附其他歌曲的 SRT／LRC，請在歌詞面板匯入字幕檔。
