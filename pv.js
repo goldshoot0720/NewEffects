@@ -36,6 +36,10 @@ const SONGS = [
   {title: '風の中は走るっきゃないっ！', ver: '三月のパンタシア', file: '風の中は走るっきゃないっ！ [三月のパンタシア]',
    subs: '風の中は走るっきゃないっ！.srt', theme: 'wind', art: 'anaru',
    series: '三月のパンタシア', kicker: 'TVアニメ「生徒会にも穴はある！」OP',
+   cast: [['anaru', 0, '梅', '#e07a45'], ['anaru', 1, '寿子', '#e0893a'], ['anaru', 2, 'こころ', '#f08aaa'], ['anaru', 3, 'たん', '#6ecf9a'], ['anaru', 4, '有栖', '#7aa2ff'], ['anaru', 5, '敏深', '#d7c4a8']]},
+  {title: 'ぴ', ver: 'ナナヲアカリ', file: 'ぴ [ナナヲアカリ]',
+   subs: 'ぴ.srt', theme: 'pit', art: 'anaru',
+   series: 'ナナヲアカリ', kicker: 'TVアニメ「生徒会にも穴はある！」ED',
    cast: [['anaru', 0, '梅', '#e07a45'], ['anaru', 1, '寿子', '#e0893a'], ['anaru', 2, 'こころ', '#f08aaa'], ['anaru', 3, 'たん', '#6ecf9a'], ['anaru', 4, '有栖', '#7aa2ff'], ['anaru', 5, '敏深', '#d7c4a8']]}
 ];
 // 每首歌一組配色：夏日向日葵、日出、黃昏星空、晴空疾風
@@ -43,7 +47,8 @@ const THEMES = {
   summer:   {sky: ['#0b3d74', '#2f8fe0', '#bfeaff'], pastel: ['#fff8dc', '#d6f0ff'], accent: '#ffd23f', accent2: '#ff7b54', cool: '#5fd0ff', deep: '#0b2d55', particle: 'petal'},
   sunrise:  {sky: ['#22164a', '#b8487d', '#ffbf7a'], pastel: ['#fff1e6', '#ffe0ef'], accent: '#ffc35c', accent2: '#ff5f93', cool: '#a99bff', deep: '#2a1640', particle: 'spark'},
   twilight: {sky: ['#050820', '#2b2366', '#d0677a'], pastel: ['#eef0ff', '#ffe6ea'], accent: '#ffd56b', accent2: '#9c7bff', cool: '#62d4ff', deep: '#14123a', particle: 'star'},
-  wind:     {sky: ['#0e3a66', '#49b4ef', '#e8f8ff'], pastel: ['#f3fbff', '#e5fff6'], accent: '#ffe14a', accent2: '#3ec6ff', cool: '#d7f6ff', deep: '#0c2748', particle: 'wind'}
+  wind:     {sky: ['#0e3a66', '#49b4ef', '#e8f8ff'], pastel: ['#f3fbff', '#e5fff6'], accent: '#ffe14a', accent2: '#3ec6ff', cool: '#d7f6ff', deep: '#0c2748', particle: 'wind'},
+  pit:      {sky: ['#431a6b', '#ff79b8', '#ffe9a8'], pastel: ['#fff3fb', '#eafaff'], accent: '#ff4f9a', accent2: '#31d3c6', cool: '#ffd166', deep: '#2a1146', particle: 'dot'}
 };
 const LOGO = [['B', '#2ba6e1'], ['E', '#f6a531'], ['S', '#ee5b97'], ['T', '#2ba6e1'], [' ', ''], ['4', '#f6a531'], ['U', '#8d6ad6']];
 const POP = ['#ee5b97', '#2ba6e1', '#f6a531', '#8d6ad6', '#3cc39a', '#f08a4b'];
@@ -351,6 +356,17 @@ function particles(t, n, layer = 0, kind = T.particle){
       const y = 40 + h2*H*.85, x = -80 + age*(W + 220);
       g.globalAlpha = .5*Math.sin(age*Math.PI); g.strokeStyle = h4 > .55 ? '#ffffff' : T.cool; g.lineWidth = 2 + h3*3;
       g.beginPath(); g.moveTo(x, y); g.lineTo(x - 26 - h4*46, y + (h3 - .5)*14); g.stroke();
+    } else if(kind === 'dot'){
+      // 「ぴ」＝點點與小穴：圓點與空心圓環交錯飄落
+      const life = 6 + h3*5, age = frac(t/life + h1), x = h2*W + Math.sin(t*.9 + i)*36, y = -60 + age*(H + 120), r = 9 + h3*24;
+      g.globalCompositeOperation = 'source-over'; g.globalAlpha = .8*Math.sin(age*Math.PI);
+      if(h4 > .45){
+        g.strokeStyle = h4 > .72 ? T.accent : T.accent2; g.lineWidth = 3 + h3*5;
+        g.beginPath(); g.arc(x, y, r, 0, Math.PI*2); g.stroke();
+      } else {
+        g.fillStyle = h4 > .2 ? '#ffffff' : T.accent2;
+        g.beginPath(); g.arc(x, y, r*.55, 0, Math.PI*2); g.fill();
+      }
     } else {
       const life = 7 + h3*6, age = frac(t/life + h1), x = h2*W*1.2 - age*320 + Math.sin(t*1.3 + i)*25, y = -60 + age*(H + 120);
       g.globalCompositeOperation = 'source-over';
