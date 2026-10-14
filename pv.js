@@ -315,7 +315,9 @@ function shotAt(t){
 function prepare(cover){
   const art = mk(AW, AH); art.getContext('2d').drawImage(cover, ART.crop[0], ART.crop[1], AW, AH, 0, 0, AW, AH);
   const blurred = (scale, px) => { const c = mk(Math.round(AW*scale), Math.round(AH*scale)), x = c.getContext('2d'); x.filter = `blur(${px}px)`; x.drawImage(art, -AW*scale*.05, -AH*scale*.05, AW*scale*1.1, AH*scale*1.1); return c; };
-  C.art = art; C.bloom = blurred(.5, 5); C.blur = blurred(.6, 16);
+  // C.blur 是各鏡頭共用的背景底：模糊要夠重，否則人物會在半透明底圖上留下像殘影的重影，
+  // 所以這裡只留大塊的色塊分布（看得出主題色），看不出角色輪廓。
+  C.art = art; C.bloom = blurred(.5, 5); C.blur = blurred(.5, 30);
   const sky = mk(W, H), sx = sky.getContext('2d'), gr = sx.createLinearGradient(0, 0, 0, H);
   gr.addColorStop(0, T.sky[0]); gr.addColorStop(.55, T.sky[1]); gr.addColorStop(1, T.sky[2]);
   sx.fillStyle = gr; sx.fillRect(0, 0, W, H); C.sky = sky;
@@ -494,7 +496,9 @@ function drawDancer(i, x, y, h, st){
   g.save();
   g.fillStyle = 'rgba(0,0,0,.28)'; g.beginPath(); g.ellipse(x, y, w*.32*(1 - Math.min(.35, hop/h*3)), h*.02, 0, 0, Math.PI*2); g.fill();
   g.restore();
-  SpriteRig.draw(g, img, x, y, h, {wave: st.wave, energy: st.energy, hop, tilt: st.tilt, squash: st.squash*4});
+  // st 可以帶 armA/armB/legA/legB 直接指定關節角度（例如合照要一個固定的舞姿）
+  SpriteRig.draw(g, img, x, y, h, {wave: st.wave, energy: st.energy, hop, tilt: st.tilt, squash: st.squash*4,
+    armA: st.armA, armB: st.armB, legA: st.legA, legB: st.legB});
 }
 let T0 = 0;
 
@@ -757,7 +761,7 @@ function shotTypo(t, sh, u){
   focusLines(t, .35*(1 - clamp((t - c.start)/.8)) + .12*pulse(t)*energy(t), left ? 1270 : 650, H*.45, 520);
   sparkles(t, 10, 9 + c.i, [left ? 800 : 160, 140, 940, 700]);
   const mx = left ? 470 : W - 470, m = sh.member;
-  g.save(); g.globalCompositeOperation = 'lighter'; glow(mx, 520, 560, MEMBERS[m].color, .45); g.restore();
+  g.save(); g.globalCompositeOperation = 'lighter'; glow(mx, 420, 280, MEMBERS[m].color, .16); g.restore();
   const enter = easeOut((t - sh.start)/.5);
   drawDancer(m, mx + (left ? -1 : 1)*(1 - enter)*200, 110 + 1350, 1350, danceState(m, t, {e: .6}));
   // 成員名牌
@@ -825,7 +829,7 @@ function shotWindows(t, sh, u){
     const cg = g.createLinearGradient(0, y + bar, 0, y + h); cg.addColorStop(0, shade(mem.color, .82)); cg.addColorStop(1, shade(mem.color, .55));
     g.fillStyle = cg; g.fillRect(x, y + bar, w, h - bar);
     g.save(); g.beginPath(); g.rect(x, y + bar, w, h - bar); g.clip();
-    g.globalCompositeOperation = 'lighter'; glow(0, y + bar + 150, 260, '#ffffff', .5); g.globalCompositeOperation = 'source-over';
+    g.globalCompositeOperation = 'lighter'; glow(0, y + bar + 80, 160, '#ffffff', .22); g.globalCompositeOperation = 'source-over';
     drawDancer(m, 0, y + bar + 30 + 1000, 1000, danceState(m, t, {e: .8, alt: true}));
     g.restore();
     g.fillStyle = T.deep; g.fillRect(x, y + bar - 3, w, 3);
@@ -883,19 +887,19 @@ function shotStage(t, sh, u){
   const sx = 410, sy = 60, sw = 1100, shh = 540;
   g.save(); g.shadowColor = T.accent2; g.shadowBlur = 40; roundRect(sx - 14, sy - 14, sw + 28, shh + 28, 16); g.fillStyle = '#0a0a16'; g.fill(); g.restore();
   g.save(); g.beginPath(); g.rect(sx, sy, sw, shh); g.clip();
-  // 螢幕裡放實際在跳舞的成員（輪替四位）。刻意壓低亮度並疊一層色調＋掃描線，
-  // 讓它讀起來是「LED 牆上的畫面」，而不是和舞台成員疊在一起變成殘影。
+  // 螢幕裡放實際在跳舞的成員（輪替四位），但整排收在舞台眾人的頭以上。
+  // 同一個人若以半透明、差不多的大小疊在自己身後，手臂和頭會變成第二層殘影。
   const sg = g.createLinearGradient(0, sy, 0, sy + shh);
   sg.addColorStop(0, 'rgba(16,10,34,.96)'); sg.addColorStop(1, 'rgba(38,18,48,.96)');
   g.fillStyle = sg; g.fillRect(sx, sy, sw, shh);
-  const nMem = MEMBERS.length, base = (Math.floor(t/5)*4) % nMem;
-  g.save(); g.globalAlpha = .5;
-  for(let i = 0; i < 4; i++){
-    const m = (base + i) % nMem, cx = sx + sw*(i + .5)/4;
-    drawDancer(m, cx, sy + shh - 8, shh*.64, danceState(m, t, {alt: true, e: .8}));
+  const nMem = MEMBERS.length, nShow = Math.min(4, nMem), base = (Math.floor(t/5)*nShow) % nMem;
+  const rowH = shh*.42, feet = sy + shh*.50;
+  // 特寫的縮放會把這排裁到只剩腳，那些腳掛在畫面上方又會像殘影，所以特寫不畫
+  if(!close) for(let i = 0; i < nShow; i++){
+    const m = (base + i) % nMem, cx = sx + sw*(i + .5)/nShow;
+    drawDancer(m, cx, feet, rowH, danceState(m, t, {alt: true, e: .72}));
   }
-  g.restore();
-  g.fillStyle = 'rgba(18,8,38,.42)'; g.fillRect(sx, sy, sw, shh);      // 螢幕色調
+  g.fillStyle = 'rgba(18,8,38,.28)'; g.fillRect(sx, sy, sw, shh);      // 螢幕色調
   g.fillStyle = 'rgba(0,0,0,.2)';                                      // 掃描線
   for(let y = sy; y < sy + shh; y += 7) g.fillRect(sx, y, sw, 3);
   g.font = `600 20px ${FONT.mono}`; g.fillStyle = 'rgba(255,255,255,.55)';
@@ -909,25 +913,25 @@ function shotStage(t, sh, u){
   const sheen = g.createLinearGradient(sx, sy, sx + sw, sy + shh);
   sheen.addColorStop(0, 'rgba(255,255,255,.16)'); sheen.addColorStop(.45, 'rgba(255,255,255,0)'); sheen.addColorStop(1, 'rgba(255,255,255,.06)');
   g.fillStyle = sheen; g.fillRect(sx, sy, sw, shh);
-  g.globalAlpha = .1*pl; g.fillStyle = '#fff'; g.fillRect(sx, sy, sw, shh); g.globalAlpha = 1;
+  g.globalAlpha = .04*pl; g.fillStyle = '#fff'; g.fillRect(sx, sy, sw, shh); g.globalAlpha = 1;
   g.restore();
-  // 兩側燈柱
+  // 兩側燈柱：只要看得出在跳，不要亮到把旁邊的人吃掉
   for(const lx of [250, 1670]){
     for(let r = 0; r < 12; r++){
       const on = (Math.floor(b) + r + (lx > 900 ? 2 : 0)) % 4 === 0;
       g.globalCompositeOperation = 'lighter';
-      glow(lx, 100 + r*48, on ? 30 : 14, r % 2 ? T.accent : T.cool, on ? .9 : .3);
+      glow(lx, 100 + r*48, on ? 18 : 10, r % 2 ? T.accent : T.cool, on ? .42 : .16);
       g.globalCompositeOperation = 'source-over';
     }
   }
   // 地板
   g.drawImage(C.floor, 0, 700);
   g.fillStyle = T.accent; g.globalAlpha = .55 + .4*pl; g.fillRect(0, 698, W, 4); g.globalAlpha = 1;
-  // 聚光燈
+  // 聚光燈：六道加色疊在主唱身上會把衣服打成白斑，所以亮度壓低
   g.save(); g.globalCompositeOperation = 'lighter';
   for(let i = 0; i < 6; i++){
     const bx0 = 200 + i*304, ang = .38*Math.sin(b*Math.PI/4 + i*1.1) + (i < 3 ? .12 : -.12);
-    g.save(); g.translate(bx0, -40); g.rotate(ang); g.globalAlpha = .1 + .14*pl*en;
+    g.save(); g.translate(bx0, -40); g.rotate(ang); g.globalAlpha = .035 + .04*pl*en;
     g.drawImage(C.beam, -180, 0); g.restore();
   }
   g.restore();
@@ -946,14 +950,19 @@ function shotStage(t, sh, u){
     : O.length >= 5
     ? [[.31, 790, 400, O[0]], [.5, 775, 390, O[1]], [.69, 790, 400, O[2]], [.17, 935, 480, O[3]], [.83, 935, 480, O[4]], [.5, 985, 560, LEAD]]
     : [[.34, 790, 400, O[0]], [.66, 790, 400, O[1]], [.15, 935, 480, O[2]], [.85, 935, 480, O[3]], [.5, 985, 560, LEAD]];
-  // 特寫時後排正中央會被主唱擋住，不畫以免頭部從主唱後方冒出
+  // 後排正中央會被主唱擋住。手張得很開的立繪，冒出的頭和手臂會像主唱的殘影，每個景別都不畫；
+  // 較窄的立繪只在特寫拿掉，廣角仍留著當後排。
   const centerBack = O.length >= 7 ? 2 : O.length >= 5 ? 1 : -1;
   const intro = sh.variant === 'intro' ? clamp((t - .5)/1.5) : 1;
   spots.forEach(([fx, y, h, m], k) => {
-    if(close && k === centerBack) return;
+    if(k === centerBack){
+      const img = MEMBERS[m]?.img, wide = img && img.width/img.height > .6;
+      if(wide || close) return;
+    }
     const delay = k*.08, st = danceState(m, t, {alt: true, e: m === LEAD ? 1 : .9});
     g.save(); g.globalAlpha = easeOut((intro - delay)/.5 + (intro >= 1 ? 1 : 0));
-    g.globalCompositeOperation = 'lighter'; glow(fx*W, y - h*.5, h*.7, MEMBERS[m].color, .18 + .2*pl); g.globalCompositeOperation = 'source-over';
+    // 光暈放在頭後方、收小，白色核心才不會從肩膀兩側爆出來
+    g.globalCompositeOperation = 'lighter'; glow(fx*W, y - h*.72, h*.32, MEMBERS[m].color, .06 + .05*pl); g.globalCompositeOperation = 'source-over';
     drawDancer(m, fx*W, y, h, st);
     g.restore();
   });
@@ -1001,11 +1010,16 @@ function drawBicycle(cx, cy, R, spin, pedal, o = {}){
     line(bar, front, frame, lw);                                             // 前叉
     g.strokeStyle = '#2a2f3a'; g.lineWidth = lw*.85;                         // 把手
     g.beginPath(); g.moveTo(bar[0], bar[1]); g.lineTo(bar[0] + R*.24, bar[1] - R*.08); g.stroke();
-    for(const off of [0, Math.PI]){                                          // 踏板跟著曲柄轉
-      const a = pedal + off, px = crank[0] + Math.cos(a)*R*.44, py = crank[1] + Math.sin(a)*R*.44;
+    // 踏板：預設自己繞曲柄轉；給了 o.feet 就改畫在腳底（曲柄臂連到腳，腳一定踩得到）
+    const step = (px, py) => {
       g.strokeStyle = '#2a2f3a'; g.lineWidth = lw*.7;
       g.beginPath(); g.moveTo(crank[0], crank[1]); g.lineTo(px, py); g.stroke();
       g.fillStyle = T.accent; g.beginPath(); g.ellipse(px, py, R*.19, R*.08, 0, 0, Math.PI*2); g.fill();
+    };
+    if(o.feet) o.feet.forEach(([px, py]) => step(px, py + R*.05));
+    else for(const off of [0, Math.PI]){
+      const a = pedal + off;
+      step(crank[0] + Math.cos(a)*R*.44, crank[1] + Math.sin(a)*R*.44);
     }
     g.fillStyle = T.accent; g.beginPath(); g.arc(crank[0], crank[1], R*.12, 0, Math.PI*2); g.fill();
   }
@@ -1031,21 +1045,36 @@ function drawRoad(t, horizon, speed){
 function drawRider(m, cx, cy, R, t, opts = {}){
   const pedal = t*opts.cadence, spin = -t*opts.speed/R;
   const bob = Math.sin(pedal*2)*R*.025;
+  const img = MEMBERS[m]?.img;
+  // 踏板不再自己繞圈：先算出雙腳真的踩到的位置，再把踏板畫在腳底下，
+  // 這樣不管立繪的腿怎麼擺，腳都一定踩在踏板上（曲柄臂連到腳）。
+  // 兩腿一前一後擺（正面立繪在側面視角下讀起來就是踩踏），不再同向擺。
+  const swing = Math.sin(pedal), amp = opts.legAmp ?? .30;
+  const angL = amp*swing, angR = -amp*swing;
+  let feet = null, h = 0, fx = cx - R*.06, feetY = 0;
+  if(img){
+    const r = SpriteRig.measure(img), rig = SpriteRig.bake(img);
+    h = R*2.9;
+    const k = h/img.height, w = img.width*k;
+    const hipFrac = r.ok ? r.hipY/r.H : .6;
+    feetY = (cy - R*.92) + h*(1 - hipFrac);                 // 髖部落到座墊高度
+    const hipX = fx - w/2 + (r.ok ? r.legSplit*k : w/2), hipY = feetY - h + (r.ok ? r.hipY*k : h*.6);
+    const foot = (key, ang) => {
+      const L = rig?.layers?.[key]; if(!L) return null;
+      const ox = (L.x0 + L.w/2 - r.legSplit)*k, oy = (L.y0 + L.h - r.hipY)*k;
+      const c = Math.cos(ang), s = Math.sin(ang);
+      return [hipX + ox*c - oy*s, hipY + ox*s + oy*c];
+    };
+    feet = [foot('legL', angL), foot('legR', angR)].filter(Boolean);
+  }
   g.save(); g.translate(0, bob);
   drawBicycle(cx, cy, R, spin, pedal, {frame: opts.frame, part: 'back'});
-  const img = MEMBERS[m]?.img;
-  if(img){
-    const r = SpriteRig.measure(img);
-    const h = R*2.9;
-    const hipFrac = r.ok ? r.hipY/r.H : .6;
-    const feetY = (cy - R*.92) + h*(1 - hipFrac);        // 髖部落到座墊高度
-    SpriteRig.draw(g, img, cx - R*.06, feetY, h, {
-      energy: 0, wave: 0, hop: 0, tilt: .07,
-      armA: -.78 + .07*Math.sin(pedal), armB: -.78 + .07*Math.sin(pedal + 1.6),
-      legA: .40 + .34*Math.sin(pedal), legB: .40 + .34*Math.sin(pedal + Math.PI)
-    });
-  }
-  drawBicycle(cx, cy, R, spin, pedal, {frame: opts.frame, part: 'front'});
+  if(img) SpriteRig.draw(g, img, fx, feetY, h, {
+    energy: 0, wave: 0, hop: 0, tilt: .07,
+    armA: -.78 + .07*Math.sin(pedal), armB: -.78 + .07*Math.sin(pedal + 1.6),
+    legA: angL, legB: angR
+  });
+  drawBicycle(cx, cy, R, spin, pedal, {frame: opts.frame, part: 'front', feet: feet?.length ? feet : null});
   g.restore();
 }
 function shotBike(t, sh, u){
@@ -1090,9 +1119,42 @@ function shotBike(t, sh, u){
   lyricShade(830, .72);
   karaoke(t, {cx: W/2, y: 968, size: 60, maxW: 1560, zhSize: 34});
 }
-// 尾聲：封面拍立得＋LOGO，最後淡出
+// 拍立得裡的合照：全員用 SpriteRig 現場跳舞，而不是貼上靜態立繪的 T-pose。
+// 依人數排成一～兩排、主唱放前排正中央；舞姿手腳都在動（手臂大擺、雙腿開合踏步）。
+function groupPhoto(t, lt, cw, ch){
+  const N = MEMBERS.length, rows = N <= 4 ? 1 : 2, cols = Math.ceil(N/rows);
+  const order = MEMBERS.map((_, i) => i).filter(i => i !== LEAD);
+  const center = rows === 1 ? Math.floor(cols/2) : cols + Math.floor((N - cols)/2);
+  order.splice(Math.min(center, order.length), 0, LEAD);
+  const cellW = cw/cols, cellH = ch/rows, pl = pulse(t), en = Math.max(energy(t), .7);
+  order.forEach((m, k) => {
+    const mem = MEMBERS[m]; if(!mem?.img) return;
+    const row = Math.floor(k/cols), inRow = k % cols, count = Math.min(cols, N - row*cols);
+    const cx = -cw/2 + (cols - count)/2*cellW + (inRow + .5)*cellW;
+    const baseY = -ch/2 + (row + 1)*cellH - ch*.025;
+    const h = Math.min(cellH*.92, cellW*.92*(mem.img.height/mem.img.width));
+    const entry = easeOut((lt - k*.05)/.6);
+    // 每個人錯開一點拍點，合照才不會像整排一起做體操；雙腿用「開合」而不是左右同擺。
+    // 擺幅刻意保守：立繪的腿是切圖拼的，擺太大會在髖部留下一條沒跟上的細縫。
+    const p = beatPos(t) + m*.17, sw = Math.sin(Math.PI*p), open = Math.max(0, sw);
+    const st = {wave: sw, energy: en, hop: Math.abs(sw)*20*en, tilt: .09*sw,
+      squash: Math.max(0, 1 - frac(p)*6)*.05*en,
+      legA: (.05 + .13*open)*en, legB: -(.05 + .13*open)*en};
+    if(m === LEAD){
+      g.save(); g.globalCompositeOperation = 'lighter';
+      glow(cx, baseY - h*.5, h*.5, mem.color, (.16 + .12*pl)*entry); g.restore();
+    }
+    g.save(); g.globalAlpha = entry;
+    drawDancer(m, cx + (1 - entry)*(inRow % 2 ? 90 : -90), baseY, h, st);
+    g.restore();
+  });
+}
+// 尾聲：拍立得合照＋LOGO，最後淡出
 function shotOutro(t, sh, u){
-  backdrop(t, {dim: .25});
+  // 這裡刻意不用主視覺的柔焦底（模糊的人物會在背景留下像殘影的重影），
+  // 改成主題色漸層＋一盞打亮合照的柔光，乾淨但仍有聚光感。
+  g.drawImage(C.sky, 0, 0);
+  g.fillStyle = 'rgba(6,4,16,.5)'; g.fillRect(0, 0, W, H);
   bokeh(t, 12, 6);
   particles(t, 40, 7);
   const lt = t - sh.start, cw = 980, ch = cw*AH/AW, rot = -.025 + Math.sin(t*.5)*.01;
@@ -1100,7 +1162,18 @@ function shotOutro(t, sh, u){
   g.save(); g.translate(W/2, 470 + (1 - e)*200 + Math.sin(t*.8)*6); g.rotate(rot); g.scale(.85 + .15*e, .85 + .15*e); g.globalAlpha = clamp(lt/.4);
   g.fillStyle = 'rgba(0,0,0,.35)'; g.fillRect(-cw/2 - 4, -ch/2 + 4, cw + 36, ch + 36);
   g.fillStyle = '#fff'; g.fillRect(-cw/2 - 18, -ch/2 - 18, cw + 36, ch + 36);
-  g.drawImage(C.art, -cw/2, -ch/2, cw, ch);
+  g.save(); roundRect(-cw/2, -ch/2, cw, ch, 2); g.clip();
+  const bg = g.createLinearGradient(0, -ch/2, 0, ch/2);
+  bg.addColorStop(0, T.sky[0]); bg.addColorStop(.5, T.sky[1]); bg.addColorStop(1, T.sky[2]);
+  g.fillStyle = bg; g.fillRect(-cw/2, -ch/2, cw, ch);
+  g.save(); g.globalCompositeOperation = 'lighter';
+  const spot = g.createRadialGradient(0, -ch*.08, 0, 0, -ch*.08, Math.max(cw, ch)*.62);
+  spot.addColorStop(0, 'rgba(255,255,255,.34)'); spot.addColorStop(.55, 'rgba(255,255,255,.09)'); spot.addColorStop(1, 'rgba(255,255,255,0)');
+  g.fillStyle = spot; g.fillRect(-cw/2, -ch/2, cw, ch);
+  g.restore();
+  g.fillStyle = 'rgba(8,6,24,.3)'; g.fillRect(-cw/2, -ch/2, cw, ch);
+  groupPhoto(t, lt, cw, ch);
+  g.restore();
   g.restore();
   sparkles(t, 14, 11);
   if(song.series) stickerText(song.series, W/2, 900, 78, [T.accent, '#ffffff', T.cool, T.accent2], sh.start + .6, t);

@@ -102,10 +102,14 @@
     const shY = r.shoulderY, shL = r.shoulderLX, shR = r.shoulderRX;
     const hipY = r.hipY, legX = r.legSplit;
     const bandH = Math.max(6, r.armBot - r.armTop);
-    const fBand = Math.max(2, bandH*.3);                 // 手臂上下緣的羽化
-    const r0 = Math.max(6, bandH*.85);                   // 肩關節混合帶（半寬）
+    // 羽化帶刻意窄：羽化區的權重會留給身體層，手臂一擺動就會在原位留下一層
+    // 半透明的手臂殘影；帶越窄殘影越淡，手臂的邊緣也越接近原圖的銳利輪廓。
+    const fBand = Math.max(2, bandH*.15);                // 手臂上下緣的羽化
+    const r0 = Math.max(5, bandH*.6);                    // 肩關節混合帶（半寬）
     const r1 = Math.max(4, r.hh*.035);                   // 髖關節垂直混合帶（半高）
-    const r2 = Math.max(4, r.maxW*.04);                  // 兩腿之間的混合帶（半寬）
+    // 兩腿之間的混合帶刻意很窄：這條帶上的權重會留給身體層，腿一擺動就會在原位
+    // 留下一根細長的殘影；但也不能窄到硬切，否則裙襬／圍裙會被兩腿扯成兩半。
+    const r2 = Math.max(2, r.maxW*.012);
     // 左／右臂：用肩膀那欄的上下緣當帶，再往軀幹方向做水平漸變
     const armWeight = (x, y, shoulderX, side) => {
       const cx = side < 0 ? Math.min(x, shoulderX) : Math.max(x, shoulderX);
