@@ -931,7 +931,7 @@ function shotStage(t, sh, u){
   g.save(); g.globalCompositeOperation = 'lighter';
   for(let i = 0; i < 6; i++){
     const bx0 = 200 + i*304, ang = .38*Math.sin(b*Math.PI/4 + i*1.1) + (i < 3 ? .12 : -.12);
-    g.save(); g.translate(bx0, -40); g.rotate(ang); g.globalAlpha = .035 + .04*pl*en;
+    g.save(); g.translate(bx0, -40); g.rotate(ang); g.globalAlpha = .05 + .06*pl*en;
     g.drawImage(C.beam, -180, 0); g.restore();
   }
   g.restore();
