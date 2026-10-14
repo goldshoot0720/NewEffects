@@ -81,7 +81,30 @@ const frac = x => x - Math.floor(x);
 const pad = (n, l = 2) => String(Math.max(0, n)).padStart(l, '0');
 const mk = (w, h) => { const c = document.createElement('canvas'); c.width = w; c.height = h; return c; };
 
-const song = SONGS[clamp(+(params.get('song') || 0) | 0, 0, SONGS.length - 1)];
+// 網址沒帶 song 時接上次看的那一首。?song= 優先；逐格輸出不讀、也不寫這份紀錄。
+const LAST_SONG_KEY = 'pv-last-song';
+function savedSong(){
+  try{
+    const n = +localStorage.getItem(LAST_SONG_KEY);
+    if(Number.isInteger(n) && n >= 0 && n < SONGS.length) return n;
+  }catch{}
+  return 0;
+}
+function rememberSong(i){
+  try{ localStorage.setItem(LAST_SONG_KEY, String(i)); }catch{}
+}
+const songIndex = params.has('song') ? clamp(+params.get('song') | 0, 0, SONGS.length - 1) : savedSong();
+const song = SONGS[songIndex];
+if(!RENDER){
+  rememberSong(songIndex);
+  if(!params.has('song')){
+    try{
+      const q = new URLSearchParams(location.search);
+      q.set('song', String(songIndex));
+      history.replaceState(null, '', `${location.pathname}?${q}`);
+    }catch{}
+  }
+}
 song.audio = song.file + '.mp3';
 const T = THEMES[song.theme];
 const ART = ARTS[song.art], AW = ART.crop[2], AH = ART.crop[3], FACES = ART.faces;
@@ -994,7 +1017,8 @@ function drawBicycle(cx, cy, R, spin, pedal, o = {}){
     g.lineWidth = Math.max(1, lw*.34);
     g.rotate(spin);
     for(let i = 0; i < 6; i++){ g.beginPath(); g.moveTo(0, 0); g.lineTo(R*.9, 0); g.stroke(); g.rotate(Math.PI/3); }
-    g.fillStyle = T.accent; g.beginPath(); g.arc(0, 0, R*.15, 0, Math.PI*2); g.fill();
+    // 輪轂用深色。跟踏板一樣塗成黃色時，腳旁那兩顆大圓點會被看成沒踩到的踏板。
+    g.fillStyle = '#2a3144'; g.beginPath(); g.arc(0, 0, R*.15, 0, Math.PI*2); g.fill();
     g.restore();
   };
   const line = (a, b, col, w) => { g.strokeStyle = col; g.lineWidth = w; g.beginPath(); g.moveTo(a[0], a[1]); g.lineTo(b[0], b[1]); g.stroke(); };
@@ -1010,18 +1034,25 @@ function drawBicycle(cx, cy, R, spin, pedal, o = {}){
     line(bar, front, frame, lw);                                             // 前叉
     g.strokeStyle = '#2a2f3a'; g.lineWidth = lw*.85;                         // 把手
     g.beginPath(); g.moveTo(bar[0], bar[1]); g.lineTo(bar[0] + R*.24, bar[1] - R*.08); g.stroke();
-    // 踏板：預設自己繞曲柄轉；給了 o.feet 就改畫在腳底（曲柄臂連到腳，腳一定踩得到）
-    const step = (px, py) => {
+    // 踏板畫在角色前面，但只露出鞋底以下的那一段，鞋子才不會被黃色蓋住，
+    // 也不會在腳跟下面空出一截。sy 是鞋底；沒有腳的位置就繞著曲柄轉。
+    const rx = R*.16, ry = R*.07;
+    const step = (sx, sy) => {
+      const py = sy + ry*.35;
       g.strokeStyle = '#2a2f3a'; g.lineWidth = lw*.7;
-      g.beginPath(); g.moveTo(crank[0], crank[1]); g.lineTo(px, py); g.stroke();
-      g.fillStyle = T.accent; g.beginPath(); g.ellipse(px, py, R*.19, R*.08, 0, 0, Math.PI*2); g.fill();
+      g.beginPath(); g.moveTo(crank[0], crank[1]); g.lineTo(sx, py); g.stroke();
+      g.save();
+      g.beginPath(); g.rect(sx - rx - 1, sy - 1, rx*2 + 2, ry*3); g.clip();
+      g.fillStyle = T.accent; g.beginPath(); g.ellipse(sx, py, rx, ry, 0, 0, Math.PI*2); g.fill();
+      g.restore();
     };
-    if(o.feet) o.feet.forEach(([px, py]) => step(px, py + R*.05));
+    if(o.feet) o.feet.forEach(([sx, sy]) => step(sx, sy));
     else for(const off of [0, Math.PI]){
       const a = pedal + off;
-      step(crank[0] + Math.cos(a)*R*.44, crank[1] + Math.sin(a)*R*.44);
+      step(crank[0] + Math.cos(a)*R*.44, crank[1] + Math.sin(a)*R*.44 - ry*.35);
     }
-    g.fillStyle = T.accent; g.beginPath(); g.arc(crank[0], crank[1], R*.12, 0, Math.PI*2); g.fill();
+    // 曲柄軸用深色。塗成跟踏板一樣的黃色時，會在小腿旁邊多一顆沒被踩到的圓點。
+    g.fillStyle = '#2a3144'; g.beginPath(); g.arc(crank[0], crank[1], R*.1, 0, Math.PI*2); g.fill();
   }
   g.restore();
 }
@@ -1046,11 +1077,12 @@ function drawRider(m, cx, cy, R, t, opts = {}){
   const pedal = t*opts.cadence, spin = -t*opts.speed/R;
   const bob = Math.sin(pedal*2)*R*.025;
   const img = MEMBERS[m]?.img;
-  // 踏板不再自己繞圈：先算出雙腳真的踩到的位置，再把踏板畫在腳底下，
-  // 這樣不管立繪的腿怎麼擺，腳都一定踩在踏板上（曲柄臂連到腳）。
-  // 兩腿一前一後擺（正面立繪在側面視角下讀起來就是踩踏），不再同向擺。
+  // 踏板對準圖層量到的鞋底。以前用整條腿的外框底邊再往下偏，黃色橢圓會懸在褲腳下面。
+  // 兩腿一前一後擺（正面立繪在側面視角下讀起來就是踩踏）。
   const swing = Math.sin(pedal), amp = opts.legAmp ?? .30;
   const angL = amp*swing, angR = -amp*swing;
+  // SpriteRig.draw 會把傳入的 tilt 再乘 0.6，鞋底的點要一起轉，踏板才跟得上鞋子。
+  const tilt = .07*.6;
   let feet = null, h = 0, fx = cx - R*.06, feetY = 0;
   if(img){
     const r = SpriteRig.measure(img), rig = SpriteRig.bake(img);
@@ -1059,11 +1091,13 @@ function drawRider(m, cx, cy, R, t, opts = {}){
     const hipFrac = r.ok ? r.hipY/r.H : .6;
     feetY = (cy - R*.92) + h*(1 - hipFrac);                 // 髖部落到座墊高度
     const hipX = fx - w/2 + (r.ok ? r.legSplit*k : w/2), hipY = feetY - h + (r.ok ? r.hipY*k : h*.6);
+    const ct = Math.cos(tilt), st = Math.sin(tilt);
     const foot = (key, ang) => {
-      const L = rig?.layers?.[key]; if(!L) return null;
-      const ox = (L.x0 + L.w/2 - r.legSplit)*k, oy = (L.y0 + L.h - r.hipY)*k;
+      const L = rig?.layers?.[key]; if(!L?.sole) return null;
+      const dx = (L.sole.x - r.legSplit)*k, dy = (L.sole.y - r.hipY)*k;
       const c = Math.cos(ang), s = Math.sin(ang);
-      return [hipX + ox*c - oy*s, hipY + ox*s + oy*c];
+      const lx = (hipX - fx) + dx*c - dy*s, ly = (hipY - feetY) + dx*s + dy*c;
+      return [fx + lx*ct - ly*st, feetY + lx*st + ly*ct];
     };
     feet = [foot('legL', angL), foot('legR', angR)].filter(Boolean);
   }

@@ -87,6 +87,29 @@
     return r;
   }
 
+  // 圖層像素裡，從最底下一列實心的鞋底往上累積，直到寬度突然變大（裙襬）為止。
+  function soleFromAlpha(data, w, h, x0, y0){
+    const rows = [];
+    const limit = Math.max(14, Math.round(h*.15));
+    for(let y = h - 1; y >= 0 && rows.length < limit; y--){
+      let n = 0, sx = 0, lo = w, hi = -1;
+      for(let x = 0; x < w; x++) if(data[(y*w + x)*4 + 3] > ALPHA){
+        n++; sx += x; if(x < lo) lo = x; if(x > hi) hi = x;
+      }
+      if(n >= 4) rows.push({y, n, sx, lo, hi});
+    }
+    if(!rows.length) return null;
+    const base = rows[0].hi - rows[0].lo + 1;
+    let accN = 0, accX = 0, used = 0;
+    for(const row of rows){
+      const rw = row.hi - row.lo + 1;
+      if(used && rw > base*2.4 && rw > base + 10) break;
+      accN += row.n; accX += row.sx; used++;
+      if(used >= 8) break;
+    }
+    return {x: x0 + accX/accN, y: y0 + rows[0].y};
+  }
+
   // 逐像素算權重，並把原圖依權重拆成五張圖層
   function bake(img){
     const r = measure(img);
@@ -162,7 +185,9 @@
           : Math.round(A*Math.min(1, w));
       }
       cx.putImageData(id, 0, 0);
-      layers[k] = {c, x0, y0, w: cw, h: ch};
+      // 鞋底取最底下那一小段的重心，不取整條腿的外框中心。
+      // 外框中心在大腿，裙襬又比鞋子寬；踏板若跟著外框，就會畫在小腿或裙緣旁邊。
+      layers[k] = {c, x0, y0, w: cw, h: ch, sole: (k === 'legL' || k === 'legR') ? soleFromAlpha(o, cw, ch, x0, y0) : null};
     }
     const rig = {r, layers, r0};
     bakeCache.delete(img); bakeCache.set(img, rig);
