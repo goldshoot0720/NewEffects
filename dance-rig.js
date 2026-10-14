@@ -39,6 +39,38 @@
     let aTop = widest, aBot = widest;
     while(aTop > top && widthAt(aTop - 1) > thr) aTop--;
     while(aBot < bot && widthAt(aBot + 1) > thr) aBot++;
+    // 五指張開後，指尖那幾列和手臂一樣寬，手臂帶會被撐到整隻手那麼高。
+    // 肩膀厚度和雙馬尾裁切跟前臂走，不跟著指尖變厚。
+    {
+      const span = Math.max(1, xMax[widest] - xMin[widest]);
+      const forearm = [];
+      const probeCol = x => {
+        let best = -1, bestD = 1e9;
+        const y0 = Math.max(top, widest - 80), y1 = Math.min(bot, widest + 80);
+        for(let yy = y0; yy <= y1; yy++) if(d[(yy*W + x)*4 + 3] > ALPHA){
+          const dd = Math.abs(yy - widest); if(dd < bestD){ bestD = dd; best = yy; }
+        }
+        if(best < 0) return;
+        let a = best, b = best;
+        while(a > top && d[((a - 1)*W + x)*4 + 3] > ALPHA) a--;
+        while(b < bot && d[((b + 1)*W + x)*4 + 3] > ALPHA) b++;
+        if(b - a > hh*.2) return;
+        forearm.push(b - a);
+      };
+      for(const t of [.12, .16, .2]){
+        probeCol(xMin[widest] + Math.round(span*t));
+        probeCol(xMax[widest] - Math.round(span*t));
+      }
+      if(forearm.length >= 3){
+        forearm.sort((p, q) => p - q);
+        const thick = forearm[Math.floor(forearm.length/2)];
+        if(aBot - aTop > thick*1.55){
+          const half = Math.max(4, Math.round(thick/2));
+          aTop = Math.max(top, widest - half);
+          aBot = Math.min(bot, widest + half);
+        }
+      }
+    }
     // 上半身明顯比中段寬才是有張開的手臂（裙子不會被誤判）；斜的手臂也能通過
     const midW = widthAt(top + Math.round(hh*.5));
     const arms = maxW > midW*1.1 && widest < top + hh*.6;
@@ -74,21 +106,25 @@
     if(arms){
       const scan = (from, to) => {
         for(let x = from; x <= to; x++){
-          let best = -1, bestD = 1e9;
-          for(let y = top; y <= hipY; y++) if(d[(y*W + x)*4 + 3] > ALPHA){
-            const dd = Math.abs(y - widest); if(dd < bestD){ bestD = dd; best = y; }
-          }
-          if(best < 0) continue;
-          let a = best, b = best;
-          while(a > top && d[((a - 1)*W + x)*4 + 3] > ALPHA) a--;
-          while(b < hipY && d[((b + 1)*W + x)*4 + 3] > ALPHA) b++;
-          // 同一欄若和手臂連在一起，雙馬尾、耳朵、外套會整條被算進手臂。
-          // 伸出手臂帶太多的那截留在身體上，手一抬才不會把頭髮甩到臉前面。
+          // 張開的五指中間是透明的，每一指各自是一段。離手臂帶近的都算手。
+          // 雙馬尾、耳朵、外套若伸出手臂帶太多，整段留在身體上，手一抬才不會甩到前面。
           const slack = Math.max(12, Math.round((armBot - armTop) * 0.9));
-          if(armTop - a > slack * 2) a = armTop;
-          if(b - armBot > slack * 2) b = armBot;
-          if(a > b) continue;
-          armTopAt[x] = a; armBotAt[x] = b;
+          let aMin = 1e9, bMax = -1;
+          for(let y = top; y <= hipY; y++){
+            if(d[(y*W + x)*4 + 3] <= ALPHA) continue;
+            let a = y, b = y;
+            while(b < hipY && d[((b + 1)*W + x)*4 + 3] > ALPHA) b++;
+            const tooFar = armTop - a > slack * 2 || b - armBot > slack * 2;
+            if(tooFar){
+              if(b < armTop || a > armBot){ y = b; continue; }
+              a = Math.max(a, armTop); b = Math.min(b, armBot);
+            }
+            if(a < aMin) aMin = a;
+            if(b > bMax) bMax = b;
+            y = b;
+          }
+          if(bMax < 0 || aMin > bMax) continue;
+          armTopAt[x] = aMin; armBotAt[x] = bMax;
         }
       };
       scan(0, shoulderLX);
