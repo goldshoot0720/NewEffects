@@ -110,6 +110,136 @@
     return {x: x0 + accX/accN, y: y0 + rows[0].y};
   }
 
+  // 腿只沿著鞋子往上長，長到裙襬或胯下就停。
+  // 以前髖線以下整片對半切，裙子和尾巴會被兩腿扯開，中縫還留一條身體殘影。
+  function legCorridors(d, W, H, top, bot, hh, maxW){
+    const runsAt = y => {
+      const runs = [];
+      let inn = false, lo = 0;
+      for(let x = 0; x < W; x++){
+        const on = d[(y*W + x)*4 + 3] > ALPHA;
+        if(on && !inn){ inn = true; lo = x; }
+        else if(!on && inn){ if(x - lo >= 3) runs.push([lo, x - 1]); inn = false; }
+      }
+      if(inn && W - lo >= 3) runs.push([lo, W - 1]);
+      return runs;
+    };
+    let seedY = -1, pair = null, best = 0;
+    const yFrom = Math.max(top, bot - Math.round(hh*.18));
+    for(let y = bot; y >= yFrom; y--){
+      let rs = runsAt(y);
+      if(rs.length < 2) continue;
+      rs.sort((a, b) => (b[1] - b[0]) - (a[1] - a[0]));
+      const two = [rs[0], rs[1]].sort((a, b) => a[0] - b[0]);
+      const w1 = two[0][1] - two[0][0] + 1, w2 = two[1][1] - two[1][0] + 1;
+      const gap = two[1][0] - two[0][1] - 1;
+      if(gap < 4 || Math.max(w1, w2) > maxW*.34) continue;
+      const m = Math.min(w1, w2);
+      if(m > best){ best = m; seedY = y; pair = two; }
+    }
+    if(!pair) return null;
+    const L = new Array(H).fill(null), R = new Array(H).fill(null);
+    const put = (side, y, lo, hi, w) => { if(lo <= hi) (side ? R : L)[y] = [lo, hi, w]; };
+    const cors = [
+      {lo: pair[0][0], hi: pair[0][1], alive: true},
+      {lo: pair[1][0], hi: pair[1][1], alive: true}
+    ];
+    put(0, seedY, pair[0][0], pair[0][1], 1);
+    put(1, seedY, pair[1][0], pair[1][1], 1);
+    const ankle = Math.max(8, Math.min(pair[0][1] - pair[0][0], pair[1][1] - pair[1][0]) + 1);
+    const sudden = w => w > ankle*1.85 && w > ankle + 12;
+    const yCap = top + Math.round(hh*.40);
+    let merged = 0;
+    for(let y = seedY - 1; y >= yCap && (cors[0].alive || cors[1].alive); y--){
+      const rs = runsAt(y);
+      const alive = [0, 1].filter(i => cors[i].alive);
+      if(!rs.length || !alive.length) break;
+      const match = {};
+      for(const i of alive){
+        let bestN = 0, bestRun = null;
+        for(const run of rs){
+          const n = Math.min(run[1], cors[i].hi + 6) - Math.max(run[0], cors[i].lo - 6) + 1;
+          if(n > bestN){ bestN = n; bestRun = run; }
+        }
+        match[i] = bestN > 0 ? bestRun : null;
+      }
+      if(alive.every(i => !match[i])) break;
+      const same = alive.length === 2 && match[0] && match[0] === match[1];
+      if(same){
+        // 兩腿併成一塊就是裙襬或上衣，不再往上切。胯下最多留兩列當關節。
+        merged++;
+        if(merged > 2) break;
+        const run = match[0];
+        if(run[1] - run[0] + 1 > ankle*2.4) break;
+        const mid = Math.floor(((cors[0].lo + cors[0].hi) + (cors[1].lo + cors[1].hi))/4);
+        const parts = [[run[0], Math.min(run[1], mid)], [Math.max(run[0], mid + 1), run[1]]];
+        for(const i of [0, 1]){
+          const lo = parts[i][0], hi = parts[i][1];
+          if(hi - lo + 1 >= 3) put(i, y, lo, hi, 1);
+        }
+        continue;
+      }
+      merged = 0;
+      let any = false;
+      for(const i of alive){
+        const run = match[i];
+        if(!run){ cors[i].alive = false; continue; }
+        const w = run[1] - run[0] + 1;
+        if(sudden(w)){ cors[i].alive = false; continue; }
+        cors[i].lo = run[0]; cors[i].hi = run[1];
+        put(i, y, run[0], run[1], 1);
+        any = true;
+      }
+      if(!any) break;
+    }
+    const foot = [
+      {lo: pair[0][0], hi: pair[0][1], alive: true},
+      {lo: pair[1][0], hi: pair[1][1], alive: true}
+    ];
+    for(let y = seedY + 1; y <= bot; y++){
+      const rs = runsAt(y);
+      if(!rs.length) break;
+      const match = {};
+      for(const i of [0, 1]){
+        if(!foot[i].alive) continue;
+        let bestN = 0, bestRun = null;
+        for(const run of rs){
+          const n = Math.min(run[1], foot[i].hi + 6) - Math.max(run[0], foot[i].lo - 6) + 1;
+          if(n > bestN){ bestN = n; bestRun = run; }
+        }
+        match[i] = bestN > 0 ? bestRun : null;
+      }
+      if(match[0] && match[0] === match[1]){
+        const run = match[0];
+        const mid = Math.floor((foot[0].lo + foot[0].hi + foot[1].lo + foot[1].hi)/4);
+        const parts = [[run[0], Math.min(run[1], mid)], [Math.max(run[0], mid + 1), run[1]]];
+        for(const i of [0, 1]){
+          const lo = parts[i][0], hi = parts[i][1];
+          if(hi - lo + 1 < 2){ foot[i].alive = false; continue; }
+          foot[i].lo = lo; foot[i].hi = hi;
+          put(i, y, lo, hi, 1);
+        }
+      }else{
+        for(const i of [0, 1]){
+          if(!foot[i].alive) continue;
+          const run = match[i];
+          if(!run){ foot[i].alive = false; continue; }
+          foot[i].lo = run[0]; foot[i].hi = run[1];
+          put(i, y, run[0], run[1], 1);
+        }
+      }
+    }
+    let pivot = null;
+    for(const arr of [L, R]){
+      let topY = -1;
+      for(let y = 0; y < H; y++) if(arr[y]){ topY = y; break; }
+      if(topY < 0) continue;
+      for(let k = 0; k < 4 && arr[topY + k]; k++) arr[topY + k][2] = (k + 1)/5;
+      if(pivot === null) pivot = topY;
+    }
+    return {L, R, pivot: pivot === null ? bot : pivot};
+  }
+
   // 逐像素算權重，並把原圖依權重拆成五張圖層
   function bake(img){
     const r = measure(img);
@@ -120,6 +250,7 @@
     const sc = src.getContext('2d', {willReadFrequently: true});
     sc.drawImage(img, 0, 0);
     const d = sc.getImageData(0, 0, W, H).data;
+    const corridors = r.legs ? legCorridors(d, W, H, r.top, r.bot, r.hh, r.maxW) : null;
 
     const shY = r.shoulderY, shL = r.shoulderLX, shR = r.shoulderRX;
     const hipY = r.hipY, legX = r.legSplit;
@@ -153,7 +284,11 @@
       const aL = r.arms ? armWeight(x, y, shL, -1) : 0;
       const aR = r.arms ? armWeight(x, y, shR, 1) : 0;
       let lL = 0, lR = 0;
-      if(r.legs){
+      if(corridors){
+        const rowL = corridors.L[y], rowR = corridors.R[y];
+        if(rowL && x >= rowL[0] && x <= rowL[1]) lL = rowL[2];
+        if(rowR && x >= rowR[0] && x <= rowR[1]) lR = rowR[2];
+      }else if(r.legs){
         const band = clamp01((y - (hipY - r1))/(2*r1));
         lL = band*clamp01((legX - x)/r2);
         lR = band*clamp01((x - legX)/r2);
@@ -189,7 +324,7 @@
       // 外框中心在大腿，裙襬又比鞋子寬；踏板若跟著外框，就會畫在小腿或裙緣旁邊。
       layers[k] = {c, x0, y0, w: cw, h: ch, sole: (k === 'legL' || k === 'legR') ? soleFromAlpha(o, cw, ch, x0, y0) : null};
     }
-    const rig = {r, layers, r0};
+    const rig = {r, layers, r0, pivotY: corridors ? corridors.pivot : r.hipY};
     bakeCache.delete(img); bakeCache.set(img, rig);
     if(bakeCache.size > CACHE_MAX) bakeCache.delete(bakeCache.keys().next().value);
     return rig;
@@ -243,7 +378,8 @@
       tc.restore();
     };
     const shLX = px(r.shoulderLX), shRX = px(r.shoulderRX), shYy = py(r.shoulderY);
-    const hipX = px(r.legSplit), hipYy = py(r.hipY);
+    // 腿層的轉軸放在裙襬下緣，裙子留在身體層，才不會被兩腿扯成兩半。
+    const hipX = px(r.legSplit), hipYy = py(rig.pivotY != null ? rig.pivotY : r.hipY);
     put(rig.layers.body, 0, 0, 0);
     put(rig.layers.legL, hipX, hipYy, moving ? legA : 0);
     put(rig.layers.legR, hipX, hipYy, moving ? legB : 0);

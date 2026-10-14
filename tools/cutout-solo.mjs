@@ -61,6 +61,7 @@ function cut(sheet){
     // 從四邊往內填充背景，遇到線稿就停。
     // 白鞋和白底是同一種顏色，洪水會沿著鞋面灌進去，鞋子整雙消失。
     // lucky-1（企鵝鞋）、lucky-2、lucky-3（白球鞋）已另補回切圖，直接重跑這支會再切掉。
+    // lucky-0 的白襪荷葉邊是手工補回的，直接重跑會再吃掉。
     bg = new Uint8Array(w*h);
     const q = new Int32Array(w*h);
     let qh = 0, qt = 0;
