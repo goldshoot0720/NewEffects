@@ -75,6 +75,12 @@
           let a = best, b = best;
           while(a > top && d[((a - 1)*W + x)*4 + 3] > ALPHA) a--;
           while(b < hipY && d[((b + 1)*W + x)*4 + 3] > ALPHA) b++;
+          // 同一欄若和手臂連在一起，雙馬尾、耳朵、外套會整條被算進手臂。
+          // 伸出手臂帶太多的那截留在身體上，手一抬才不會把頭髮甩到臉前面。
+          const slack = Math.max(12, Math.round((armBot - armTop) * 0.9));
+          if(armTop - a > slack * 2) a = armTop;
+          if(b - armBot > slack * 2) b = armBot;
+          if(a > b) continue;
           armTopAt[x] = a; armBotAt[x] = b;
         }
       };
@@ -158,7 +164,7 @@
       for(const i of alive){
         let bestN = 0, bestRun = null;
         for(const run of rs){
-          const n = Math.min(run[1], cors[i].hi + 6) - Math.max(run[0], cors[i].lo - 6) + 1;
+          const n = Math.min(run[1], cors[i].hi + 18) - Math.max(run[0], cors[i].lo - 18) + 1;
           if(n > bestN){ bestN = n; bestRun = run; }
         }
         match[i] = bestN > 0 ? bestRun : null;
@@ -184,10 +190,21 @@
       for(const i of alive){
         const run = match[i];
         if(!run){ cors[i].alive = false; continue; }
-        const w = run[1] - run[0] + 1;
-        if(sudden(w)){ cors[i].alive = false; continue; }
-        cors[i].lo = run[0]; cors[i].hi = run[1];
-        put(i, y, run[0], run[1], 1);
+        let lo = run[0], hi = run[1], w = hi - lo + 1;
+        const prevW = cors[i].hi - cors[i].lo + 1;
+        // 大腿比鞋口寬是漸變，整條褲子都要算進腿裡。
+        // 只有這一列突然多出一截（尾巴、裙襬）才把多的剪掉，不能在大腿中間停下來。
+        if(prevW >= 8 && w > prevW * 1.55 && w > prevW + 16){
+          const pad = Math.max(4, Math.round(prevW * .12));
+          lo = Math.max(lo, cors[i].lo - pad);
+          hi = Math.min(hi, cors[i].hi + pad);
+          w = hi - lo + 1;
+          if(w < 3){ cors[i].alive = false; continue; }
+        }else if(sudden(w)){
+          cors[i].alive = false; continue;
+        }
+        cors[i].lo = lo; cors[i].hi = hi;
+        put(i, y, lo, hi, 1);
         any = true;
       }
       if(!any) break;
@@ -229,15 +246,14 @@
         }
       }
     }
-    let pivot = null;
-    for(const arr of [L, R]){
-      let topY = -1;
-      for(let y = 0; y < H; y++) if(arr[y]){ topY = y; break; }
-      if(topY < 0) continue;
-      for(let k = 0; k < 4 && arr[topY + k]; k++) arr[topY + k][2] = (k + 1)/5;
-      if(pivot === null) pivot = topY;
-    }
-    return {L, R, pivot: pivot === null ? bot : pivot};
+    // 每條腿繞自己褲頭的中心轉。繞身體中線轉的話，大腿上緣會被扯離軀幹，褲管橫向裂開。
+    // 交界不留半透明帶：那幾列一半留在身上、一半跟著轉，看起來就是一道裂縫。
+    const pivotOf = arr => {
+      for(let y = 0; y < H; y++) if(arr[y]) return {x: (arr[y][0] + arr[y][1]) / 2, y};
+      return null;
+    };
+    const pL = pivotOf(L), pR = pivotOf(R);
+    return {L, R, pivot: (pL || pR) ? (pL || pR).y : bot, pivotL: pL, pivotR: pR};
   }
 
   // 逐像素算權重，並把原圖依權重拆成五張圖層
@@ -255,10 +271,9 @@
     const shY = r.shoulderY, shL = r.shoulderLX, shR = r.shoulderRX;
     const hipY = r.hipY, legX = r.legSplit;
     const bandH = Math.max(6, r.armBot - r.armTop);
-    // 羽化帶刻意窄：羽化區的權重會留給身體層，手臂一擺動就會在原位留下一層
-    // 半透明的手臂殘影；帶越窄殘影越淡，手臂的邊緣也越接近原圖的銳利輪廓。
-    const fBand = Math.max(2, bandH*.15);                // 手臂上下緣的羽化
-    const r0 = Math.max(5, bandH*.6);                    // 肩關節混合帶（半寬）
+    // 羽化只留在關節上幾個像素。邊緣若半透明，手一抬就會在原位留下一點一線的描邊。
+    const fBand = Math.max(1, bandH*.06);
+    const r0 = Math.max(3, bandH*.18);
     const r1 = Math.max(4, r.hh*.035);                   // 髖關節垂直混合帶（半高）
     // 兩腿之間的混合帶刻意很窄：這條帶上的權重會留給身體層，腿一擺動就會在原位
     // 留下一根細長的殘影；但也不能窄到硬切，否則裙襬／圍裙會被兩腿扯成兩半。
@@ -278,20 +293,22 @@
     const box = {};
     for(const k of keys){ wts[k] = new Float32Array(N); box[k] = [W, H, -1, -1]; }
     const touch = (b, x, y) => { if(x < b[0]) b[0] = x; if(y < b[1]) b[1] = y; if(x > b[2]) b[2] = x; if(y > b[3]) b[3] = y; };
+    // 中間權重會在身體和手腳各留半層，轉開之後就是殘影。夠深的歸手腳，很淺的留在身上。
+    const own = w => w >= .72 ? 1 : w <= .38 ? 0 : (w - .38) / .34;
     for(let y = 0; y < H; y++) for(let x = 0; x < W; x++){
       const i = y*W + x;
       if(d[i*4 + 3] <= ALPHA) continue;
-      const aL = r.arms ? armWeight(x, y, shL, -1) : 0;
-      const aR = r.arms ? armWeight(x, y, shR, 1) : 0;
+      const aL = r.arms ? own(armWeight(x, y, shL, -1)) : 0;
+      const aR = r.arms ? own(armWeight(x, y, shR, 1)) : 0;
       let lL = 0, lR = 0;
       if(corridors){
         const rowL = corridors.L[y], rowR = corridors.R[y];
-        if(rowL && x >= rowL[0] && x <= rowL[1]) lL = rowL[2];
-        if(rowR && x >= rowR[0] && x <= rowR[1]) lR = rowR[2];
+        if(rowL && x >= rowL[0] && x <= rowL[1]) lL = own(rowL[2]);
+        if(rowR && x >= rowR[0] && x <= rowR[1]) lR = own(rowR[2]);
       }else if(r.legs){
         const band = clamp01((y - (hipY - r1))/(2*r1));
-        lL = band*clamp01((legX - x)/r2);
-        lR = band*clamp01((x - legX)/r2);
+        lL = own(band*clamp01((legX - x)/r2));
+        lR = own(band*clamp01((x - legX)/r2));
       }
       const limb = Math.min(1, aL + aR + lL + lR);
       wts.armL[i] = aL; wts.armR[i] = aR; wts.legL[i] = lL; wts.legR[i] = lR;
@@ -324,7 +341,8 @@
       // 外框中心在大腿，裙襬又比鞋子寬；踏板若跟著外框，就會畫在小腿或裙緣旁邊。
       layers[k] = {c, x0, y0, w: cw, h: ch, sole: (k === 'legL' || k === 'legR') ? soleFromAlpha(o, cw, ch, x0, y0) : null};
     }
-    const rig = {r, layers, r0, pivotY: corridors ? corridors.pivot : r.hipY};
+    const rig = {r, layers, r0, pivotY: corridors ? corridors.pivot : r.hipY,
+      pivotL: corridors ? corridors.pivotL : null, pivotR: corridors ? corridors.pivotR : null};
     bakeCache.delete(img); bakeCache.set(img, rig);
     if(bakeCache.size > CACHE_MAX) bakeCache.delete(bakeCache.keys().next().value);
     return rig;
@@ -378,11 +396,14 @@
       tc.restore();
     };
     const shLX = px(r.shoulderLX), shRX = px(r.shoulderRX), shYy = py(r.shoulderY);
-    // 腿層的轉軸放在裙襬下緣，裙子留在身體層，才不會被兩腿扯成兩半。
+    // 每條腿繞自己的褲頭轉，褲管才不會在大腿被橫向扯開。裙子的轉軸在裙襬下緣。
     const hipX = px(r.legSplit), hipYy = py(rig.pivotY != null ? rig.pivotY : r.hipY);
+    const legPivot = (p, fx, fy) => p ? [px(p.x), py(p.y)] : [fx, fy];
+    const [lx, ly] = legPivot(rig.pivotL, hipX, hipYy);
+    const [rx, ry] = legPivot(rig.pivotR, hipX, hipYy);
     put(rig.layers.body, 0, 0, 0);
-    put(rig.layers.legL, hipX, hipYy, moving ? legA : 0);
-    put(rig.layers.legR, hipX, hipYy, moving ? legB : 0);
+    put(rig.layers.legL, lx, ly, moving ? legA : 0);
+    put(rig.layers.legR, rx, ry, moving ? legB : 0);
     put(rig.layers.armL, shLX, shYy, moving ? armA : 0);
     put(rig.layers.armR, shRX, shYy, moving ? armB : 0);
     tc.globalCompositeOperation = 'source-over';

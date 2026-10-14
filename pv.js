@@ -1083,11 +1083,13 @@ function shotStage(t, sh, u){
   karaoke(t, {cx: W/2, y: 985, size: 66, maxW: 1560, zhSize: 36});
 }
 /* ---------------- 騎自行車：個別角色騎車的段落 ---------------- */
-// 側面視角的自行車：兩輪、車架、把手、座墊與會轉的踏板。part='back' 畫在角色後方、'front' 畫在前方
+// 側面視角的自行車：兩輪、車架、把手、手煞車、座墊與會轉的踏板。part='back' 畫在角色後方、'front' 畫在前方
 function drawBicycle(cx, cy, R, spin, pedal, o = {}){
   const lw = Math.max(2, R*.075), back = o.part !== 'front';
   const rear = [cx - R*1.32, cy], front = [cx + R*1.32, cy];
-  const crank = [cx - R*.14, cy + R*.16], seat = [cx - R*.78, cy - R*.92], bar = [cx + R*1.0, cy - R*.96];
+  const crank = [cx - R*.14, cy + R*.16], seat = [cx - R*.78, cy - R*.92];
+  // 龍頭抬到前輪上方。以前和座墊差不多高，握把貼在輪冠上，又被抬起的手擋住，前面就像沒裝。
+  const bar = [cx + R*.98, cy - R*1.22];
   g.save(); g.lineCap = 'round'; g.lineJoin = 'round';
   const wheel = ([wx, wy], solid) => {
     g.save(); g.translate(wx, wy);
@@ -1112,8 +1114,16 @@ function drawBicycle(cx, cy, R, spin, pedal, o = {}){
   } else {
     wheel(front, true);
     line(bar, front, frame, lw);                                             // 前叉
-    g.strokeStyle = '#2a2f3a'; g.lineWidth = lw*.85;                         // 把手
-    g.beginPath(); g.moveTo(bar[0], bar[1]); g.lineTo(bar[0] + R*.24, bar[1] - R*.08); g.stroke();
+    // 只留豎管、握把和一支手煞車。煞車線、夾器交叉和圓點會在輪冠上變成一點一線。
+    const stem = [bar[0] + R*.02, bar[1] - R*.14];
+    const grip = [stem[0] + R*.30, stem[1] - R*.04];
+    line(bar, stem, '#2a3144', lw);
+    line(stem, grip, '#2a3144', lw);
+    g.strokeStyle = '#e8eef8'; g.lineWidth = lw*.8;
+    g.beginPath();
+    g.moveTo(stem[0] + R*.11, stem[1]);
+    g.quadraticCurveTo(stem[0] + R*.18, stem[1] + R*.13, stem[0] + R*.05, stem[1] + R*.2);
+    g.stroke();
     // 踏板畫在角色前面，但只露出鞋底以下的那一段，鞋子才不會被黃色蓋住，
     // 也不會在腳跟下面空出一截。sy 是鞋底；沒有腳的位置就繞著曲柄轉。
     const rx = R*.16, ry = R*.07;
