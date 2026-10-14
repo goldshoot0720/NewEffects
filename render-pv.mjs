@@ -6,7 +6,7 @@ import http from 'node:http';
 import fs from 'node:fs';
 import path from 'node:path';
 import os from 'node:os';
-import {spawn} from 'node:child_process';
+import {spawn, spawnSync} from 'node:child_process';
 import {fileURLToPath} from 'node:url';
 
 const ROOT = path.dirname(fileURLToPath(import.meta.url));
@@ -60,6 +60,23 @@ const server = http.createServer(async (req, res) => {
 await new Promise(ok => server.listen(0, '127.0.0.1', ok));
 const PORT = server.address().port;
 
+const BASE_FLAGS = ['--headless=new', '--no-first-run', '--no-default-browser-check', '--mute-audio',
+  '--disable-background-timer-throttling', '--disable-renderer-backgrounding', '--disable-backgrounding-occluded-windows',
+  '--window-size=1920,1080', '--enable-unsafe-swiftshader'];
+// 容器或受限環境裡 Chrome 無法初始化自己的 sandbox，會直接 FATAL 收場。
+// 先探測一次，只有真的失敗才加上 --no-sandbox（一般本機仍保留 Chrome 沙箱）。
+function needsNoSandbox(){
+  const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'pv-probe-'));
+  try{
+    const r = spawnSync(CHROME, [...BASE_FLAGS, `--user-data-dir=${dir}`, '--dump-dom', 'about:blank'],
+      {timeout: 20000, encoding: 'utf8'});
+    return /sandbox initialization failed|GPU process isn't usable|Failed to initialize sandbox/i.test(r.stderr || '');
+  }catch{ return true; }
+  finally{ fs.rmSync(dir, {recursive: true, force: true}); }
+}
+const FLAGS = needsNoSandbox() ? [...BASE_FLAGS, '--no-sandbox'] : BASE_FLAGS;
+if(FLAGS.includes('--no-sandbox')) console.log('（這個環境無法初始化 Chrome 沙箱，改用 --no-sandbox）');
+
 function runJob(index){
   return new Promise((resolve, reject) => {
     const id = String(index), profile = fs.mkdtempSync(path.join(os.tmpdir(), 'pv-chrome-'));
@@ -68,9 +85,7 @@ function runJob(index){
     if(mode==='characters') query.set('mode','characters');
     if(from) query.set('from', from);
     if(to) query.set('to', to);
-    const chrome = spawn(CHROME, ['--headless=new', `--user-data-dir=${profile}`, '--no-first-run', '--no-default-browser-check', '--mute-audio',
-      '--disable-background-timer-throttling', '--disable-renderer-backgrounding', '--disable-backgrounding-occluded-windows',
-      '--window-size=1920,1080', '--enable-unsafe-swiftshader', `http://127.0.0.1:${PORT}/index.html?${query}`], {stdio: 'ignore'});
+    const chrome = spawn(CHROME, [...FLAGS, `--user-data-dir=${profile}`, `http://127.0.0.1:${PORT}/index.html?${query}`], {stdio: 'ignore'});
     const cleanup = () => { try{ chrome.kill(); }catch{} setTimeout(() => fs.rmSync(profile, {recursive: true, force: true}), 1500); };
     const job = {
       start(m){

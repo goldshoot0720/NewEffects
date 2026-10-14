@@ -951,15 +951,15 @@ function shotStage(t, sh, u){
 /* ---------------- 騎自行車：個別角色騎車的段落 ---------------- */
 // 側面視角的自行車：兩輪、車架、把手、座墊與會轉的踏板。part='back' 畫在角色後方、'front' 畫在前方
 function drawBicycle(cx, cy, R, spin, pedal, o = {}){
-  const lw = Math.max(2, R*.1), back = o.part !== 'front';
+  const lw = Math.max(2, R*.075), back = o.part !== 'front';
   const rear = [cx - R*1.32, cy], front = [cx + R*1.32, cy];
   const crank = [cx - R*.14, cy + R*.16], seat = [cx - R*.78, cy - R*.92], bar = [cx + R*1.0, cy - R*.96];
   g.save(); g.lineCap = 'round'; g.lineJoin = 'round';
   const wheel = ([wx, wy], solid) => {
     g.save(); g.translate(wx, wy);
-    g.strokeStyle = '#20242e'; g.lineWidth = lw*1.9;
+    g.strokeStyle = solid ? 'rgba(212,222,242,.62)' : 'rgba(212,222,242,.34)'; g.lineWidth = lw*1.5;
     g.beginPath(); g.arc(0, 0, R, 0, Math.PI*2); g.stroke();
-    g.strokeStyle = solid ? 'rgba(226,236,252,.42)' : 'rgba(226,236,252,.28)';
+    g.strokeStyle = solid ? 'rgba(226,236,252,.34)' : 'rgba(226,236,252,.2)';
     g.lineWidth = Math.max(1, lw*.34);
     g.rotate(spin);
     for(let i = 0; i < 6; i++){ g.beginPath(); g.moveTo(0, 0); g.lineTo(R*.9, 0); g.stroke(); g.rotate(Math.PI/3); }
@@ -1014,7 +1014,7 @@ function drawRider(m, cx, cy, R, t, opts = {}){
   const img = MEMBERS[m]?.img;
   if(img){
     const r = SpriteRig.measure(img);
-    const h = R*2.0;
+    const h = R*2.9;
     const hipFrac = r.ok ? r.hipY/r.H : .6;
     const feetY = (cy - R*.92) + h*(1 - hipFrac);        // 髖部落到座墊高度
     SpriteRig.draw(g, img, cx - R*.06, feetY, h, {
@@ -1027,7 +1027,7 @@ function drawRider(m, cx, cy, R, t, opts = {}){
   g.restore();
 }
 function shotBike(t, sh, u){
-  const horizon = 520;
+  const horizon = 430;
   backdrop(t, {dim: .25, art: .22});
   g.save(); g.globalAlpha = .5;                          // 遠山視差
   for(let k = 0; k < 2; k++){
@@ -1038,15 +1038,19 @@ function shotBike(t, sh, u){
     g.lineTo(W + 900, H); g.lineTo(-off - 200, H); g.closePath(); g.fill();
   }
   g.restore();
-  drawRoad(t, horizon, 340);
-  const R = 86;
+  drawRoad(t, horizon, 380);
+  // 鏡頭貼近：主唱大台在前景，其餘成員在後方依遠近縮小（由遠而近畫）
+  const R = 100;
   const ride = (m, cx, cy, sc, o) => { g.save(); g.translate(cx, cy); g.scale(sc, sc); drawRider(m, 0, 0, R, t, o); g.restore(); };
   const O = OTHERS;
-  const back = [O[0], O[2], O[4]].filter(v => v !== undefined);
-  const front = [O[1], O[3], O[5]].filter(v => v !== undefined);
-  back.forEach((m, i) => ride(m, W*(.16 + i*.26), horizon + 190 + (i%2)*26, .46, {speed: 300, cadence: 3.4, frame: 'rgba(210,220,240,.6)'}));
-  front.forEach((m, i) => ride(m, W*(.80 - i*.23), horizon + 255 + (i%2)*26, .70, {speed: 360, cadence: 3.8, frame: T.cool}));
-  ride(LEAD, W*.48, horizon + 400, 1, {speed: 430, cadence: 4.2});
+  const plan = [
+    [O[0], W*.28, horizon + 190, .62, {speed: 290, cadence: 3.1, frame: 'rgba(178,190,216,.45)'}],
+    [O[1], W*.70, horizon + 204, .66, {speed: 300, cadence: 3.2, frame: 'rgba(178,190,216,.45)'}],
+    [O[2], W*.08, horizon + 300, 1.0, {speed: 350, cadence: 3.6, frame: 'rgba(206,216,240,.72)'}],
+    [O[3], W*.89, horizon + 312, 1.04, {speed: 360, cadence: 3.7, frame: 'rgba(206,216,240,.72)'}],
+    [LEAD, W*.40, horizon + 430, 1.5, {speed: 430, cadence: 4.2, frame: 'rgba(238,242,252,.95)'}]
+  ];
+  plan.forEach(([m, cx, cy, sc, o]) => { if(m !== undefined) ride(m, cx, cy, sc, o); });
   g.save(); g.strokeStyle = 'rgba(255,255,255,.35)'; g.lineWidth = 3;    // 速度線
   for(let i = 0; i < 16; i++){
     const y = horizon + 60 + hash(i*3.3)*380, len = 90 + hash(i*7.1)*220;
