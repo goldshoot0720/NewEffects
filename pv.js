@@ -883,21 +883,29 @@ function shotStage(t, sh, u){
   const sx = 410, sy = 60, sw = 1100, shh = 540;
   g.save(); g.shadowColor = T.accent2; g.shadowBlur = 40; roundRect(sx - 14, sy - 14, sw + 28, shh + 28, 16); g.fillStyle = '#0a0a16'; g.fill(); g.restore();
   g.save(); g.beginPath(); g.rect(sx, sy, sw, shh); g.clip();
-  // 螢幕裡放實際在跳舞的成員（輪替三位），而不是靜態主視覺
+  // 螢幕裡放實際在跳舞的成員（輪替四位）。刻意壓低亮度並疊一層色調＋掃描線，
+  // 讓它讀起來是「LED 牆上的畫面」，而不是和舞台成員疊在一起變成殘影。
   const sg = g.createLinearGradient(0, sy, 0, sy + shh);
   sg.addColorStop(0, 'rgba(16,10,34,.96)'); sg.addColorStop(1, 'rgba(38,18,48,.96)');
   g.fillStyle = sg; g.fillRect(sx, sy, sw, shh);
   const nMem = MEMBERS.length, base = (Math.floor(t/5)*4) % nMem;
+  g.save(); g.globalAlpha = .5;
   for(let i = 0; i < 4; i++){
     const m = (base + i) % nMem, cx = sx + sw*(i + .5)/4;
     drawDancer(m, cx, sy + shh - 8, shh*.64, danceState(m, t, {alt: true, e: .8}));
   }
-  g.fillStyle = 'rgba(0,0,0,.13)';                       // 掃描線
-  for(let y = sy; y < sy + shh; y += 7) g.fillRect(sx, y, sw, 2);
+  g.restore();
+  g.fillStyle = 'rgba(18,8,38,.42)'; g.fillRect(sx, sy, sw, shh);      // 螢幕色調
+  g.fillStyle = 'rgba(0,0,0,.2)';                                      // 掃描線
+  for(let y = sy; y < sy + shh; y += 7) g.fillRect(sx, y, sw, 3);
   g.font = `600 20px ${FONT.mono}`; g.fillStyle = 'rgba(255,255,255,.55)';
   g.fillText(`LIVE · ${song.series || song.title}`, sx + 24, sy + 36);
   g.beginPath(); g.arc(sx + sw - 40, sy + 30, 7, 0, Math.PI*2);
   g.fillStyle = frac(t) < .5 ? '#ff4d6d' : 'rgba(255,77,109,.25)'; g.fill();
+  const edge = g.createLinearGradient(0, sy, 0, sy + shh);
+  edge.addColorStop(0, 'rgba(0,0,0,.55)'); edge.addColorStop(.22, 'rgba(0,0,0,0)');
+  edge.addColorStop(.78, 'rgba(0,0,0,0)'); edge.addColorStop(1, 'rgba(0,0,0,.55)');
+  g.fillStyle = edge; g.fillRect(sx, sy, sw, shh);
   const sheen = g.createLinearGradient(sx, sy, sx + sw, sy + shh);
   sheen.addColorStop(0, 'rgba(255,255,255,.16)'); sheen.addColorStop(.45, 'rgba(255,255,255,0)'); sheen.addColorStop(1, 'rgba(255,255,255,.06)');
   g.fillStyle = sheen; g.fillRect(sx, sy, sw, shh);
