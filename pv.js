@@ -1083,53 +1083,98 @@ function shotStage(t, sh, u){
   karaoke(t, {cx: W/2, y: 985, size: 66, maxW: 1560, zhSize: 36});
 }
 /* ---------------- 騎自行車：個別角色騎車的段落 ---------------- */
-// 側面視角的自行車：兩輪、車架、把手、手煞車、座墊與會轉的踏板。part='back' 畫在角色後方、'front' 畫在前方
+// 側面的城市車：輪胎、輪圈、輪輻、菱形車架、前叉、座墊、齒盤與鏈條。
+// 輪子比人矮一截，車架才不會被兩顆大圓吞掉。part='back' 在角色後方、'front' 在前方。
 function drawBicycle(cx, cy, R, spin, pedal, o = {}){
-  const lw = Math.max(2, R*.075), back = o.part !== 'front';
-  const rear = [cx - R*1.32, cy], front = [cx + R*1.32, cy];
+  const back = o.part !== 'front';
+  const rv = R*.74;
+  const hubY = cy + (R - rv);
+  const rear = [cx - R*1.32, hubY], front = [cx + R*1.32, hubY];
   const crank = [cx - R*.14, cy + R*.16], seat = [cx - R*.78, cy - R*.92];
-  // 龍頭抬到前輪上方。以前和座墊差不多高，握把貼在輪冠上，又被抬起的手擋住，前面就像沒裝。
-  const bar = [cx + R*.98, cy - R*1.22];
+  const cluster = [cx - R*.42, cy - R*.34];
+  const crown = [cx + R*.86, hubY - rv - R*.1];
+  const head = [cx + R*.78, cy - R*1.02];
+  const frame = o.frame || '#2faf9c';
+  const tubeW = Math.max(4, R*.09);
   g.save(); g.lineCap = 'round'; g.lineJoin = 'round';
-  const wheel = ([wx, wy], solid) => {
-    g.save(); g.translate(wx, wy);
-    g.strokeStyle = solid ? 'rgba(212,222,242,.62)' : 'rgba(212,222,242,.34)'; g.lineWidth = lw*1.5;
-    g.beginPath(); g.arc(0, 0, R, 0, Math.PI*2); g.stroke();
-    g.strokeStyle = solid ? 'rgba(226,236,252,.34)' : 'rgba(226,236,252,.2)';
-    g.lineWidth = Math.max(1, lw*.34);
+  const tube = (a, b, w = tubeW) => {
+    g.strokeStyle = '#102028'; g.lineWidth = w + Math.max(2, w*.38);
+    g.beginPath(); g.moveTo(a[0], a[1]); g.lineTo(b[0], b[1]); g.stroke();
+    g.strokeStyle = frame; g.lineWidth = w;
+    g.beginPath(); g.moveTo(a[0], a[1]); g.lineTo(b[0], b[1]); g.stroke();
+  };
+  const wheel = p => {
+    g.save(); g.translate(p[0], p[1]);
+    g.beginPath(); g.arc(0, 0, rv, 0, Math.PI*2);
+    g.strokeStyle = '#141820'; g.lineWidth = rv*.22; g.stroke();
+    g.beginPath(); g.arc(0, 0, rv*.9, 0, Math.PI*2);
+    g.strokeStyle = '#c5ceda'; g.lineWidth = Math.max(1.5, rv*.045); g.stroke();
+    g.strokeStyle = 'rgba(214,222,232,.82)'; g.lineWidth = Math.max(1, rv*.022);
     g.rotate(spin);
-    for(let i = 0; i < 6; i++){ g.beginPath(); g.moveTo(0, 0); g.lineTo(R*.9, 0); g.stroke(); g.rotate(Math.PI/3); }
-    // 輪轂用深色。跟踏板一樣塗成黃色時，腳旁那兩顆大圓點會被看成沒踩到的踏板。
-    g.fillStyle = '#2a3144'; g.beginPath(); g.arc(0, 0, R*.15, 0, Math.PI*2); g.fill();
+    for(let i = 0; i < 12; i++){
+      const a = i/12*Math.PI*2;
+      g.beginPath();
+      g.moveTo(Math.cos(a)*rv*.18, Math.sin(a)*rv*.18);
+      g.lineTo(Math.cos(a)*rv*.84, Math.sin(a)*rv*.84);
+      g.stroke();
+    }
+    g.fillStyle = '#2a3144'; g.beginPath(); g.arc(0, 0, rv*.13, 0, Math.PI*2); g.fill();
     g.restore();
   };
-  const line = (a, b, col, w) => { g.strokeStyle = col; g.lineWidth = w; g.beginPath(); g.moveTo(a[0], a[1]); g.lineTo(b[0], b[1]); g.stroke(); };
-  const frame = o.frame || T.accent2;
+  const fender = p => {
+    g.save(); g.translate(p[0], p[1]);
+    const rad = rv*1.22, a0 = Math.PI*1.08, a1 = Math.PI*1.92;
+    g.beginPath(); g.arc(0, 0, rad, a0, a1);
+    g.strokeStyle = '#102028'; g.lineWidth = rv*.1; g.stroke();
+    g.beginPath(); g.arc(0, 0, rad, a0, a1);
+    g.strokeStyle = frame; g.lineWidth = rv*.055; g.stroke();
+    g.restore();
+  };
   if(back){
-    wheel(rear, true);
-    line(rear, crank, frame, lw); line(crank, seat, frame, lw); line(seat, rear, frame, lw);
-    line(seat, bar, frame, lw); line(crank, bar, frame, lw);
-    line(crank, rear, 'rgba(230,238,250,.55)', lw*.5);                        // 鏈條
-    g.fillStyle = '#2a2f3a'; g.beginPath(); g.ellipse(seat[0], seat[1] - R*.06, R*.32, R*.1, -.15, 0, Math.PI*2); g.fill();
-  } else {
-    wheel(front, true);
-    line(bar, front, frame, lw);                                             // 前叉
-    // 只留豎管、握把和一支手煞車。煞車線、夾器交叉和圓點會在輪冠上變成一點一線。
-    const stem = [bar[0] + R*.02, bar[1] - R*.14];
-    const grip = [stem[0] + R*.30, stem[1] - R*.04];
-    line(bar, stem, '#2a3144', lw);
-    line(stem, grip, '#2a3144', lw);
-    g.strokeStyle = '#e8eef8'; g.lineWidth = lw*.8;
+    wheel(rear); fender(rear);
+    tube(crank, rear, tubeW*.72);
+    tube(cluster, rear, tubeW*.62);
+    tube(crank, cluster);
+    tube(cluster, head, tubeW*.78);
+    tube(crank, crown);
+    tube(crown, head, tubeW*.7);
+    tube(cluster, seat, tubeW*.48);
+    const ring = rv*.4, cog = rv*.26;
+    const dx = rear[0] - crank[0], dy = rear[1] - crank[1], len = Math.hypot(dx, dy) || 1;
+    const px = -dy/len, py = dx/len;
+    g.strokeStyle = '#1a1e28'; g.lineWidth = Math.max(1.5, rv*.035);
     g.beginPath();
-    g.moveTo(stem[0] + R*.11, stem[1]);
-    g.quadraticCurveTo(stem[0] + R*.18, stem[1] + R*.13, stem[0] + R*.05, stem[1] + R*.2);
+    g.moveTo(crank[0] + px*ring, crank[1] + py*ring);
+    g.lineTo(rear[0] + px*cog, rear[1] + py*cog);
+    g.moveTo(crank[0] - px*ring, crank[1] - py*ring);
+    g.lineTo(rear[0] - px*cog, rear[1] - py*cog);
+    g.stroke();
+    g.beginPath(); g.arc(crank[0], crank[1], ring, 0, Math.PI*2);
+    g.strokeStyle = '#102028'; g.lineWidth = rv*.09; g.stroke();
+    g.strokeStyle = frame; g.lineWidth = rv*.045; g.stroke();
+    g.beginPath(); g.arc(rear[0], rear[1], cog, 0, Math.PI*2);
+    g.strokeStyle = '#1a1e28'; g.lineWidth = rv*.07; g.stroke();
+    g.fillStyle = '#2c3138';
+    g.beginPath(); g.ellipse(seat[0] + R*.08, seat[1] - R*.05, R*.38, R*.075, -.2, 0, Math.PI*2); g.fill();
+  } else {
+    wheel(front); fender(front);
+    tube(crown, front, tubeW*.78);
+    const stem = [head[0] - R*.02, head[1] - R*.18];
+    const grip = [stem[0] - R*.36, stem[1] + R*.03];
+    tube(head, stem, tubeW*.62);
+    tube(grip, [stem[0] + R*.18, stem[1] - R*.02], tubeW*.55);
+    // 只留一支手煞車。煞車線、夾器交叉和圓點會在輪冠上變成一點一線。
+    g.strokeStyle = '#e8eef8'; g.lineWidth = tubeW*.42;
+    g.beginPath();
+    g.moveTo(grip[0] + R*.1, grip[1]);
+    g.quadraticCurveTo(grip[0] + R*.02, grip[1] + R*.14, grip[0] + R*.16, grip[1] + R*.2);
     g.stroke();
     // 踏板畫在角色前面，但只露出鞋底以下的那一段，鞋子才不會被黃色蓋住，
     // 也不會在腳跟下面空出一截。sy 是鞋底；沒有腳的位置就繞著曲柄轉。
     const rx = R*.16, ry = R*.07;
     const step = (sx, sy) => {
       const py = sy + ry*.35;
-      g.strokeStyle = '#2a2f3a'; g.lineWidth = lw*.7;
+      g.strokeStyle = '#2a2f3a'; g.lineWidth = tubeW*.55;
       g.beginPath(); g.moveTo(crank[0], crank[1]); g.lineTo(sx, py); g.stroke();
       g.save();
       g.beginPath(); g.rect(sx - rx - 1, sy - 1, rx*2 + 2, ry*3); g.clip();
@@ -1142,7 +1187,7 @@ function drawBicycle(cx, cy, R, spin, pedal, o = {}){
       step(crank[0] + Math.cos(a)*R*.44, crank[1] + Math.sin(a)*R*.44 - ry*.35);
     }
     // 曲柄軸用深色。塗成跟踏板一樣的黃色時，會在小腿旁邊多一顆沒被踩到的圓點。
-    g.fillStyle = '#2a3144'; g.beginPath(); g.arc(crank[0], crank[1], R*.1, 0, Math.PI*2); g.fill();
+    g.fillStyle = '#2a3144'; g.beginPath(); g.arc(crank[0], crank[1], R*.08, 0, Math.PI*2); g.fill();
   }
   g.restore();
 }
@@ -1221,11 +1266,11 @@ function shotBike(t, sh, u){
   const ride = (m, cx, cy, sc, o) => { g.save(); g.translate(cx, cy); g.scale(sc, sc); drawRider(m, 0, 0, R, t, o); g.restore(); };
   const O = OTHERS;
   const plan = [
-    [O[0], W*.28, horizon + 190, .62, {speed: 290, cadence: 3.1, frame: 'rgba(178,190,216,.45)'}],
-    [O[1], W*.70, horizon + 204, .66, {speed: 300, cadence: 3.2, frame: 'rgba(178,190,216,.45)'}],
-    [O[2], W*.08, horizon + 300, 1.0, {speed: 350, cadence: 3.6, frame: 'rgba(206,216,240,.72)'}],
-    [O[3], W*.89, horizon + 312, 1.04, {speed: 360, cadence: 3.7, frame: 'rgba(206,216,240,.72)'}],
-    [LEAD, W*.40, horizon + 430, 1.5, {speed: 430, cadence: 4.2, frame: 'rgba(238,242,252,.95)'}]
+    [O[0], W*.28, horizon + 190, .62, {speed: 290, cadence: 3.1, frame: 'rgba(47,175,156,.78)'}],
+    [O[1], W*.70, horizon + 204, .66, {speed: 300, cadence: 3.2, frame: 'rgba(47,175,156,.78)'}],
+    [O[2], W*.08, horizon + 300, 1.0, {speed: 350, cadence: 3.6, frame: '#249e8c'}],
+    [O[3], W*.89, horizon + 312, 1.04, {speed: 360, cadence: 3.7, frame: '#249e8c'}],
+    [LEAD, W*.40, horizon + 430, 1.5, {speed: 430, cadence: 4.2, frame: '#2faf9c'}]
   ];
   plan.forEach(([m, cx, cy, sc, o]) => { if(m !== undefined) ride(m, cx, cy, sc, o); });
   g.save(); g.strokeStyle = 'rgba(255,255,255,.35)'; g.lineWidth = 3;    // 速度線
