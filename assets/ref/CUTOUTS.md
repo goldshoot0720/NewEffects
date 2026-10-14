@@ -1,8 +1,27 @@
 # 複雜場景去背與人物切圖
 
-共 32 張切圖：色條 12、屋頂 6、RISE 演出服 5、黃昏舞台 9。人物索引依每張原圖由左至右排列；造型包含重複人物。
+共 40 張切圖：色條 12、屋頂 6、RISE 演出服 5、黃昏舞台 9、生徒会 6、招財喵布布 8（單張立繪）。人物索引依每張原圖由左至右排列；造型包含重複人物。
 
 白底與色條底沿用 `tools/cutout.mjs` 的背景填充。屋頂與舞台使用內建 imagegen 分離背景，保留生成 PNG 的 alpha，再使用同一個切圖工具切分角色。這是 2D 素材，未補畫原圖中被其他人物遮擋的部位。
+
+## 招財喵布布八人（單張立繪）
+
+`assets/ref/lucky1.png`～`lucky8.png` 是一張一位角色的 T-pose 立繪，不是多人合圖，改用另一條工具鏈：
+
+- 兩隻貓（`lucky5.png`、`lucky6.png`）的背景是場景照，先用 macOS Vision 的前景遮罩產生灰階 alpha，存成 `assets/ref/lucky5-matte.png`、`lucky6-matte.png`：
+
+  ```sh
+  python3 tools/matte-vision.py assets/ref/lucky5.png assets/ref/lucky5-matte.png
+  ```
+
+- 其餘六張是白／淺灰底，直接用邊緣背景填充去背。
+
+  ```sh
+  node tools/cutout-solo.mjs     # → assets/ref/cast/lucky-0.png … lucky-7.png
+  node tools/build-group.mjs     # → assets/ref/lucky8.png（1920×1080 群像主視覺）
+  ```
+
+`build-group.mjs` 會印出 `pv.js` 的 `ARTS.lucky8.faces` 要用的臉部座標；主視覺是拼出來的，不是使用者提供的合圖。
 
 ## 屋頂透明圖層
 
@@ -23,7 +42,9 @@ Use case: background-extraction. Edit target: nine anime idols in matching white
 ## 重建
 
 ```sh
-node tools/cutout.mjs
+node tools/cutout.mjs          # 合圖：色條、屋頂、RISE、黃昏
+node tools/cutout-solo.mjs     # 單張立繪：招財喵布布八人
+node tools/build-group.mjs     # 招財喵布布的群像主視覺
 node render-pv.mjs --mode characters --out pv/characters
 ```
 

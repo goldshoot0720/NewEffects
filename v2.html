@@ -368,7 +368,7 @@ function parseYtId(s){
 
 window.onYouTubeIframeAPIReady = () => {
   media.yt = new YT.Player('yt', {
-    videoId: mediaKey.startsWith('yt:') ? mediaKey.slice(3) : undefined,
+    videoId: /^[\w-]{11}$/.test(mediaKey.slice(3)) ? mediaKey.slice(3) : undefined,
     playerVars: {controls:0, disablekb:1, fs:0, rel:0, playsinline:1, iv_load_policy:3, modestbranding:1, origin: location.origin},
     events: {
       onReady(){
@@ -420,7 +420,11 @@ const DEFAULT_SONGS = [
    subs: '風の中は走るっきゃないっ！.srt', lead: 0, cast: 'anaru'},
   {id: 'BFSmN6fQ_04', title: 'ぴ [ナナヲアカリ]',
    audio: 'ぴ [ナナヲアカリ].mp3',
-   subs: 'ぴ.srt', lead: 0, cast: 'anaru'}
+   subs: 'ぴ.srt', lead: 0, cast: 'anaru'},
+  // Suno 生成曲，沒有 YouTube 影片，直接播本機 MP3
+  {id: 'suno-e093a932', title: '統一發票頭獎得主鋒兄威力彩頭獎得主塗哥',
+   audio: '統一發票頭獎得主鋒兄威力彩頭獎得主塗哥.mp3',
+   subs: '統一發票頭獎得主鋒兄威力彩頭獎得主塗哥.srt', lead: 2, cast: 'lucky'}
 ];
 // 每首歌的字幕／音訊檔放在同一個資料夾，執行時才讀取
 const cfgOf = id => DEFAULT_SONGS.find(d => d.id === id) || {};
@@ -511,7 +515,9 @@ function applySource(id, autoplay, at = 0){
     // 載歌載舞時用封面當舞台背景（YouTube 仍在背後播放聲音）
     if(ytEl) ytEl.style.visibility = prefs.dance ? 'hidden' : '';
     showCover(prefs.dance ? id : null);
-    if(media.ready) autoplay ? media.yt.loadVideoById({videoId: id, startSeconds: at}) : media.yt.cueVideoById({videoId: id, startSeconds: at});
+    // Suno 生成曲沒有 YouTube 影片，id 不是 11 碼時不呼叫播放器，避免「Invalid video id」
+    if(!/^[\w-]{11}$/.test(id)) showMsg('這首歌沒有 YouTube 影片，請確認本機 MP3 是否存在。');
+    else if(media.ready) autoplay ? media.yt.loadVideoById({videoId: id, startSeconds: at}) : media.yt.cueVideoById({videoId: id, startSeconds: at});
     else pendingYt = {id, autoplay, at};
   }
   const seg = $('#srcSeg');
@@ -536,11 +542,17 @@ $('#srcSeg').addEventListener('click', e => {
 });
 const LEAD_NAMES = {
   best4u: ['小日向理瀬', '葉山陽和', '前原純華', '小鷹咲希', '橘雪乃', '御社智'],
-  anaru: ['水之江梅', '古都吹寿子', '陸奥こころ', '尾鳥たん', '照井有栖', '平塚敏深']
+  anaru: ['水之江梅', '古都吹寿子', '陸奥こころ', '尾鳥たん', '照井有栖', '平塚敏深'],
+  lucky: ['鯨魚娘', '咕咕嘎嘎', '鋒兄', '塗哥', '喵布布', '喵白白', '牙妹', '魚妹']
 };
 function syncLeadMenu(id){
   const names = LEAD_NAMES[cfgOf(id).cast] || LEAD_NAMES.best4u;
-  [...$('#danceLead').options].forEach(o => { if(o.value !== 'auto') o.textContent = names[+o.value] || o.textContent; });
+  // 主唱選單依目前這首歌的人數重建（best4u／anaru 六人、lucky 八人）
+  const sel = $('#danceLead'), auto = sel.options[0];
+  sel.innerHTML = '';
+  sel.appendChild(auto);
+  names.forEach((n, i) => sel.add(new Option(n, String(i))));
+  sel.value = [...sel.options].some(o => o.value === String(prefs.danceLead)) ? String(prefs.danceLead) : 'auto';
 }
 function playSong(id, autoplay = true){
   const s = songs.find(x => x.id === id);
@@ -1102,6 +1114,7 @@ if(location.protocol === 'file:') showMsg('YouTube 需要透過網址開啟本�
 const s = document.createElement('script'); s.src = 'https://www.youtube.com/iframe_api'; document.head.appendChild(s);
 requestAnimationFrame(frame);
 </script>
+<script src="dance-rig.js"></script>
 <script src="dance-sprites.js"></script>
 <script src="dance.js"></script>
 </body>

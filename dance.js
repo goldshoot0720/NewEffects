@@ -17,6 +17,21 @@ const MEMBERS = [
   {hair: '#f1cf72', costume: '#58c2d5', accent: '#d9faff', eye: '#2e8b57', style: 'long'}
 ];
 MEMBERS.forEach((m,index) => { m.index=index; m.blinkAt = 1 + Math.random()*3; m.blinkT = 0; });
+// 舞台上的舞者：人數依卡司調整，外觀循環使用上面六種 Q 版造型
+let dancers = MEMBERS;
+// 後排站位：預設五人沿用原本的左右分佈，其他人數以中央主唱為軸左右交錯
+const DEFAULT_SLOTS = [[.10, .66], [.27, .65], [.40, .63], [.74, .65], [.90, .66]];
+function backSlots(n){
+  if(n === DEFAULT_SLOTS.length) return DEFAULT_SLOTS;
+  const out = new Array(n), spread = (count, from, to) =>
+    Array.from({length: count}, (_, i) => count === 1 ? (from + to)/2 : from + (to - from)*i/(count - 1));
+  const left = [], right = [];
+  for(let k = 0; k < n; k++) (k % 2 ? right : left).push(k);
+  const place = (arr, xs) => arr.forEach((k, i) => { out[k] = [xs[i], .655 - .012*Math.abs(i - (arr.length - 1)/2)]; });
+  place(left, spread(left.length, .10, .43));
+  place(right, spread(right.length, .90, .70));
+  return out;
+}
 
 /* ---------- 音訊分析（MP3 模式） ---------- */
 let ac = null, an = null, freq = null;
@@ -233,9 +248,13 @@ function frame(dt, playing){
   const a = art(); if(a) a.style.transform = `scale(${1 + env*.025})`;
 
   const song = typeof cfgOf === 'function' && curSong ? cfgOf(curSong) : {};
-  if(window.SpriteDancers?.use) SpriteDancers.use(song.cast || 'best4u');
-  const lead = prefs.danceLead === 'auto' ? (song.lead || 0) : Math.max(0,Math.min(5,+prefs.danceLead || 0));
-  const order = [1, 2, 3, 4, 5].map(k => (lead + k) % 6);
+  const set = song.cast || 'best4u';
+  if(window.SpriteDancers?.use) SpriteDancers.use(set);
+  // 人數跟著這首歌的卡司走（best4u／anaru 六人、lucky 八人），素材未載入時沿用六人
+  const cnt = window.SpriteDancers?.count?.(set) || MEMBERS.length;
+  if(dancers.length !== cnt) dancers = Array.from({length: cnt}, (_, i) => ({...MEMBERS[i % MEMBERS.length], index: i}));
+  const lead = Math.max(0, Math.min(cnt - 1, prefs.danceLead === 'auto' ? (song.lead || 0) : (+prefs.danceLead || 0)));
+  const order = Array.from({length: cnt - 1}, (_, k) => (lead + k + 1) % cnt);
   const p = phase(), moveFn = MOVES[Math.floor(p/8) % MOVES.length];
   const strength=+prefs.danceEnergy || 1;
   const amp = playing ? (1.6 + 2.6*clamp(level, 0, 1))*strength : 0;
@@ -249,17 +268,17 @@ function frame(dt, playing){
     m.blinkT = Math.max(0, m.blinkT - dt);
   }
 
-  const slots = [[.10, .66], [.27, .65], [.40, .63], [.74, .65], [.90, .66]];
+  const slots = backSlots(order.length);
   order.forEach((mi, k) => {
     const [fx, fy] = slots[k], left = fx < .5;
     const pk = p - k*.05;
     const mv = moveFn(pk);
     const hop = playing ? AS(pk)*amp*mv.hop : Math.max(0, breath);
-    drawDancer(MEMBERS[mi], CW*fx, CH*fy, unit*.3, {
+    drawDancer(dancers[mi], CW*fx, CH*fy, unit*.3, {
       la: left ? mv.ra : mv.la, ra: left ? mv.la : mv.ra, tilt: (left ? -1 : 1)*mv.tilt,
       hopY: hop, squash: playing ? .05*Math.pow(1 - AS(pk), 6)*level : 0, flare: hop*.25,
       sway: S(pk/2), armWave:S(pk/2),energy:playing ? strength : 0,
-      happy: playing && mv.happy && env > .3, blink: MEMBERS[mi].blinkT > 0, mouth: 0
+      happy: playing && mv.happy && env > .3, blink: MEMBERS[mi % MEMBERS.length].blinkT > 0, mouth: 0
     });
   });
 
@@ -268,17 +287,17 @@ function frame(dt, playing){
   const mouth = singing && playing ? clamp((vocal - .1)*3.2, 0, 1) : 0;
   const hopL = playing ? AS(p)*amp*.55*mv.hop : Math.max(0, breath);
   const sx = CW*.55, sy = CH*.72, ss = unit*.38;
-  drawDancer(MEMBERS[lead], sx, sy, ss, {
+  drawDancer(dancers[lead], sx, sy, ss, {
     la: singing ? mv.la : mv.la, ra: 2.72 + .08*S(p), tilt: mv.tilt*.5,
     hopY: hopL, squash: playing ? .04*Math.pow(1 - AS(p), 6)*level : 0, flare: hopL*.25,
     sway: S(p/2),armWave:S(p/2),energy:playing ? strength : 0,
-    happy: false, blink: MEMBERS[lead].blinkT > 0 && !mouth, mouth, mic: true
+    happy: false, blink: MEMBERS[lead % MEMBERS.length].blinkT > 0 && !mouth, mouth, mic: true
   });
   const activeStyle=prefs.danceStyle === 'anime' && window.SpriteDancers?.ready ? 'anime' : 'chibi';
   const mode=an && media.kind==='file' ? 'MP3 音量／節拍驅動' : '固定 120 BPM';
-  const label=(activeStyle==='anime' ? '六位參考人物' : '六位 Q 版偶像')+' · '+(playing ? mode : '按播放開始');
+  const label=(activeStyle==='anime' ? `${cnt} 位參考人物` : `${cnt} 位 Q 版偶像`)+' · '+(playing ? mode : '按播放開始');
   if(label!==lastStatus){lastStatus=label;const el=document.getElementById('danceStatus');if(el)el.textContent=label;}
-  info={style:activeStyle,count:MEMBERS.length,lead,playing,singing,mouth,phase:p,mode};
+  info={style:activeStyle,count:cnt,lead,playing,singing,mouth,phase:p,mode};
 
   // 音符
   if(prefs.particles && singing && playing && mouth > .15){

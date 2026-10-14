@@ -21,7 +21,10 @@ const ARTS = {
   stage: {src: 'assets/ref/stage9.webp', crop: [0, 0, 1774, 887],
     faces: [[195, 165], [345, 200], [510, 195], [690, 195], [860, 215], [1060, 205], [1235, 215], [1400, 205], [1580, 190]]},
   anaru: {src: 'assets/ref/anaru6.png', crop: [0, 0, 1920, 1080],
-    faces: [[181, 369], [588, 377], [919, 402], [1216, 372], [1486, 367], [1726, 380]]}
+    faces: [[181, 369], [588, 377], [919, 402], [1216, 372], [1486, 367], [1726, 380]]},
+  // 招財喵布布八人：由 tools/build-group.mjs 把 tools/cutout-solo.mjs 的切圖拼成群像
+  lucky8: {src: 'assets/ref/lucky8.png', crop: [0, 0, 1920, 1080],
+    faces: [[228, 104], [719, 104], [1197, 104], [1674, 104], [238, 644], [718, 644], [1199, 644], [1678, 644]]}
 };
 const SONGS = [
   {title: '大好きだよって叫ぶんだ', ver: '小日向理瀬 ver.', file: '大好きだよって叫ぶんだ [小日向理瀬ver.]',
@@ -40,7 +43,12 @@ const SONGS = [
   {title: 'ぴ', ver: 'ナナヲアカリ', file: 'ぴ [ナナヲアカリ]',
    subs: 'ぴ.srt', theme: 'pit', art: 'anaru',
    series: 'ナナヲアカリ', kicker: 'TVアニメ「生徒会にも穴はある！」ED',
-   cast: [['anaru', 0, '梅', '#e07a45'], ['anaru', 1, '寿子', '#e0893a'], ['anaru', 2, 'こころ', '#f08aaa'], ['anaru', 3, 'たん', '#6ecf9a'], ['anaru', 4, '有栖', '#7aa2ff'], ['anaru', 5, '敏深', '#d7c4a8']]}
+   cast: [['anaru', 0, '梅', '#e07a45'], ['anaru', 1, '寿子', '#e0893a'], ['anaru', 2, 'こころ', '#f08aaa'], ['anaru', 3, 'たん', '#6ecf9a'], ['anaru', 4, '有栖', '#7aa2ff'], ['anaru', 5, '敏深', '#d7c4a8']]},
+  {title: '統一發票頭獎得主鋒兄威力彩頭獎得主塗哥', ver: 'Suno v6', file: '統一發票頭獎得主鋒兄威力彩頭獎得主塗哥',
+   subs: '統一發票頭獎得主鋒兄威力彩頭獎得主塗哥.srt', theme: 'lucky', art: 'lucky8', lead: 2,
+   series: '招財喵布布', kicker: '鋒兄生日祝福曲',
+   cast: [['lucky', 0, '鯨魚娘', '#3f7fd0'], ['lucky', 1, '咕咕嘎嘎', '#3a4250'], ['lucky', 2, '鋒兄', '#b08a4a'], ['lucky', 3, '塗哥', '#7b8794'],
+          ['lucky', 4, '喵布布', '#d9822b'], ['lucky', 5, '喵白白', '#8d97a3'], ['lucky', 6, '牙妹', '#d9424f'], ['lucky', 7, '魚妹', '#3f6ea8']]}
 ];
 // 每首歌一組配色：夏日向日葵、日出、黃昏星空、晴空疾風
 const THEMES = {
@@ -48,7 +56,8 @@ const THEMES = {
   sunrise:  {sky: ['#22164a', '#b8487d', '#ffbf7a'], pastel: ['#fff1e6', '#ffe0ef'], accent: '#ffc35c', accent2: '#ff5f93', cool: '#a99bff', deep: '#2a1640', particle: 'spark'},
   twilight: {sky: ['#050820', '#2b2366', '#d0677a'], pastel: ['#eef0ff', '#ffe6ea'], accent: '#ffd56b', accent2: '#9c7bff', cool: '#62d4ff', deep: '#14123a', particle: 'star'},
   wind:     {sky: ['#0e3a66', '#49b4ef', '#e8f8ff'], pastel: ['#f3fbff', '#e5fff6'], accent: '#ffe14a', accent2: '#3ec6ff', cool: '#d7f6ff', deep: '#0c2748', particle: 'wind'},
-  pit:      {sky: ['#431a6b', '#ff79b8', '#ffe9a8'], pastel: ['#fff3fb', '#eafaff'], accent: '#ff4f9a', accent2: '#31d3c6', cool: '#ffd166', deep: '#2a1146', particle: 'dot'}
+  pit:      {sky: ['#431a6b', '#ff79b8', '#ffe9a8'], pastel: ['#fff3fb', '#eafaff'], accent: '#ff4f9a', accent2: '#31d3c6', cool: '#ffd166', deep: '#2a1146', particle: 'dot'},
+  lucky:    {sky: ['#4a0a16', '#c8202f', '#ffd98a'], pastel: ['#fff6e2', '#ffe4e6'], accent: '#ffd23f', accent2: '#ff4d6d', cool: '#ffb703', deep: '#33070f', particle: 'coin'}
 };
 const LOGO = [['B', '#2ba6e1'], ['E', '#f6a531'], ['S', '#ee5b97'], ['T', '#2ba6e1'], [' ', ''], ['4', '#f6a531'], ['U', '#8d6ad6']];
 const POP = ['#ee5b97', '#2ba6e1', '#f6a531', '#8d6ad6', '#3cc39a', '#f08a4b'];
@@ -76,17 +85,20 @@ const song = SONGS[clamp(+(params.get('song') || 0) | 0, 0, SONGS.length - 1)];
 song.audio = song.file + '.mp3';
 const T = THEMES[song.theme];
 const ART = ARTS[song.art], AW = ART.crop[2], AH = ART.crop[3], FACES = ART.faces;
-// 成員：0 是主唱；名字未知的成員以編號標示
+// 成員：song.lead 是主唱（預設第一位）；名字未知的成員以編號標示
 const MEMBERS = song.cast.map(([sheet, idx, name, color], i) => ({sheet, idx, name: name || `No.${pad(i + 1)}`, color, img: null, meta: null}));
-const OTHERS = MEMBERS.map((_, i) => i).slice(1);
+const LEAD = clamp(+(song.lead ?? 0) | 0, 0, MEMBERS.length - 1);
+const OTHERS = MEMBERS.map((_, i) => i).filter(i => i !== LEAD);
 const BASE_CHARACTER_GROUPS = [
   {sheet:'casual',title:'十二人 · 制服與便服',src:'assets/ref/lineup12.webp',colors:['#11bbde','#ff86b1'],count:12},
   {sheet:'rooftop',title:'屋頂六人 · SUNRISE',src:'assets/ref/rooftop6.webp',colors:['#70ccff','#bdf1bc'],count:6},
   {sheet:'idol',title:'RISE 五人 · 演出服',src:'assets/ref/rise5.webp',colors:['#284b92','#f1c265'],count:5},
   {sheet:'stage',title:'舞台九人 · 黃昏演出',src:'assets/ref/stage9.webp',colors:['#918be8','#f9b38e'],count:9}
 ];
-const CHARACTER_GROUPS = song.art === 'anaru'
+const CHARACTER_GROUPS = song.cast[0][0] === 'anaru'
   ? [{sheet:'anaru', title:'生徒会六人', src:'assets/ref/anaru6.png', colors:['#49b4ef','#ffe14a'], count:6}]
+  : song.cast[0][0] === 'lucky'
+  ? [{sheet:'lucky', title:'招財喵布布 · 幸運八人', src:'assets/ref/lucky8.png', colors:['#c8202f','#ffd98a'], count:8, solo:true}]
   : BASE_CHARACTER_GROUPS;
 let A = null, cues = [], sections = [], shots = [], TJ = [], TZ = [], C = {};
 
@@ -257,7 +269,7 @@ function buildShots(){
   }
   const out = [], snap = t => A.beat0 + Math.round((t - A.beat0)/A.spb)*A.spb;
   const add = (type, start, end, o = {}) => { if(end - start > .05) out.push({type, start, end, seed: out.length + 1, ...o}); };
-  const n = {film: 0, typo: 0, stage: 0, windows: 0, verse: 0};
+  const n = {film: 0, typo: 0, stage: 0, windows: 0, verse: 0, bike: 0};
   const first = cues[0], last = cues[cues.length - 1];
   const outroStart = Math.min(last.end, A.dur - 7);
   if(first.start > 1.2) add('stage', 0, first.start, {variant: 'intro'});
@@ -266,7 +278,8 @@ function buildShots(){
     const end = Math.min(next ? Math.min(c.end, next.start) : c.end, outroStart);
     if(end <= c.start) return;
     const label = c.sec?.label || 'A-MELO';
-    let type = label === 'CHORUS' ? 'stage' : label === 'B-MELO' ? 'typo' : (Math.floor(n.verse++/2) % 2 ? 'windows' : 'film');
+    const v = n.verse++;
+    let type = label === 'CHORUS' ? 'stage' : label === 'B-MELO' ? 'typo' : (v % 3 === 2 ? 'bike' : (Math.floor(v/2) % 2 ? 'windows' : 'film'));
     const parts = Math.max(1, Math.round((end - c.start)/6.5));
     for(let p = 0; p < parts; p++){
       const s = p ? snap(c.start + (end - c.start)*p/parts) : c.start;
@@ -274,12 +287,16 @@ function buildShots(){
       const k = n[type]++;
       const o = {cue: c};
       if(type === 'stage') o.variant = ['wide', 'close', 'screen', 'close2'][k % 4];
-      if(type === 'typo'){ o.member = k % 2 ? OTHERS[(k >> 1) % OTHERS.length] : 0; o.side = k % 2; }
+      if(type === 'typo'){ o.member = k % 2 ? OTHERS[(k >> 1) % OTHERS.length] : LEAD; o.side = k % 2; }
       if(type === 'film'){ const nf = FACES.length, a = Math.floor(hash(k*3 + 1)*nf); o.faceA = FACES[a]; o.faceB = FACES[(a + 1 + Math.floor(hash(k*5 + 2)*(nf - 2))) % nf]; o.zoomIn = k % 2 === 0; }
-      if(type === 'windows'){ o.members = [0, OTHERS[(k*2) % OTHERS.length], OTHERS[(k*2 + 1) % OTHERS.length]]; o.layout = k % 2; }
+      if(type === 'windows'){ o.members = [LEAD, OTHERS[(k*2) % OTHERS.length], OTHERS[(k*2 + 1) % OTHERS.length]]; o.layout = k % 2; }
       add(type, s, e, o);
     }
-    if(next && next.start - c.end > 1 && c.end < outroStart) add('stage', c.end, Math.min(next.start, outroStart), {variant: 'break'});
+    if(next && next.start - c.end > 1 && c.end < outroStart){
+      const end = Math.min(next.start, outroStart);
+      // 長間奏改播騎自行車的段落，短的空檔仍用舞台休息畫面
+      if(end - c.end > 4) add('bike', c.end, end); else add('stage', c.end, end, {variant: 'break'});
+    }
   });
   add('outro', outroStart, A.dur);
   return out;
@@ -367,6 +384,17 @@ function particles(t, n, layer = 0, kind = T.particle){
         g.fillStyle = h4 > .2 ? '#ffffff' : T.accent2;
         g.beginPath(); g.arc(x, y, r*.55, 0, Math.PI*2); g.fill();
       }
+    } else if(kind === 'coin'){
+      // 招財金幣：外圓內方的古錢，一邊翻面一邊落下
+      const life = 5 + h3*4, age = frac(t/life + h1), x = h2*W + Math.sin(t*.7 + i)*26, y = -70 + age*(H + 140);
+      const r = 12 + h3*16, face = Math.abs(Math.cos(t*1.6 + i*1.7));
+      g.globalCompositeOperation = 'source-over'; g.globalAlpha = .85*Math.sin(age*Math.PI);
+      g.save(); g.translate(x, y); g.scale(.3 + .7*face, 1);
+      g.fillStyle = h4 > .5 ? T.accent : T.accent2;
+      g.beginPath(); g.arc(0, 0, r, 0, Math.PI*2); g.fill();
+      g.strokeStyle = 'rgba(140,74,8,.5)'; g.lineWidth = 2; g.stroke();
+      g.fillStyle = 'rgba(120,58,6,.7)'; g.fillRect(-r*.27, -r*.27, r*.54, r*.54);
+      g.restore();
     } else {
       const life = 7 + h3*6, age = frac(t/life + h1), x = h2*W*1.2 - age*320 + Math.sin(t*1.3 + i)*25, y = -60 + age*(H + 120);
       g.globalCompositeOperation = 'source-over';
@@ -453,22 +481,15 @@ function danceState(i, t, o = {}){
   else { wave = (Math.floor(p) % 2 ? 1 : -1)*(.55 + .45*Math.cos(Math.PI*fr)); hop = Math.pow(1 - fr, 2)*18; }
   return {wave, energy: en, hop: hop*en, squash: Math.max(0, 1 - fr*6)*.035*en, tilt: .05*Math.sin(Math.PI*p/2), mouth: o.mouth || 0, lead: !!o.lead};
 }
-// 去背角色的舞動：腳踩地、上半身分條側彎，加上跳躍、壓縮與傾斜（2D 切圖動畫）
+// 去背角色的舞動：手臂／腿／身體分層的傀儡動畫（見 dance-rig.js），加上跳躍、壓縮與傾斜
 function drawDancer(i, x, y, h, st){
   const m = st.actor || MEMBERS[i]; if(!m?.img) return;
-  const img = m.img, iw = img.width, ih = img.height, k = h/ih, w = iw*k;
-  const hop = st.hop*h/420, sq = st.squash*4;
-  g.save(); g.translate(x, y);
-  g.fillStyle = 'rgba(0,0,0,.28)'; g.beginPath(); g.ellipse(0, 0, w*.32*(1 - Math.min(.35, hop/h*3)), h*.02, 0, 0, Math.PI*2); g.fill();
-  g.translate(0, -hop); g.rotate(st.tilt*.6); g.scale(1 + sq*.5, 1 - sq);
-  const strips = 28, sway = st.wave*st.energy*h*.035, breathe = 1 + .012*Math.sin(beatPos(T0)*Math.PI);
-  for(let s = 0; s < strips; s++){
-    const v0 = s/strips, v1 = (s + 1)/strips, v = (v0 + v1)/2;
-    const bend = sway*Math.pow(1 - v, 1.7), sy = v0*ih, sh = (v1 - v0)*ih + 1;
-    const sx = v < .62 ? breathe : 1;
-    g.drawImage(img, 0, sy, iw, Math.min(sh, ih - sy), -w*sx/2 + bend, -h + v0*h, w*sx, (v1 - v0)*h + 1);
-  }
+  const img = m.img, iw = img.width, ih = img.height, w = iw*h/ih;
+  const hop = st.hop*h/420;
+  g.save();
+  g.fillStyle = 'rgba(0,0,0,.28)'; g.beginPath(); g.ellipse(x, y, w*.32*(1 - Math.min(.35, hop/h*3)), h*.02, 0, 0, Math.PI*2); g.fill();
   g.restore();
+  SpriteRig.draw(g, img, x, y, h, {wave: st.wave, energy: st.energy, hop, tilt: st.tilt, squash: st.squash*4});
 }
 let T0 = 0;
 
@@ -866,14 +887,19 @@ function shotStage(t, sh, u){
     }
     g.globalAlpha = 1;
   }
-  // 舞者：後排三人、前排兩人加中央主唱
-  const O = OTHERS, spots = O.length >= 5
-    ? [[.31, 790, 400, O[0]], [.5, 775, 390, O[1]], [.69, 790, 400, O[2]], [.17, 935, 480, O[3]], [.83, 935, 480, O[4]], [.5, 985, 560, 0]]
-    : [[.34, 790, 400, O[0]], [.66, 790, 400, O[1]], [.15, 935, 480, O[2]], [.85, 935, 480, O[3]], [.5, 985, 560, 0]];
+  // 舞者：依卡司人數排成後排／中排／前排，中央是主唱
+  const O = OTHERS, spots = O.length >= 7
+    ? [[.10, 765, 360, O[0]], [.30, 758, 352, O[1]], [.50, 752, 348, O[2]], [.70, 758, 352, O[3]], [.90, 765, 360, O[4]],
+       [.27, 895, 430, O[5]], [.73, 895, 430, O[6]], [.5, 995, 560, LEAD]]
+    : O.length >= 5
+    ? [[.31, 790, 400, O[0]], [.5, 775, 390, O[1]], [.69, 790, 400, O[2]], [.17, 935, 480, O[3]], [.83, 935, 480, O[4]], [.5, 985, 560, LEAD]]
+    : [[.34, 790, 400, O[0]], [.66, 790, 400, O[1]], [.15, 935, 480, O[2]], [.85, 935, 480, O[3]], [.5, 985, 560, LEAD]];
+  // 特寫時後排正中央會被主唱擋住，不畫以免頭部從主唱後方冒出
+  const centerBack = O.length >= 7 ? 2 : O.length >= 5 ? 1 : -1;
   const intro = sh.variant === 'intro' ? clamp((t - .5)/1.5) : 1;
   spots.forEach(([fx, y, h, m], k) => {
-    if(close && O.length >= 5 && k === 1) return;  // 特寫時後排中央被主唱擋住，不畫以免頭部從主唱後方冒出
-    const delay = k*.08, st = danceState(m, t, {alt: true, e: m === 0 ? 1 : .9});
+    if(close && k === centerBack) return;
+    const delay = k*.08, st = danceState(m, t, {alt: true, e: m === LEAD ? 1 : .9});
     g.save(); g.globalAlpha = easeOut((intro - delay)/.5 + (intro >= 1 ? 1 : 0));
     g.globalCompositeOperation = 'lighter'; glow(fx*W, y - h*.5, h*.7, MEMBERS[m].color, .18 + .2*pl); g.globalCompositeOperation = 'source-over';
     drawDancer(m, fx*W, y, h, st);
@@ -891,6 +917,122 @@ function shotStage(t, sh, u){
   }
   lyricShade(760, .7);
   karaoke(t, {cx: W/2, y: 985, size: 66, maxW: 1560, zhSize: 36});
+}
+/* ---------------- 騎自行車：個別角色騎車的段落 ---------------- */
+// 側面視角的自行車：兩輪、車架、把手、座墊與會轉的踏板。part='back' 畫在角色後方、'front' 畫在前方
+function drawBicycle(cx, cy, R, spin, pedal, o = {}){
+  const lw = Math.max(2, R*.1), back = o.part !== 'front';
+  const rear = [cx - R*1.32, cy], front = [cx + R*1.32, cy];
+  const crank = [cx - R*.14, cy + R*.16], seat = [cx - R*.78, cy - R*.92], bar = [cx + R*1.0, cy - R*.96];
+  g.save(); g.lineCap = 'round'; g.lineJoin = 'round';
+  const wheel = ([wx, wy], solid) => {
+    g.save(); g.translate(wx, wy);
+    g.strokeStyle = '#20242e'; g.lineWidth = lw*1.9;
+    g.beginPath(); g.arc(0, 0, R, 0, Math.PI*2); g.stroke();
+    g.strokeStyle = solid ? 'rgba(226,236,252,.42)' : 'rgba(226,236,252,.28)';
+    g.lineWidth = Math.max(1, lw*.34);
+    g.rotate(spin);
+    for(let i = 0; i < 6; i++){ g.beginPath(); g.moveTo(0, 0); g.lineTo(R*.9, 0); g.stroke(); g.rotate(Math.PI/3); }
+    g.fillStyle = T.accent; g.beginPath(); g.arc(0, 0, R*.15, 0, Math.PI*2); g.fill();
+    g.restore();
+  };
+  const line = (a, b, col, w) => { g.strokeStyle = col; g.lineWidth = w; g.beginPath(); g.moveTo(a[0], a[1]); g.lineTo(b[0], b[1]); g.stroke(); };
+  const frame = o.frame || T.accent2;
+  if(back){
+    wheel(rear, true);
+    line(rear, crank, frame, lw); line(crank, seat, frame, lw); line(seat, rear, frame, lw);
+    line(seat, bar, frame, lw); line(crank, bar, frame, lw);
+    line(crank, rear, 'rgba(230,238,250,.55)', lw*.5);                        // 鏈條
+    g.fillStyle = '#2a2f3a'; g.beginPath(); g.ellipse(seat[0], seat[1] - R*.06, R*.32, R*.1, -.15, 0, Math.PI*2); g.fill();
+  } else {
+    wheel(front, true);
+    line(bar, front, frame, lw);                                             // 前叉
+    g.strokeStyle = '#2a2f3a'; g.lineWidth = lw*.85;                         // 把手
+    g.beginPath(); g.moveTo(bar[0], bar[1]); g.lineTo(bar[0] + R*.24, bar[1] - R*.08); g.stroke();
+    for(const off of [0, Math.PI]){                                          // 踏板跟著曲柄轉
+      const a = pedal + off, px = crank[0] + Math.cos(a)*R*.44, py = crank[1] + Math.sin(a)*R*.44;
+      g.strokeStyle = '#2a2f3a'; g.lineWidth = lw*.7;
+      g.beginPath(); g.moveTo(crank[0], crank[1]); g.lineTo(px, py); g.stroke();
+      g.fillStyle = T.accent; g.beginPath(); g.ellipse(px, py, R*.19, R*.08, 0, 0, Math.PI*2); g.fill();
+    }
+    g.fillStyle = T.accent; g.beginPath(); g.arc(crank[0], crank[1], R*.12, 0, Math.PI*2); g.fill();
+  }
+  g.restore();
+}
+// 路面：中央虛線往左捲動，遠處加幾道速度線
+function drawRoad(t, horizon, speed){
+  const road = g.createLinearGradient(0, horizon, 0, H);
+  road.addColorStop(0, 'rgba(28,32,48,.92)'); road.addColorStop(1, 'rgba(14,16,26,.98)');
+  g.fillStyle = road; g.fillRect(0, horizon, W, H - horizon);
+  g.strokeStyle = 'rgba(255,255,255,.85)'; g.lineWidth = 9;
+  const off = (t*speed) % 260;
+  for(let x = -off; x < W + 260; x += 260){
+    g.beginPath(); g.moveTo(x, horizon + (H - horizon)*.62); g.lineTo(x + 130, horizon + (H - horizon)*.62); g.stroke();
+  }
+  g.strokeStyle = 'rgba(255,255,255,.18)'; g.lineWidth = 4;
+  for(let i = 0; i < 3; i++){
+    const y = horizon + (H - horizon)*(.16 + i*.3), o2 = (t*speed*(1 + i*.5)) % 420;
+    g.beginPath(); g.moveTo(-o2, y); g.lineTo(-o2 + 420, y); g.stroke();
+  }
+}
+// 一位角色騎一台車：車架後半 → 角色 → 前輪與踏板，腿自然被車身擋住
+function drawRider(m, cx, cy, R, t, opts = {}){
+  const pedal = t*opts.cadence, spin = -t*opts.speed/R;
+  const bob = Math.sin(pedal*2)*R*.025;
+  g.save(); g.translate(0, bob);
+  drawBicycle(cx, cy, R, spin, pedal, {frame: opts.frame, part: 'back'});
+  const img = MEMBERS[m]?.img;
+  if(img){
+    const r = SpriteRig.measure(img);
+    const h = R*2.0;
+    const hipFrac = r.ok ? r.hipY/r.H : .6;
+    const feetY = (cy - R*.92) + h*(1 - hipFrac);        // 髖部落到座墊高度
+    SpriteRig.draw(g, img, cx - R*.06, feetY, h, {
+      energy: 0, wave: 0, hop: 0, tilt: .07,
+      armA: -.78 + .07*Math.sin(pedal), armB: -.78 + .07*Math.sin(pedal + 1.6),
+      legA: .40 + .34*Math.sin(pedal), legB: .40 + .34*Math.sin(pedal + Math.PI)
+    });
+  }
+  drawBicycle(cx, cy, R, spin, pedal, {frame: opts.frame, part: 'front'});
+  g.restore();
+}
+function shotBike(t, sh, u){
+  const horizon = 520;
+  backdrop(t, {dim: .25, art: .22});
+  g.save(); g.globalAlpha = .5;                          // 遠山視差
+  for(let k = 0; k < 2; k++){
+    const y = horizon - 40 - k*70, sp = 14 + k*22, off = (t*sp) % 900;
+    g.fillStyle = k ? 'rgba(28,22,52,.75)' : 'rgba(52,40,86,.7)';
+    g.beginPath(); g.moveTo(-off - 200, y);
+    for(let x = -off - 200; x < W + 900; x += 300){ g.lineTo(x + 150, y - 90 - (k ? 40 : 0)); g.lineTo(x + 300, y); }
+    g.lineTo(W + 900, H); g.lineTo(-off - 200, H); g.closePath(); g.fill();
+  }
+  g.restore();
+  drawRoad(t, horizon, 340);
+  const R = 86;
+  const ride = (m, cx, cy, sc, o) => { g.save(); g.translate(cx, cy); g.scale(sc, sc); drawRider(m, 0, 0, R, t, o); g.restore(); };
+  const O = OTHERS;
+  const back = [O[0], O[2], O[4]].filter(v => v !== undefined);
+  const front = [O[1], O[3], O[5]].filter(v => v !== undefined);
+  back.forEach((m, i) => ride(m, W*(.16 + i*.26), horizon + 190 + (i%2)*26, .46, {speed: 300, cadence: 3.4, frame: 'rgba(210,220,240,.6)'}));
+  front.forEach((m, i) => ride(m, W*(.80 - i*.23), horizon + 255 + (i%2)*26, .70, {speed: 360, cadence: 3.8, frame: T.cool}));
+  ride(LEAD, W*.48, horizon + 400, 1, {speed: 430, cadence: 4.2});
+  g.save(); g.strokeStyle = 'rgba(255,255,255,.35)'; g.lineWidth = 3;    // 速度線
+  for(let i = 0; i < 16; i++){
+    const y = horizon + 60 + hash(i*3.3)*380, len = 90 + hash(i*7.1)*220;
+    const x = W - ((t*(620 + hash(i)*420) + i*160) % (W + 400));
+    g.globalAlpha = .12 + .22*hash(i*5.7);
+    g.beginPath(); g.moveTo(x, y); g.lineTo(x + len, y); g.stroke();
+  }
+  g.restore();
+  const tag = MEMBERS[LEAD].name;
+  g.save(); g.font = `700 30px ${FONT.jp}`;
+  const tw = g.measureText(tag).width;
+  roundRect(W - 70 - tw - 40, H - 250, tw + 40, 52, 26); g.fillStyle = MEMBERS[LEAD].color; g.fill();
+  g.fillStyle = '#fff'; g.fillText(tag, W - 70 - tw - 20, H - 213); g.restore();
+  g.save(); g.globalCompositeOperation = 'lighter'; particles(t, 26, 6); g.restore();
+  lyricShade(830, .72);
+  karaoke(t, {cx: W/2, y: 968, size: 60, maxW: 1560, zhSize: 34});
 }
 // 尾聲：封面拍立得＋LOGO，最後淡出
 function shotOutro(t, sh, u){
@@ -925,7 +1067,7 @@ function shotCharacters(t,sh,u){
     light.addColorStop(0,'rgba(255,255,255,.16)');light.addColorStop(1,'rgba(255,255,255,0)');
     g.fillStyle=light;g.beginPath();g.moveTo(x-6,0);g.lineTo(x+6,0);g.lineTo(x+sway+130,900);g.lineTo(x+sway-130,900);g.closePath();g.fill();
   }
-  const sizes={casual:[1774,815],rooftop:[1536,1024],idol:[1536,1024],stage:[1774,887],anaru:[1920,1080]};
+  const sizes={casual:[1774,815],rooftop:[1536,1024],idol:[1536,1024],stage:[1774,887],anaru:[1920,1080],lucky:[1920,1080]};
   const [sourceW,sourceH]=sizes[group.sheet],scale=Math.min((W-160)/sourceW,740/sourceH);
   const originX=(W-sourceW*scale)/2,originY=150;
   if(group.matte){
@@ -937,10 +1079,13 @@ function shotCharacters(t,sh,u){
     }
   }
   const focus=Math.floor(Math.max(0,local-2)/2)%actors.length;
+  // solo 組的切圖來自各自獨立的立繪，沒有群像座標，改用 4×2 網格平均排列
+  const solo=!!group.solo,n=actors.length,gw=sourceW*scale,gh=sourceH*scale;
   actors.forEach((actor,i)=>{
-    const x=originX+(actor.meta.source[0]+actor.meta.w/2)*scale;
-    const y=originY+(actor.meta.source[1]+actor.meta.h)*scale;
-    const h=actor.meta.h*scale;
+    const col=solo?i%4:i,row=solo?Math.floor(i/4):0,cw=solo?gw/4:0,chh=solo?gh/2:0;
+    const h=solo?chh*.9:actor.meta.h*scale;
+    const x=solo?originX+(col+.5)*cw:originX+(actor.meta.source[0]+actor.meta.w/2)*scale;
+    const y=solo?originY+(row+1)*chh-6:originY+(actor.meta.source[1]+actor.meta.h)*scale;
     const entry=easeOut((local-i*.045)/.65);
     const state=danceState(i,t,{e:.23,alt:true});state.actor=actor;
     state.hop=Math.min(state.hop,8);
@@ -959,7 +1104,7 @@ function shotCharacters(t,sh,u){
   lyricShade(908,.78);
   karaoke(t,{cx:W/2,y:989,size:48,maxW:1700,zhSize:28});
 }
-const SHOTS = {film: shotFilm, typo: shotTypo, windows: shotWindows, stage: shotStage, outro: shotOutro, characters:shotCharacters};
+const SHOTS = {film: shotFilm, typo: shotTypo, windows: shotWindows, stage: shotStage, bike: shotBike, outro: shotOutro, characters:shotCharacters};
 
 /* ---------------- 覆蓋層：片頭標題、轉場、HUD ---------------- */
 function titleCard(t){
@@ -1112,7 +1257,7 @@ async function renderAll(){
   const from = +(params.get('from') || 0), to = Math.min(A.dur, +(params.get('to') || A.dur));
   if(!Number.isFinite(from)||!Number.isFinite(to)||from<0||from>=to) throw new Error('輸出時間範圍無效');
   const f0 = Math.round(from*FPS), f1 = Math.round(to*FPS);
-  await post('meta', JSON.stringify({title: CHARACTER_PV ? song.title+' · 全曲人物動畫' : song.title, ver: song.ver, audio: song.audio, file: CHARACTER_PV ? '全曲人物動畫（四組造型） - '+song.title : song.file, frames: f1 - f0, from, to, fps: FPS, bpm: A.bpm,
+  await post('meta', JSON.stringify({title: CHARACTER_PV ? song.title+' · 全曲人物動畫' : song.title, ver: song.ver, audio: song.audio, file: CHARACTER_PV ? `全曲人物動畫（${CHARACTER_GROUPS.length > 1 ? `${CHARACTER_GROUPS.length} 組造型` : CHARACTER_GROUPS[0].title}） - `+song.title : song.file, frames: f1 - f0, from, to, fps: FPS, bpm: A.bpm,
     shots: shots.map(s => `${s.type}${s.variant ? ':' + s.variant : ''}@${s.start.toFixed(2)}`).join(' ')}));
   for(let f = f0; f < f1; f++){
     render(f/FPS);

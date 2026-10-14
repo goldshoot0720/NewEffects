@@ -464,5 +464,103 @@
    ],
    "sheet": "anaru6.png"
   }
+ ],
+ "lucky": [
+  {
+   "file": "lucky-0.png",
+   "w": 1010,
+   "h": 1438,
+   "headX": 468,
+   "headY": 134,
+   "source": [
+    6,
+    24
+   ],
+   "sheet": "lucky1.png"
+  },
+  {
+   "file": "lucky-1.png",
+   "w": 1020,
+   "h": 1117,
+   "headX": 507,
+   "headY": 105,
+   "source": [
+    2,
+    44
+   ],
+   "sheet": "lucky2.png"
+  },
+  {
+   "file": "lucky-2.png",
+   "w": 1024,
+   "h": 1214,
+   "headX": 506,
+   "headY": 114,
+   "source": [
+    0,
+    104
+   ],
+   "sheet": "lucky3.png"
+  },
+  {
+   "file": "lucky-3.png",
+   "w": 1020,
+   "h": 1173,
+   "headX": 496,
+   "headY": 110,
+   "source": [
+    2,
+    124
+   ],
+   "sheet": "lucky4.png"
+  },
+  {
+   "file": "lucky-4.png",
+   "w": 1014,
+   "h": 1265,
+   "headX": 502,
+   "headY": 119,
+   "source": [
+    3,
+    179
+   ],
+   "sheet": "lucky5.png"
+  },
+  {
+   "file": "lucky-5.png",
+   "w": 1068,
+   "h": 1259,
+   "headX": 528,
+   "headY": 118,
+   "source": [
+    10,
+    120
+   ],
+   "sheet": "lucky6.png"
+  },
+  {
+   "file": "lucky-6.png",
+   "w": 1016,
+   "h": 1443,
+   "headX": 504,
+   "headY": 135,
+   "source": [
+    4,
+    42
+   ],
+   "sheet": "lucky7.png"
+  },
+  {
+   "file": "lucky-7.png",
+   "w": 1018,
+   "h": 1397,
+   "headX": 504,
+   "headY": 131,
+   "source": [
+    4,
+    93
+   ],
+   "sheet": "lucky8.png"
+  }
  ]
 }
