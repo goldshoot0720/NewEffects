@@ -523,6 +523,24 @@ function drawDancer(i, x, y, h, st){
   SpriteRig.draw(g, img, x, y, h, {wave: st.wave, energy: st.energy, hop, tilt: st.tilt, squash: st.squash*4,
     armA: st.armA, armB: st.armB, legA: st.legA, legB: st.legB});
 }
+// 立繪的 h 就是整張圖的高度，腳的錨點在圖的底邊。
+// 手抬起來會高出頭頂，踏步會讓鞋底低於錨點，落地壓縮會把身體再撐寬約一成。
+// 這些餘裕跟身高成比例，窄的立繪就不會被多留一圈空白。
+function dancerPad(img){
+  const aspect = img && img.height ? img.width/img.height : .45;
+  return {aspect, top: .18, bot: .04, side: .10};
+}
+// 把一個人放進矩形。align 決定餘裕算進去之後靠上、置中或靠下。回傳的 y 仍是腳的錨點。
+function fitDancer(img, box, align){
+  const p = dancerPad(img);
+  const bw = Math.max(8, box.r - box.l), bh = Math.max(8, box.b - box.t);
+  let h = bh/(1 + p.top + p.bot);
+  const span = Math.max(.05, p.aspect)*(1 + p.side);
+  if(h*span > bw) h = bw/span;
+  const used = h*(1 + p.top + p.bot), slack = Math.max(0, bh - used);
+  const sole = align === 'top' ? box.t + used : align === 'center' ? box.t + used + slack/2 : box.b;
+  return {x: (box.l + box.r)/2, y: sole - h*p.bot, h};
+}
 let T0 = 0;
 
 /* 文字排版：依寬度斷行，必要時縮小字級 */
@@ -733,11 +751,16 @@ function shotFilm(t, sh, u){
   glow(px + pw*.74, 640, 520, T.cool, .09 + .07*pulse(t));
   g.restore();
   const enter = easeOut((t - sh.start)/.55);
+  // 膠卷窗是這兩個人的畫面。手張開會碰到左右膠片，腳又會沉進歌詞裡，所以各佔半格、整身收在窗內。
+  const gateT = 196, gateB = 888, gateL = px + 28, gateR = px + pw - 28, mid = (gateL + gateR)/2;
+  const slots = pair.length === 1
+    ? [{l: gateL, t: gateT, r: gateR, b: gateB}]
+    : [{l: gateL, t: gateT, r: mid - 10, b: gateB}, {l: mid + 10, t: gateT, r: gateR, b: gateB}];
   pair.forEach((m, i) => {
-    const cx = px + pw*(pair.length === 1 ? .5 : .28 + i*.44);
+    const fit = fitDancer(MEMBERS[m].img, slots[i], 'center'), cx = fit.x;
     const st = danceState(m, t, {alt: true, e: .9});
     g.save(); g.globalAlpha = enter;
-    drawDancer(m, cx, 1010, 780, st);
+    drawDancer(m, cx, fit.y, fit.h, st);
     g.restore();
     g.save(); g.globalAlpha = enter; g.font = `700 26px ${FONT.jp}`; g.textAlign = 'center';
     const tag = MEMBERS[m].name, tw = g.measureText(tag).width;
@@ -783,15 +806,27 @@ function shotTypo(t, sh, u){
   particles(t, 30, 3);
   focusLines(t, .35*(1 - clamp((t - c.start)/.8)) + .12*pulse(t)*energy(t), left ? 1270 : 650, H*.45, 520);
   sparkles(t, 10, 9 + c.i, [left ? 800 : 160, 140, 940, 700]);
-  const mx = left ? 470 : W - 470, m = sh.member;
-  g.save(); g.globalCompositeOperation = 'lighter'; glow(mx, 420, 280, MEMBERS[m].color, .16); g.restore();
-  const enter = easeOut((t - sh.start)/.5);
-  drawDancer(m, mx + (left ? -1 : 1)*(1 - enter)*200, 110 + 1350, 1350, danceState(m, t, {e: .6}));
+  const m = sh.member, mem = MEMBERS[m];
+  // 以前腳錨在畫面下方四百像素，膝蓋以下和外側的手都在畫面外。
+  // 進場的位移也算在矩形裡，滑進來的途中手不會先被切掉。名牌留在腳的下面。
+  const slide = 100, enter = easeOut((t - sh.start)/.5);
+  let mx = left ? 470 : W - 470;
+  if(mem?.img){
+    const box = left
+      ? {l: 36 + slide, t: 64, r: 860, b: H - 172}
+      : {l: W - 860, t: 64, r: W - 36 - slide, b: H - 172};
+    const fit = fitDancer(mem.img, box);
+    mx = fit.x + (left ? -1 : 1)*(1 - enter)*slide;
+    g.save(); g.globalCompositeOperation = 'lighter'; glow(mx, fit.y - fit.h*.62, 280, mem.color, .16); g.restore();
+    drawDancer(m, mx, fit.y, fit.h, danceState(m, t, {e: .6}));
+  }
   // 成員名牌
-  g.save(); g.globalAlpha = enter; g.font = `700 30px ${FONT.jp}`;
-  const tag = `${MEMBERS[m].name}`, tx = left ? 70 : W - 70 - g.measureText(tag).width - 40;
-  roundRect(tx, H - 150, g.measureText(tag).width + 40, 52, 26); g.fillStyle = MEMBERS[m].color; g.fill();
-  g.fillStyle = '#fff'; g.fillText(tag, tx + 20, H - 113); g.restore();
+  if(mem){
+    g.save(); g.globalAlpha = enter; g.font = `700 30px ${FONT.jp}`;
+    const tag = `${mem.name}`, tx = left ? 70 : W - 70 - g.measureText(tag).width - 40;
+    roundRect(tx, H - 150, g.measureText(tag).width + 40, 52, 26); g.fillStyle = mem.color; g.fill();
+    g.fillStyle = '#fff'; g.fillText(tag, tx + 20, H - 113); g.restore();
+  }
   // 逐字蹦出
   const cx = left ? 1270 : 650, maxW = 980;
   const L = layout(c.ju, jpFont, 150, maxW, 3, 60), s = L.size, rowH = s*1.45;
@@ -826,9 +861,10 @@ function shotTypo(t, sh, u){
   g.restore();
 }
 // 視窗特寫：成員在彈出的應用程式視窗裡跳舞，歌詞打進搜尋列（參考桌寵 PV）
+// 三扇窗並排、彼此留一點空隙。疊在一起時，前面那扇會把後面的人的手和身體擋住。
 const WIN_LAYOUTS = [
-  [[560, 360, 640, 470, -.03], [1340, 330, 640, 470, .025], [960, 470, 700, 500, -.01]],
-  [[520, 420, 620, 460, .03], [1000, 330, 660, 480, -.02], [1440, 450, 620, 460, .02]]
+  [[330, 440, 560, 600, -.018], [960, 420, 580, 600, .01], [1590, 440, 560, 600, -.012]],
+  [[360, 460, 540, 580, .02], [960, 430, 580, 600, -.01], [1560, 460, 540, 580, .016]]
 ];
 function shotWindows(t, sh, u){
   g.drawImage(C.pastel, 0, 0);
@@ -853,7 +889,9 @@ function shotWindows(t, sh, u){
     g.fillStyle = cg; g.fillRect(x, y + bar, w, h - bar);
     g.save(); g.beginPath(); g.rect(x, y + bar, w, h - bar); g.clip();
     g.globalCompositeOperation = 'lighter'; glow(0, y + bar + 80, 160, '#ffffff', .22); g.globalCompositeOperation = 'source-over';
-    drawDancer(m, 0, y + bar + 30 + 1000, 1000, danceState(m, t, {e: .8, alt: true}));
+    // 視窗內容區才是這個人的畫面。人比視窗高時，下半身和兩側的手會被窗框切掉。
+    const fit = fitDancer(mem.img, {l: x + 18, t: y + bar + 12, r: x + w - 18, b: y + h - 16}, 'center');
+    drawDancer(m, fit.x, fit.y, fit.h, danceState(m, t, {e: .8, alt: true}));
     g.restore();
     g.fillStyle = T.deep; g.fillRect(x, y + bar - 3, w, 3);
     g.restore();
@@ -898,12 +936,23 @@ function shotWindows(t, sh, u){
   g.restore();
 }
 // 舞台：LED 大螢幕播放封面，六人在聚光燈下跳舞
+// render() 還會再跟著拍點放大約 2%，所以安全框比畫面再往內一圈。
+// 底邊停在歌詞上面，鞋才不會埋進字幕。
+const STAGE_SAFE = {l: 48, t: 86, r: W - 48, b: 892};
+function stageCam(variant, u){
+  // 特寫若放到 1.5 倍，手會衝出左右、腳會掉出畫面。縮到人還站得進去的範圍，靠近的感覺靠把人排大。
+  if(variant === 'close' || variant === 'close2') return {fx: variant === 'close2' ? 780 : 960, fy: 620, z: lerp(1.12, 1.22, u)};
+  // 螢幕景別只輕輕推近。推太多時，兩側的人和螢幕上排的頭會一起被切掉。
+  if(variant === 'screen') return {fx: 960, fy: 460, z: lerp(1.06, 1.02, smooth(u))};
+  return {fx: 960, fy: 560, z: lerp(1, 1.035, u)};
+}
 function shotStage(t, sh, u){
   const close = sh.variant === 'close' || sh.variant === 'close2', screen = sh.variant === 'screen';
+  const cam = stageCam(sh.variant, u);
+  // 人的站位用這段鏡頭最大的縮放來算，才不會在推近的那一幀被擠出畫面，也不會跟著焦距滑動。
+  const camFit = stageCam(sh.variant, stageCam(sh.variant, 1).z >= stageCam(sh.variant, 0).z ? 1 : 0);
   g.save();
-  if(close){ const z = lerp(1.5, 1.62, u), fx = sh.variant === 'close2' ? 760 : 960; g.translate(fx, 640); g.scale(z, z); g.translate(-fx, -640); }
-  else if(screen){ const z = lerp(1.32, 1.18, smooth(u)); g.translate(960, 330); g.scale(z, z); g.translate(-960, -330); }
-  else { const z = lerp(1, 1.05, u); g.translate(960, 560); g.scale(z, z); g.translate(-960, -560); }
+  g.translate(cam.fx, cam.fy); g.scale(cam.z, cam.z); g.translate(-cam.fx, -cam.fy);
   backdrop(t, {dim: .45, art: .35});
   const b = beatPos(t), pl = pulse(t), en = energy(t);
   // LED 螢幕
@@ -916,11 +965,13 @@ function shotStage(t, sh, u){
   sg.addColorStop(0, 'rgba(16,10,34,.96)'); sg.addColorStop(1, 'rgba(38,18,48,.96)');
   g.fillStyle = sg; g.fillRect(sx, sy, sw, shh);
   const nMem = MEMBERS.length, nShow = Math.min(4, nMem), base = (Math.floor(t/5)*nShow) % nMem;
-  const rowH = shh*.42, feet = sy + shh*.50;
-  // 特寫的縮放會把這排裁到只剩腳，那些腳掛在畫面上方又會像殘影，所以特寫不畫
+  // 特寫的縮放會把這排裁到只剩腳，那些腳掛在畫面上方又會像殘影，所以特寫不畫。
+  // 每一格都要比一個人的全身寬，手和鞋才不會被螢幕邊切掉；人收在螢幕上半，舞台上的頭才擋得到。
   if(!close) for(let i = 0; i < nShow; i++){
-    const m = (base + i) % nMem, cx = sx + sw*(i + .5)/nShow;
-    drawDancer(m, cx, feet, rowH, danceState(m, t, {alt: true, e: .72}));
+    const m = (base + i) % nMem;
+    const slot = {l: sx + sw*i/nShow + 12, t: sy + 46, r: sx + sw*(i + 1)/nShow - 12, b: sy + shh*.60};
+    const fit = fitDancer(MEMBERS[m].img, slot);
+    drawDancer(m, fit.x, fit.y, fit.h, danceState(m, t, {alt: true, e: .72}));
   }
   g.fillStyle = 'rgba(18,8,38,.28)'; g.fillRect(sx, sy, sw, shh);      // 螢幕色調
   g.fillStyle = 'rgba(0,0,0,.2)';                                      // 掃描線
@@ -966,27 +1017,56 @@ function shotStage(t, sh, u){
     }
     g.globalAlpha = 1;
   }
-  // 舞者：依卡司人數排成後排／中排／前排，中央是主唱
+  // 舞者：依卡司人數排成後排／中排／前排，中央是主唱。
+  // nx、ny 是安全框裡的位置（ny 是把抬手和鞋底的餘裕算進去之後的腳底），nh 是希望的身高占比。
   const O = OTHERS, spots = O.length >= 7
-    ? [[.10, 765, 360, O[0]], [.30, 758, 352, O[1]], [.50, 752, 348, O[2]], [.70, 758, 352, O[3]], [.90, 765, 360, O[4]],
-       [.27, 895, 430, O[5]], [.73, 895, 430, O[6]], [.5, 995, 560, LEAD]]
+    ? [{nx:.10, ny:.74, nh:.42, m:O[0]}, {nx:.30, ny:.72, nh:.40, m:O[1]}, {nx:.50, ny:.70, nh:.40, m:O[2]}, {nx:.70, ny:.72, nh:.40, m:O[3]}, {nx:.90, ny:.74, nh:.42, m:O[4]},
+       {nx:.27, ny:.90, nh:.52, m:O[5]}, {nx:.73, ny:.90, nh:.52, m:O[6]}, {nx:.50, ny:1, nh:.64, m:LEAD}]
     : O.length >= 5
-    ? [[.31, 790, 400, O[0]], [.5, 775, 390, O[1]], [.69, 790, 400, O[2]], [.17, 935, 480, O[3]], [.83, 935, 480, O[4]], [.5, 985, 560, LEAD]]
-    : [[.34, 790, 400, O[0]], [.66, 790, 400, O[1]], [.15, 935, 480, O[2]], [.85, 935, 480, O[3]], [.5, 985, 560, LEAD]];
+    ? [{nx:.28, ny:.74, nh:.46, m:O[0]}, {nx:.50, ny:.70, nh:.44, m:O[1]}, {nx:.72, ny:.74, nh:.46, m:O[2]},
+       {nx:.15, ny:.90, nh:.54, m:O[3]}, {nx:.85, ny:.90, nh:.54, m:O[4]}, {nx:.50, ny:1, nh:.64, m:LEAD}]
+    : [{nx:.32, ny:.74, nh:.46, m:O[0]}, {nx:.68, ny:.74, nh:.46, m:O[1]},
+       {nx:.14, ny:.90, nh:.54, m:O[2]}, {nx:.86, ny:.90, nh:.54, m:O[3]}, {nx:.50, ny:1, nh:.64, m:LEAD}];
   // 後排正中央會被主唱擋住。手張得很開的立繪，冒出的頭和手臂會像主唱的殘影，每個景別都不畫；
   // 較窄的立繪只在特寫拿掉，廣角仍留著當後排。
   const centerBack = O.length >= 7 ? 2 : O.length >= 5 ? 1 : -1;
   const intro = sh.variant === 'intro' ? clamp((t - .5)/1.5) : 1;
-  spots.forEach(([fx, y, h, m], k) => {
+  const inv = (cam2, x, y) => [cam2.fx + (x - cam2.fx)/cam2.z, cam2.fy + (y - cam2.fy)/cam2.z];
+  const corners = [[STAGE_SAFE.l, STAGE_SAFE.t], [STAGE_SAFE.r, STAGE_SAFE.t], [STAGE_SAFE.l, STAGE_SAFE.b], [STAGE_SAFE.r, STAGE_SAFE.b]].map(([x, y]) => inv(camFit, x, y));
+  const box = {
+    l: Math.min(...corners.map(p => p[0])), t: Math.min(...corners.map(p => p[1])),
+    r: Math.max(...corners.map(p => p[0])), b: Math.max(...corners.map(p => p[1]))
+  };
+  const bw = box.r - box.l, bh = box.b - box.t;
+  const cast = [];
+  spots.forEach((s, k) => {
     if(k === centerBack){
-      const img = MEMBERS[m]?.img, wide = img && img.width/img.height > .6;
+      const img = MEMBERS[s.m]?.img, wide = img && img.width/img.height > .6;
       if(wide || close) return;
     }
+    cast.push(s);
+  });
+  // 先照希望的身高排，有人的頭會超出安全框就全體縮小。左右超出的人往內拉，不把主唱一起縮小。
+  let fitK = 1;
+  for(const s of cast){
+    const p = dancerPad(MEMBERS[s.m]?.img), h = bh*s.nh, need = h*(1 + p.top + p.bot);
+    const sole = box.t + bh*s.ny;
+    if(sole - need < box.t) fitK = Math.min(fitK, (sole - box.t)/need);
+    if(h*p.aspect*(1 + p.side) > bw) fitK = Math.min(fitK, bw/(h*p.aspect*(1 + p.side)));
+  }
+  const placed = cast.map(s => {
+    const p = dancerPad(MEMBERS[s.m]?.img), h = bh*s.nh*fitK, half = h*p.aspect*(1 + p.side)/2;
+    let x = box.l + bw*s.nx;
+    x = Math.max(box.l + half, Math.min(box.r - half, x));
+    const y = box.t + bh*s.ny - h*p.bot;
+    return {m: s.m, x, y, h};
+  });
+  placed.forEach(({m, x, y, h}, k) => {
     const delay = k*.08, st = danceState(m, t, {alt: true, e: m === LEAD ? 1 : .9});
     g.save(); g.globalAlpha = easeOut((intro - delay)/.5 + (intro >= 1 ? 1 : 0));
     // 光暈放在頭後方、收小，白色核心才不會從肩膀兩側爆出來
-    g.globalCompositeOperation = 'lighter'; glow(fx*W, y - h*.72, h*.32, MEMBERS[m].color, .06 + .05*pl); g.globalCompositeOperation = 'source-over';
-    drawDancer(m, fx*W, y, h, st);
+    g.globalCompositeOperation = 'lighter'; glow(x, y - h*.72, h*.32, MEMBERS[m].color, .06 + .05*pl); g.globalCompositeOperation = 'source-over';
+    drawDancer(m, x, y, h, st);
     g.restore();
   });
   if(sh.cue?.sec?.label === 'CHORUS' || sh.variant === 'break') confetti(t, 70, sh.variant === 'break' ? .7 : 1);
@@ -1165,8 +1245,12 @@ function groupPhoto(t, lt, cw, ch){
     const mem = MEMBERS[m]; if(!mem?.img) return;
     const row = Math.floor(k/cols), inRow = k % cols, count = Math.min(cols, N - row*cols);
     const cx = -cw/2 + (cols - count)/2*cellW + (inRow + .5)*cellW;
-    const baseY = -ch/2 + (row + 1)*cellH - ch*.025;
-    const h = Math.min(cellH*.92, cellW*.92*(mem.img.height/mem.img.width));
+    // 拍立得的白框會把抬過頭頂的手切掉，格子要留出手和鞋的餘裕。
+    const pad = dancerPad(mem.img);
+    let h = cellH*.98/(1 + pad.top + pad.bot);
+    if(h*pad.aspect*(1 + pad.side) > cellW*.96) h = cellW*.96/(pad.aspect*(1 + pad.side));
+    const cellTop = -ch/2 + row*cellH, sole = cellTop + (cellH + h*(1 + pad.top + pad.bot))/2;
+    const baseY = sole - h*pad.bot;
     const entry = easeOut((lt - k*.05)/.6);
     // 每個人錯開一點拍點，合照才不會像整排一起做體操；雙腿用「開合」而不是左右同擺。
     // 擺幅刻意保守：立繪的腿是切圖拼的，擺太大會在髖部留下一條沒跟上的細縫。
@@ -1178,8 +1262,9 @@ function groupPhoto(t, lt, cw, ch){
       g.save(); g.globalCompositeOperation = 'lighter';
       glow(cx, baseY - h*.5, h*.5, mem.color, (.16 + .12*pl)*entry); g.restore();
     }
+    const room = Math.max(0, cw/2 - Math.abs(cx) - h*pad.aspect*(1 + pad.side)/2 - 8);
     g.save(); g.globalAlpha = entry;
-    drawDancer(m, cx + (1 - entry)*(inRow % 2 ? 90 : -90), baseY, h, st);
+    drawDancer(m, cx + (1 - entry)*(inRow % 2 ? 1 : -1)*Math.min(36, room), baseY, h, st);
     g.restore();
   });
 }
