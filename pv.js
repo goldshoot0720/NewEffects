@@ -1180,13 +1180,15 @@ function drawRider(m, cx, cy, R, t, opts = {}){
     const k = h/img.height, w = img.width*k;
     const hipFrac = r.ok ? r.hipY/r.H : .6;
     feetY = (cy - R*.92) + h*(1 - hipFrac);                 // 髖部落到座墊高度
-    const hipX = fx - w/2 + (r.ok ? r.legSplit*k : w/2), hipY = feetY - h + (r.ok ? r.hipY*k : h*.6);
     const ct = Math.cos(tilt), st = Math.sin(tilt);
     const foot = (key, ang) => {
       const L = rig?.layers?.[key]; if(!L?.sole) return null;
-      const dx = (L.sole.x - r.legSplit)*k, dy = (L.sole.y - r.hipY)*k;
-      const c = Math.cos(ang), s = Math.sin(ang);
-      const lx = (hipX - fx) + dx*c - dy*s, ly = (hipY - feetY) + dx*s + dy*c;
+      const piv = key === 'legL' ? rig.pivotL : rig.pivotR;
+      const jx = piv ? piv.x : r.legSplit, jy = piv ? piv.y : r.hipY;
+      const [px0, py0] = SpriteRig.chainPoint(jx, jy, 'y', L.y0 + L.h, ang, rig.thighW || r.hh*.04, L.sole.x, L.sole.y);
+      // 鞋底轉出圖外會被切掉，踏板要留在還看得到的鞋底上。
+      const px = Math.max(0, Math.min(r.W - 1, px0)), py = Math.max(0, Math.min(r.H - 1, py0));
+      const lx = -w/2 + px*k, ly = -h + py*k;
       return [fx + lx*ct - ly*st, feetY + lx*st + ly*ct];
     };
     feet = [foot('legL', angL), foot('legR', angR)].filter(Boolean);

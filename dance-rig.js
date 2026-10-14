@@ -44,7 +44,14 @@
     const arms = maxW > midW*1.1 && widest < top + hh*.6;
     const armTop = arms ? aTop : top, armBot = arms ? aBot : top;
     const shoulderY = (armTop + armBot)/2;
-    const sRow = Math.min(bot, Math.round(armBot + hh*.05));
+    // 腋下才是肩膀：手臂帶下方、裙子張開之前最窄的那一列。還很寬的話，轉軸會落在袖子上。
+    let sRow = Math.min(bot - 1, armBot + 1);
+    let bestW = widthAt(sRow);
+    const sEnd = Math.min(bot - 1, armBot + Math.max(8, Math.round(hh*.16)));
+    for(let y = sRow + 1; y <= sEnd; y++){
+      const w = widthAt(y);
+      if(w < bestW){ bestW = w; sRow = y; }
+    }
     const shoulderLX = xMin[sRow], shoulderRX = xMax[sRow];
     // 髖線：從中段往下找第一列出現左右兩段（胯下）
     let hipY = Math.round(top + hh*.62), legs = false;
@@ -274,6 +281,17 @@
     // 羽化只留在關節上幾個像素。邊緣若半透明，手一抬就會在原位留下一點一線的描邊。
     const fBand = Math.max(1, bandH*.06);
     const r0 = Math.max(3, bandH*.18);
+    // 身體只留關節根部。留到會動的那一段，就會在原位多出一條殘影。
+    let thighW = Math.max(12, Math.round(r.hh*.04));
+    if(corridors){
+      for(const p of [corridors.pivotL, corridors.pivotR]){
+        if(!p) continue;
+        const row = (p === corridors.pivotL ? corridors.L : corridors.R)[Math.round(p.y)];
+        if(row) thighW = Math.max(thighW, row[1] - row[0] + 1);
+      }
+    }
+    const armReach = Math.max(8, bandH*.95);
+    const legReach = Math.max(10, Math.min(thighW*.42, r.hh*.05));
     const r1 = Math.max(4, r.hh*.035);                   // 髖關節垂直混合帶（半高）
     // 兩腿之間的混合帶刻意很窄：這條帶上的權重會留給身體層，腿一擺動就會在原位
     // 留下一根細長的殘影；但也不能窄到硬切，否則裙襬／圍裙會被兩腿扯成兩半。
@@ -284,7 +302,9 @@
       const a = r.armTopAt[cx], b = r.armBotAt[cx];
       if(a < 0 || b < a) return 0;
       const v = Math.min(clamp01((y - (a - fBand))/fBand), clamp01(((b + fBand) - y)/fBand));
-      const h = side < 0 ? clamp01((shoulderX + r0 - x)/(2*r0)) : clamp01((x - shoulderX + r0)/(2*r0));
+      // 肩膀以外整段都是手臂，只往胸口淡出幾個像素。從肩膀外面才開始算，手會懸在身體旁邊。
+      const into = Math.max(4, r0);
+      const h = side < 0 ? clamp01((shoulderX + into - x)/into) : clamp01((x - shoulderX + into)/into);
       return v*h;
     };
 
@@ -311,8 +331,21 @@
         lR = own(band*clamp01((x - legX)/r2));
       }
       const limb = Math.min(1, aL + aR + lL + lR);
+      // 關節周圍的像素身體也留著。手腳轉開時袖口和大腿根還在，不會露出三角空縫。
+      const near = (px0, py0, reach) => clamp01(1 - Math.hypot(x - px0, y - py0)/reach);
+      let keep = 0;
+      if(aL > 0) keep = near(shL, shY, armReach);
+      if(aR > 0) keep = Math.max(keep, near(shR, shY, armReach));
+      if(lL > 0){
+        const p = corridors && corridors.pivotL;
+        keep = Math.max(keep, near(p ? p.x : legX, p ? p.y : hipY, legReach));
+      }
+      if(lR > 0){
+        const p = corridors && corridors.pivotR;
+        keep = Math.max(keep, near(p ? p.x : legX, p ? p.y : hipY, legReach));
+      }
       wts.armL[i] = aL; wts.armR[i] = aR; wts.legL[i] = lL; wts.legR[i] = lR;
-      wts.body[i] = 1 - limb;
+      wts.body[i] = 1 - limb*(1 - keep);
       for(const k of keys) if(wts[k][i] > 0.002) touch(box[k], x, y);
     }
 
@@ -324,24 +357,19 @@
       const c = document.createElement('canvas'); c.width = cw; c.height = ch;
       const cx = c.getContext('2d');
       const id = cx.createImageData(cw, ch), o = id.data, m = wts[k];
-      const isBody = k === 'body';
-      const others = isBody ? keys.filter(x => x !== 'body') : null;
       for(let y = y0; y <= y1; y++) for(let x = x0; x <= x1; x++){
         const i = y*W + x, w = m[i]; if(w <= 0.002) continue;
         const t = ((y - y0)*cw + (x - x0))*4;
         o[t] = d[i*4]; o[t + 1] = d[i*4 + 1]; o[t + 2] = d[i*4 + 2];
         const A = d[i*4 + 3];
-        // 身體的 alpha 取「原圖扣掉其他層」，四捨五入的誤差就不會累積成亮邊
-        o[t + 3] = isBody
-          ? Math.max(0, A - others.reduce((s, x2) => s + Math.round(A*Math.min(1, wts[x2][i])), 0))
-          : Math.round(A*Math.min(1, w));
+        o[t + 3] = Math.round(A*Math.min(1, w));
       }
       cx.putImageData(id, 0, 0);
       // 鞋底取最底下那一小段的重心，不取整條腿的外框中心。
       // 外框中心在大腿，裙襬又比鞋子寬；踏板若跟著外框，就會畫在小腿或裙緣旁邊。
       layers[k] = {c, x0, y0, w: cw, h: ch, sole: (k === 'legL' || k === 'legR') ? soleFromAlpha(o, cw, ch, x0, y0) : null};
     }
-    const rig = {r, layers, r0, pivotY: corridors ? corridors.pivot : r.hipY,
+    const rig = {r, layers, r0, armThick: bandH, thighW, pivotY: corridors ? corridors.pivot : r.hipY,
       pivotL: corridors ? corridors.pivotL : null, pivotR: corridors ? corridors.pivotR : null};
     bakeCache.delete(img); bakeCache.set(img, rig);
     if(bakeCache.size > CACHE_MAX) bakeCache.delete(bakeCache.keys().next().value);
@@ -376,8 +404,9 @@
     const amp = Math.max(0, Math.min(1.4, st.energy || 0));
     const sw = Math.max(-1, Math.min(1, st.wave || 0));
     // 需要特定姿勢（例如騎車）時可直接指定關節角度，不必走節拍擺動
-    const armA = st.armA !== undefined ? st.armA : (0.30 + 1.00*sw)*amp;
-    const armB = st.armB !== undefined ? st.armB : (0.30 - 1.00*sw)*amp;
+    // 不以 0.3 為靜止角。那一轉會把原本接好的肩膀立刻拉開。
+    const armA = st.armA !== undefined ? st.armA : sw*amp;
+    const armB = st.armB !== undefined ? st.armB : -sw*amp;
     const legA = st.legA !== undefined ? st.legA : 0.22*sw*amp;
     const legB = st.legB !== undefined ? st.legB : -0.22*sw*amp;
     const moving = amp > .01 || st.armA !== undefined || st.legA !== undefined;
@@ -395,17 +424,81 @@
       tc.drawImage(layer.c, layer.x0*kx, layer.y0*ky, layer.w*kx, layer.h*ky);
       tc.restore();
     };
+    // 根部留在身上，越往外彎得越多。整條一起轉的話，袖口和大腿根會撕開。
+    const putChain = (layer, jx, jy, ang, axis, thick) => {
+      if(!layer) return;
+      if(!ang || Math.abs(ang) < .025){ put(layer, jx, jy, ang); return; }
+      const x0 = layer.x0*kx, y0 = layer.y0*ky, lw = layer.w*kx, lh = layer.h*ky;
+      const x1 = x0 + lw, y1 = y0 + lh;
+      const origin = axis === 'x' ? jx : jy;
+      const far = axis === 'x'
+        ? (Math.abs(x0 - jx) > Math.abs(x1 - jx) ? x0 : x1)
+        : (Math.abs(y0 - jy) > Math.abs(y1 - jy) ? y0 : y1);
+      const near = axis === 'x'
+        ? (Math.abs(x0 - far) > Math.abs(x1 - far) ? x0 : x1)
+        : (Math.abs(y0 - far) > Math.abs(y1 - far) ? y0 : y1);
+      const sign = far >= origin ? 1 : -1;
+      const length = Math.abs(far - origin);
+      if(length < 8){ put(layer, jx, jy, ang); return; }
+      const {n, bend} = chainPlan(length, thick);
+      let px0 = jx, py0 = jy, prev = 0;
+      const rad = Math.max(2, thick*.5);
+      for(let i = 0; i < n; i++){
+        const t1 = (i + 1)/n;
+        const A = ang*bend(t1);
+        const sIn = origin + sign*length*(i/n);
+        const sOut = origin + sign*length*t1;
+        const srcX = axis === 'x' ? sIn : jx;
+        const srcY = axis === 'y' ? sIn : jy;
+        const outX = axis === 'x' ? sOut : jx;
+        const outY = axis === 'y' ? sOut : jy;
+        tc.save();
+        tc.translate(px0, py0); tc.rotate(A); tc.translate(-srcX, -srcY);
+        tc.beginPath();
+        const pad = 1.5;
+        if(axis === 'x'){
+          const lo = Math.min(i === 0 ? near : sIn, sOut) - pad;
+          const hi = Math.max(i === 0 ? near : sIn, sOut) + pad;
+          tc.rect(lo, y0 - pad, hi - lo, lh + pad*2);
+        }else{
+          const lo = Math.min(i === 0 ? near : sIn, sOut) - pad;
+          const hi = Math.max(i === 0 ? near : sIn, sOut) + pad;
+          tc.rect(x0 - pad, lo, lw + pad*2, hi - lo);
+        }
+        tc.clip();
+        tc.drawImage(layer.c, x0, y0, lw, lh);
+        tc.restore();
+        const vx = outX - srcX, vy = outY - srcY;
+        const c = Math.cos(A), s = Math.sin(A);
+        const nx = px0 + c*vx - s*vy, ny = py0 + s*vx + c*vy;
+        // 角度差得夠大才補圓，不然每一段都重畫一張圖，舞台會掉幀。
+        if(i < n - 1 && Math.abs(A - prev) > .1){
+          tc.save();
+          tc.translate(nx, ny); tc.rotate(A);
+          tc.beginPath(); tc.arc(0, 0, rad, 0, Math.PI*2); tc.clip();
+          tc.drawImage(layer.c, x0 - outX, y0 - outY, lw, lh);
+          tc.restore();
+        }
+        px0 = nx; py0 = ny; prev = A;
+      }
+    };
     const shLX = px(r.shoulderLX), shRX = px(r.shoulderRX), shYy = py(r.shoulderY);
+    // 轉軸就是肩膀上那顆圓的圓心，不能改到袖子外緣，否則圓和手臂會錯開。
+    const armPivot = (layer, side) => side < 0 ? [shLX, shYy] : [shRX, shYy];
     // 每條腿繞自己的褲頭轉，褲管才不會在大腿被橫向扯開。裙子的轉軸在裙襬下緣。
     const hipX = px(r.legSplit), hipYy = py(rig.pivotY != null ? rig.pivotY : r.hipY);
     const legPivot = (p, fx, fy) => p ? [px(p.x), py(p.y)] : [fx, fy];
     const [lx, ly] = legPivot(rig.pivotL, hipX, hipYy);
     const [rx, ry] = legPivot(rig.pivotR, hipX, hipYy);
+    const armThick = py(rig.armThick || (r.armBot - r.armTop));
+    const thigh = px(rig.thighW || r.hh*.04);
     put(rig.layers.body, 0, 0, 0);
-    put(rig.layers.legL, lx, ly, moving ? legA : 0);
-    put(rig.layers.legR, rx, ry, moving ? legB : 0);
-    put(rig.layers.armL, shLX, shYy, moving ? armA : 0);
-    put(rig.layers.armR, shRX, shYy, moving ? armB : 0);
+    putChain(rig.layers.legL, lx, ly, moving ? legA : 0, 'y', thigh);
+    putChain(rig.layers.legR, rx, ry, moving ? legB : 0, 'y', thigh);
+    const [alx, aly] = armPivot(rig.layers.armL, -1);
+    const [arx, ary] = armPivot(rig.layers.armR, 1);
+    putChain(rig.layers.armL, alx, aly, moving ? armA : 0, 'x', armThick);
+    putChain(rig.layers.armR, arx, ary, moving ? armB : 0, 'x', armThick);
     tc.globalCompositeOperation = 'source-over';
 
     ctx.save();
@@ -417,5 +510,51 @@
     ctx.restore();
   }
 
-  window.SpriteRig = {draw, measure, bake};
+  // 根部不動、越往外彎越多。畫的時候和算鞋底位置要用同一組分段。
+  function chainPlan(length, thick){
+    const glue = Math.min(length*.4, Math.max(thick*.95, 4));
+    const n = Math.max(4, Math.min(6, Math.round(length / Math.max(thick*.8, 10))));
+    const bend = t => {
+      const u = Math.min(1, Math.max(0, (t*length - glue) / Math.max(1, length - glue)));
+      return u*u*(3 - 2*u);
+    };
+    return {n, bend};
+  }
+  // 跟 putChain 同一套彎法，回傳原圖像素轉完之後的位置。踏板要跟著鞋底，不能用整條腿硬轉的公式。
+  function chainPoint(jx, jy, axis, far, ang, thick, sx, sy){
+    const rigid = () => {
+      const a = ang || 0, c = Math.cos(a), s = Math.sin(a);
+      const dx = sx - jx, dy = sy - jy;
+      return [jx + c*dx - s*dy, jy + s*dx + c*dy];
+    };
+    if(!ang || Math.abs(ang) < .025) return rigid();
+    const origin = axis === 'x' ? jx : jy;
+    const sign = far >= origin ? 1 : -1;
+    const length = Math.abs(far - origin);
+    if(length < 8) return rigid();
+    const {n, bend} = chainPlan(length, thick);
+    const coord = axis === 'x' ? sx : sy;
+    let t = (coord - origin)/(sign*length);
+    if(t < 0) t = 0; else if(t > 1) t = 1;
+    const i = Math.min(n - 1, Math.floor(t*n));
+    let px = jx, py = jy, A = 0;
+    for(let k = 0; k <= i; k++){
+      const t1 = (k + 1)/n;
+      A = ang*bend(t1);
+      if(k === i) break;
+      const sIn = origin + sign*length*(k/n);
+      const sOut = origin + sign*length*t1;
+      const srcX = axis === 'x' ? sIn : jx, srcY = axis === 'y' ? sIn : jy;
+      const outX = axis === 'x' ? sOut : jx, outY = axis === 'y' ? sOut : jy;
+      const c = Math.cos(A), s = Math.sin(A);
+      const vx = outX - srcX, vy = outY - srcY;
+      px = px + c*vx - s*vy; py = py + s*vx + c*vy;
+    }
+    const sIn = origin + sign*length*(i/n);
+    const srcX = axis === 'x' ? sIn : jx, srcY = axis === 'y' ? sIn : jy;
+    const c = Math.cos(A), s = Math.sin(A);
+    return [px + c*(sx - srcX) - s*(sy - srcY), py + s*(sx - srcX) + c*(sy - srcY)];
+  }
+
+  window.SpriteRig = {draw, measure, bake, chainPoint};
 })();
