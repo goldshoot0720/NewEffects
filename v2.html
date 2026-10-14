@@ -67,16 +67,17 @@ header .pv-link:hover{filter:brightness(1.1)}
 .dance-controls select{max-width:160px;padding:5px;border:1px solid var(--line);border-radius:6px;background:var(--panel2)}
 #danceStatus{font-size:12px;color:var(--sky)}
 #catcher{position:absolute;inset:0;cursor:pointer}
-#lyrics{position:absolute;left:4%;right:4%;bottom:8%;pointer-events:none;display:flex;flex-direction:column;align-items:center;gap:1.1cqw}
+#lyrics{position:absolute;left:2%;right:2%;bottom:8%;pointer-events:none;display:flex;flex-direction:column;align-items:center;gap:1.1cqw}
 .slot{display:grid;grid-template-columns:minmax(0,1fr);min-width:0;width:100%;justify-items:center;align-items:end}
 .slot>.linewrap{grid-area:1/1}
-.linewrap{display:flex;flex-direction:column;align-items:center;gap:.8cqw;min-width:0;max-width:100%}
-.line{--scale:1;--fit:1;width:max-content;max-width:96%;font-family:"Zen Maru Gothic",sans-serif;font-weight:900;font-size:calc(4.6cqw*var(--scale)*var(--fit));line-height:1.35;text-align:center;letter-spacing:.04em;text-wrap:balance;
+.linewrap{display:flex;flex-direction:column;align-items:center;gap:.8cqw;min-width:0;width:100%;max-width:100%}
+.line{--scale:1;--fit:1;width:max-content;max-width:none;white-space:nowrap;font-family:"Zen Maru Gothic",sans-serif;font-weight:900;font-size:calc(4.6cqw*var(--scale)*var(--fit));line-height:1.35;text-align:center;letter-spacing:.04em;text-wrap:nowrap;
   filter:drop-shadow(0 .14cqw 0 rgba(40,0,30,.65)) drop-shadow(0 0 1.1cqw rgba(0,0,0,.5))}
+.line.is-two,#next.is-two,#nextZh.is-two,.zhline.is-two{white-space:nowrap;max-width:none}
 .ch{display:inline-block;white-space:pre}
-#next,.next-measure{--fit:1;max-width:96%;font-family:"Zen Maru Gothic",sans-serif;font-weight:700;font-size:calc(2.1cqw*var(--scale,1)*var(--fit));line-height:1.4;color:rgba(255,255,255,.6);min-height:1.4em;transition:opacity .35s;filter:drop-shadow(0 0 .5cqw rgba(0,0,0,.9));text-align:center;text-wrap:balance}
+#next,.next-measure{--fit:1;max-width:none;white-space:nowrap;font-family:"Zen Maru Gothic",sans-serif;font-weight:700;font-size:calc(2.1cqw*var(--scale,1)*var(--fit));line-height:1.4;color:rgba(255,255,255,.6);min-height:1.4em;transition:opacity .35s;filter:drop-shadow(0 0 .5cqw rgba(0,0,0,.9));text-align:center;text-wrap:nowrap}
 #next.off{opacity:0}
-#nextZh,.zh-preview{--fit:1;max-width:96%;font-family:"Noto Sans TC",sans-serif;font-weight:500;font-size:calc(1.75cqw*var(--scale,1)*var(--fit));line-height:1.4;color:rgba(255,255,255,.55);min-height:1.3em;transition:opacity .35s;filter:drop-shadow(0 0 .5cqw rgba(0,0,0,.9));text-align:center;text-wrap:balance}
+#nextZh,.zh-preview{--fit:1;max-width:none;white-space:nowrap;font-family:"Noto Sans TC",sans-serif;font-weight:500;font-size:calc(1.75cqw*var(--scale,1)*var(--fit));line-height:1.4;color:rgba(255,255,255,.55);min-height:1.3em;transition:opacity .35s;filter:drop-shadow(0 0 .5cqw rgba(0,0,0,.9));text-align:center;text-wrap:nowrap}
 #nextZh.off{opacity:0}
 
 /* title card */
@@ -141,7 +142,7 @@ header .pv-link:hover{filter:brightness(1.1)}
 .fx-neon .ch.bk{--neon:#3fb8ff}
 
 /* 中文翻譯行：隨時間由左至右填色 */
-.zhline{--p:0;display:block;max-width:96%;font-family:"Noto Sans TC",sans-serif;font-weight:700;font-size:calc(2.45cqw*var(--scale,1)*var(--fit,1));line-height:1.4;text-align:center;letter-spacing:.06em;text-wrap:balance;
+.zhline{--p:0;display:block;max-width:none;white-space:nowrap;font-family:"Noto Sans TC",sans-serif;font-weight:700;font-size:calc(2.45cqw*var(--scale,1)*var(--fit,1));line-height:1.4;text-align:center;letter-spacing:.06em;text-wrap:nowrap;
   background:linear-gradient(90deg,hsl(var(--h,330) 100% 84%) calc(var(--p)*100%),rgba(255,255,255,.78) 0);-webkit-background-clip:text;background-clip:text;color:transparent;
   filter:drop-shadow(0 .12cqw 0 rgba(40,0,30,.6)) drop-shadow(0 0 1cqw rgba(0,0,0,.55));
   animation:zhIn .55s ease backwards;animation-delay:.12s}
@@ -825,37 +826,65 @@ function tokenize(text){
 }
 const plainText = t => t.replace(/([\u4e00-\u9fff々〆ヶ]+)[(（][\u3041-\u309f\u30a0-\u30ff]+[)）]/gu, '$1')
   .replace(/^[［《\[](.*?)[］》\]]$/, '$1').replace(/[［《\[](.*?)[］》\]]/g, ' ($1)');
+// 主句維持一行。日文歌的主句是日文，中文歌的主句是中文，翻譯行各自另外排。
+// 縮得進畫面就不要換行；小到看不清仍然超出畫面，才從中間對半分成兩行。
+function restoreLyric(el){
+  el.querySelectorAll(':scope > br').forEach(br => br.remove());
+  el.classList.remove('is-two');
+  if(el.dataset.full != null && !el.querySelector('.ch')) el.textContent = el.dataset.full;
+}
+function splitLyric(el){
+  const chars = [...el.children].filter(n => n.classList && n.classList.contains('ch'));
+  const score = (at, n) => {
+    const prev = chars.length ? chars[at - 1].textContent : el.dataset.full[at - 1];
+    return Math.abs(at - n / 2) - (/[\s　、。，！？]/.test(prev || '') ? n * .2 : 0);
+  };
+  if(chars.length >= 4){
+    let best = 1, bestS = Infinity;
+    for(let i = 1; i < chars.length; i++){ const s = score(i, chars.length); if(s < bestS){ bestS = s; best = i; } }
+    chars[best].before(document.createElement('br'));
+    return;
+  }
+  const text = el.dataset.full || el.textContent;
+  if(text.length < 4) return;
+  let best = Math.round(text.length / 2), bestS = Infinity;
+  for(let i = 2; i < text.length - 1; i++){ const s = score(i, text.length); if(s < bestS){ bestS = s; best = i; } }
+  const br = document.createElement('br');
+  el.textContent = '';
+  el.append(text.slice(0, best).trimEnd(), br, text.slice(best).trimStart());
+}
 function fitLyricText(el, kind = ''){
   if(!el || !el.textContent.trim() || !stage.clientWidth || !stage.clientHeight) return;
   const preview = kind === 'preview' || kind === 'zhpreview';
-  // Measure plain typography so animated transforms do not change the fitted size.
+  if(!el.querySelector('.ch') && (!el.querySelector('br') || el.dataset.full == null)) el.dataset.full = el.textContent.replace(/\n/g, '');
+  restoreLyric(el);
   const probe = el.cloneNode(true);
   probe.removeAttribute('id');
   probe.className = kind === 'preview' ? 'next-measure' : kind === 'zhpreview' ? 'zh-preview' : kind === 'zh' ? 'zhline' : 'line' + (el.classList.contains('allbk') ? ' allbk' : '');
   Object.assign(probe.style, {position:'absolute', visibility:'hidden', pointerEvents:'none',
-    width:'max-content', maxWidth:'none', whiteSpace:'nowrap', left:'0', top:'0'});
+    width:'max-content', maxWidth:'none', whiteSpace:'nowrap', textWrap:'nowrap', left:'0', top:'0'});
   probe.style.setProperty('--scale', prefs.scale);
   probe.style.setProperty('--fit', 1);
   probe.setAttribute('aria-hidden', 'true');
   stage.appendChild(probe);
   const naturalWidth = probe.getBoundingClientRect().width;
   const naturalHeight = probe.offsetHeight;
-  const availableWidth = slot.clientWidth * .96;
-  const maxHeight = stage.clientHeight * (preview ? .12 : .28);
-  const oneLineFit = Math.min(1, availableWidth / Math.max(1, naturalWidth));
-  const maxLines = oneLineFit >= .74 ? 1 : 2;
-  let fit = Math.min(1, oneLineFit * maxLines, maxHeight / Math.max(1, naturalHeight * maxLines));
-  probe.style.maxWidth = availableWidth + 'px';
-  probe.style.whiteSpace = 'normal';
-  for(let i = 0; i < 8; i++){
-    probe.style.setProperty('--fit', fit);
-    const heightLimit = Math.min(maxHeight, naturalHeight * fit * maxLines + 2);
-    if(probe.scrollWidth <= availableWidth + 1 && probe.offsetHeight <= heightLimit + 1) break;
-    fit *= Math.min(.94, availableWidth / Math.max(1, probe.scrollWidth), heightLimit / Math.max(1, probe.offsetHeight));
-  }
+  const availableWidth = Math.max(1, slot.clientWidth);
+  const maxHeight = stage.clientHeight * (preview ? .14 : .32);
+  const oneLineFit = Math.min(1, (availableWidth - 2) / Math.max(1, naturalWidth));
+  // 主句可以縮到一半還維持一行。比這更長、一行會超出畫面，才分成兩行。
+  const minOne = preview ? .62 : .5;
+  const two = oneLineFit < minOne;
+  let fit = two ? Math.min(1, (availableWidth - 2) / Math.max(1, naturalWidth / 2)) : oneLineFit;
+  fit = Math.min(fit, maxHeight / Math.max(1, naturalHeight * (two ? 2 : 1)));
+  if(two){ el.classList.add('is-two'); splitLyric(el); }
   probe.remove();
   el.style.setProperty('--scale', prefs.scale);
-  el.style.setProperty('--fit', fit);
+  el.style.setProperty('--fit', Math.max(.2, fit));
+  const used = el.getBoundingClientRect().width;
+  if(used > availableWidth + 1){
+    el.style.setProperty('--fit', Math.max(.2, fit * (availableWidth - 2) / used));
+  }
 }
 function fitDisplayedLyrics(){
   slot.querySelectorAll('.line').forEach(el => fitLyricText(el));
