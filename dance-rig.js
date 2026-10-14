@@ -195,10 +195,10 @@
     const amp = Math.max(0, Math.min(1.4, st.energy || 0));
     const sw = Math.max(-1, Math.min(1, st.wave || 0));
     // 需要特定姿勢（例如騎車）時可直接指定關節角度，不必走節拍擺動
-    const armA = st.armA !== undefined ? st.armA : (0.22 + 0.62*sw)*amp;
-    const armB = st.armB !== undefined ? st.armB : (0.22 - 0.62*sw)*amp;
-    const legA = st.legA !== undefined ? st.legA : 0.15*sw*amp;
-    const legB = st.legB !== undefined ? st.legB : -0.15*sw*amp;
+    const armA = st.armA !== undefined ? st.armA : (0.30 + 1.00*sw)*amp;
+    const armB = st.armB !== undefined ? st.armB : (0.30 - 1.00*sw)*amp;
+    const legA = st.legA !== undefined ? st.legA : 0.22*sw*amp;
+    const legB = st.legB !== undefined ? st.legB : -0.22*sw*amp;
     const moving = amp > .01 || st.armA !== undefined || st.legA !== undefined;
     const kx = w/r.W, ky = h/r.H;
     const px = v => v*kx, py = v => v*ky;
