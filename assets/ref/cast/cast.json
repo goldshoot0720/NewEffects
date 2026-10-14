@@ -480,37 +480,37 @@
   },
   {
    "file": "lucky-1.png",
-   "w": 1020,
-   "h": 1117,
-   "headX": 507,
-   "headY": 105,
+   "w": 1012,
+   "h": 1298,
+   "headX": 503,
+   "headY": 101,
    "source": [
-    2,
-    44
+    6,
+    48
    ],
    "sheet": "lucky2.png"
   },
   {
    "file": "lucky-2.png",
-   "w": 1024,
-   "h": 1214,
-   "headX": 506,
-   "headY": 114,
+   "w": 1021,
+   "h": 1287,
+   "headX": 504,
+   "headY": 110,
    "source": [
-    0,
-    104
+    2,
+    108
    ],
    "sheet": "lucky3.png"
   },
   {
    "file": "lucky-3.png",
-   "w": 1020,
-   "h": 1173,
-   "headX": 496,
-   "headY": 110,
+   "w": 1012,
+   "h": 1250,
+   "headX": 492,
+   "headY": 106,
    "source": [
-    2,
-    124
+    6,
+    128
    ],
    "sheet": "lucky4.png"
   },
