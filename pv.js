@@ -288,7 +288,11 @@ function buildShots(){
       const o = {cue: c};
       if(type === 'stage') o.variant = ['wide', 'close', 'screen', 'close2'][k % 4];
       if(type === 'typo'){ o.member = k % 2 ? OTHERS[(k >> 1) % OTHERS.length] : LEAD; o.side = k % 2; }
-      if(type === 'film'){ const nf = FACES.length, a = Math.floor(hash(k*3 + 1)*nf); o.faceA = FACES[a]; o.faceB = FACES[(a + 1 + Math.floor(hash(k*5 + 2)*(nf - 2))) % nf]; o.zoomIn = k % 2 === 0; }
+      if(type === 'film'){
+        const n2 = MEMBERS.length, a = k % n2;
+        let b = (a + 1 + (k*3) % Math.max(1, n2 - 1)) % n2; if(b === a) b = (a + 1) % n2;
+        o.pair = [a, b];
+      }
       if(type === 'windows'){ o.members = [LEAD, OTHERS[(k*2) % OTHERS.length], OTHERS[(k*2 + 1) % OTHERS.length]]; o.layout = k % 2; }
       add(type, s, e, o);
     }
@@ -683,10 +687,36 @@ function strip(x, w, tape, pos, t, kind){
   g.textAlign = 'left'; g.textBaseline = 'alphabetic';
 }
 function shotFilm(t, sh, u){
-  backdrop(t, {dim: .5});
+  backdrop(t, {dim: .55});
   bokeh(t, 8, 1);
   const px = 540, pw = 840;
-  artView(px, 0, pw, H, sh.faceA, sh.faceB, sh.zoomIn ? 1.05 : 1.4, sh.zoomIn ? 1.4 : 1.05, u, t);
+  // 中央視窗放實際在跳舞的成員（而不是靜態主視覺）
+  const pair = (sh.pair || [LEAD, (LEAD + 1) % MEMBERS.length]).filter(m => MEMBERS[m]?.img);
+  g.save();
+  g.beginPath(); g.rect(px, 0, pw, H); g.clip();
+  const bg = g.createLinearGradient(0, 0, 0, H);
+  bg.addColorStop(0, 'rgba(10,12,26,.92)'); bg.addColorStop(.55, 'rgba(26,16,40,.9)'); bg.addColorStop(1, 'rgba(8,8,18,.96)');
+  g.fillStyle = bg; g.fillRect(px, 0, pw, H);
+  const fl = g.createLinearGradient(0, 830, 0, H);
+  fl.addColorStop(0, 'rgba(255,255,255,0)'); fl.addColorStop(1, 'rgba(255,255,255,.12)');
+  g.fillStyle = fl; g.fillRect(px, 830, pw, H - 830);
+  g.save(); g.globalCompositeOperation = 'lighter';
+  glow(px + pw*.28, 620, 520, T.accent, .1 + .08*pulse(t));
+  glow(px + pw*.74, 640, 520, T.cool, .09 + .07*pulse(t));
+  g.restore();
+  const enter = easeOut((t - sh.start)/.55);
+  pair.forEach((m, i) => {
+    const cx = px + pw*(pair.length === 1 ? .5 : .28 + i*.44);
+    const st = danceState(m, t, {alt: true, e: .9});
+    g.save(); g.globalAlpha = enter;
+    drawDancer(m, cx, 1010, 780, st);
+    g.restore();
+    g.save(); g.globalAlpha = enter; g.font = `700 26px ${FONT.jp}`; g.textAlign = 'center';
+    const tag = MEMBERS[m].name, tw = g.measureText(tag).width;
+    roundRect(cx - tw/2 - 18, 132, tw + 36, 44, 22); g.fillStyle = MEMBERS[m].color; g.fill();
+    g.fillStyle = '#fff'; g.fillText(tag, cx, 162); g.restore();
+  });
+  g.restore();
   for(const [x0, dir] of [[px, 1], [px + pw, -1]]){
     const gr = g.createLinearGradient(x0, 0, x0 + dir*90, 0); gr.addColorStop(0, 'rgba(0,0,0,.6)'); gr.addColorStop(1, 'rgba(0,0,0,0)');
     g.fillStyle = gr; g.fillRect(dir > 0 ? x0 : x0 - 90, 0, 90, H);
