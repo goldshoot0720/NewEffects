@@ -29,7 +29,7 @@ macOS 也可雙擊 `啟動播放器.command`，會在終端機啟動伺服器並
 
 ## 歌詞 PV
 
-新增 Suno 歌曲的英、日、粵版本已補齊繁體中文對照，共 24 個版本、1,293 段字幕。原文、句數、音訊與已核對的起訖時間均保留；`assets/ref/` 各曲目資料夾內的 `translations-zh.json` 逐行保存翻譯，既有 `tools/build-*-subtitles.mjs` 透過共用 `tools/bilingual-lyrics.mjs` 重建雙語 SRT，重唱段落引用同一組原文與翻譯。生日祝福曲原有雙語字幕保持不變。首頁、第二版及 MP4 共用相同字幕。
+新增 Suno 歌曲的英、日、粵版本已補齊繁體中文對照，共 24 個版本、1,293 段字幕。原文、句數、音訊與已核對的起訖時間均保留；`assets/ref/` 各曲目資料夾內的 `translations-zh.json` 逐行保存翻譯，既有 `tools/build-*-subtitles.mjs` 透過共用 `tools/bilingual-lyrics.mjs` 重建雙語 SRT，重唱段落引用同一組原文與翻譯。生日祝福曲的國語、英文、日文版原本就有雙語；粵文版補上 20 段繁中對照，時間軸沿用已核對的粵文歌詞。首頁、第二版及 MP4 共用相同字幕。
 
 `lyric-text.js` 統一移除所有歌曲字幕顯示中的標點與裝飾符號（含原文及繁中翻譯），保留文字、數字、日文長音與注音；原始歌詞／SRT 資料、歌名、操作介面及對時不改寫。第二版匯出 LRC／雙語 SRT 也不帶標點。執行 `node tools/test-lyric-text.mjs` 可驗證兩版解析一致、雙語、注音及數字；此次依實際字幕差異只重做 41 首 MP4，5 首未變動版本不重做。
 
@@ -63,7 +63,7 @@ macOS 也可雙擊 `啟動播放器.command`，會在終端機啟動伺服器並
 
 日文版「統一發票頭獎得主鋒兄威力彩頭獎得主塗哥(日文歌詞)」獨立加入兩版歌曲清單（PV 編號 11），使用使用者提供的 [Suno 音源](https://suno.com/s/xb8brpvBy23lIyfx)，附 20 段日中雙語同步字幕。沿用相同八人與鋒兄主唱，MP3、SRT 均納入 repo 供線上版使用；來源與原始歌詞見 [assets/ref/LUCKY-JA.md](assets/ref/LUCKY-JA.md)。
 
-粵文版「統一發票頭獎得主鋒兄威力彩頭獎得主塗哥(粵文歌詞)」獨立加入兩版歌曲清單（PV 編號 12），使用使用者提供的 [Suno 音源](https://suno.com/s/a0XTF9CAMxLNOtBc)，附 20 段粵文同步字幕。沿用相同八人與鋒兄主唱，MP3、SRT 均納入 repo 供線上版使用；來源與原始歌詞見 [assets/ref/LUCKY-YUE.md](assets/ref/LUCKY-YUE.md)。
+粵文版「統一發票頭獎得主鋒兄威力彩頭獎得主塗哥(粵文歌詞)」獨立加入兩版歌曲清單（PV 編號 12），使用使用者提供的 [Suno 音源](https://suno.com/s/a0XTF9CAMxLNOtBc)，附 20 段粵中雙語同步字幕。沿用相同八人與鋒兄主唱，MP3、SRT 均納入 repo 供線上版使用；來源與原始歌詞見 [assets/ref/LUCKY-YUE.md](assets/ref/LUCKY-YUE.md)。
 
 ### 最瞎結婚理由：中、英、粵、日四版
 
