@@ -397,7 +397,8 @@ function parseSrt(text){
     const body = ls.slice(i + 1).map(x => x.replace(/<[^>]+>/g, '').trim()).filter(Boolean);
     let zh = '';
     if(body.length > 1 && !/[぀-ヿ]/.test(body[body.length - 1])) zh = body.pop();
-    const jp = body.join(' ');
+    const jp = LyricText.clean(body.join(' '));
+    zh=LyricText.clean(zh);
     if(jp) out.push({start, end: Math.max(end, start + .5), jp, zh});
   }
   return out.sort((a, b) => a.start - b.start);

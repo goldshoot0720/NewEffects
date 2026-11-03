@@ -327,6 +327,7 @@ kbd{background:var(--panel2);border:1px solid var(--line);border-bottom-width:2p
 
 <script src="volume.js"></script>
 <script src="playlist-order.js"></script>
+<script src="lyric-text.js"></script>
 <script>
 const $ = s => document.querySelector(s);
 const stage = $('#stage'), slot = $('#slot'), nextEl = $('#next'), nextZhEl = $('#nextZh'), listEl = $('#list'), ta = $('#lyricsText');
@@ -684,7 +685,8 @@ function parseSrt(text){
     // 雙語字幕：第二行若不含假名就視為中文翻譯
     let zh = '';
     if(body.length > 1 && !/[\u3040-\u30ff]/.test(body[body.length - 1])) zh = body.pop();
-    const text = body.join(' ');
+    const text = LyricText.clean(body.join(' '));
+    zh=LyricText.clean(zh);
     // 兩句之間空隔超過 1 秒就插入間奏，讓字幕消失
     if(prevEnd != null && a - prevEnd > 1) out.push({t: +prevEnd.toFixed(2), text: ''});
     if(text) out.push(zh ? {t: +a.toFixed(2), text, zh} : {t: +a.toFixed(2), text});
@@ -699,7 +701,7 @@ function parse(text){
   for(const raw of text.split(/\r?\n/)){
     if(/^\s*\[(ti|ar|al|by|offset|re|ve|length):/i.test(raw)) continue;
     const stamps = [...raw.matchAll(re)];
-    const body = raw.replace(re, '').trim();
+    const body = LyricText.clean(raw.replace(re, ''));
     if(stamps.length) for(const m of stamps) out.push({t: +m[1]*60 + parseFloat(m[2].replace(':', '.')), text: body});
     else if(body) out.push({t: null, text: body});
   }
@@ -847,7 +849,7 @@ $('#clearBtn').onclick = () => {
 $('#exportBtn').onclick = () => {
   if(!timed.length){ toast('還沒有任何時間標記'); return; }
   const head = `[ti:${songTitle}]\n` + (offset ? `[offset:${Math.round(offset*1000)}]\n` : '');
-  const body = toLRC(lines.map(l => ({...l, t: l.t})));
+  const body = toLRC(lines.map(l => ({...l, text:LyricText.plain(l.text), t: l.t})));
   const a = document.createElement('a');
   a.href = URL.createObjectURL(new Blob([head + body + '\n'], {type: 'text/plain;charset=utf-8'}));
   a.download = songTitle.replace(/[\\/:*?"<>|]/g, '_') + '.lrc';
@@ -866,13 +868,13 @@ $('#exportSrtBtn').onclick = () => {
   const out = [];
   cues.forEach((l, i) => {
     const nx = timed[timed.indexOf(l) + 1];
-    out.push(String(i + 1), `${srtTime(l.t)} --> ${srtTime(Math.max(l.t + .5, (nx ? nx.t : l.t + 4) - .05))}`, l.text);
-    if(zhMap[l.text]) out.push(zhMap[l.text]);
+    out.push(String(i + 1), `${srtTime(l.t)} --> ${srtTime(Math.max(l.t + .5, (nx ? nx.t : l.t + 4) - .05))}`, LyricText.plain(l.text));
+    if(zhMap[l.text]) out.push(LyricText.plain(zhMap[l.text]));
     out.push('');
   });
   const a = document.createElement('a');
   a.href = URL.createObjectURL(new Blob([out.join('\r\n')], {type: 'text/plain;charset=utf-8'}));
-  a.download = songTitle.replace(/[\\/:*?"<>|]/g, '_') + '.中日雙語.srt';
+  a.download = songTitle.replace(/[\\/:*?"<>|]/g, '_') + '.雙語.srt';
   a.click(); setTimeout(() => URL.revokeObjectURL(a.href), 2000);
 };
 $('#lrcInput').onchange = async e => {

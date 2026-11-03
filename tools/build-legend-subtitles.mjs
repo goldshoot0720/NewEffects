@@ -1,5 +1,6 @@
 #!/usr/bin/env node
 import fs from 'node:fs';
+import {readBilingualLines} from './bilingual-lyrics.mjs';
 import path from 'node:path';
 import {fileURLToPath} from 'node:url';
 const root=path.resolve(path.dirname(fileURLToPath(import.meta.url)),'..');
@@ -13,7 +14,7 @@ const selected=process.argv.slice(2);
 if(selected.some(lang=>!versions.some(v=>v[0]===lang))) throw Error('Unknown language');
 for(const [lang,title,count,unsung] of versions){
   if(selected.length&&!selected.includes(lang)) continue;
-  const lines=fs.readFileSync(path.join(ref,`lyrics-${lang}.txt`),'utf8').split(/\r?\n/).filter(l=>l.trim());
+  const lines=readBilingualLines(ref,lang);
   const {duration,cues,omitted=[]}=JSON.parse(fs.readFileSync(path.join(ref,`timings-${lang}.json`),'utf8'));
   const covered=new Set(cues.map(c=>c.line));
   if(lines.length!==count||!Number.isFinite(duration)||duration<=0||JSON.stringify(omitted.map(c=>c.line))!==JSON.stringify(unsung)||omitted.some(c=>!c.reason)||covered.size!==count-unsung.length||unsung.some(n=>covered.has(n))) throw Error(`Invalid ${lang} source coverage`);

@@ -1,6 +1,7 @@
 #!/usr/bin/env node
 // Rebuild each language from the user's original lyrics and reviewed audio timings.
 import fs from 'node:fs';
+import {readBilingualLines} from './bilingual-lyrics.mjs';
 import path from 'node:path';
 import {fileURLToPath} from 'node:url';
 const root=path.resolve(path.dirname(fileURLToPath(import.meta.url)),'..');
@@ -11,7 +12,7 @@ const stamp=t=>{
   return `${pad(Math.floor(ms/3600000))}:${pad(Math.floor(ms/60000)%60)}:${pad(Math.floor(ms/1000)%60)},${pad(ms%1000,3)}`;
 };
 for(const [lang,title,count] of versions){
-  const lines=fs.readFileSync(path.join(ref,`lyrics-${lang}.txt`),'utf8').split(/\r?\n/).filter(l=>l.trim());
+  const lines=readBilingualLines(ref,lang);
   const {duration,cues}=JSON.parse(fs.readFileSync(path.join(ref,`timings-${lang}.json`),'utf8'));
   if(!Number.isFinite(duration)||duration<=0||lines.length!==count||cues.length!==count) throw Error(`Invalid ${lang} lyrics/timing count`);
   const blocks=cues.map((c,i)=>{

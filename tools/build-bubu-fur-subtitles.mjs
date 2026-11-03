@@ -1,5 +1,6 @@
 #!/usr/bin/env node
 import fs from 'node:fs';
+import {readBilingualLines} from './bilingual-lyrics.mjs';
 import path from 'node:path';
 import {fileURLToPath} from 'node:url';
 const root=path.resolve(path.dirname(fileURLToPath(import.meta.url)),'..');
@@ -9,7 +10,7 @@ const stamp=t=>{
   return `${pad(Math.floor(ms/3600000))}:${pad(Math.floor(ms/60000)%60)}:${pad(Math.floor(ms/1000)%60)},${pad(ms%1000,3)}`;
 };
 for(const [lang,title] of [['zh','喵布布本喵掉的毛'],['en','喵布布本喵掉的毛(英文歌詞)'],['ja','喵布布本喵掉的毛(日文歌詞)'],['yue','喵布布本喵掉的毛(粵文歌詞)']]){
-  const lines=fs.readFileSync(path.join(ref,`lyrics-${lang}.txt`),'utf8').split(/\r?\n/).filter(l=>l.trim());
+  const lines=readBilingualLines(ref,lang);
   const {duration,cues}=JSON.parse(fs.readFileSync(path.join(ref,`timings-${lang}.json`),'utf8'));
   if(lines.length!==48||cues.length!==48||!Number.isFinite(duration)||duration<=0) throw Error(`Expected 48 matching ${lang} lyrics/timing cues`);
   const blocks=cues.map((c,i)=>{
