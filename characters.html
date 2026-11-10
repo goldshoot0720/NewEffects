@@ -71,10 +71,26 @@
     <form method="dialog"><button class="icon-button" aria-label="關閉角色詳情" autofocus>×</button></form>
   </div>
   <div id="views" class="filters views" role="group" aria-label="參考圖類型"></div>
-  <div class="detail-art"><img id="detail-image" alt=""></div>
+  <div id="detail-art" class="detail-art"><img id="detail-image" alt=""></div>
+  <section id="turntable" aria-label="旋轉檢視" hidden>
+    <div id="turntable-stage" class="turntable-stage" tabindex="0" role="group" aria-label="角色旋轉預覽" aria-describedby="turntable-hint">
+      <span id="turntable-angle" class="turntable-angle" role="status"></span>
+      <svg id="turntable-frame" viewBox="0 0 740 887" role="img">
+        <svg id="turntable-crop" height="887" overflow="hidden">
+          <image id="turntable-image" width="1774" height="887"/>
+        </svg>
+      </svg>
+    </div>
+    <div id="turntable-controls" class="filters turntable-controls" role="group" aria-label="選擇角度">
+      <button type="button" data-angle="0" aria-pressed="true">正面</button>
+      <button type="button" data-angle="1" aria-pressed="false">側面</button>
+      <button type="button" data-angle="2" aria-pressed="false">背面</button>
+    </div>
+    <p id="turntable-hint" class="turntable-hint">左右拖曳、按方向鍵或點選按鈕切換角度</p>
+  </section>
   <div class="detail-footer">
     <span id="detail-caption"></span>
-    <a id="download" download>下載圖片 <span aria-hidden="true">↓</span></a>
+    <a id="download" download><span id="download-label">下載圖片</span> <span aria-hidden="true">↓</span></a>
   </div>
 </dialog>
 </body>

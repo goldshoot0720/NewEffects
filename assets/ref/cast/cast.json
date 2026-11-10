@@ -504,15 +504,16 @@
  "lucky": [
   {
    "file": "lucky-0.png",
-   "w": 1010,
-   "h": 1438,
-   "headX": 468,
-   "headY": 134,
+   "w": 614,
+   "h": 858,
+   "headX": 297,
+   "headY": 93,
    "source": [
-    6,
-    24
+    30,
+    14
    ],
-   "sheet": "lucky1.png"
+   "sheet": "../characters/whale-sheet.webp",
+   "name": "鯨魚娘"
   },
   {
    "file": "lucky-1.png",

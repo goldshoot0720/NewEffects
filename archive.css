@@ -112,8 +112,39 @@ dialog::backdrop { background: #1b132cb8; }
 .icon-button:hover { background: #eee8fa; }
 .views { margin: 16px 0 12px; }
 .detail-art { display: grid; place-items: center; overflow: hidden; border-radius: 10px; background: #ebe8f2; }
+.detail-art[hidden] { display: none; }
 .detail-art img { display: block; max-width: 100%; max-height: min(55dvh, 560px); object-fit: contain; }
 .detail-footer { margin-top: 13px; color: var(--muted); font-size: 13px; }
+.turntable-stage {
+  position: relative;
+  display: grid;
+  place-items: center;
+  overflow: hidden;
+  border-radius: 10px;
+  background:
+    radial-gradient(ellipse at center, #f9f6ff 10%, transparent 70%),
+    linear-gradient(90deg, #6c509f13 1px, transparent 1px) center / 25px 25px,
+    linear-gradient(#6c509f13 1px, transparent 1px) center / 25px 25px,
+    #e9e1f4;
+  cursor: grab;
+  touch-action: pan-y;
+  user-select: none;
+}
+.turntable-stage:active { cursor: grabbing; }
+#turntable-frame { display: block; width: 100%; height: min(51dvh, 500px, calc((100vw - 56px) * 1.19)); pointer-events: none; }
+.turntable-angle {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  padding: 5px 8px;
+  border-radius: 5px;
+  background: var(--paper);
+  color: var(--accent);
+  font: 700 11px var(--mono);
+}
+.turntable-controls { justify-content: center; margin-top: 12px; }
+.turntable-controls button { min-width: 68px; }
+.turntable-hint { margin: 8px 0 0; text-align: center; color: var(--muted); font-size: 12px; }
 
 @media (max-width: 1050px) {
   .shell { width: calc(100% - 56px); }

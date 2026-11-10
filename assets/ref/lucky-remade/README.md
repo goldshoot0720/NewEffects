@@ -4,6 +4,7 @@
 
 | lucky 索引 | 人物 | 使用者來源檔 | 透明原圖 | 使用中的切圖 |
 | --- | --- | --- | --- | --- |
+| 0 | 鯨魚娘 | [角色圖鑑三視圖](../../characters/whale-sheet.webp)的正面 | macOS Vision 前景遮罩 | [lucky-0.png](../cast/lucky-0.png) |
 | 1 | 咕咕嘎嘎 | ChatGPT Image 2026年9月22日 上午12_07_22.png | lucky-1.png | ../cast/lucky-1.png |
 | 2 | 鋒兄 | ChatGPT Image 2026年9月22日 上午12_13_00.png | lucky-2.png | ../cast/lucky-2.png |
 | 3 | 塗哥 | ChatGPT Image 2026年9月22日 上午12_13_57.png | lucky-3.png | ../cast/lucky-3.png |
@@ -12,7 +13,7 @@
 | 6 | Claude 娘 | [claude-source.png](claude-source.png) | [lucky-6.png](lucky-6.png) | [lucky-6.png](../cast/lucky-6.png) |
 | 7 | GPT 娘 | [gpt-source.png](gpt-source.png) | [lucky-7.png](lucky-7.png) | [lucky-7.png](../cast/lucky-7.png) |
 
-索引 0 的鯨魚娘沿用既有透明素材。八人編制與主唱鋒兄不變；國語、英語、日語與粵語四版的歌詞 PV、人物 PV、第二版播放器及人物圖庫均透過同一份 cast.json 載入新素材與名稱。第二版四首的封面也使用更新後的本機八人群像。
+索引 0 的鯨魚娘取自使用者指定三視圖的正面，並保留原圖手部輪廓。八人編制與主唱鋒兄不變；國語、英語、日語與粵語四版的歌詞 PV、人物 PV、第二版播放器及人物圖庫均透過同一份 cast.json 載入新素材與名稱。第二版四首的封面也使用更新後的本機八人群像。
 
 Claude 娘保留書本、花飾與長裙；GPT 娘保留白色服裝、龍角、翅膀、尾巴、鞋與 GPT 紋飾。兩張皆使用內建 image_gen 的 `background-extraction`，`transparent_background=true`，一位人物一個獨立呼叫；GPT 娘再依使用者後續要求，以定向修改移除右上方的藍色 Sora2 符號及軌跡，該區恢復透明。完整提示與原始路徑見 [ai-replacements-prompts.json](ai-replacements-prompts.json)。兩人使用較保守的手腳擺幅，讓長裙與配件保持完整。
 
