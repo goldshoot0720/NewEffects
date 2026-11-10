@@ -2,82 +2,86 @@
 <html lang="zh-Hant">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<title>BEST 4U PV</title>
-<style>
-:root{color-scheme:dark}
-html,body{margin:0;height:100%;background:#000;color:#eee;font-family:"PingFang TC","Hiragino Sans",sans-serif;overflow:hidden}
-/* 底部留給控制列：畫布不鋪滿整個視窗，歌詞才不會被播放器蓋住。
-   實際高度由 JS 量 #ui 後寫進 --ui-h，控制列換行或放大時也跟得上。 */
-body{--ui-h:104px;display:grid;place-items:center;box-sizing:border-box;padding-bottom:var(--ui-h)}
-#pv{width:min(100vw,calc((100vh - var(--ui-h))*16/9));height:auto;aspect-ratio:16/9;display:block;background:#000}
-#ui{position:fixed;left:50%;bottom:16px;translate:-50% 0;display:flex;gap:10px;align-items:center;padding:10px 14px;
-  border-radius:14px;background:rgba(18,18,28,.82);backdrop-filter:blur(8px);box-shadow:0 6px 24px rgba(0,0,0,.4);
-  width:min(1120px,calc(100vw - 32px));box-sizing:border-box;transition:opacity .4s;flex-wrap:wrap}
-#ui.idle{opacity:0}
-#ui:focus-within,#ui:hover{opacity:1}
-#ui select,#ui button{font:inherit;font-size:14px;color:#fff;background:#2c2c40;border:1px solid #47476a;border-radius:8px;padding:6px 10px;cursor:pointer}
-#ui button:disabled{opacity:.5;cursor:wait}
-#seek{flex:1;min-width:80px;accent-color:#f6a531}
-.seek-controls{display:flex;align-items:center;gap:6px;flex:1;min-width:180px}
-#song{min-width:0;max-width:100%;flex:0 1 240px}
-.transport{display:flex;align-items:center;gap:8px;flex:none}
-.volume-control{display:flex;align-items:center;gap:6px;flex:none}
-#ui #mute{padding:5px;width:36px;height:32px}
-#volume{width:80px;accent-color:#f6a531}
-#volumeValue{font-size:12px;min-width:4ch;text-align:right;font-variant-numeric:tabular-nums}
-#time{font:13px Menlo,monospace;white-space:nowrap}
-#ui a{color:#9fd2ff;font-size:13px;white-space:nowrap}
-.player-links{display:flex;flex-wrap:wrap;align-items:center;gap:8px 16px;flex-basis:100%;order:6}
-#msg{position:fixed;top:16px;left:50%;translate:-50% 0;font-size:14px;background:rgba(0,0,0,.6);padding:6px 12px;border-radius:8px}
-#msg:empty{display:none}
-body.render #ui,body.render #msg{display:none}
-body.render{padding-bottom:0}
-body.render #pv{width:min(100vw,calc(100vh*16/9))}
-@media (max-width:600px){#ui{flex-wrap:wrap}.seek-controls{order:5;flex-basis:100%}}
-</style>
-</head>
-<body>
-<canvas id="pv" width="1920" height="1080"></canvas>
-<div id="ui">
-  <select id="song" aria-label="歌曲"></select>
-  <div class="transport" role="group" aria-label="播放控制">
-    <button id="prevSong" type="button" aria-label="上一首" title="上一首">⏮ 上一首</button>
-    <button id="play" disabled>載入中…</button>
-    <button id="nextSong" type="button" aria-label="下一首" title="下一首">下一首 ⏭</button>
-  </div>
-  <div class="seek-controls" role="group" aria-label="播放位置控制">
-    <button id="rewind5" type="button" aria-label="倒退 5 秒" title="倒退 5 秒" disabled>−5秒</button>
-    <input id="seek" type="range" min="0" max="1000" value="0" aria-label="播放位置">
-    <button id="forward5" type="button" aria-label="快轉 5 秒" title="快轉 5 秒" disabled>+5秒</button>
-  </div>
-  <span id="time">0:00 / 0:00</span>
-  <div class="volume-control" role="group" aria-label="音量控制">
-    <button id="mute" type="button" aria-label="靜音" aria-pressed="false" title="靜音" disabled>🔊</button>
-    <input id="volume" type="range" min="0" max="100" step="1" value="100" aria-label="音量" disabled>
-    <span id="volumeValue">100%</span>
-  </div>
-  <nav class="player-links" aria-label="播放器頁面">
-    <a id="modeLink" href="index.html?mode=characters">人物 PV</a>
-    <a href="cast.html">切圖</a>
-    <a href="v2.html">第二版本：歌詞播放器 →</a>
-  </nav>
-</div>
-<div id="msg"></div>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="NewEffects 角色圖鑑。探索十位角色的立繪與正面、側面、背面設定。">
+<title>角色圖鑑 · NewEffects</title>
 <script>
-// 量控制列實際高度，讓畫布自動讓開（換行、縮放、字體變大都不會蓋到歌詞）
-(() => {
-  const ui = document.getElementById('ui');
-  const fit = () => document.body.style.setProperty('--ui-h', (ui.offsetHeight + 26) + 'px');
-  addEventListener('resize', fit);
-  if(window.ResizeObserver) new ResizeObserver(fit).observe(ui);
-  fit();
-})();
+  const query = new URLSearchParams(location.search);
+  if (['song', 'mode', 'render', 't'].some(key => query.has(key))) {
+    location.replace('pv.html' + location.search + location.hash);
+  }
 </script>
-<script src="dance-rig.js"></script>
-<script src="volume.js"></script>
-<script src="playlist-order.js"></script>
-<script src="lyric-text.js"></script>
-<script src="pv.js"></script>
+<link rel="stylesheet" href="archive.css">
+<script src="archive.js" defer></script>
+</head>
+<body id="character-archive">
+<header class="site-header">
+  <div class="shell header-inner">
+    <a class="brand" href="index.html" aria-label="NewEffects 角色圖鑑">
+      <svg width="33" height="33" viewBox="0 0 32 32" aria-hidden="true"><rect width="32" height="32" rx="8" fill="currentColor"/><path d="M16 5c0 6.1 4.9 11 11 11-6.1 0-11 4.9-11 11 0-6.1-4.9-11-11-11 6.1 0 11-4.9 11-11Z" fill="white"/><circle cx="16" cy="16" r="2.5" fill="currentColor"/></svg>
+      <span>NewEffects<small>CHARACTER STUDIO</small></span>
+    </a>
+    <nav aria-label="主選單">
+      <a href="#collection" aria-current="page">角色圖鑑</a>
+      <a href="pv.html">歌詞 PV</a>
+      <a href="v2.html">歌詞播放器</a>
+    </nav>
+  </div>
+</header>
+<main class="shell">
+  <section class="hero" aria-labelledby="page-title">
+    <div class="intro">
+      <p class="eyebrow"><span class="dot"></span> CHARACTER ARCHIVE <span class="volume">/ VOL. 01</span></p>
+      <h1 id="page-title">角色圖鑑<span>.</span></h1>
+      <p class="intro-text">從奇幻精靈到街頭貓咪，收錄十位角色的全身立繪與三視圖。轉個角度，看看造型裡的小細節。</p>
+      <a class="primary" href="#collection">瀏覽角色 <span aria-hidden="true">↓</span></a>
+      <dl class="stats">
+        <div><dt>收錄角色</dt><dd>10</dd></div>
+        <div><dt>參考圖</dt><dd>20</dd></div>
+        <div><dt>分類</dt><dd>04</dd></div>
+      </dl>
+    </div>
+    <button class="feature" type="button" data-character="dragon" aria-label="查看精選角色白龍精靈">
+      <img src="assets/characters/dragon-feature.webp" width="900" height="640" alt="">
+      <span class="feature-label"><span class="dot"></span> 精選角色 <span>01 / 10</span></span>
+      <span class="feature-name"><small>DRAGON ELF</small>白龍精靈</span>
+      <span class="feature-arrow" aria-hidden="true">↗</span>
+    </button>
+  </section>
+
+  <section id="collection" class="collection" aria-labelledby="collection-title">
+    <p class="eyebrow"><span class="dot"></span> THE COLLECTION</p>
+    <div class="collection-heading">
+      <h2 id="collection-title">探索角色</h2>
+      <p id="result-count" class="result-count" role="status">10 位角色</p>
+    </div>
+    <div id="filters" class="filters" role="group" aria-label="角色分類">
+      <button type="button" data-filter="all" aria-pressed="true">全部</button>
+      <button type="button" data-filter="fantasy" aria-pressed="false">奇幻</button>
+      <button type="button" data-filter="anime" aria-pressed="false">動漫</button>
+      <button type="button" data-filter="animal" aria-pressed="false">動物擬人</button>
+      <button type="button" data-filter="real" aria-pressed="false">寫實</button>
+    </div>
+    <div id="cards" class="cards"></div>
+  </section>
+</main>
+
+<footer class="shell footer">
+  <span>NewEffects <span class="footer-divider">/</span> CHARACTER ARCHIVE</span>
+  <a href="cast.html">透明切圖庫 <span aria-hidden="true">↗</span></a>
+</footer>
+
+<dialog id="detail" aria-labelledby="detail-title">
+  <div class="detail-heading">
+    <div><p id="detail-index" class="eyebrow"></p><h2 id="detail-title"></h2></div>
+    <form method="dialog"><button class="icon-button" aria-label="關閉角色詳情" autofocus>×</button></form>
+  </div>
+  <div id="views" class="filters views" role="group" aria-label="參考圖類型"></div>
+  <div class="detail-art"><img id="detail-image" alt=""></div>
+  <div class="detail-footer">
+    <span id="detail-caption"></span>
+    <a id="download" download>下載圖片 <span aria-hidden="true">↓</span></a>
+  </div>
+</dialog>
 </body>
 </html>

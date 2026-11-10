@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-// 把 PV 首頁（index.html）逐格渲染成 MP4：本機伺服器提供檔案並接收 JPEG 影格，無頭 Chrome 執行 pv.js，ffmpeg 編碼並合併音訊。
+// 把 PV 播放頁（pv.html）逐格渲染成 MP4：本機伺服器提供檔案並接收 JPEG 影格，無頭 Chrome 執行 pv.js，ffmpeg 編碼並合併音訊。
 // 用法：node render-pv.mjs [歌曲編號…] [--mode lyrics|characters] [--from 秒] [--to 秒] [--out 資料夾] [--encoder libx264|h264_videotoolbox|h264_nvenc] [--jobs 數量]
 //   不指定歌曲就輸出 pv.js 裡的全部歌曲，預設同時處理兩首。
 import http from 'node:http';
@@ -59,7 +59,7 @@ const server = http.createServer(async (req, res) => {
     }catch(e){ res.writeHead(500).end(String(e)); job.fail(e); }
     return;
   }
-  const file = path.join(ROOT, decodeURIComponent(url.pathname === '/' ? '/index.html' : url.pathname));
+  const file = path.join(ROOT, decodeURIComponent(url.pathname === '/' ? '/pv.html' : url.pathname));
   if(!file.startsWith(ROOT + path.sep) || !fs.existsSync(file) || !fs.statSync(file).isFile()){ res.writeHead(404).end(); return; }
   res.writeHead(200, {'Content-Type': MIME[path.extname(file).toLowerCase()] || 'application/octet-stream', 'Content-Length': fs.statSync(file).size});
   fs.createReadStream(file).pipe(res);
@@ -97,7 +97,7 @@ function runJob(index){
     if(mode==='characters') query.set('mode','characters');
     if(from) query.set('from', from);
     if(to) query.set('to', to);
-    const chrome = spawn(CHROME, [...FLAGS, `--user-data-dir=${profile}`, `http://127.0.0.1:${PORT}/index.html?${query}`], {stdio: 'ignore', windowsHide: true});
+    const chrome = spawn(CHROME, [...FLAGS, `--user-data-dir=${profile}`, `http://127.0.0.1:${PORT}/pv.html?${query}`], {stdio: 'ignore', windowsHide: true});
     let cleaning;
     const cleanup = () => cleaning ||= (async () => {
       try{ chrome.kill(); }catch{}

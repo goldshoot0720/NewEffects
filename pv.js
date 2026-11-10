@@ -1771,7 +1771,7 @@ async function init(){
   $('#prevSong').onclick = () => changeSong(order[(position-1+order.length)%order.length].index);
   $('#nextSong').onclick = () => changeSong(order[(position+1)%order.length].index);
   $('#prevSong').disabled = $('#nextSong').disabled = SONGS.length<2;
-  $('#modeLink').href=CHARACTER_PV ? `index.html?song=${SONGS.indexOf(song)}` : `index.html?song=${SONGS.indexOf(song)}&mode=characters`;
+  $('#modeLink').href=CHARACTER_PV ? `pv.html?song=${SONGS.indexOf(song)}` : `pv.html?song=${SONGS.indexOf(song)}&mode=characters`;
   $('#modeLink').textContent=CHARACTER_PV ? '歌詞 PV' : '人物 PV';
   if(CHARACTER_PV) document.title='人物動畫 PV · '+song.title;
   msg('載入音訊與素材…');
