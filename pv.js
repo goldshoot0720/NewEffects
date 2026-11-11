@@ -1487,6 +1487,11 @@ function drawRider(m, cx, cy, R, t, opts = {}){
 }
 function shotBike(t, sh, u){
   const horizon = 430;
+  const R = 100;
+  // 前景輪子縮放後會再往下約一個輪半徑。整排一起上移，輪底停在歌詞遮罩之上。
+  const lyricTop = 800;
+  const frontScale = 1.05;
+  const frontY = lyricTop - (R + R*.03)*frontScale;
   backdrop(t, {dim: .25, art: .22});
   g.save(); g.globalAlpha = .5;                          // 遠山視差
   for(let k = 0; k < 2; k++){
@@ -1499,21 +1504,23 @@ function shotBike(t, sh, u){
   g.restore();
   drawRoad(t, horizon, 380);
   // Every cast member gets a bicycle; the featured pair share the foreground.
-  const R = 100;
   const ride = (m, cx, cy, sc, o) => { g.save(); g.translate(cx, cy); g.scale(sc, sc); drawRider(m, 0, 0, R, t, o); g.restore(); };
   const others=MEMBERS.map((_,i)=>i).filter(i=>!CENTERS.includes(i));
   const rows=Math.ceil(others.length/6),cols=Math.ceil(others.length/Math.max(1,rows));
+  const oldTop = horizon + (rows === 1 ? 170 : 70), oldFront = horizon + 420;
+  const topY = Math.min(oldTop - 40, horizon + 80);
+  const placeY = y => topY + (y - oldTop) / (oldFront - oldTop) * (frontY - topY);
   const plan=others.map((m,i)=>{
     const row=Math.floor(i/cols),count=Math.min(cols,others.length-row*cols),col=i%cols;
-    return [m,W*(col+.5)/count,horizon+(rows===1?170:70+row*100),rows===1?.62:.38+row*.05,
+    return [m,W*(col+.5)/count,placeY(horizon+(rows===1?170:70+row*100)),rows===1?.62:.38+row*.05,
       {speed:290+row*20,cadence:3.1+m*.04,frame:'rgba(47,175,156,.78)'}];
   });
-  CENTERS.forEach((m,i)=>plan.push([m,W*(CENTERS.length===2?[.36,.64][i]:.5),horizon+420,1.05,
+  CENTERS.forEach((m,i)=>plan.push([m,W*(CENTERS.length===2?[.36,.64][i]:.5),placeY(oldFront),frontScale,
     {speed:430,cadence:4.2,frame:'#2faf9c'}]));
   plan.forEach(([m, cx, cy, sc, o]) => { if(m !== undefined) ride(m, cx, cy, sc, o); });
   g.save(); g.strokeStyle = 'rgba(255,255,255,.35)'; g.lineWidth = 3;    // 速度線
   for(let i = 0; i < 16; i++){
-    const y = horizon + 60 + hash(i*3.3)*380, len = 90 + hash(i*7.1)*220;
+    const y = horizon + 40 + hash(i*3.3)*(lyricTop - horizon - 70), len = 90 + hash(i*7.1)*220;
     const x = W - ((t*(620 + hash(i)*420) + i*160) % (W + 400));
     g.globalAlpha = .12 + .22*hash(i*5.7);
     g.beginPath(); g.moveTo(x, y); g.lineTo(x + len, y); g.stroke();
