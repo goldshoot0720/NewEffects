@@ -969,11 +969,30 @@ function fitLyricText(el, kind = ''){
     el.style.setProperty('--fit', Math.max(.2, fit * (availableWidth - 2) / used));
   }
 }
+// 英、日主句縮進畫面後，中文翻譯不要用自己的字級反過來比主句大。
+function capGloss(zhEl, mainEl){
+  if(!zhEl || !mainEl || zhEl.classList.contains('off') || mainEl.classList.contains('off')) return;
+  const mainText = mainEl.dataset.full || mainEl.textContent;
+  if(!mainText.trim()) return;
+  const mainPx = parseFloat(getComputedStyle(mainEl).fontSize);
+  const zhPx = parseFloat(getComputedStyle(zhEl).fontSize);
+  if(!mainPx || !zhPx) return;
+  const next = LyricText.translationSize(mainText, mainPx, zhPx);
+  if(next >= zhPx - .25) return;
+  const fit = parseFloat(zhEl.style.getPropertyValue('--fit')) || 1;
+  zhEl.style.setProperty('--fit', String(fit * next / zhPx));
+}
 function fitDisplayedLyrics(){
-  slot.querySelectorAll('.line').forEach(el => fitLyricText(el));
-  slot.querySelectorAll('.zhline').forEach(el => fitLyricText(el, 'zh'));
+  slot.querySelectorAll('.linewrap').forEach(wrap => {
+    const line = wrap.querySelector('.line');
+    const zh = wrap.querySelector('.zhline');
+    if(line) fitLyricText(line);
+    if(zh) fitLyricText(zh, 'zh');
+    capGloss(zh, line);
+  });
   fitLyricText(nextEl, 'preview');
   fitLyricText(nextZhEl, 'zhpreview');
+  capGloss(nextZhEl, nextEl);
 }
 document.fonts?.ready.then(fitDisplayedLyrics);
 function showLine(L){
@@ -1011,7 +1030,7 @@ function showLine(L){
     }
     slot.appendChild(wrap); curWrap = wrap; curEl = el;
     fitLyricText(el);
-    if(curZh) fitLyricText(curZh, 'zh');
+    if(curZh){ fitLyricText(curZh, 'zh'); capGloss(curZh, el); }
     if(prefs.particles && media.playing()){
       requestAnimationFrame(() => {
         const r = el.getBoundingClientRect(), sr = stage.getBoundingClientRect();
@@ -1134,8 +1153,10 @@ function frame(ts){
     const k = L ? timed.indexOf(L) + 1 : 0, nx = timed[k];
     if(nx && nx.text && (L || now > nx.t - 4)){ nt = plainText(nx.text); ntz = zhMap[nx.text] || ''; }
   }
+  const nextChanged = nt !== nextText || ntz !== nextZhText;
   if(nt !== nextText){ nextText = nt; nextEl.textContent = nt || ' '; nextEl.classList.toggle('off', !nt); fitLyricText(nextEl, 'preview'); }
   if(ntz !== nextZhText){ nextZhText = ntz; nextZhEl.textContent = ntz || ' '; nextZhEl.classList.toggle('off', !ntz); fitLyricText(nextZhEl, 'zhpreview'); }
+  if(nextChanged) capGloss(nextZhEl, nextEl);
 
   // 片頭標題卡：還沒有字幕時顯示
   $('#titlecard').classList.toggle('show', !L && (!timed.length || now < timed[0].t - 4) && !tapping);

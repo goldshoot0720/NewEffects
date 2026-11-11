@@ -317,7 +317,7 @@ const CHARACTER_GROUPS = song.cast[0][0] === 'anaru'
   : song.art === 'breakshoot'
   ? [{sheet:'casual', title:'Extreme Hearts · 十二人', src:'assets/ref/casual-remade/group.png', colors:['#5cabe0','#f3afd3'], count:12,solo:true}]
   : BASE_CHARACTER_GROUPS;
-let A = null, cues = [], sections = [], shots = [], TJ = [], TZ = [], C = {};
+let A = null, cues = [], sections = [], shots = [], TJ = [], TZ = [], C = {}, songScript = 'cjk';
 
 /* ---------------- 音訊分析：節拍、低中頻能量 ---------------- */
 async function analyse(buf){
@@ -822,7 +822,7 @@ function karaokeCue(c, t, o, alpha = 1, dy = 0){
     }
   });
   if(c.zh && o.zhSize){
-    const zs = fitFont(c.zh, zhFont, o.zhSize, o.maxW*1.05);
+    const zs = fitFont(c.zh, zhFont, LyricText.translationSize(c.jp, s, o.zhSize), o.maxW*1.05);
     g.font = zhFont(zs); const zw = g.measureText(c.zh).width, zx = o.cx - zw/2, zy = y0 + (L.rows.length - 1)*rowH + s*.55 + zs*1.15;
     g.globalAlpha = alpha*easeOut((appear - .15)/.4);
     g.lineWidth = zs*.18; g.strokeStyle = 'rgba(12,10,32,.75)'; g.strokeText(c.zh, zx, zy);
@@ -923,6 +923,9 @@ function strip(x, w, tape, pos, t, kind){
       continue;
     }
     let fs = item.latin || item.t.length > 1 ? Math.min(64, (fw - 20)/Math.max(1, item.t.length*.55)) : 104;
+    // 右欄中文只比左欄主句略小：英文單字最大 64，日文單字 104。
+    if(kind==='zh' && songScript==='en') fs = Math.min(fs, 64*.9);
+    if(kind==='zh' && songScript==='ja') fs = Math.min(fs, 104*.9);
     if(item.bk) fs *= .78;
     g.font = item.latin ? `italic 600 ${fs}px ${FONT.cond}` : kind === 'jp' ? `600 ${fs}px ${FONT.mincho}` : `500 ${fs}px ${FONT.zh}`;
     if(active){
@@ -1065,7 +1068,7 @@ function shotTypo(t, sh, u){
     }
   });
   if(c.zh){
-    const zy = y0 + (L.rows.length - 1)*rowH + s*.75 + 40, zs = fitFont(c.zh, zhFont, 46, maxW);
+    const zy = y0 + (L.rows.length - 1)*rowH + s*.75 + 40, zs = fitFont(c.zh, zhFont, LyricText.translationSize(c.jp, s, 46), maxW);
     g.globalAlpha = easeOut((t - c.start - .2)/.5); g.font = zhFont(zs); g.textAlign = 'center';
     const zw = g.measureText(c.zh).width;
     g.fillStyle = T.accent; g.fillRect(cx - zw/2 - 30, zy - 4, 12, 12);
@@ -1137,7 +1140,7 @@ function shotWindows(t, sh, u){
     const tw = g.measureText(text).width;
     if(frac(t*2) < .6){ g.fillStyle = T.accent2; g.fillRect(bx + bh + 36 + tw, by + 26, 5, bh - 52); }
     if(c.zh){
-      const zs = fitFont(c.zh, zhFont, 32, 1100); g.font = zhFont(zs); g.letterSpacing = '2px';
+      const zs = fitFont(c.zh, zhFont, LyricText.translationSize(c.jp, fs, 32), 1100); g.font = zhFont(zs); g.letterSpacing = '2px';
       const zw = g.measureText(c.zh).width + 70, zx = W/2 - zw/2, zy = by - 82;
       g.globalAlpha = easeOut((t - c.start)/.4);
       roundRect(zx, zy, zw, 58, 29); g.fillStyle = '#ffffff'; g.fill(); g.lineWidth = 4; g.strokeStyle = T.deep; g.stroke();
@@ -1807,6 +1810,14 @@ async function init(){
   msg('分析節拍…');
   A = await analyse(buf);
   cues = parseSrt(srt);
+  {
+    let ja = 0, en = 0;
+    for(const c of cues){
+      if(/[ぁ-ゟ゠-ヿ]/.test(c.jp)) ja++;
+      else if(LyricText.mainIsEnOrJa(c.jp)) en++;
+    }
+    songScript = ja * 2 >= cues.length ? 'ja' : en * 2 >= cues.length ? 'en' : 'cjk';
+  }
   if(!cues.length) throw new Error('字幕是空的');
   cues.forEach((c, i) => {
     c.i = i; c.ju = tokenize(c.jp); c.zu = tokenize(c.zh || '');

@@ -14,6 +14,13 @@ assert.equal(LyricText.clean('祝(いわ)う！ [hey]'),'祝(いわ)う hey');
 assert.equal(LyricText.plain('祝(いわ)う！ [hey]'),'祝う hey');
 assert.equal(LyricText.clean('20,250,000'),'20250000');
 assert.equal(LyricText.clean('「…！？—」🔥♪'),'');
+assert.equal(LyricText.mainIsEnOrJa('Keep your eyes on me'), true);
+assert.equal(LyricText.mainIsEnOrJa('雨(あめ)が降る'), true);
+assert.equal(LyricText.mainIsEnOrJa('招財喵布布送嚟祝福'), false);
+assert.equal(LyricText.translationSize('Keep your eyes on me right now', 32, 36), 28.8);
+assert.equal(LyricText.translationSize('Keep your eyes on me', 66, 36), 36);
+assert.equal(LyricText.translationSize('雨(あめ)', 40, 46), 36);
+assert.equal(LyricText.translationSize('招財喵布布', 30, 36), 36);
 const parser=(file,end)=>{
   const code=fs.readFileSync(path.join(root,file),'utf8'),start=code.indexOf('function parseSrt(text)');
   return vm.runInNewContext(code.slice(start,code.indexOf(end,start))+';parseSrt',{LyricText});
