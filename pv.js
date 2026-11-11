@@ -1754,9 +1754,18 @@ window.addEventListener('error', e => { if(RENDER) post('error', String(e.messag
 window.addEventListener('unhandledrejection', e => { if(RENDER) post('error', String(e.reason?.stack || e.reason)); });
 
 let previewAudio = null;
+function pvQuery(index, characterMode){
+  const query = new URLSearchParams({song:String(index)});
+  if(characterMode) query.set('mode','characters');
+  const speed = $('#speed').value;
+  if(speed !== '1') query.set('speed', speed);
+  return query;
+}
+function updateModeLink(){
+  $('#modeLink').href = `pv.html?${pvQuery(songIndex, !CHARACTER_PV)}`;
+}
 function changeSong(index){
-  const query = new URLSearchParams({song:String((index+SONGS.length)%SONGS.length)});
-  if(CHARACTER_PV) query.set('mode','characters');
+  const query = pvQuery((index+SONGS.length)%SONGS.length, CHARACTER_PV);
   if(previewAudio && !previewAudio.paused) query.set('autoplay','1');
   location.search = query.toString();
 }
@@ -1771,7 +1780,10 @@ async function init(){
   $('#prevSong').onclick = () => changeSong(order[(position-1+order.length)%order.length].index);
   $('#nextSong').onclick = () => changeSong(order[(position+1)%order.length].index);
   $('#prevSong').disabled = $('#nextSong').disabled = SONGS.length<2;
-  $('#modeLink').href=CHARACTER_PV ? `pv.html?song=${SONGS.indexOf(song)}` : `pv.html?song=${SONGS.indexOf(song)}&mode=characters`;
+  const speed = $('#speed');
+  const requestedSpeed = params.get('speed');
+  if([...speed.options].some(option => option.value === requestedSpeed)) speed.value = requestedSpeed;
+  updateModeLink();
   $('#modeLink').textContent=CHARACTER_PV ? '歌詞 PV' : '人物 PV';
   if(CHARACTER_PV) document.title='人物動畫 PV · '+song.title;
   msg('載入音訊與素材…');
@@ -1831,6 +1843,16 @@ function preview(buf){
   const audio = new Audio(audioURL);
   previewAudio = audio;
   PlayerVolume.bind(audio);
+  const speed = $('#speed');
+  const applySpeed = () => {
+    const rate = Number(speed.value);
+    audio.defaultPlaybackRate = rate;
+    audio.playbackRate = rate;
+    updateModeLink();
+  };
+  speed.addEventListener('change', applySpeed);
+  applySpeed();
+  speed.disabled = false;
   addEventListener('pagehide',()=>URL.revokeObjectURL(audioURL),{once:true});
   const play = $('#play'), seek = $('#seek'), time = $('#time');
   let seekDragging = false;

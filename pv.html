@@ -22,6 +22,7 @@ body{--ui-h:104px;display:grid;place-items:center;box-sizing:border-box;padding-
 .seek-controls{display:flex;align-items:center;gap:6px;flex:1;min-width:180px}
 #song{min-width:0;max-width:100%;flex:0 1 240px}
 .transport{display:flex;align-items:center;gap:8px;flex:none}
+.speed-control{display:flex;align-items:center;gap:6px;font-size:13px;flex:none}
 .volume-control{display:flex;align-items:center;gap:6px;flex:none}
 #ui #mute{padding:5px;width:36px;height:32px}
 #volume{width:80px;accent-color:#f6a531}
@@ -52,6 +53,15 @@ body.render #pv{width:min(100vw,calc(100vh*16/9))}
     <button id="forward5" type="button" aria-label="快轉 5 秒" title="快轉 5 秒" disabled>+5秒</button>
   </div>
   <span id="time">0:00 / 0:00</span>
+  <label class="speed-control">
+    播放速度
+    <select id="speed" disabled>
+      <option value="0.5">0.5x</option>
+      <option value="1" selected>1x</option>
+      <option value="1.5">1.5x</option>
+      <option value="2">2x</option>
+    </select>
+  </label>
   <div class="volume-control" role="group" aria-label="音量控制">
     <button id="mute" type="button" aria-label="靜音" aria-pressed="false" title="靜音" disabled>🔊</button>
     <input id="volume" type="range" min="0" max="100" step="1" value="100" aria-label="音量" disabled>
