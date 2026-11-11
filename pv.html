@@ -23,7 +23,8 @@ body{--ui-h:104px;display:grid;place-items:center;box-sizing:border-box;padding-
 .timeline-row{padding-top:10px;border-top:1px solid #323248}
 #seek{flex:1;min-width:0;max-width:320px;margin-inline:0;accent-color:#f6a531}
 .seek-controls{display:flex;align-items:center;gap:8px;flex:1 1 280px;min-width:0}
-#song{min-width:0;max-width:100%;flex:1 1 200px}
+/* 下拉選單寬度跟這個控制項走，所以不要被控制列撐開，只留最長歌名的寬度。 */
+#song{flex:none;width:max-content;max-width:100%}
 .transport{display:flex;flex-wrap:wrap;align-items:center;gap:8px;flex:none;max-width:100%}
 .speed-control{display:flex;align-items:center;gap:6px;font-size:13px;flex:none}
 .volume-control{display:flex;align-items:center;gap:6px;flex:none}
