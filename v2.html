@@ -497,11 +497,13 @@ const DEFAULT_SONGS = [
   {id:'suno-e60578c6',title:'鋒兄的傳奇人生(英文歌詞)',audio:'鋒兄的傳奇人生(英文歌詞).mp3',subs:'鋒兄的傳奇人生(英文歌詞).srt',cover:'assets/ref/lucky8.png',lead:2,cast:'lucky'},
   {id:'suno-8e033846',title:'鋒兄的傳奇人生(日文歌詞)',audio:'鋒兄的傳奇人生(日文歌詞).mp3',subs:'鋒兄的傳奇人生(日文歌詞).srt',cover:'assets/ref/lucky8.png',lead:2,cast:'lucky'},
   {id:'suno-34fc1d29',title:'鋒兄的傳奇人生(粵文歌詞)',audio:'鋒兄的傳奇人生(粵文歌詞).mp3',subs:'鋒兄的傳奇人生(粵文歌詞).srt',cover:'assets/ref/lucky8.png',lead:2,cast:'lucky'},
-  {id:'31bvn6GUtaI',title:'Forever＆ever [彩音]',audio:'Forever＆ever.mp3',subs:'Forever＆ever.srt',cover:'assets/ref/forever/cover.png',lead:3,cast:'forever'}
+  {id:'31bvn6GUtaI',title:'Forever＆ever [彩音]',audio:'Forever＆ever.mp3',subs:'Forever＆ever.srt',fill:'assets/ref/forever/fill-ja.json',cover:'assets/ref/forever/cover.png',lead:3,cast:'forever'}
 ];
 // 每首歌的字幕／音訊檔放在同一個資料夾，執行時才讀取
 const cfgOf = id => DEFAULT_SONGS.find(d => d.id === id) || {};
 const fileLrc = {};   // id -> {lrc, hash}
+const fileFill = {};  // id -> {lines:[{jp,t:[[開始,唱完],...]}]}
+let fillMap = new Map();   // 這一句 → 每個字「開始唱／唱完」的時間
 const hashStr = s => { let h = 5381; for(let i = 0; i < s.length; i++) h = (h*33 ^ s.charCodeAt(i)) >>> 0; return h.toString(36); };
 async function preloadFiles(){
   await Promise.all(DEFAULT_SONGS.filter(d => d.subs).map(async d => {
@@ -514,6 +516,10 @@ async function preloadFiles(){
       for(const l of ls) if(l.zh) zh[l.text] = l.zh;
       fileLrc[d.id] = {lrc, hash: hashStr(lrc), zh};
     }catch{}
+  }));
+  // 逐字填色時間軸（有的歌才有）：由 ASR 對到音訊後產生，見 tools/build-forever-fill.mjs
+  await Promise.all(DEFAULT_SONGS.filter(d=>d.fill).map(async d=>{
+    try{ const r = await fetch(d.fill); if(!r.ok) return; fileFill[d.id] = await r.json(); }catch{}
   }));
 }
 function getLyricsData(key){
@@ -727,6 +733,17 @@ function switchKey(key){
   ta.value = d?.lrc || '';
   lines = parse(ta.value);
   zhMap = (key.startsWith('yt:') && fileLrc[key.slice(3)]?.zh) || {};
+  // 逐字時間：依去掉間奏空白的句子順序對應，並用歌詞文字再確認一次對錯。
+  fillMap = new Map();
+  const fd = key.startsWith('yt:') ? fileFill[key.slice(3)] : null;
+  if(fd?.lines){
+    let cue = 0;
+    for(const l of lines){
+      if(l.text === '') continue;
+      const spec = fd.lines[cue++];
+      if(spec && LyricText.clean(spec.jp) === l.text) fillMap.set(l, spec.t);
+    }
+  }
   stopTap(true);
   slot.replaceChildren(); curLine = null; curEl = null; curWrap = null; curZh = null; nextText = null; nextZhText = null;
   nextEl.textContent = ''; nextZhEl.textContent = '';
@@ -1021,6 +1038,18 @@ function showLine(L){
       el.appendChild(s); return s;
     });
     el._dur = lineSpan(L);
+    // 逐字時間（有的歌才有）：空白沒有時間，逐字時間要略過空白
+    const ft = fillMap.get(L);
+    if(ft){
+      const arr = [];
+      let ti = 0, ok = true;
+      for(const u of units){
+        if(!u.base.trim()){ arr.push(null); continue; }
+        if(ti >= ft.length){ ok = false; break; }
+        arr.push(ft[ti++]);
+      }
+      el._times = ok && ti === ft.length ? arr : null;
+    }
     wrap.appendChild(el);
     const zh = zhMap[L.text];
     if(zh){
@@ -1041,6 +1070,26 @@ function showLine(L){
     }
   }
   highlightList();
+}
+// 逐字填色：每個字在自己的時間亮起來，字與字之間的停頓就停住
+function setProgressTimes(el, now){
+  const cs = el._chars, times = el._times, n = cs.length;
+  for(let i = 0; i < n; i++){
+    const tm = times[i];
+    const c = tm ? +clamp((now - tm[0])/Math.max(.04, tm[1] - tm[0]), 0, 1).toFixed(3) : 0;
+    if(c !== cs[i]._c){ cs[i]._c = c; cs[i].style.setProperty('--c', c); }
+  }
+  if(curZh){
+    const all = times.filter(Boolean);
+    let p = 0;
+    for(let i = 0; i < all.length; i++){
+      const tm = all[i];
+      if(now < tm[0]) break;
+      if(now < tm[1]){ p = (i + (now - tm[0])/Math.max(.04, tm[1] - tm[0]))/all.length; break; }
+      p = (i + 1)/all.length;
+    }
+    curZh.style.setProperty('--p', clamp(p, 0, 1).toFixed(3));
+  }
 }
 function setProgress(el, p){
   const cs = el._chars, n = cs.length;
@@ -1136,8 +1185,10 @@ function frame(ts){
   if(L !== curLine || redraw) showLine(L);
 
   if(curEl && L){
+    // 逐字時間有的話就跟著每個字走，沒有的話照舊線性填。
     const p = clamp((now - L.t)/curEl._dur, 0, 1);
-    setProgress(curEl, p);
+    if(curEl._times) setProgressTimes(curEl, now);
+    else setProgress(curEl, p);
     if(prefs.particles && playing && p > 0 && p < 1 && (prefs.effect === 'karaoke' || prefs.effect === 'pop')){
       sparkAcc += dt;
       if(sparkAcc > .09){
