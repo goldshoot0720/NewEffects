@@ -1081,8 +1081,10 @@ function shotTypo(t, sh, u){
         }
         const sc = lerp(1.9, 1, easeBack(an)), rot = (hash(k*3.3 + c.i) - .5)*.35*(1 - easeOut(an));
         g.save(); g.translate(x, ry); g.rotate(rot); g.scale(sc, sc); g.globalAlpha = clamp(an*3);
-        g.fillStyle = un.bk ? T.cool : T.accent2; g.fillText(ch, fs*.05, fs*.06);
-        g.lineWidth = fs*.08; g.strokeStyle = 'rgba(10,10,30,.6)'; g.strokeText(ch, 0, 0);
+        // 以前把色塊往右下錯開再蓋一層。二、に這種細筆畫會露出一塊對不齊的橙邊，看起來像破圖。
+        g.lineJoin = 'round'; g.miterLimit = 2;
+        g.lineWidth = fs*.12; g.strokeStyle = un.bk ? T.cool : T.accent2; g.strokeText(ch, 0, 0);
+        g.lineWidth = fs*.045; g.strokeStyle = 'rgba(8,8,24,.8)'; g.strokeText(ch, 0, 0);
         g.fillStyle = an < 1 ? T.accent : '#ffffff'; g.fillText(ch, 0, 0);
         if(ci === 0 && un.ruby){ g.font = jpFont(fs*.32); g.fillStyle = T.accent; g.fillText(un.ruby, 0, -fs*.72); }
         g.restore();
