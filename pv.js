@@ -442,6 +442,18 @@ function tapeUnits(units){
 // 演唱進度：線性時間與中頻（人聲）能量累積各半
 function prog(c, t){
   if(t <= c.start) return 0;
+  // 有逐字時間時，填色跟那個字走，不用整句的音量。鼓和伴奏會把後面的字提前填完。
+  if(c.fill){
+    let prevT = c.start, prevW = 0;
+    for(const m of c.fill){
+      if(t < m.t){
+        const u = (t - prevT)/Math.max(.04, m.t - prevT);
+        return clamp((prevW + (m.w - prevW)*u)/c.jW);
+      }
+      prevT = m.t; prevW = m.w;
+    }
+    return 1;
+  }
   const e = c.sungEnd ?? (c.start + (c.end - c.start)*.93);
   if(t >= e) return 1;
   const lin = (t - c.start)/(e - c.start);
@@ -1886,6 +1898,26 @@ async function init(){
   if(song.file === 'Forever＆ever'){
     const shio = cues.find(c => c.jp.startsWith('あの潮風') && c.start < 40);
     if(shio) shio.sungEnd = 31.7;
+    // 最後一句潮風、絆、僕たち唱完時，字幕視窗還留著，填色會落後句尾。
+    const shioLast = cues.find(c => c.jp.startsWith('あの潮風') && c.start > 220);
+    if(shioLast) shioLast.sungEnd = 238.9;
+    const kizuna = cues.find(c => c.jp.startsWith('この絆'));
+    if(kizuna) kizuna.sungEnd = 207.8;
+    const boku = cues.find(c => c.jp.startsWith('僕たちの') && c.start > 200);
+    if(boku) boku.sungEnd = 233.45;
+    // 踏 178.0–179.4、み 179.4–180.2、出到 180.8、そう 180.8–182.6、明日へ 182.9–185.8。
+    const fumi = cues.find(c => c.jp.startsWith('踏み出そう') && c.start > 170);
+    if(fumi){
+      const ends = [179.40, 180.16, 180.76, 181.10, 182.60, 183.32, 183.48, 185.80];
+      let w = 0, k = 0;
+      const fill = [];
+      for(const u of fumi.ju){
+        w += u.w;
+        if(u.sp){ if(fill.length) fill[fill.length - 1].w = w; continue; }
+        fill.push({w, t: ends[k++]});
+      }
+      if(k === ends.length) fumi.fill = fill;
+    }
   }
   sections = buildSections();
   shots = buildShots();
