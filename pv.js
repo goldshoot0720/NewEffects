@@ -1062,23 +1062,36 @@ function shotTypo(t, sh, u){
   L.rows.forEach((row, ri) => {
     const rx = cx - row.w/2, ry = y0 + ri*rowH;
     for(const it of row.items){
-      const un = it.u; k++;
+      const un = it.u;
       if(un.sp) continue;
-      const fs = un.bk ? s*.72 : s, x = rx + it.x + it.w/2, an = clamp((sung - un.cw + .35)/1.1);
-      g.font = jpFont(fs); g.textAlign = 'center';
-      if(an <= 0){ g.lineWidth = 2; g.strokeStyle = 'rgba(255,255,255,.18)'; g.strokeText(un.t, x, ry); continue; }
-      const sc = lerp(1.9, 1, easeBack(an)), rot = (hash(k*3.3 + c.i) - .5)*.35*(1 - easeOut(an));
-      g.save(); g.translate(x, ry); g.rotate(rot); g.scale(sc, sc); g.globalAlpha = clamp(an*3);
-      g.fillStyle = un.bk ? T.cool : T.accent2; g.fillText(un.t, fs*.05, fs*.06);
-      g.lineWidth = fs*.08; g.strokeStyle = 'rgba(10,10,30,.6)'; g.strokeText(un.t, 0, 0);
-      g.fillStyle = an < 1 ? T.accent : '#ffffff'; g.fillText(un.t, 0, 0);
-      if(un.ruby){ g.font = jpFont(fs*.32); g.fillStyle = T.accent; g.fillText(un.ruby, 0, -fs*.72); }
-      g.restore();
+      // 英文整詞以前一下跳完：Forever 才唱到前半，ever 已經整詞浮出來。
+      // 依這個字自己的寬度逐字填，下一個字要輪到才畫淡影。
+      const chars = un.latin && [...un.t].length > 1 ? [...un.t] : [un.t];
+      const split = chars.length > 1;
+      chars.forEach((ch, ci) => {
+        k++;
+        const cw0 = un.cw + un.w*ci/chars.length, slice = un.w/chars.length;
+        const an = split ? clamp((sung - cw0)/Math.max(slice, .2)) : clamp((sung - cw0 + .35)/1.1);
+        const x = rx + it.x + it.w*(ci + .5)/chars.length;
+        const fs = un.bk ? s*.72 : s;
+        g.font = jpFont(fs); g.textAlign = 'center';
+        if(an <= 0){
+          if(split && sung < cw0 - .2) return;
+          g.lineWidth = 2; g.strokeStyle = 'rgba(255,255,255,.18)'; g.strokeText(ch, x, ry); return;
+        }
+        const sc = lerp(1.9, 1, easeBack(an)), rot = (hash(k*3.3 + c.i) - .5)*.35*(1 - easeOut(an));
+        g.save(); g.translate(x, ry); g.rotate(rot); g.scale(sc, sc); g.globalAlpha = clamp(an*3);
+        g.fillStyle = un.bk ? T.cool : T.accent2; g.fillText(ch, fs*.05, fs*.06);
+        g.lineWidth = fs*.08; g.strokeStyle = 'rgba(10,10,30,.6)'; g.strokeText(ch, 0, 0);
+        g.fillStyle = an < 1 ? T.accent : '#ffffff'; g.fillText(ch, 0, 0);
+        if(ci === 0 && un.ruby){ g.font = jpFont(fs*.32); g.fillStyle = T.accent; g.fillText(un.ruby, 0, -fs*.72); }
+        g.restore();
+      });
     }
   });
   if(c.zh){
     const zy = y0 + (L.rows.length - 1)*rowH + s*.75 + 40, zs = fitFont(c.zh, zhFont, LyricText.translationSize(c.jp, s, 46), maxW);
-    g.globalAlpha = easeOut((t - c.start - .2)/.5); g.font = zhFont(zs); g.textAlign = 'center';
+    g.globalAlpha = easeOut(clamp((sung/c.jW - .28)/.4)); g.font = zhFont(zs); g.textAlign = 'center';
     const zw = g.measureText(c.zh).width;
     g.fillStyle = T.accent; g.fillRect(cx - zw/2 - 30, zy - 4, 12, 12);
     g.fillStyle = 'rgba(255,255,255,.9)'; g.fillText(c.zh, cx + 6, zy);
