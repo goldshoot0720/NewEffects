@@ -432,6 +432,11 @@
     const r = measure(img);
     const w = img.width*h/img.height;
     const hop = st.hop || 0, sq = st.squash || 0, tilt = (st.tilt || 0)*.6;
+    // 已經擺好姿勢的立繪不是 T 字。再拆手腳會把伸向鏡頭的手臂從肩膀切開，腿上也會留下細縫。
+    if(st.intact){
+      ctx.save(); ctx.translate(x, y); ctx.translate(0, -hop); ctx.rotate(tilt); ctx.scale(1 + sq*.5, 1 - sq);
+      ctx.drawImage(img, -w/2, -h, w, h); ctx.restore(); return;
+    }
     if(!r.ok){
       ctx.save(); ctx.translate(x, y); ctx.translate(0, -hop); ctx.rotate(tilt); ctx.scale(1 + sq*.5, 1 - sq);
       ctx.drawImage(img, -w/2, -h, w, h); ctx.restore(); return;

@@ -1184,7 +1184,8 @@
    "sheet": "forever/standing.jpg",
    "name": "フェルスター・マリー・暁空",
    "armScale": 0.08,
-   "legScale": 0.15
+   "legScale": 0.15,
+   "intact": true
   },
   {
    "file": "forever-1.png",
@@ -1199,7 +1200,8 @@
    "sheet": "forever/standing.jpg",
    "name": "田中結",
    "armScale": 0.08,
-   "legScale": 0.15
+   "legScale": 0.15,
+   "intact": true
   },
   {
    "file": "forever-2.png",
@@ -1214,7 +1216,8 @@
    "sheet": "forever/standing.jpg",
    "name": "北方和音",
    "armScale": 0.08,
-   "legScale": 0.15
+   "legScale": 0.15,
+   "intact": true
   },
   {
    "file": "forever-3.png",
@@ -1229,7 +1232,8 @@
    "sheet": "forever/standing.jpg",
    "name": "洲宮紗絵",
    "armScale": 0.08,
-   "legScale": 0.15
+   "legScale": 0.15,
+   "intact": true
   },
   {
    "file": "forever-4.png",
@@ -1244,7 +1248,8 @@
    "sheet": "forever/standing.jpg",
    "name": "天羽ねね",
    "armScale": 0.08,
-   "legScale": 0.15
+   "legScale": 0.15,
+   "intact": true
   },
   {
    "file": "forever-5.png",
@@ -1259,7 +1264,8 @@
    "sheet": "forever/standing.jpg",
    "name": "中森雪加",
    "armScale": 0.08,
-   "legScale": 0.15
+   "legScale": 0.15,
+   "intact": true
   }
  ]
 }

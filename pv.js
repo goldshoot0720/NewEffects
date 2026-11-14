@@ -442,7 +442,7 @@ function tapeUnits(units){
 // 演唱進度：線性時間與中頻（人聲）能量累積各半
 function prog(c, t){
   if(t <= c.start) return 0;
-  const e = c.start + (c.end - c.start)*.93;
+  const e = c.sungEnd ?? (c.start + (c.end - c.start)*.93);
   if(t >= e) return 1;
   const lin = (t - c.start)/(e - c.start);
   const m0 = cumMid(c.start), m1 = cumMid(e);
@@ -460,6 +460,8 @@ function buildSections(){
     if(lab[i] === 'V' && lab[i - 1] === 'C' && lab[i + 1] === 'C') lab[i] = 'C';
     else if(lab[i] === 'C' && lab[i - 1] !== 'C' && lab[i + 1] !== 'C') lab[i] = 'V';
   }
+  // 開頭這句人聲較短、音量較高，會被算進後面的副歌。一算進去，開場就不再是膠卷，後面每段舞台的景別也會整段錯一位。
+  if(song.file === 'Forever＆ever' && lab[0] === 'C') lab[0] = 'V';
   const blocks = [];
   lab.forEach((l, i) => { const b = blocks[blocks.length - 1]; if(b && b.l === l) b.cues.push(cues[i]); else blocks.push({l, cues: [cues[i]]}); });
   const secs = [{start: 0, label: 'INTRO'}];
@@ -499,18 +501,24 @@ function buildShots(){
   const n = {film: 0, typo: 0, stage: 0, windows: 0, verse: 0, bike: 0};
   const first = cues[0], last = cues[cues.length - 1];
   const outroStart = Math.min(last.end, A.dur - 7);
-  if(first.start > 1.2) add('stage', 0, first.start, {variant: 'intro'});
+  // 字幕比句子的開始早 0.25 秒出現。畫面從這句字幕出現切進來，到下一句字幕出現切走。
+  // 分鏡數仍用句子本身的長度，避免提早開鏡把後面的舞台樣式整段錯開。
+  const showAt = t => Math.max(0, t - .25);
+  if(first.start > 1.2) add('stage', 0, showAt(first.start), {variant: 'intro'});
   cues.forEach((c, i) => {
     const next = cues[i + 1];
-    const end = Math.min(next ? Math.min(c.end, next.start) : c.end, outroStart);
-    if(end <= c.start) return;
+    const vis = showAt(c.start);
+    const nextVis = next ? showAt(next.start) : Infinity;
+    const cueEnd = Math.min(next ? Math.min(c.end, next.start) : c.end, outroStart);
+    const end = Math.min(next ? Math.min(c.end, nextVis) : c.end, outroStart);
+    if(end <= vis) return;
     const label = c.sec?.label || 'A-MELO';
     const v = n.verse++;
     let type = label === 'CHORUS' ? 'stage' : label === 'B-MELO' ? 'typo' : (v % 3 === 2 ? 'bike' : (Math.floor(v/2) % 2 ? 'windows' : 'film'));
-    const parts = Math.max(1, Math.round((end - c.start)/6.5));
+    const parts = Math.max(1, Math.round((Math.max(0, cueEnd - c.start))/6.5));
     for(let p = 0; p < parts; p++){
-      const s = p ? snap(c.start + (end - c.start)*p/parts) : c.start;
-      const e = p < parts - 1 ? snap(c.start + (end - c.start)*(p + 1)/parts) : end;
+      const s = p ? snap(vis + (end - vis)*p/parts) : vis;
+      const e = p < parts - 1 ? snap(vis + (end - vis)*(p + 1)/parts) : end;
       const k = n[type]++;
       const o = {cue: c};
       if(type === 'stage') o.variant = ['wide', 'close', 'screen', 'close2'][k % 4];
@@ -523,15 +531,16 @@ function buildShots(){
       add(type, s, e, o);
     }
     if(next && next.start - c.end > 1 && c.end < outroStart){
-      const end = Math.min(next.start, outroStart);
-      const gap = end - c.end;
+      const gapEnd = Math.min(nextVis, outroStart);
+      const gap = Math.min(next.start, outroStart) - c.end;
       const prevShot = out[out.length - 1];
       // 兩句 B-MELO 之間約 1.5–2.5 秒是節奏，人聲還沒進下一句。
       // 一秒出頭的空檔仍維持原來的舞台休息。沿用上一個字卡的人物，不插 DANCE BREAK，也不把上一句的填色拉長。
+      // 空檔收到下一句字幕出現為止，字幕和畫面一起換。
       if(gap > 1.5 && gap <= 2.5 && prevShot?.type === 'typo' && c.sec?.label === 'B-MELO' && next.sec?.label === 'B-MELO'){
-        prevShot.end = end;
-      } else if(gap > 4) add('bike', c.end, end);
-      else add('stage', c.end, end, {variant: 'break'});
+        prevShot.end = gapEnd;
+      } else if(gap > 4) add('bike', c.end, gapEnd);
+      else add('stage', c.end, gapEnd, {variant: 'break'});
     }
   });
   add('outro', outroStart, A.dur);
@@ -743,7 +752,8 @@ function drawDancer(i, x, y, h, st){
   g.restore();
   // st 可以帶 armA/armB/legA/legB 直接指定關節角度（例如合照要一個固定的舞姿）
   SpriteRig.draw(g, img, x, y, h, {wave: st.wave, energy: st.energy, hop, tilt: st.tilt, squash: st.squash*4,
-    armA: st.armA, armB: st.armB, legA: st.legA, legB: st.legB, armScale: m.meta?.armScale, legScale: m.meta?.legScale});
+    armA: st.armA, armB: st.armB, legA: st.legA, legB: st.legB, armScale: m.meta?.armScale, legScale: m.meta?.legScale,
+    intact: !!m.meta?.intact});
 }
 // 立繪的 h 就是整張圖的高度，腳的錨點在圖的底邊。
 // 手抬起來會高出頭頂，踏步會讓鞋底低於錨點，落地壓縮會把身體再撐寬約一成。
@@ -849,7 +859,8 @@ function karaokeCue(c, t, o, alpha = 1, dy = 0){
 function karaoke(t, o){
   const c = activeCue(t); if(!c) return;
   const i = cues.indexOf(c), prev = cues[i - 1];
-  if(prev && t < c.start + .35 && t >= prev.end - .1){ const u = clamp((t - Math.max(prev.end - .1, c.start - .25))/.35); karaokeCue(prev, t, o, 1 - u, -u*o.size*.8); }
+  // 兩句中間空超過淡出，上一句已經離場。下一句出現時不再把舊字幕畫回來。
+  if(prev && t < prev.end + .35 && t < c.start + .35 && t >= prev.end - .1){ const u = clamp((t - Math.max(prev.end - .1, c.start - .25))/.35); karaokeCue(prev, t, o, 1 - u, -u*o.size*.8); }
   const fadeOut = clamp((t - c.end)/.35);
   karaokeCue(c, t, o, 1 - fadeOut, -fadeOut*o.size*.5);
 }
@@ -1158,7 +1169,8 @@ function shotWindows(t, sh, u){
   // 搜尋列歌詞
   const c = activeCue(t);
   const bw = 1360, bh = 104, bx = W/2 - bw/2, by = 880;
-  const ap = easeBack((t - sh.start - .25)/.45);
+  // 鏡頭已經對齊字幕出現。搜尋列跟這句一起在，不再多等 0.25 秒。
+  const ap = c ? 1 : easeBack((t - sh.start)/.45);
   g.save(); g.translate(W/2, by + bh/2); g.scale(ap, ap); g.translate(-W/2, -(by + bh/2));
   roundRect(bx + 8, by + 10, bw, bh, bh/2); g.fillStyle = 'rgba(40,30,80,.2)'; g.fill();
   roundRect(bx, by, bw, bh, bh/2); g.fillStyle = '#ffffff'; g.fill(); g.lineWidth = 6; g.strokeStyle = T.deep; g.stroke();
@@ -1485,8 +1497,9 @@ function drawRider(m, cx, cy, R, t, opts = {}){
   const img = MEMBERS[m]?.img;
   // 踏板對準圖層量到的鞋底。以前用整條腿的外框底邊再往下偏，黃色橢圓會懸在褲腳下面。
   // 兩腿一前一後擺（正面立繪在側面視角下讀起來就是踩踏）。
+  const intact = !!MEMBERS[m]?.meta?.intact;
   const swing = Math.sin(pedal), amp = (opts.legAmp ?? .30)*(MEMBERS[m]?.meta?.legScale ?? 1);
-  const angL = amp*swing, angR = -amp*swing;
+  const angL = intact ? 0 : amp*swing, angR = intact ? 0 : -amp*swing;
   // SpriteRig.draw 會把傳入的 tilt 再乘 0.6，鞋底的點要一起轉，踏板才跟得上鞋子。
   const tilt = .07*.6;
   let feet = null, h = 0, fx = cx - R*.06, feetY = 0;
@@ -1514,7 +1527,7 @@ function drawRider(m, cx, cy, R, t, opts = {}){
   if(img) SpriteRig.draw(g, img, fx, feetY, h, {
     energy: 0, wave: 0, hop: 0, tilt: .07,
     armA: -.78 + .07*Math.sin(pedal), armB: -.78 + .07*Math.sin(pedal + 1.6),
-    legA: angL, legB: angR, armScale: MEMBERS[m]?.meta?.armScale
+    legA: angL, legB: angR, armScale: MEMBERS[m]?.meta?.armScale, intact
   });
   drawBicycle(cx, cy, R, spin, pedal, {frame: opts.frame, part: 'front', feet: feet?.length ? feet : null});
   g.restore();
@@ -1697,7 +1710,9 @@ const SHOTS = {film: shotFilm, typo: shotTypo, windows: shotWindows, stage: shot
 
 /* ---------------- 覆蓋層：片頭標題、轉場、HUD ---------------- */
 function titleCard(t){
-  const end = clamp(cues[0].start - .2, 4, 8);
+  let end = clamp(cues[0].start - .2, 4, 8);
+  // 第一句人聲比鼓點晚。標題若跟著字幕走，節奏段仍會蓋著 Forever。
+  if(song.file === 'Forever＆ever') end = Math.min(end, 4.4);
   if(t > end + .7) return;
   const out = clamp((t - end)/.7), a = 1 - out;
   g.save();
@@ -1867,6 +1882,11 @@ async function init(){
     c.jo = TJ.length; TJ.push({sep: i + 1}, ...tj); c.jn = tj.length;
     c.zo = TZ.length; TZ.push({sep: i + 1}, ...tz); c.zn = tz.length;
   });
+  // 第一段「あの潮風に乗って」大約 31.7 秒唱完，字幕視窗卻留到 34 秒，填色會落後整句。
+  if(song.file === 'Forever＆ever'){
+    const shio = cues.find(c => c.jp.startsWith('あの潮風') && c.start < 40);
+    if(shio) shio.sungEnd = 31.7;
+  }
   sections = buildSections();
   shots = buildShots();
   prepare(cover);

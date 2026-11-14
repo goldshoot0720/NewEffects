@@ -56,7 +56,7 @@
     // 手臂／腿／身體分層的傀儡動畫，見 dance-rig.js
     SpriteRig.draw(ctx, img, x, y, height, {
       wave, energy, hop: state.hop || 0, tilt: state.tilt || 0, squash: squash*.45,
-      armScale: actor.meta.armScale, legScale: actor.meta.legScale
+      armScale: actor.meta.armScale, legScale: actor.meta.legScale, intact: !!actor.meta?.intact
     });
     if(state.lead){
       // 主唱腳下的光圈
