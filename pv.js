@@ -328,6 +328,9 @@ const CHARACTER_GROUPS = song.cast[0][0] === 'anaru'
   ? [{sheet:'casual', title:'Extreme Hearts · 十二人', src:'assets/ref/casual-remade/group.png', colors:['#5cabe0','#f3afd3'], count:12,solo:true}]
   : BASE_CHARACTER_GROUPS;
 let A = null, cues = [], sections = [], shots = [], TJ = [], TZ = [], C = {}, songScript = 'cjk';
+// 預覽停在 0 秒、還沒按播放時，片頭淡入會把整個畫面蓋成黑的，看起來像沒有畫面。
+// 這種時候直接畫第一格；按播放後仍照原本的淡入。
+let PREVIEW_IDLE = false;
 
 /* ---------------- 音訊分析：節拍、低中頻能量 ---------------- */
 async function analyse(buf){
@@ -1818,7 +1821,7 @@ function render(t){
   g.save(); g.globalAlpha = .045; g.translate(-Math.floor(hash(Math.floor(t*FPS))*256), -Math.floor(hash(Math.floor(t*FPS) + .5)*256));
   g.fillStyle = C.noise; g.fillRect(0, 0, W + 256, H + 256); g.restore();
   if(!CHARACTER_PV) hud(t, sh);
-  const fade = Math.max(1 - clamp(t/.8), clamp((t - (A.dur - 2.5))/2.4));
+  const fade = PREVIEW_IDLE ? 0 : Math.max(1 - clamp(t/.8), clamp((t - (A.dur - 2.5))/2.4));
   if(fade > 0){ g.fillStyle = `rgba(0,0,0,${fade})`; g.fillRect(0, 0, W, H); }
 }
 
@@ -2009,7 +2012,9 @@ function preview(buf){
     const t = Math.min(audio.readyState ? audio.currentTime : start,A.dur);
     if(audio.currentTime>=A.dur && !audio.paused) audio.pause();
     if(!window.PV.hold){
-      try{ render(Math.min(t, A.dur - 1/FPS)); }
+      // 停在 0 秒時角色還在入場動畫裡（透明），片頭也還沒淡入；預覽先畫 2.2 秒那格當海報。
+      PREVIEW_IDLE = audio.paused && audio.currentTime < .05;
+      try{ render(PREVIEW_IDLE ? Math.min(2.2, A.dur - 1/FPS) : Math.min(t, A.dur - 1/FPS)); }
       catch(e){
         if(renderError !== e.message){ renderError = e.message; msg('畫面錯誤：' + e.message); console.error(e); }
       }
