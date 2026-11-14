@@ -10,10 +10,15 @@ assert len(zh) == len(data), f'翻譯 {len(zh)} 行，歌詞 {len(data)} 行'
 
 # 每句的結束時間：下一句開始前收尾，但最多延到最後一個字之後 1.1 秒，
 # 免得間奏時字幕停在畫面上太久。
+# 已經對過畫面的時間軸（timings-ja.json 標了 final）就直接用，不再提前、不再延長。
 for d in data:
+    if d.get('final'):
+        continue
     d['start'] = max(0.0, d['start'] - 0.18)
 
 for i, d in enumerate(data):
+    if d.get('final'):
+        continue
     nxt = data[i + 1]['start'] if i + 1 < len(data) else d['end'] + 1.0
     d['end'] = min(nxt - 0.05, d['end'] + 1.1)
     if d['end'] <= d['start'] + 0.4:

@@ -48,4 +48,32 @@ for(const name of fs.readdirSync(root).filter(f=>f.endsWith('.srt'))){
     count++;
   }
 }
+// Forever＆ever 的逐字填色時間：每個字要對得上 tokenize() 切出來的字母數，時間也不能倒退。
+{
+  const code=fs.readFileSync(path.join(root,'pv.js'),'utf8');
+  const tokStart=code.indexOf('function tokenize(text)'),tokEnd=code.indexOf('// 片頭膠卷用',tokStart);
+  const dataStart=code.indexOf('const FOREVER_SYLLABLES = ['),dataEnd=code.indexOf('];',dataStart)+2;
+  const box={};
+  vm.runInNewContext(`const PUNCT='、。・「」『』…,.';\n${code.slice(tokStart,tokEnd)}\n${code.slice(dataStart,dataEnd)}\n__out={tokenize,FOREVER_SYLLABLES}`,box);
+  const {tokenize,FOREVER_SYLLABLES}=box.__out;
+  const srtText=fs.readFileSync(path.join(root,'Forever＆ever.srt'),'utf8');
+  const cues=pv(srtText);
+  assert.equal(FOREVER_SYLLABLES.length,cues.length,'逐字填色的句數');
+  cues.forEach((c,i)=>{
+    const times=FOREVER_SYLLABLES[i].split(' ').map(Number);
+    let k=0,prev=-1,w=0;
+    for(const u of tokenize(c.jp)){
+      if(u.sp) continue;
+      const n=[...u.t].length;
+      assert.ok(k+n<=times.length,`第 ${i+1} 句字數`);
+      for(let j=0;j<n;j++){
+        assert.ok(times[k]>prev,`第 ${i+1} 句時間要往前走`);
+        prev=times[k++];
+      }
+      w+=u.w;
+    }
+    assert.equal(k,times.length,`第 ${i+1} 句每個字都有時間`);
+    assert.ok(prev<=c.end+0.2,`第 ${i+1} 句填色要在字幕結束前收完`);
+  });
+}
 console.log(`PASS: punctuation, ruby, numbers, bilingual parsing and ${count} local subtitle cues`);
