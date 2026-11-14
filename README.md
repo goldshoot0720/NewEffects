@@ -133,7 +133,7 @@ macOS 也可雙擊 `啟動播放器.command`，會在終端機啟動伺服器並
 
 已加入彩音的〈Forever＆ever〉（PV 編號 46，約 256.92 秒），為《メモリーズオフ 双想 Break out of my shell》片頭曲。兩版播放器使用使用者提供的 MP3、封面與日中雙語字幕；YouTube ID `31bvn6GUtaI`。六位女主角依封面重建為可舞動的透明立繪，預設主唱為畫面中央的洲宮紗絵。人物 PV 固定此組。原文、翻譯與時間軸見 [assets/ref/forever/README.md](assets/ref/forever/README.md)。
 
-歌詞時間軸改成逐句對到實際唱出的那一段：`timings-ja.json` 存的是每句量到的起唱與唱完時間（`final: true`），SRT 句尾不再一律拖到下一句開始前，間奏前那幾句不會再多留 0.4～2 秒；填色也不會在沒人唱的時候才亮完。這首一句常有兩段（「宝物みたいな時間　未来動かす小さな願い」中間隔了兩秒半），`pv.js` 另用 `FOREVER_SYLLABLES` 記下每個字唱完的時間，填色跟著字走，句中停頓就停在那裡。
+歌詞時間軸改成逐句對到實際唱出的那一段：`timings-ja.json` 存的是每句量到的起唱與唱完時間（`final: true`），SRT 句尾不再一律拖到下一句開始前，間奏前那幾句不會再多留 0.4～2 秒；填色也不會在沒人唱的時候才亮完。這首一句常有兩段（「宝物みたいな時間　未来動かす小さな願い」中間隔了兩秒半），`assets/ref/forever/fill-ja.json` 另記每個字的起唱與唱完時間，填色跟著字走，句中停頓就停在那裡；資料由 `tools/build-forever-fill.mjs` 從 `asr-ja.json` 重建。
 
 ### 明日へのBreakShoot：葉山陽和 ver.
 

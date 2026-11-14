@@ -231,59 +231,12 @@ const SONGS = [
    series:'鋒兄的傳奇人生', kicker:'由頭獎去到榜首 · 由榜首去到總統 · 粵語版',
    cast:[['lucky',0,'鯨魚娘','#3f7fd0'],['lucky',1,'咕咕嘎嘎','#3a4250'],['lucky',2,'鋒兄','#b08a4a'],['lucky',3,'塗哥','#7b8794'],
          ['lucky',4,'喵布布','#d9822b'],['lucky',5,'喵白白','#8d97a3'],['lucky',6,'Claude 娘','#d9874e'],['lucky',7,'GPT 娘','#c2b9e9']]},
-  {title:'Forever＆ever', ver:'彩音', file:'Forever＆ever', subs:'Forever＆ever.srt', theme:'summer', art:'forever', lead:3,
+  {title:'Forever＆ever', ver:'彩音', file:'Forever＆ever', subs:'Forever＆ever.srt', fill:'assets/ref/forever/fill-ja.json', theme:'summer', art:'forever', lead:3,
    series:'メモリーズオフ 双想', kicker:'Break out of my shell · OPENING',
    cast:[['forever',0,'フェルスター・マリー・暁空','#4aa3e8'],['forever',1,'田中結','#e23b6a'],['forever',2,'北方和音','#e0a020'],
          ['forever',3,'洲宮紗絵','#6d5bd0'],['forever',4,'天羽ねね','#ef6a3a'],['forever',5,'中森雪加','#f0a24a']]}
 ];
 
-// Forever＆ever 的逐字填色時間：每串數字是 clean() 後每個非空白字「唱完」的秒數，
-// 與 SRT 的 43 句一一對應（來源：assets/ref/forever/timings-ja.json 的詞級對齊）。
-const FOREVER_SYLLABLES = [
-  '6.18 6.27 6.35 6.44 6.60 6.76 6.92 7.21 7.49 7.78 8.06',
-  '9.20 9.36 9.76 10.20 11.06 11.76',
-  '12.12 12.34 12.50 12.66 13.12 13.35 13.58 13.80 13.97 14.14 14.62',
-  '15.54 15.88 16.18 16.44 16.68 16.89 17.10',
-  '17.56 17.65 17.75 17.84 17.98 18.12 18.26 18.52 18.79 19.05 19.32',
-  '20.36 20.72 21.08 21.48 21.86 22.24 23.04',
-  '23.46 23.68 23.86 24.12 24.20 24.28 24.36 24.44 24.52 24.72 24.88 25.14 25.42 26.46',
-  '29.50 29.90 30.24 30.56 31.06 31.24 31.40 31.56',
-  '38.12 38.54 38.66 38.78 38.90 39.38 39.70 40.02 43.64 43.88 44.20 44.42 44.58 44.94 45.40 46.12 46.63 47.14',
-  '48.60 48.86 49.12 49.72 50.20 50.52 50.82 51.54 52.36 52.44 52.52 52.66 53.00 53.08 53.34 53.60 53.94 54.28 55.50 56.02 56.88 57.28 57.68',
-  '61.52 62.56 63.27 63.98 64.68',
-  '68.28 68.80 69.32 70.88 71.12 72.46',
-  '73.59 73.90 74.21 74.52 74.71 74.89 75.08 75.67 75.90 76.13 76.36',
-  '77.30 77.57 77.84 78.26 78.62 79.44 79.61 79.78 79.88',
-  '80.22 80.40 80.60 80.90 81.46 81.58 81.72 81.90 82.16 82.42 82.68',
-  '83.29 83.90 84.42 84.58 84.80 85.02 85.24',
-  '85.68 85.77 85.87 85.96 86.13 86.29 86.46 86.75 87.04 87.33 87.62',
-  '88.72 89.30 90.02 90.50 91.16',
-  '91.40 91.64 92.16 92.66 93.06 93.30 93.51 93.72 94.08',
-  '97.63 98.08 98.32 98.56 98.86 99.12 99.35 99.58',
-  '106.10 106.40 106.58 106.96 107.14 107.56 107.78 107.92 108.11 108.30 111.72 111.88 112.10 112.24 112.38 112.46 112.66 113.00 113.22 113.56 113.90 113.98 114.06',
-  '115.26 117.30 117.68 117.94 118.36 118.66 118.96 119.62 120.12 120.54 120.90 121.52 121.78 122.10 122.58 123.06 124.00 126.46',
-  '129.56 130.46 131.32 132.14 132.86',
-  '135.24 136.12 136.94 139.06 139.30 141.48',
-  '143.88 143.99 144.09 144.20 144.35 144.51 144.66 145.40 145.57 145.75 145.92',
-  '146.96 147.12 147.52 147.90 148.76 149.42',
-  '149.84 150.08 150.25 150.42 150.86 151.10 151.34 151.52 151.70 151.88 152.40',
-  '153.28 153.62 153.92 154.16 154.44 154.66 154.88',
-  '155.28 155.36 155.44 155.52 155.65 155.79 155.94 156.75 156.93 157.10 157.28',
-  '158.18 158.48 158.82 159.24 159.65 160.06 160.76',
-  '161.20 161.40 161.62 162.04 162.12 162.20 162.28 162.36 162.44 162.52 162.60 162.68 162.76 162.92 163.16 164.62',
-  '167.22 167.66 168.00 168.32 168.84 168.96 169.81 170.66',
-  '179.16 179.48 180.20 180.73 181.26 183.10 183.22 184.36',
-  '186.50 186.61 186.71 186.82 186.97 187.11 187.26 187.93 188.10 188.27 188.44',
-  '189.52 189.79 190.06 190.46 190.82 191.12 191.54 191.96 192.14',
-  '192.38 192.62 192.86 193.08 193.66 193.80 193.94 194.08 194.30 194.58 194.86',
-  '195.48 196.10 196.54 196.76 196.97 197.19 197.40',
-  '197.88 197.97 198.07 198.16 198.31 198.47 198.62 199.33 199.50 199.67 199.84',
-  '200.90 201.48 202.14 202.70 203.36',
-  '203.60 203.84 204.26 204.86 205.24 205.48 205.67 205.86 206.42',
-  '209.80 210.26 210.51 210.76 211.06 211.30 211.57 211.84',
-  '229.14 229.40 229.62 229.84 229.92 230.00 230.08 230.16 230.24 230.32 230.40 230.64 230.72 230.92 231.30 232.78',
-  '235.49 235.82 236.20 236.42 236.84 237.08 237.29 237.50',
-];
 // 每首歌一組配色：夏日向日葵、日出、黃昏星空、晴空疾風
 const THEMES = {
   baseball: {sky:['#06374d','#237ca4','#c0e9f4'],pastel:['#fff8da','#e7f4fb'],accent:'#ffcc43',accent2:'#f49c36',cool:'#55cee4',deep:'#09283d',particle:'star'},
@@ -492,13 +445,16 @@ function prog(c, t){
   if(t <= c.start) return 0;
   // 有逐字時間時，填色跟那個字走，不用整句的音量。鼓和伴奏會把後面的字提前填完。
   if(c.fill){
-    let prevT = c.start, prevW = 0;
+    // 每個字有「開始唱」與「唱完」兩個時間。字與字之間的空白是停頓，
+    // 寬度要停在那裡等下一個字起唱，否則停頓會被下一個字提前填掉。
+    let prevW = 0;
     for(const m of c.fill){
-      if(t < m.t){
-        const u = (t - prevT)/Math.max(.04, m.t - prevT);
+      if(t < m.s) return clamp(prevW/c.jW);                       // 這個字還沒唱
+      if(t < m.e){                                                 // 正在唱這個字
+        const u = (t - m.s)/Math.max(.04, m.e - m.s);
         return clamp((prevW + (m.w - prevW)*u)/c.jW);
       }
-      prevT = m.t; prevW = m.w;
+      prevW = m.w;                                                // 這個字唱完了
     }
     return 1;
   }
@@ -1909,6 +1865,9 @@ async function init(){
   const loadImg = src => new Promise((ok, no) => { const im = new Image(); im.onload = () => ok(im); im.onerror = () => no(new Error('找不到 ' + src)); im.src = src; });
   const get = async (name, kind) => { const r = await fetch(encodeURIComponent(name)); if(!r.ok) throw new Error('找不到 ' + name); return r[kind](); };
   const [cover, srt, buf] = await Promise.all([loadImg(ART.src), get(song.subs, 'text'), get(song.audio, 'arrayBuffer')]);
+  // 逐字填色時間軸（有的歌才有）：由 ASR 對到音訊後產生，見 tools/build-forever-fill.mjs
+  // 路徑含斜線，不要像字幕那樣整段編碼，Vercel 才找得到檔案。
+  const fillData = song.fill ? await fetch(song.fill).then(r => r.ok ? r.json() : null).catch(() => null) : null;
   await Promise.all([jpFont(40), zhFont(40), `300 40px ${FONT.mincho}`, `40px ${FONT.maru}`, `italic 800 40px ${FONT.logo}`, `600 40px ${FONT.cond}`]
     .map(f => document.fonts.load(f, 'あ漢字ABC')));
   const castJson = await fetch('assets/ref/cast/cast.json').then(r => { if(!r.ok) throw new Error('找不到角色切圖，請先執行 node tools/cutout.mjs'); return r.json(); });
@@ -1944,27 +1903,32 @@ async function init(){
   });
   // 這首一句可能有兩段（「宝物みたいな時間　未来動かす小さな願い」中間隔了兩秒多），
   // 填色若只照字幕視窗線性跑，間奏時就會把後半句提前點亮；句尾多留的 0.45 秒也會讓最後幾個字慢半拍。
-  // 這裡改用逐字量到的時間，每個字在自己的時間唱完，句中停頓就停在那裡。
-  if(song.file === 'Forever＆ever'){
-    cues.forEach((c, i) => {
-      const spec = FOREVER_SYLLABLES[i];
-      if(!spec) return;
-      const times = spec.split(' ').map(Number);
-      let k = 0, ok = true;
+  // 改成用 ASR 對到音訊的逐字時間：每個字記「開始唱」與「唱完」兩個時間，
+  // 唱到哪個字就填到哪個字，句中停頓時填色就停在那個字，不會被下一個字提前点亮。
+  // 時間軸由 tools/build-forever-fill.mjs 產生（來源 assets/ref/forever/asr-ja.json）。
+  if(fillData?.lines){
+    fillData.lines.forEach(line => {
+      const c = cues[line.i];
+      if(!c) return;
+      // 寬度沿用 pv.js 的斷詞：漢字與假名逐字，英文單字拆成字母（英文也是逐字母填色）。
+      let k = 0, w = 0;
       const fill = [];
       for(const u of c.ju){
-        if(u.sp) continue;
+        if(u.sp){ w += u.w; continue; }
         const n = [...u.t].length;
-        if(k + n > times.length){ ok = false; break; }
-        if(u.latin && n > 1){
-          // 英文字母在畫面上逐字填，時間也逐字給。
-          for(let j = 0; j < n; j++) fill.push({w: u.cw + u.w*(j + 1)/n, t: times[k++]});
-        } else {
-          k += n;
-          fill.push({w: u.cw + u.w, t: times[k - 1]});
+        if(k + n > line.t.length) return;       // 字數對不上就放棄這句，寧可退回原本的估算
+        const per = u.w / n;
+        for(let j = 0; j < n; j++){
+          w += per;
+          const [s, e] = line.t[k++];
+          fill.push({w, s, e});
         }
       }
-      if(ok && k === times.length) c.fill = fill;
+      if(k !== line.t.length) return;
+      if(fill.length) fill[fill.length - 1].w = c.jW;   // 讓填色剛好走完，不留最後一截
+      c.fill = fill;
+      c.sungStart = line.start;
+      c.sungEnd = line.end;
     });
   }
   sections = buildSections();
