@@ -2003,10 +2003,17 @@ function preview(buf){
   },{once:true});
   addEventListener('keydown', e => { if(e.code === 'Space' && e.target === document.body){ e.preventDefault(); play.click(); } });
   let idle = 0; addEventListener('pointermove', () => { idle = performance.now(); $('#ui').classList.remove('idle'); });
+  // 畫面出錯時不要讓迴圈整個停掉、只留下一張靜止的背景；把原因顯示在畫面上，才看得出是哪一首、哪裡壞。
+  let renderError = '';
   const loop = () => {
     const t = Math.min(audio.readyState ? audio.currentTime : start,A.dur);
     if(audio.currentTime>=A.dur && !audio.paused) audio.pause();
-    if(!window.PV.hold) render(Math.min(t, A.dur - 1/FPS));
+    if(!window.PV.hold){
+      try{ render(Math.min(t, A.dur - 1/FPS)); }
+      catch(e){
+        if(renderError !== e.message){ renderError = e.message; msg('畫面錯誤：' + e.message); console.error(e); }
+      }
+    }
     if(!seekDragging) seek.value = Math.round(t/A.dur*1000);
     time.textContent = `${fmt(t)} / ${fmt(A.dur)}`;
     $('#ui').classList.toggle('idle', !audio.paused && !$('#ui').contains(document.activeElement) && performance.now() - idle > 2500);
