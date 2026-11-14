@@ -1681,8 +1681,8 @@ function shotCharacters(t,sh,u){
     light.addColorStop(0,'rgba(255,255,255,.16)');light.addColorStop(1,'rgba(255,255,255,0)');
     g.fillStyle=light;g.beginPath();g.moveTo(x-6,0);g.lineTo(x+6,0);g.lineTo(x+sway+130,900);g.lineTo(x+sway-130,900);g.closePath();g.fill();
   }
-  const sizes={casual:[1920,1080],rooftop:[1536,1024],idol:[1536,1024],stage:[1774,887],anaru:[1920,1080],lucky:[1920,1080],kaguya:[1920,1080],aiura:[1920,1080],growup:[1920,1080],vwest:[1920,1080]};
-  const [sourceW,sourceH]=sizes[group.sheet],scale=Math.min((W-160)/sourceW,740/sourceH);
+  const sizes={casual:[1920,1080],rooftop:[1536,1024],idol:[1536,1024],stage:[1774,887],anaru:[1920,1080],lucky:[1920,1080],kaguya:[1920,1080],aiura:[1920,1080],growup:[1920,1080],vwest:[1920,1080],forever:[1920,1080]};
+  const [sourceW,sourceH]=sizes[group.sheet] || [1920,1080],scale=Math.min((W-160)/sourceW,740/sourceH);
   const originX=(W-sourceW*scale)/2,originY=150;
   if(group.matte){
     // 相互遮擋的裙襬採用完整透明群像，保持接縫完整；群像以分條側彎同步呼吸。
