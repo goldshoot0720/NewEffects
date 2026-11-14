@@ -34,7 +34,10 @@ const ARTS = {
     faces: [[976, 285], [425, 287], [1469, 294]]},
   // 超かぐや姫！：畫面取自歌詞影片，由 tools/cutout-kaguya.py 去背切圖並拼成群像
   kaguya: {src: 'assets/ref/kaguya-group.png', crop: [0, 0, 1920, 1080],
-    faces: [[960, 300], [430, 446], [1500, 464]]}
+    faces: [[960, 300], [430, 446], [1500, 464]]},
+  // メモリーズオフ 双想：使用者提供的 Forever＆ever 單曲封面
+  forever: {src: 'assets/ref/forever/cover.png', crop: [0, 0, 727, 720],
+    faces: [[250, 115], [500, 120], [195, 360], [400, 310], [360, 500], [165, 590]]}
 };
 const SONGS = [
   {title: '大好きだよって叫ぶんだ', ver: '小日向理瀬 ver.', file: '大好きだよって叫ぶんだ [小日向理瀬ver.]',
@@ -227,7 +230,11 @@ const SONGS = [
   {title:'鋒兄的傳奇人生(粵文歌詞)', ver:'Suno v6-mini', file:'鋒兄的傳奇人生(粵文歌詞)', subs:'鋒兄的傳奇人生(粵文歌詞).srt', theme:'sunrise', art:'lucky8', lead:2,
    series:'鋒兄的傳奇人生', kicker:'由頭獎去到榜首 · 由榜首去到總統 · 粵語版',
    cast:[['lucky',0,'鯨魚娘','#3f7fd0'],['lucky',1,'咕咕嘎嘎','#3a4250'],['lucky',2,'鋒兄','#b08a4a'],['lucky',3,'塗哥','#7b8794'],
-         ['lucky',4,'喵布布','#d9822b'],['lucky',5,'喵白白','#8d97a3'],['lucky',6,'Claude 娘','#d9874e'],['lucky',7,'GPT 娘','#c2b9e9']]}
+         ['lucky',4,'喵布布','#d9822b'],['lucky',5,'喵白白','#8d97a3'],['lucky',6,'Claude 娘','#d9874e'],['lucky',7,'GPT 娘','#c2b9e9']]},
+  {title:'Forever＆ever', ver:'彩音', file:'Forever＆ever', subs:'Forever＆ever.srt', theme:'summer', art:'forever', lead:3,
+   series:'メモリーズオフ 双想', kicker:'Break out of my shell · OPENING',
+   cast:[['forever',0,'フェルスター・マリー・暁空','#4aa3e8'],['forever',1,'田中結','#e23b6a'],['forever',2,'北方和音','#e0a020'],
+         ['forever',3,'洲宮紗絵','#6d5bd0'],['forever',4,'天羽ねね','#ef6a3a'],['forever',5,'中森雪加','#f0a24a']]}
 ];
 // 每首歌一組配色：夏日向日葵、日出、黃昏星空、晴空疾風
 const THEMES = {
@@ -314,6 +321,8 @@ const CHARACTER_GROUPS = song.cast[0][0] === 'anaru'
   ? [{sheet:'growup', title:'ひまわりサーカス · 十人', src:'assets/ref/growup/group.png', colors:['#e8a72f','#ffd968'], count:10, solo:true}]
   : song.cast[0][0] === 'vwest'
   ? [{sheet:'vwest',title:'V西2025 · 選手16人＋監督',src:'assets/ref/vwest/group.png',colors:['#ffcc43','#55cee4'],count:17,solo:true}]
+  : song.cast[0][0] === 'forever'
+  ? [{sheet:'forever', title:'メモリーズオフ 双想 · 六人', src:'assets/ref/forever/cover.png', colors:['#49b4ef','#ffe9a8'], count:6, solo:true}]
   : song.art === 'breakshoot'
   ? [{sheet:'casual', title:'Extreme Hearts · 十二人', src:'assets/ref/casual-remade/group.png', colors:['#5cabe0','#f3afd3'], count:12,solo:true}]
   : BASE_CHARACTER_GROUPS;

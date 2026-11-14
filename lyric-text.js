@@ -7,7 +7,9 @@
       ruby.push(`${base}(${reading})`);
       return `\uE000${ruby.length-1}\uE001`;
     });
-    text=text.replace(/(?<=\p{L})[-‐‑‒–—](?=\p{L})/gu,' ')
+    // 字母之間的連字號與＆改成空格，避免 Forever＆ever、Story－旅路 黏成一字。
+    text=text.replace(/(?<=\p{L})[-‐‑‒–—－](?=\p{L})/gu,' ')
+      .replace(/(?<=\p{L})[&＆](?=\p{L})/gu,' ')
       .replace(/[\p{P}\p{S}]/gu,'').replace(/[ \t]+/g,' ').trim();
     return text.replace(/\uE000(\d+)\uE001/g,(_,i)=>ruby[+i]);
   }

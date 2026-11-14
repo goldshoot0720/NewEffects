@@ -496,7 +496,8 @@ const DEFAULT_SONGS = [
   {id:'suno-f49e34e1',title:'鋒兄的傳奇人生',audio:'鋒兄的傳奇人生.mp3',subs:'鋒兄的傳奇人生.srt',cover:'assets/ref/lucky8.png',lead:2,cast:'lucky'},
   {id:'suno-e60578c6',title:'鋒兄的傳奇人生(英文歌詞)',audio:'鋒兄的傳奇人生(英文歌詞).mp3',subs:'鋒兄的傳奇人生(英文歌詞).srt',cover:'assets/ref/lucky8.png',lead:2,cast:'lucky'},
   {id:'suno-8e033846',title:'鋒兄的傳奇人生(日文歌詞)',audio:'鋒兄的傳奇人生(日文歌詞).mp3',subs:'鋒兄的傳奇人生(日文歌詞).srt',cover:'assets/ref/lucky8.png',lead:2,cast:'lucky'},
-  {id:'suno-34fc1d29',title:'鋒兄的傳奇人生(粵文歌詞)',audio:'鋒兄的傳奇人生(粵文歌詞).mp3',subs:'鋒兄的傳奇人生(粵文歌詞).srt',cover:'assets/ref/lucky8.png',lead:2,cast:'lucky'}
+  {id:'suno-34fc1d29',title:'鋒兄的傳奇人生(粵文歌詞)',audio:'鋒兄的傳奇人生(粵文歌詞).mp3',subs:'鋒兄的傳奇人生(粵文歌詞).srt',cover:'assets/ref/lucky8.png',lead:2,cast:'lucky'},
+  {id:'31bvn6GUtaI',title:'Forever＆ever [彩音]',audio:'Forever＆ever.mp3',subs:'Forever＆ever.srt',cover:'assets/ref/forever/cover.png',lead:3,cast:'forever'}
 ];
 // 每首歌的字幕／音訊檔放在同一個資料夾，執行時才讀取
 const cfgOf = id => DEFAULT_SONGS.find(d => d.id === id) || {};
@@ -626,7 +627,8 @@ const LEAD_NAMES = {
   kaguya: ['かぐや', '彩葉', 'ツキ'],
   aiura: ['天谷奏香', '岩沢彩生', '上原歩子'],
   growup: ['鶴巻瑞佳', '川澄桜翔', '吾野伊万里', '五十土五十鈴', '由良 葵', '由良 茜', '酒匂 雫', 'スヴェトラーナ', '間宮 凛', '麻利亜'],
-  extreme: ['前原純華', '葉山陽和', '小鷹咲希', '橘雪乃', '小日向理瀬', 'ミシェル・イェーガー', 'アシュリー・ヴァンクロフト', '桜井羽月', '御社智', '末宗祐里子', '本田千尋', 'ティーナ・メルキース']
+  extreme: ['前原純華', '葉山陽和', '小鷹咲希', '橘雪乃', '小日向理瀬', 'ミシェル・イェーガー', 'アシュリー・ヴァンクロフト', '桜井羽月', '御社智', '末宗祐里子', '本田千尋', 'ティーナ・メルキース'],
+  forever: ['フェルスター・マリー・暁空', '田中結', '北方和音', '洲宮紗絵', '天羽ねね', '中森雪加']
 };
 function syncLeadMenu(id){
   const names = LEAD_NAMES[cfgOf(id).cast] || LEAD_NAMES.best4u;

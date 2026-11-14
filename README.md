@@ -129,6 +129,10 @@ macOS 也可雙擊 `啟動播放器.command`，會在終端機啟動伺服器並
 
 原圖、透明圖、群像與完整提示記錄在 [assets/ref/growup/README.md](assets/ref/growup/README.md)。執行 `node tools/build-growup.mjs` 可重建十張切圖、`cast.json` 與群像 `assets/ref/growup/group.png`。
 
+### Forever＆ever：メモリーズオフ 双想
+
+已加入彩音的〈Forever＆ever〉（PV 編號 46，約 256.92 秒），為《メモリーズオフ 双想 Break out of my shell》片頭曲。兩版播放器使用使用者提供的 MP3、封面與日中雙語字幕；YouTube ID `31bvn6GUtaI`。六位女主角依封面重建為可舞動的透明立繪，預設主唱為畫面中央的洲宮紗絵。人物 PV 固定此組。原文、翻譯與時間軸見 [assets/ref/forever/README.md](assets/ref/forever/README.md)。
+
 ### 明日へのBreakShoot：葉山陽和 ver.
 
 已加入歌詞 PV（編號 9）與第二版播放器，使用 `明日へのBreakShoot [葉山陽和ver.].mp3`、35 段日中雙語 `明日へのBreakShoot.srt` 及使用者提供的專輯封面 `assets/ref/breakshoot-cover.png`。十二位人物使用依新參考合圖重製的 `casual` 透明切圖；兩版主唱皆預設為葉山陽和（索引 1），第二版提供十二人的主唱選單，人物 PV 固定使用這組十二人，排成 6×2。音檔與字幕均納入 repo。

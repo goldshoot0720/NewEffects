@@ -1169,5 +1169,85 @@
     784
    ]
   }
+ ],
+ "forever": [
+  {
+   "file": "forever-0.png",
+   "w": 156,
+   "h": 343,
+   "headX": 75,
+   "headY": 41,
+   "source": [
+    0,
+    0
+   ],
+   "sheet": "forever-sprites",
+   "name": "フェルスター・マリー・暁空"
+  },
+  {
+   "file": "forever-1.png",
+   "w": 160,
+   "h": 337,
+   "headX": 79,
+   "headY": 38,
+   "source": [
+    0,
+    0
+   ],
+   "sheet": "forever-sprites",
+   "name": "田中結"
+  },
+  {
+   "file": "forever-2.png",
+   "w": 156,
+   "h": 335,
+   "headX": 82,
+   "headY": 38,
+   "source": [
+    0,
+    0
+   ],
+   "sheet": "forever-sprites",
+   "name": "北方和音"
+  },
+  {
+   "file": "forever-3.png",
+   "w": 156,
+   "h": 343,
+   "headX": 82,
+   "headY": 39,
+   "source": [
+    0,
+    0
+   ],
+   "sheet": "forever-sprites",
+   "name": "洲宮紗絵"
+  },
+  {
+   "file": "forever-4.png",
+   "w": 159,
+   "h": 340,
+   "headX": 85,
+   "headY": 37,
+   "source": [
+    0,
+    0
+   ],
+   "sheet": "forever-sprites",
+   "name": "天羽ねね"
+  },
+  {
+   "file": "forever-5.png",
+   "w": 156,
+   "h": 338,
+   "headX": 80,
+   "headY": 37,
+   "source": [
+    0,
+    0
+   ],
+   "sheet": "forever-sprites",
+   "name": "中森雪加"
+  }
  ]
 }
