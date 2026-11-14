@@ -1173,81 +1173,93 @@
  "forever": [
   {
    "file": "forever-0.png",
-   "w": 156,
-   "h": 343,
-   "headX": 75,
-   "headY": 41,
+   "w": 284,
+   "h": 749,
+   "headX": 166,
+   "headY": 73,
    "source": [
     0,
     0
    ],
-   "sheet": "forever-sprites",
-   "name": "フェルスター・マリー・暁空"
+   "sheet": "forever/standing.jpg",
+   "name": "フェルスター・マリー・暁空",
+   "armScale": 0.08,
+   "legScale": 0.15
   },
   {
    "file": "forever-1.png",
-   "w": 160,
-   "h": 337,
-   "headX": 79,
-   "headY": 38,
+   "w": 271,
+   "h": 750,
+   "headX": 122,
+   "headY": 71,
    "source": [
     0,
     0
    ],
-   "sheet": "forever-sprites",
-   "name": "田中結"
+   "sheet": "forever/standing.jpg",
+   "name": "田中結",
+   "armScale": 0.08,
+   "legScale": 0.15
   },
   {
    "file": "forever-2.png",
-   "w": 156,
-   "h": 335,
-   "headX": 82,
-   "headY": 38,
+   "w": 221,
+   "h": 749,
+   "headX": 122,
+   "headY": 73,
    "source": [
     0,
     0
    ],
-   "sheet": "forever-sprites",
-   "name": "北方和音"
+   "sheet": "forever/standing.jpg",
+   "name": "北方和音",
+   "armScale": 0.08,
+   "legScale": 0.15
   },
   {
    "file": "forever-3.png",
-   "w": 156,
-   "h": 343,
-   "headX": 82,
-   "headY": 39,
+   "w": 286,
+   "h": 745,
+   "headX": 162,
+   "headY": 74,
    "source": [
     0,
     0
    ],
-   "sheet": "forever-sprites",
-   "name": "洲宮紗絵"
+   "sheet": "forever/standing.jpg",
+   "name": "洲宮紗絵",
+   "armScale": 0.08,
+   "legScale": 0.15
   },
   {
    "file": "forever-4.png",
-   "w": 159,
-   "h": 340,
-   "headX": 85,
-   "headY": 37,
+   "w": 252,
+   "h": 750,
+   "headX": 142,
+   "headY": 75,
    "source": [
     0,
     0
    ],
-   "sheet": "forever-sprites",
-   "name": "天羽ねね"
+   "sheet": "forever/standing.jpg",
+   "name": "天羽ねね",
+   "armScale": 0.08,
+   "legScale": 0.15
   },
   {
    "file": "forever-5.png",
-   "w": 156,
-   "h": 338,
-   "headX": 80,
-   "headY": 37,
+   "w": 270,
+   "h": 750,
+   "headX": 149,
+   "headY": 71,
    "source": [
     0,
     0
    ],
-   "sheet": "forever-sprites",
-   "name": "中森雪加"
+   "sheet": "forever/standing.jpg",
+   "name": "中森雪加",
+   "armScale": 0.08,
+   "legScale": 0.15
   }
  ]
 }
