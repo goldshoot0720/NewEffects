@@ -524,8 +524,14 @@ function buildShots(){
     }
     if(next && next.start - c.end > 1 && c.end < outroStart){
       const end = Math.min(next.start, outroStart);
-      // 長間奏改播騎自行車的段落，短的空檔仍用舞台休息畫面
-      if(end - c.end > 4) add('bike', c.end, end); else add('stage', c.end, end, {variant: 'break'});
+      const gap = end - c.end;
+      const prevShot = out[out.length - 1];
+      // 兩句 B-MELO 之間約 1.5–2.5 秒是節奏，人聲還沒進下一句。
+      // 一秒出頭的空檔仍維持原來的舞台休息。沿用上一個字卡的人物，不插 DANCE BREAK，也不把上一句的填色拉長。
+      if(gap > 1.5 && gap <= 2.5 && prevShot?.type === 'typo' && c.sec?.label === 'B-MELO' && next.sec?.label === 'B-MELO'){
+        prevShot.end = end;
+      } else if(gap > 4) add('bike', c.end, end);
+      else add('stage', c.end, end, {variant: 'break'});
     }
   });
   add('outro', outroStart, A.dur);
@@ -1057,6 +1063,9 @@ function shotTypo(t, sh, u){
   const L = layout(c.ju, jpFont, 150, maxW, 3, 60), s = L.size, rowH = s*1.45;
   const sung = prog(c, t)*c.jW;
   const y0 = H*.45 - (L.rows.length - 1)*rowH/2;
+  // 字卡被延到下一句才切時，上一句在自己的結束時間淡出，不在節奏空檔繼續掛著。
+  const lyricA = 1 - clamp((t - c.end)/.35);
+  if(lyricA <= 0) return;
   g.save(); g.lineJoin = 'round'; g.textBaseline = 'middle';
   let k = 0;
   L.rows.forEach((row, ri) => {
@@ -1077,10 +1086,11 @@ function shotTypo(t, sh, u){
         g.font = jpFont(fs); g.textAlign = 'center';
         if(an <= 0){
           if(split && sung < cw0 - .2) return;
-          g.lineWidth = 2; g.strokeStyle = 'rgba(255,255,255,.18)'; g.strokeText(ch, x, ry); return;
+          g.save(); g.globalAlpha = lyricA;
+          g.lineWidth = 2; g.strokeStyle = 'rgba(255,255,255,.18)'; g.strokeText(ch, x, ry); g.restore(); return;
         }
         const sc = lerp(1.9, 1, easeBack(an)), rot = (hash(k*3.3 + c.i) - .5)*.35*(1 - easeOut(an));
-        g.save(); g.translate(x, ry); g.rotate(rot); g.scale(sc, sc); g.globalAlpha = clamp(an*3);
+        g.save(); g.translate(x, ry); g.rotate(rot); g.scale(sc, sc); g.globalAlpha = clamp(an*3)*lyricA;
         // 以前把色塊往右下錯開再蓋一層。二、に這種細筆畫會露出一塊對不齊的橙邊，看起來像破圖。
         g.lineJoin = 'round'; g.miterLimit = 2;
         g.lineWidth = fs*.12; g.strokeStyle = un.bk ? T.cool : T.accent2; g.strokeText(ch, 0, 0);
@@ -1093,7 +1103,7 @@ function shotTypo(t, sh, u){
   });
   if(c.zh){
     const zy = y0 + (L.rows.length - 1)*rowH + s*.75 + 40, zs = fitFont(c.zh, zhFont, LyricText.translationSize(c.jp, s, 46), maxW);
-    g.globalAlpha = easeOut(clamp((sung/c.jW - .28)/.4)); g.font = zhFont(zs); g.textAlign = 'center';
+    g.globalAlpha = easeOut(clamp((sung/c.jW - .28)/.4))*lyricA; g.font = zhFont(zs); g.textAlign = 'center';
     const zw = g.measureText(c.zh).width;
     g.fillStyle = T.accent; g.fillRect(cx - zw/2 - 30, zy - 4, 12, 12);
     g.fillStyle = 'rgba(255,255,255,.9)'; g.fillText(c.zh, cx + 6, zy);
