@@ -1894,17 +1894,15 @@ async function init(){
     c.jo = TJ.length; TJ.push({sep: i + 1}, ...tj); c.jn = tj.length;
     c.zo = TZ.length; TZ.push({sep: i + 1}, ...tz); c.zn = tz.length;
   });
-  // 第一段「あの潮風に乗って」大約 31.7 秒唱完，字幕視窗卻留到 34 秒，填色會落後整句。
+  // 間奏前的句子，字幕視窗依「下一句開始前 0.05 秒」收尾，比真正唱完晚 0.4～2 秒。
+  // 填色跟著視窗走，最後一兩個字就會在沒人唱的時候才亮，聽起來像慢半拍。
+  // 這裡把每句換成量到的收尾時間：assets/ref/forever/timings-ja.json 的詞級時間加 0.12 秒尾音，
+  // 7、39、41、42 四句再逐句看畫面修過（那四句的時間軸本身收在下一句開頭）。
   if(song.file === 'Forever＆ever'){
-    const shio = cues.find(c => c.jp.startsWith('あの潮風') && c.start < 40);
-    if(shio) shio.sungEnd = 31.7;
-    // 最後一句潮風、絆、僕たち唱完時，字幕視窗還留著，填色會落後句尾。
-    const shioLast = cues.find(c => c.jp.startsWith('あの潮風') && c.start > 220);
-    if(shioLast) shioLast.sungEnd = 238.9;
-    const kizuna = cues.find(c => c.jp.startsWith('この絆'));
-    if(kizuna) kizuna.sungEnd = 207.8;
-    const boku = cues.find(c => c.jp.startsWith('僕たちの') && c.start > 200);
-    if(boku) boku.sungEnd = 233.45;
+    const SUNG_END = {
+      6: 27.60, 7: 31.70, 9: 58.60, 10: 65.62, 18: 95.06, 19: 101.06, 21: 127.02, 23: 141.98,
+      30: 165.22, 31: 170.52, 39: 207.80, 40: 213.32, 41: 233.45, 42: 238.90};
+    for(const [i, end] of Object.entries(SUNG_END)) if(cues[+i]) cues[+i].sungEnd = end;
     // 踏 178.0–179.4、み 179.4–180.2、出到 180.8、そう 180.8–182.6、明日へ 182.9–185.8。
     const fumi = cues.find(c => c.jp.startsWith('踏み出そう') && c.start > 170);
     if(fumi){
