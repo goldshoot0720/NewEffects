@@ -1510,6 +1510,33 @@ function drawRoad(t, horizon, speed){
   }
 }
 // 一位角色騎一台車：車架後半 → 角色 → 前輪與踏板，腿自然被車身擋住
+// 有些立繪的兩腿併在一起，骨架切不出腿層，量不到鞋底（騎車時踏板就會留在曲柄上）。
+// 這時直接看輪廓：取最底下幾列不透明像素，以中心線分左右，各取重心當鞋底。
+const soleCache = new WeakMap();
+function silhouetteSoles(img){
+  if(soleCache.has(img)) return soleCache.get(img);
+  const W = img.width, H = img.height, cv = mk(W, H), ctx = cv.getContext('2d', {willReadFrequently: true});
+  ctx.drawImage(img, 0, 0);
+  const d = ctx.getImageData(0, 0, W, H).data, A = 24;
+  let bot = -1;
+  for(let y = H - 1; y >= 0 && bot < 0; y--)
+    for(let x = 0; x < W; x++) if(d[(y*W + x)*4 + 3] > A){ bot = y; break; }
+  const out = [];
+  if(bot >= 0){
+    const top = Math.max(0, bot - Math.max(3, Math.round(H*.012)));
+    for(const left of [true, false]){
+      let n = 0, sx = 0;
+      for(let y = top; y <= bot; y++) for(let x = 0; x < W; x++){
+        if(left ? x >= W/2 : x < W/2) continue;
+        if(d[(y*W + x)*4 + 3] > A){ n++; sx += x; }
+      }
+      out.push(n ? [sx/n, bot] : null);
+    }
+  }
+  const res = out.filter(Boolean);
+  soleCache.set(img, res);
+  return res;
+}
 function drawRider(m, cx, cy, R, t, opts = {}){
   const pedal = t*opts.cadence, spin = -t*opts.speed/R;
   const bob = Math.sin(pedal*2)*R*.025;
@@ -1540,6 +1567,14 @@ function drawRider(m, cx, cy, R, t, opts = {}){
       return [fx + lx*ct - ly*st, feetY + lx*st + ly*ct];
     };
     feet = [foot('legL', angL), foot('legR', angR)].filter(Boolean);
+    // 沒有腿層（兩腿併在一起）時，用輪廓底部的左右重心當鞋底，踏板才會踩在鞋子下面。
+    if(feet.length < 2){
+      const soles = silhouetteSoles(img);
+      if(soles.length === 2) feet = soles.map(([px, py]) => {
+        const lx = -w/2 + px*k, ly = -h + py*k;
+        return [fx + lx*ct - ly*st, feetY + lx*st + ly*ct];
+      });
+    }
   }
   g.save(); g.translate(0, bob);
   drawBicycle(cx, cy, R, spin, pedal, {frame: opts.frame, part: 'back'});
