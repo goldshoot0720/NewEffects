@@ -1956,7 +1956,7 @@ async function init(){
   const sel = $('#song');
   const order=SongOrder.group(SONGS.map((s,index)=>({title:s.title,index})));
   const position=order.findIndex(item=>item.index===songIndex);
-  order.forEach(({index})=>{const s=SONGS[index];sel.add(new Option(`${s.title}（${s.ver}）`,index,false,s===song));});
+  order.forEach(({index})=>{const s=SONGS[index];sel.add(new Option(`${s.title}（${s.ver}）`,index,false,index===songIndex));});
   sel.onchange = () => changeSong(+sel.value);
   $('#prevSong').onclick = () => changeSong(order[(position-1+order.length)%order.length].index);
   $('#nextSong').onclick = () => changeSong(order[(position+1)%order.length].index);
