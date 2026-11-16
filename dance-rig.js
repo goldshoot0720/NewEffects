@@ -419,11 +419,13 @@
   }
 
   // 離屏畫布：各層以加法混色疊起來（Σ權重 = 1，所以等於原圖），再整張貼到畫面上
+  // 為了避免 Firefox 在取樣一張「曾經更大」的共用畫布時出現垂直撕裂，
+  // 每次使用時都把尺寸切到剛好需要的大小（設定 width/height 會自動清空）。
   let tmp = null;
   function temp(w, h){
     w = Math.ceil(w); h = Math.ceil(h);
     if(!tmp){ tmp = document.createElement('canvas'); }
-    if(tmp.width < w || tmp.height < h){ tmp.width = Math.max(w, tmp.width); tmp.height = Math.max(h, tmp.height); }
+    if(tmp.width !== w || tmp.height !== h){ tmp.width = w; tmp.height = h; }
     return tmp;
   }
 
@@ -556,7 +558,9 @@
     ctx.translate(0, -hop);
     ctx.rotate(tilt);
     ctx.scale(1 + sq*.5, 1 - sq);
-    ctx.drawImage(cv, 0, 0, Math.ceil(w), Math.ceil(h), -w/2, -h, w, h);
+    // 把目的矩形對齊整數像素，減少 Firefox 在 sub-pixel 取樣時的撕裂
+    const dw = Math.round(w), dh = Math.round(h);
+    ctx.drawImage(cv, 0, 0, Math.ceil(w), Math.ceil(h), -Math.round(dw/2), -dh, dw, dh);
     ctx.restore();
   }
 
