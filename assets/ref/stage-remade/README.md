@@ -43,7 +43,7 @@ Alpha requirements: actual transparent background including true gaps between le
 Output: portrait RGBA PNG containing just the one selected full-body character.
 ```
 
-完整請求保存在 `imagegen-request.json`（參考圖網址以 `__UPLOADED_TEMP_URL__` 占位，避免把簽名網址寫進 repo）。重跑流程：`mcode-tools upload_temp_url assets/ref/stage-remade/source.webp` 取得 `temp_url`，再執行 `REF_URL=<temp_url> node tools/build-stage-request.mjs` 產生帶真實網址的請求檔，接著 `mcode-tools connector call connector__matrix__generate_image --args-file assets/ref/stage-remade/imagegen-request.json`。
+完整請求保存在本機的 `imagegen-request.json`（已加入 `.gitignore`，不進 repo；參考圖網址以 `__UPLOADED_TEMP_URL__` 占位，避免把簽名網址寫進版控）。重跑流程：`mcode-tools upload_temp_url assets/ref/stage-remade/source.webp` 取得 `temp_url`，再執行 `REF_URL=<temp_url> node tools/build-stage-request.mjs` 產生帶真實網址的請求檔，接著 `mcode-tools connector call connector__matrix__generate_image --args-file assets/ref/stage-remade/imagegen-request.json`。生成結果是白底或黑底的不透明 PNG，再交給去背工具轉成 `transparent-N.png`。
 
 ## 各人物的 Selected character 敘述
 
