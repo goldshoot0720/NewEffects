@@ -37,7 +37,10 @@ const ARTS = {
     faces: [[960, 300], [430, 446], [1500, 464]]},
   // メモリーズオフ 双想：使用者提供的 Forever＆ever 單曲封面
   forever: {src: 'assets/ref/forever/cover.png', crop: [0, 0, 727, 720],
-    faces: [[250, 115], [500, 120], [195, 360], [400, 310], [360, 500], [165, 590]]}
+    faces: [[250, 115], [500, 120], [195, 360], [400, 310], [360, 500], [165, 590]]},
+  // 月に向かって撃て：使用者提供的官方 MV 截圖，已裁掉底部播放器 UI
+  tsuki: {src: 'assets/ref/tsuki-cover.jpg', crop: [0, 0, 1279, 600],
+    faces: [[640, 285]]}
 };
 const SONGS = [
   {title: '大好きだよって叫ぶんだ', ver: '小日向理瀬 ver.', file: '大好きだよって叫ぶんだ [小日向理瀬ver.]',
@@ -234,7 +237,13 @@ const SONGS = [
   {title:'Forever＆ever', ver:'彩音', file:'Forever＆ever', subs:'Forever＆ever.srt', fill:'assets/ref/forever/fill-ja.json', theme:'summer', art:'forever', lead:3,
    series:'メモリーズオフ 双想', kicker:'Break out of my shell · OPENING',
    cast:[['forever',0,'フェルスター・マリー・暁空','#4aa3e8'],['forever',1,'田中結','#e23b6a'],['forever',2,'北方和音','#e0a020'],
-         ['forever',3,'洲宮紗絵','#6d5bd0'],['forever',4,'天羽ねね','#ef6a3a'],['forever',5,'中森雪加','#f0a24a']]}
+         ['forever',3,'洲宮紗絵','#6d5bd0'],['forever',4,'天羽ねね','#ef6a3a'],['forever',5,'中森雪加','#f0a24a']]},
+  {title:'月に向かって撃て', ver:'星街すいせい', file:'月に向かって撃て [星街すいせい]', subs:'月に向かって撃て.srt', theme:'tsuki', art:'tsuki', lead:0, noBike:true,
+   series:'星街すいせい', kicker:'月に向かって撃て · official',
+   cast:[['tsuki',0,'Arisu Yambuki','#e8e4d8'],['tsuki',1,'Rikka Inohana','#b97a4a'],['tsuki',2,'Nene Himekawa','#f2a7c3'],
+         ['tsuki',3,'Iko Kirino','#d8d8e8'],['tsuki',4,'Shinobu Uzuki','#d94a5a'],['tsuki',5,'Lemon Ando','#e8d36a'],
+         ['tsuki',6,'Aiko','#3f6fd0'],['tsuki',7,'Ao Momotose','#d94a6a'],['tsuki',8,'HIZUMI','#8fd14f'],
+         ['tsuki',9,'Riina Yambuki','#8d6ad6'],['tsuki',10,'Mito Yambuki','#f0c23a']]}
 ];
 
 // 每首歌一組配色：夏日向日葵、日出、黃昏星空、晴空疾風
@@ -255,7 +264,9 @@ const THEMES = {
   pit:      {sky: ['#431a6b', '#ff79b8', '#ffe9a8'], pastel: ['#fff3fb', '#eafaff'], accent: '#ff4f9a', accent2: '#31d3c6', cool: '#ffd166', deep: '#2a1146', particle: 'dot'},
   lucky:    {sky: ['#4a0a16', '#c8202f', '#ffd98a'], pastel: ['#fff6e2', '#ffe4e6'], accent: '#ffd23f', accent2: '#ff4d6d', cool: '#ffb703', deep: '#33070f', particle: 'coin'},
   // 超かぐや姫！：祭典夜的紫藍到燈籠橘，配上升的燈籠光點
-  kaguya:   {sky: ['#120e34', '#5a2472', '#ffb45e'], pastel: ['#fff2f8', '#ffe9d2'], accent: '#ffcf6a', accent2: '#ff7fae', cool: '#9ad7ff', deep: '#1a0f33', particle: 'lantern'}
+  kaguya:   {sky: ['#120e34', '#5a2472', '#ffb45e'], pastel: ['#fff2f8', '#ffe9d2'], accent: '#ffcf6a', accent2: '#ff7fae', cool: '#9ad7ff', deep: '#1a0f33', particle: 'lantern'},
+  // 月に向かって撃て：深夜藍到月面紫，配瞄準鏡的冷白與擊發紅
+  tsuki:    {sky: ['#040a22', '#1b2a68', '#6d5aa6'], pastel: ['#eef3ff', '#ffe7ef'], accent: '#8fd8ff', accent2: '#ff5f7a', cool: '#ffe9a8', deep: '#060a1e', particle: 'star'}
 };
 const LOGO = [['B', '#2ba6e1'], ['E', '#f6a531'], ['S', '#ee5b97'], ['T', '#2ba6e1'], [' ', ''], ['4', '#f6a531'], ['U', '#8d6ad6']];
 const POP = ['#ee5b97', '#2ba6e1', '#f6a531', '#8d6ad6', '#3cc39a', '#f08a4b'];
@@ -345,6 +356,8 @@ const CHARACTER_GROUPS = song.cast[0][0] === 'anaru'
   ? [{sheet:'vwest',title:'V西2025 · 選手16人＋監督',src:'assets/ref/vwest/group.png',colors:['#ffcc43','#55cee4'],count:17,solo:true}]
   : song.cast[0][0] === 'forever'
   ? [{sheet:'forever', title:'メモリーズオフ 双想 · 六人', src:'assets/ref/forever/cover.png', colors:['#49b4ef','#ffe9a8'], count:6, solo:true}]
+  : song.cast[0][0] === 'tsuki'
+  ? [{sheet:'tsuki', title:'月に向かって撃て · 十一人', src:'assets/ref/tsuki-group.png', colors:['#1b2a68','#8fd8ff'], count:11, solo:true}]
   : song.art === 'breakshoot'
   ? [{sheet:'casual', title:'Extreme Hearts · 十二人', src:'assets/ref/casual-remade/group.png', colors:['#5cabe0','#f3afd3'], count:12,solo:true}]
   : BASE_CHARACTER_GROUPS;
@@ -554,7 +567,7 @@ function buildShots(){
     if(end <= vis) return;
     const label = c.sec?.label || 'A-MELO';
     const v = n.verse++;
-    let type = label === 'CHORUS' ? 'stage' : label === 'B-MELO' ? 'typo' : (v % 3 === 2 ? 'bike' : (Math.floor(v/2) % 2 ? 'windows' : 'film'));
+    let type = label === 'CHORUS' ? 'stage' : label === 'B-MELO' ? 'typo' : song.noBike ? (Math.floor(v/2) % 2 ? 'windows' : 'film') : (v % 3 === 2 ? 'bike' : (Math.floor(v/2) % 2 ? 'windows' : 'film'));
     const parts = Math.max(1, Math.round((Math.max(0, cueEnd - c.start))/6.5));
     for(let p = 0; p < parts; p++){
       const s = p ? snap(vis + (end - vis)*p/parts) : vis;
@@ -579,7 +592,7 @@ function buildShots(){
       // 空檔收到下一句字幕出現為止，字幕和畫面一起換。
       if(gap > 1.5 && gap <= 2.5 && prevShot?.type === 'typo' && c.sec?.label === 'B-MELO' && next.sec?.label === 'B-MELO'){
         prevShot.end = gapEnd;
-      } else if(gap > 4) add('bike', c.end, gapEnd);
+      } else if(gap > 4) add(song.noBike ? 'stage' : 'bike', c.end, gapEnd, song.noBike ? {variant: 'wide'} : {});
       else add('stage', c.end, gapEnd, {variant: 'break'});
     }
   });
@@ -1740,7 +1753,7 @@ function shotCharacters(t,sh,u){
     light.addColorStop(0,'rgba(255,255,255,.16)');light.addColorStop(1,'rgba(255,255,255,0)');
     g.fillStyle=light;g.beginPath();g.moveTo(x-6,0);g.lineTo(x+6,0);g.lineTo(x+sway+130,900);g.lineTo(x+sway-130,900);g.closePath();g.fill();
   }
-  const sizes={casual:[1920,1080],rooftop:[1536,1024],idol:[1536,1024],stage:[1774,887],anaru:[1920,1080],lucky:[1920,1080],kaguya:[1920,1080],aiura:[1920,1080],growup:[1920,1080],vwest:[1920,1080],forever:[1920,1080]};
+  const sizes={casual:[1920,1080],rooftop:[1536,1024],idol:[1536,1024],stage:[1774,887],anaru:[1920,1080],lucky:[1920,1080],kaguya:[1920,1080],aiura:[1920,1080],growup:[1920,1080],vwest:[1920,1080],forever:[1920,1080],tsuki:[1920,1080]};
   const [sourceW,sourceH]=sizes[group.sheet] || [1920,1080],scale=Math.min((W-160)/sourceW,740/sourceH);
   const originX=(W-sourceW*scale)/2,originY=150;
   if(group.matte){
@@ -1754,7 +1767,7 @@ function shotCharacters(t,sh,u){
   const focus=Math.floor(Math.max(0,local-2)/2)%actors.length;
   // solo 組的切圖來自各自獨立的立繪，沒有群像座標，改用網格平均排列（人數少時一列排開、每列置中）
   const solo=!!group.solo,n=actors.length,gw=sourceW*scale,gh=sourceH*scale;
-  const cols=solo?(n>12?6:n===12?6:n===10?5:Math.min(4,Math.max(1,n))):1,rows=solo?Math.ceil(n/cols):1;
+  const cols=solo?(n>12?6:n===12?6:n===11?6:n===10?5:Math.min(4,Math.max(1,n))):1,rows=solo?Math.ceil(n/cols):1;
   const cw=solo?gw/cols:0,chh=solo?gh/rows:0;
   actors.forEach((actor,i)=>{
     const slot=group.sheet==='lucky'?[0,1,5,6,2,3,4,7][i]:i;

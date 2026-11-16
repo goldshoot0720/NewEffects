@@ -1269,5 +1269,150 @@
    "legScale": 0.15,
    "intact": true
   }
+ ],
+ "tsuki": [
+  {
+   "file": "tsuki-0.png",
+   "w": 252,
+   "h": 799,
+   "headX": 136,
+   "headY": 80,
+   "source": [
+    110,
+    0
+   ],
+   "sheet": "tsuki-ref",
+   "name": "Arisu Yambuki"
+  },
+  {
+   "file": "tsuki-1.png",
+   "w": 275,
+   "h": 766,
+   "headX": 108,
+   "headY": 77,
+   "source": [
+    115,
+    24
+   ],
+   "sheet": "tsuki-ref",
+   "name": "Rikka Inohana"
+  },
+  {
+   "file": "tsuki-2.png",
+   "w": 304,
+   "h": 779,
+   "headX": 159,
+   "headY": 78,
+   "source": [
+    89,
+    9
+   ],
+   "sheet": "tsuki-ref",
+   "name": "Nene Himekawa"
+  },
+  {
+   "file": "tsuki-3.png",
+   "w": 264,
+   "h": 773,
+   "headX": 150,
+   "headY": 77,
+   "source": [
+    90,
+    16
+   ],
+   "sheet": "tsuki-ref",
+   "name": "Iko Kirino"
+  },
+  {
+   "file": "tsuki-4.png",
+   "w": 271,
+   "h": 771,
+   "headX": 130,
+   "headY": 77,
+   "source": [
+    103,
+    17
+   ],
+   "sheet": "tsuki-ref",
+   "name": "Shinobu Uzuki"
+  },
+  {
+   "file": "tsuki-5.png",
+   "w": 267,
+   "h": 775,
+   "headX": 150,
+   "headY": 78,
+   "source": [
+    86,
+    7
+   ],
+   "sheet": "tsuki-ref",
+   "name": "Lemon Ando"
+  },
+  {
+   "file": "tsuki-6.png",
+   "w": 240,
+   "h": 772,
+   "headX": 143,
+   "headY": 77,
+   "source": [
+    100,
+    16
+   ],
+   "sheet": "tsuki-ref",
+   "name": "Aiko"
+  },
+  {
+   "file": "tsuki-7.png",
+   "w": 331,
+   "h": 799,
+   "headX": 117,
+   "headY": 80,
+   "source": [
+    82,
+    1
+   ],
+   "sheet": "tsuki-ref",
+   "name": "Ao Momotose"
+  },
+  {
+   "file": "tsuki-8.png",
+   "w": 248,
+   "h": 771,
+   "headX": 110,
+   "headY": 77,
+   "source": [
+    111,
+    16
+   ],
+   "sheet": "tsuki-ref",
+   "name": "HIZUMI"
+  },
+  {
+   "file": "tsuki-9.png",
+   "w": 354,
+   "h": 800,
+   "headX": 150,
+   "headY": 80,
+   "source": [
+    66,
+    0
+   ],
+   "sheet": "tsuki-ref",
+   "name": "Riina Yambuki"
+  },
+  {
+   "file": "tsuki-10.png",
+   "w": 181,
+   "h": 776,
+   "headX": 84,
+   "headY": 78,
+   "source": [
+    135,
+    16
+   ],
+   "sheet": "tsuki-ref",
+   "name": "Mito Yambuki"
+  }
  ]
 }

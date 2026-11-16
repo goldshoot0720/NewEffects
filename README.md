@@ -40,7 +40,7 @@ macOS 也可雙擊 `啟動播放器.command`，會在終端機啟動伺服器並
 
 每首歌有自己的配色主題（`pv.js` 的 `THEMES`）。〈我與國中畢業紀念冊的對話〉四語版用 `yearbook`（牛皮紙與午後陽光，天空 `#4a2e06 → #d99b1d → #ffeaa8`、歌詞填色 `#ffd63c → #ff9227`），其餘歌曲沿用原本的 `twilight`、`sunrise`、`lucky` 等。膠卷窗、舞台 LED 螢幕、地板倒影、歌詞描邊與壓暗、騎車路面這些深色底會跟著主題走；主題沒指定時仍是原本的深藍紫，換色不會動到別首。
 
-人物由使用者提供的參考圖去背切出來：把參考圖放進 `assets/ref/`（`rise5.webp` 五人演出服白底、`lineup12.webp` 十二人色條底、`rooftop6.webp`、`stage9.webp`），執行 `node tools/cutout.mjs` 產生 `assets/ref/cast/` 的角色 PNG 與 `cast.json`。每首歌的主視覺與成員在 `pv.js` 的 `ARTS`、`SONGS[].cast` 設定（`lead` 是主唱，預設第一位）：大好きだよって叫ぶんだ 用 RISE 演出服，SUNRISE 用制服，HELLO HERO 用智的隊伍，風の中は走るっきゃないっ！ 用生徒会六人（`assets/ref/cast/anaru-*.png`，主視覺 `assets/ref/anaru6.png`），統一發票頭獎得主… 用招財喵布布八人（見下節），私は、わたしの事が好き。用超かぐや姫！三人（見下節）。角色以切圖分條彎曲、跳躍、壓縮做出跟拍舞動。
+人物由使用者提供的參考圖去背切出來：把參考圖放進 `assets/ref/`（`rise5.webp` 五人演出服白底、`lineup12.webp` 十二人色條底、`rooftop6.webp`、`stage9.webp`），執行 `node tools/cutout.mjs` 產生 `assets/ref/cast/` 的角色 PNG 與 `cast.json`。每首歌的主視覺與成員在 `pv.js` 的 `ARTS`、`SONGS[].cast` 設定（`lead` 是主唱，預設第一位）：大好きだよって叫ぶんだ 用 RISE 演出服，SUNRISE 用制服，HELLO HERO 用智的隊伍，風の中は走るっきゃないっ！ 用生徒会六人（`assets/ref/cast/anaru-*.png`，主視覺 `assets/ref/anaru6.png`），統一發票頭獎得主… 用招財喵布布八人（見下節），私は、わたしの事が好き。用超かぐや姫！三人（見下節），月に向かって撃て 用月夜十一人（見下節）。角色以切圖分條彎曲、跳躍、壓縮做出跟拍舞動。
 
 ### 超かぐや姫！三人（畫面擷取）
 
@@ -137,6 +137,10 @@ macOS 也可雙擊 `啟動播放器.command`，會在終端機啟動伺服器並
 
 歌詞時間軸改成逐句對到實際唱出的那一段：`timings-ja.json` 存的是每句量到的起唱與唱完時間（`final: true`），SRT 句尾不再一律拖到下一句開始前，間奏前那幾句不會再多留 0.4～2 秒；填色也不會在沒人唱的時候才亮完。這首一句常有兩段（「宝物みたいな時間　未来動かす小さな願い」中間隔了兩秒半），`assets/ref/forever/fill-ja.json` 另記每個字的起唱與唱完時間，填色跟著字走，句中停頓就停在那裡；資料由 `tools/build-forever-fill.mjs` 從 `asr-ja.json` 重建。
 
+### 月に向かって撃て：星街すいせい
+
+已加入歌詞 PV（編號 47，約 208.26 秒）與第二版播放器，使用使用者提供的 MP3、官方 MV 截圖（已裁掉底部播放器 UI）與 47 段日中雙語字幕。十一位人物由使用者提供的透明角色卡去背：`tools/cutout-tsuki.py` 只保留每張卡的最大 alpha 連通塊（人物本體），去掉左側名字與裝飾星，輸出 `assets/ref/cast/tsuki-0..10.png`，並拼成 1920×1080 群像 `assets/ref/tsuki-group.png`。PV 與人物 PV 固定這十一人，主唱預設為 Arisu Yambuki。
+
 ### 明日へのBreakShoot：葉山陽和 ver.
 
 已加入歌詞 PV（編號 9）與第二版播放器，使用 `明日へのBreakShoot [葉山陽和ver.].mp3`、35 段日中雙語 `明日へのBreakShoot.srt` 及使用者提供的專輯封面 `assets/ref/breakshoot-cover.png`。十二位人物使用依新參考合圖重製的 `casual` 透明切圖；兩版主唱皆預設為葉山陽和（索引 1），第二版提供十二人的主唱選單，人物 PV 固定使用這組十二人，排成 6×2。音檔與字幕均納入 repo。
@@ -161,7 +165,7 @@ macOS 也可雙擊 `啟動播放器.command`，會在終端機啟動伺服器並
 
 - 開啟 `http://127.0.0.1:8765/pv.html?mode=characters` 或從歌詞 PV 按「人物 PV」。也可使用 `serve.sh` 的 8765 埠。
 - 完整歌曲、1920×1080、30 fps；一般歌曲會輪替十二人制服與便服、屋頂六人、RISE 五人演出服、黃昏九人舞台服（每 15 秒換一組），持續到配樂結束，並隨整首歌曲驅動節拍、側擺、微跳、聚光與轉場；招財喵布布則固定用幸運八人這一組。
-- `cast.html` 可檢查與下載全部 85 張透明 PNG，十一組分別為 `casual`（12）、`rooftop`（6）、`idol`（5）、`stage`（9）、`anaru`（6）、`lucky`（8）、`kaguya`（3）、`aiura`（3）、`growup`（10）、`vwest`（17）、`forever`（6）。這是各組造型切圖數量，包含重複人物。
+- `cast.html` 可檢查與下載全部 96 張透明 PNG，十二組分別為 `casual`（12）、`rooftop`（6）、`idol`（5）、`stage`（9）、`anaru`（6）、`lucky`（8）、`kaguya`（3）、`aiura`（3）、`growup`（10）、`vwest`（17）、`forever`（6）、`tsuki`（11）。這是各組造型切圖數量，包含重複人物。
 - 屋頂與黃昏原圖背景先使用內建 imagegen 分離，透明圖層保存在 `assets/ref/*-matte.png`；切圖工具保留 alpha 並依連通區塊分配人物。去背提示記錄於 [assets/ref/CUTOUTS.md](assets/ref/CUTOUTS.md)。原圖中互相遮擋的部分未補畫；黃昏段落用完整透明群像側彎，保留相連裙襬的接縫。
 - 輸出：`node render-pv.mjs --mode characters --out pv/characters/full`；預設輸出三首完整歌曲 MP4，含音樂淡入淡出。可指定一首歌曲編號，例如 `node render-pv.mjs 1 --mode characters`；需要短片段時使用 `--from` / `--to`。
 - macOS 可加 `--encoder h264_videotoolbox` 使用硬體 H.264 編碼（16 Mbps）；預設仍使用 `libx264`。
@@ -203,7 +207,7 @@ macOS 也可雙擊 `啟動播放器.command`，會在終端機啟動伺服器並
 
 ## 歌曲檔案
 
-本機 MP3 與字幕檔（SRT／LRC）通常不放在這個 repo（見 `.gitignore`）。「風の中は走るっきゃないっ！」、「ぴ [ナナヲアカリ]」、「統一發票頭獎得主鋒兄威力彩頭獎得主塗哥」與「私は、わたしの事が好き。」的 MP3 和字幕已納入 repo，供部署版播放及顯示字幕；其他音訊與字幕仍由使用者本機提供。
+本機 MP3 與字幕檔（SRT／LRC）通常不放在這個 repo（見 `.gitignore`）。「風の中は走るっきゃないっ！」、「ぴ [ナナヲアカリ]」、「統一發票頭獎得主鋒兄威力彩頭獎得主塗哥」、「私は、わたしの事が好き。」與「月に向かって撃て」的 MP3 和字幕已納入 repo，供部署版播放及顯示字幕；其他音訊與字幕仍由使用者本機提供。
 
 「統一發票頭獎得主鋒兄威力彩頭獎得主塗哥」是 Suno 生成的曲子（`v6`，141.6 秒），沒有 YouTube 影片，播放器直接播本機 MP3。它的中文 SRT 是拿歌詞對音訊做強制對齊產生的：`ffmpeg` 轉 16 kHz 單聲道，用本機 `faster-whisper medium` 取詞級時間戳（`language=zh`、`word_timestamps`），再把歌詞逐字對到 ASR 詞上。音訊檔是從 Suno 分享頁的 CDN 取回、以 AES-CTR 解密後轉成 MP3。
 
