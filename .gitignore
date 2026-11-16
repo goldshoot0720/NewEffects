@@ -122,3 +122,6 @@
 pv/
 *.mp4
 .workbuddy-ai/
+
+# 舞台重製：帶簽名的 imagegen 請求檔只放本機
+assets/ref/stage-remade/imagegen-request.json

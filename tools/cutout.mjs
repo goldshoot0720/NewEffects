@@ -167,6 +167,11 @@ for(const s of SHEETS){
     console.log('casual：使用獨立重製素材，略過舊色條切割');
     continue;
   }
+  // stage 的九人互相重疊，垂直分割切割會把鄰居的裙襬碎片一起帶進來，改用獨立重製立繪。
+  if(s.name==='stage' && fs.existsSync(path.join(REF,'stage-remade/transparent-0.png'))){
+    console.log('stage：使用獨立重製素材，略過舊垂直分割切割');
+    continue;
+  }
   if(!fs.existsSync(path.join(REF,s.file))){
     if(s.bg==='alpha'){console.log(`略過 ${s.file}：請先放入透明人物圖層`);continue;}
     throw new Error('找不到 '+s.file);
@@ -177,4 +182,7 @@ for(const s of SHEETS){
 fs.writeFileSync(path.join(OUT, 'cast.json'), JSON.stringify(manifest, null, 1));
 if(fs.existsSync(path.join(REF,'casual-remade/transparent-0.png'))){
   execFileSync(process.execPath,[path.join(ROOT,'tools/build-casual-remade.mjs')],{stdio:'inherit'});
+}
+if(fs.existsSync(path.join(REF,'stage-remade/transparent-0.png'))){
+  execFileSync(process.execPath,[path.join(ROOT,'tools/build-stage-remade.mjs')],{stdio:'inherit'});
 }

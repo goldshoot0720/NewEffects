@@ -149,13 +149,19 @@ macOS 也可雙擊 `啟動播放器.command`，會在終端機啟動伺服器並
 
 執行 `node tools/build-casual-remade.mjs` 可由已保存的透明圖重建十二張切圖、`cast.json` 與群像 `assets/ref/casual-remade/group.png`。舊入口 `node tools/cutout.mjs` 會略過此組舊色條切割並沿用新素材。來源、索引及完整提示見 [assets/ref/casual-remade/README.md](assets/ref/casual-remade/README.md)。同時修正既有「御社智」的素材對應為索引 8；索引 11 是ティーナ・メルキース。
 
+### 黃昏舞台服九人重製
+
+`assets/ref/stage-remade/source.webp` 保存黃昏舞台的九人合圖。九人在原圖裡互相重疊，舊的垂直分割切割（`tools/cutout.mjs`）會把鄰居的裙襬碎片一起帶進每張切圖，邊緣是直切的垂直硬邊，因此本組九張切圖曾經是嚴重破圖。
+
+改以內建 imagegen 逐位重製成獨立透明立繪，去除背景、鄰居人物與所有殘片，保留原臉型、髮色、眼睛、表情、姿勢與服裝細節，替換 `assets/ref/cast/stage-0.png`～`stage-8.png`。執行 `node tools/build-stage-remade.mjs` 可由已保存的透明圖重建九張切圖並更新 `cast.json`；舊入口 `node tools/cutout.mjs` 會略過此組舊垂直分割切割。人物 PV 的黃昏段落仍以整張群像 `assets/ref/stage9-matte.png` 側彎呈現，本組切圖只用於素材頁與下載。來源、索引、去背流程及完整提示見 [assets/ref/stage-remade/README.md](assets/ref/stage-remade/README.md)。
+
 ## 人物動畫 PV
 
 ![人物動畫 PV 預覽](assets/ref/character-pv-preview.png)
 
 - 開啟 `http://127.0.0.1:8765/pv.html?mode=characters` 或從歌詞 PV 按「人物 PV」。也可使用 `serve.sh` 的 8765 埠。
 - 完整歌曲、1920×1080、30 fps；一般歌曲會輪替十二人制服與便服、屋頂六人、RISE 五人演出服、黃昏九人舞台服（每 15 秒換一組），持續到配樂結束，並隨整首歌曲驅動節拍、側擺、微跳、聚光與轉場；招財喵布布則固定用幸運八人這一組。
-- `cast.html` 可檢查與下載全部 79 張透明 PNG，十組分別為 `casual`（12）、`rooftop`（6）、`idol`（5）、`stage`（9）、`anaru`（6）、`lucky`（8）、`kaguya`（3）、`aiura`（3）、`growup`（10）、`vwest`（17）。這是各組造型切圖數量，包含重複人物。
+- `cast.html` 可檢查與下載全部 85 張透明 PNG，十一組分別為 `casual`（12）、`rooftop`（6）、`idol`（5）、`stage`（9）、`anaru`（6）、`lucky`（8）、`kaguya`（3）、`aiura`（3）、`growup`（10）、`vwest`（17）、`forever`（6）。這是各組造型切圖數量，包含重複人物。
 - 屋頂與黃昏原圖背景先使用內建 imagegen 分離，透明圖層保存在 `assets/ref/*-matte.png`；切圖工具保留 alpha 並依連通區塊分配人物。去背提示記錄於 [assets/ref/CUTOUTS.md](assets/ref/CUTOUTS.md)。原圖中互相遮擋的部分未補畫；黃昏段落用完整透明群像側彎，保留相連裙襬的接縫。
 - 輸出：`node render-pv.mjs --mode characters --out pv/characters/full`；預設輸出三首完整歌曲 MP4，含音樂淡入淡出。可指定一首歌曲編號，例如 `node render-pv.mjs 1 --mode characters`；需要短片段時使用 `--from` / `--to`。
 - macOS 可加 `--encoder h264_videotoolbox` 使用硬體 H.264 編碼（16 Mbps）；預設仍使用 `libx264`。

@@ -320,111 +320,111 @@
  "stage": [
   {
    "file": "stage-0.png",
-   "w": 263,
-   "h": 830,
-   "headX": 139,
-   "headY": 80,
+   "w": 382,
+   "h": 916,
+   "headX": 171,
+   "headY": 98,
    "source": [
-    0,
-    3
+    -59,
+    -83
    ],
-   "sheet": "stage9-matte.png"
+   "sheet": "stage-remade/transparent-0.png"
   },
   {
    "file": "stage-1.png",
-   "w": 174,
-   "h": 713,
-   "headX": 79,
-   "headY": 70,
+   "w": 386,
+   "h": 916,
+   "headX": 194,
+   "headY": 98,
    "source": [
-    251,
-    121
+    146,
+    -82
    ],
-   "sheet": "stage9-matte.png"
+   "sheet": "stage-remade/transparent-1.png"
   },
   {
    "file": "stage-2.png",
-   "w": 183,
-   "h": 720,
-   "headX": 103,
-   "headY": 70,
+   "w": 372,
+   "h": 916,
+   "headX": 190,
+   "headY": 98,
    "source": [
-    413,
-    117
+    319,
+    -79
    ],
-   "sheet": "stage9-matte.png"
+   "sheet": "stage-remade/transparent-2.png"
   },
   {
    "file": "stage-3.png",
-   "w": 202,
-   "h": 744,
-   "headX": 113,
-   "headY": 72,
+   "w": 396,
+   "h": 916,
+   "headX": 210,
+   "headY": 98,
    "source": [
-    584,
-    93
+    487,
+    -79
    ],
-   "sheet": "stage9-matte.png"
+   "sheet": "stage-remade/transparent-3.png"
   },
   {
    "file": "stage-4.png",
-   "w": 205,
-   "h": 725,
-   "headX": 98,
-   "headY": 71,
+   "w": 403,
+   "h": 916,
+   "headX": 189,
+   "headY": 98,
    "source": [
-    774,
-    115
+    676,
+    -76
    ],
-   "sheet": "stage9-matte.png"
+   "sheet": "stage-remade/transparent-4.png"
   },
   {
    "file": "stage-5.png",
-   "w": 193,
-   "h": 722,
-   "headX": 99,
-   "headY": 70,
+   "w": 387,
+   "h": 916,
+   "headX": 183,
+   "headY": 98,
    "source": [
-    966,
-    117
+    869,
+    -77
    ],
-   "sheet": "stage9-matte.png"
+   "sheet": "stage-remade/transparent-5.png"
   },
   {
    "file": "stage-6.png",
-   "w": 200,
-   "h": 700,
-   "headX": 85,
-   "headY": 68,
+   "w": 375,
+   "h": 916,
+   "headX": 176,
+   "headY": 98,
    "source": [
-    1147,
-    139
+    1060,
+    -77
    ],
-   "sheet": "stage9-matte.png"
+   "sheet": "stage-remade/transparent-6.png"
   },
   {
    "file": "stage-7.png",
-   "w": 211,
-   "h": 726,
-   "headX": 106,
-   "headY": 71,
+   "w": 389,
+   "h": 916,
+   "headX": 204,
+   "headY": 98,
    "source": [
-    1314,
-    113
+    1225,
+    -77
    ],
-   "sheet": "stage9-matte.png"
+   "sheet": "stage-remade/transparent-7.png"
   },
   {
    "file": "stage-8.png",
-   "w": 284,
-   "h": 817,
-   "headX": 165,
-   "headY": 79,
+   "w": 408,
+   "h": 916,
+   "headX": 240,
+   "headY": 98,
    "source": [
-    1490,
-    20
+    1428,
+    -79
    ],
-   "sheet": "stage9-matte.png"
+   "sheet": "stage-remade/transparent-8.png"
   }
  ],
  "anaru": [
