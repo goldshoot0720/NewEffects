@@ -1,0 +1,500 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<title>威力彩第10期牽手獎勵條件｜新聞稿</title>
+<style>
+  * { margin:0; padding:0; box-sizing:border-box; }
+  :root{
+    --navy:#0b1f30; --navy2:#123049; --gold:#f2b544; --gold2:#ffd98a;
+    --paper:#fffdf7; --paper2:#f4efe4; --ink:#1d2733; --ink2:#3d4b5a;
+    --red:#c8473c; --teal:#1c8f8a; --rose:#d9607a;
+  }
+  html,body{ background:#0b1f30; }
+  body{
+    width:1280px; margin:0 auto;
+    font-family:"PingFang TC","Noto Sans TC","Hiragino Sans GB","Heiti TC","STHeiti",sans-serif;
+    color:var(--ink); -webkit-font-smoothing:antialiased;
+  }
+  .poster{ width:1280px; background:var(--paper2); overflow:hidden; }
+
+  /* ============ HERO ============ */
+  .hero{
+    position:relative; padding:54px 64px 0;
+    background:
+      radial-gradient(1100px 620px at 12% -10%, #1d5a72 0%, rgba(29,90,114,0) 60%),
+      radial-gradient(900px 560px at 92% 8%, #1a4a63 0%, rgba(26,74,99,0) 62%),
+      linear-gradient(160deg,#0b1f30 0%,#0f2a40 55%,#0b1f30 100%);
+    color:#fff; overflow:hidden;
+  }
+  .hero::after{
+    content:""; position:absolute; inset:0;
+    background:
+      radial-gradient(circle at 18% 30%, rgba(242,181,68,.18) 0 2px, transparent 3px),
+      radial-gradient(circle at 62% 12%, rgba(242,181,68,.22) 0 2px, transparent 3px),
+      radial-gradient(circle at 88% 58%, rgba(242,181,68,.16) 0 2px, transparent 3px),
+      radial-gradient(circle at 34% 74%, rgba(242,181,68,.14) 0 2px, transparent 3px);
+    background-size:180px 180px,240px 240px,200px 200px,260px 260px;
+    pointer-events:none;
+  }
+  .hero-inner{ position:relative; z-index:2; }
+  .badge{
+    display:inline-flex; align-items:center; gap:10px;
+    border:1px solid rgba(242,181,68,.55); color:var(--gold2);
+    border-radius:999px; padding:8px 20px; font-size:19px; letter-spacing:.12em;
+    background:rgba(242,181,68,.08);
+  }
+  .badge .dot{ width:9px; height:9px; border-radius:50%; background:var(--red); box-shadow:0 0 0 5px rgba(200,71,60,.22); }
+  h1.title{
+    margin:26px 0 0; font-size:56px; line-height:1.16; font-weight:900; letter-spacing:.01em;
+    text-shadow:0 3px 18px rgba(0,0,0,.35);
+  }
+  h1.title .hl{ color:var(--gold2); }
+  .subtitle{
+    margin-top:18px; font-size:25px; line-height:1.55; color:#d7e6ef; max-width:1040px; font-weight:500;
+  }
+  .hero-figure{ margin:34px -64px 0; position:relative; }
+  .hero-figure img{ width:100%; display:block; }
+  .hero-figure::after{
+    content:""; position:absolute; left:0; right:0; bottom:0; height:150px;
+    background:linear-gradient(180deg, rgba(11,31,48,0) 0%, rgba(11,31,48,.85) 62%, #0b1f30 100%);
+  }
+  .metabar{
+    position:relative; z-index:3; margin-top:-8px;
+    display:flex; flex-wrap:wrap; gap:10px 26px; align-items:center;
+    font-size:18px; color:#bcd3e0; padding:0 0 44px;
+  }
+  .metabar span b{ color:#fff; font-weight:700; }
+  .metabar .sep{ width:1px; height:16px; background:rgba(255,255,255,.25); }
+  .metabar .balls{ display:inline-flex; gap:6px; vertical-align:-8px; margin-left:4px; }
+  .metabar .balls i{
+    font-style:normal; width:30px; height:30px; border-radius:50%;
+    background:rgba(242,181,68,.16); border:1px solid rgba(242,181,68,.6);
+    color:var(--gold2); font-size:15px; font-weight:800;
+    display:inline-flex; align-items:center; justify-content:center;
+  }
+  .metabar .balls i.sp{ background:var(--red); border-color:#e8837a; color:#fff; }
+
+  /* ============ SECTION SHELL ============ */
+  .body-wrap{ padding:0 64px 0; }
+  .sec-head{ display:flex; align-items:center; gap:18px; margin:46px 0 22px; }
+  .sec-no{
+    flex:none; width:52px; height:52px; border-radius:16px;
+    background:linear-gradient(145deg,var(--gold),#d9931f); color:#2a1c04;
+    display:flex; align-items:center; justify-content:center;
+    font-size:25px; font-weight:900; box-shadow:0 8px 20px rgba(217,147,31,.32);
+  }
+  .sec-head h2{ font-size:34px; font-weight:900; letter-spacing:.02em; color:var(--navy); }
+  .sec-head .sub{ font-size:19px; color:var(--ink2); font-weight:500; margin-left:6px; }
+  .sec-head .rule{ flex:1; height:3px; background:linear-gradient(90deg,rgba(29,39,51,.22),rgba(29,39,51,0)); border-radius:3px; }
+
+  /* ============ NEWS CARD ============ */
+  .news{
+    background:var(--paper); border-radius:22px; padding:40px 46px 44px;
+    box-shadow:0 18px 48px rgba(11,31,48,.10); border-top:8px solid var(--navy);
+    position:relative;
+  }
+  .news .masthead{ text-align:center; padding-bottom:20px; border-bottom:3px double var(--ink); }
+  .news .masthead .kicker{ font-size:16px; letter-spacing:.5em; color:var(--gold); font-weight:800; }
+  .news .masthead h3{ font-size:36px; font-weight:900; line-height:1.28; margin:10px 0 12px; color:var(--navy); }
+  .news .masthead .dateline{ font-size:16px; color:var(--ink2); }
+  .news p{ font-size:20px; line-height:1.92; color:var(--ink2); margin-top:18px; text-align:justify; }
+  .news p strong{ color:var(--ink); }
+  .quote-block{
+    margin-top:26px; background:linear-gradient(135deg,#fff8e6,#fdf1d5);
+    border-left:6px solid var(--gold); border-radius:0 16px 16px 0; padding:26px 30px 24px;
+  }
+  .quote-block .qlabel{ font-size:16px; font-weight:800; letter-spacing:.18em; color:#a8701a; margin-bottom:14px; }
+  .quote-block .q{ font-size:24px; line-height:1.68; font-weight:800; color:var(--navy); }
+  .quote-block .q + .q{ margin-top:12px; }
+  .quote-block .q .who{ color:var(--red); }
+  .quote-block .q .amt{ color:#a8701a; }
+  .news .sign{ margin-top:26px; text-align:right; font-size:18px; color:var(--ink2); }
+  .news .sign b{ color:var(--navy); font-size:21px; }
+
+  /* ============ TABLE ============ */
+  .tbl{ width:100%; border-collapse:collapse; background:var(--paper); border-radius:18px; overflow:hidden; box-shadow:0 12px 34px rgba(11,31,48,.08); }
+  .tbl th{
+    background:var(--navy); color:#fff; font-size:18px; font-weight:900; letter-spacing:.06em;
+    padding:16px 18px; text-align:left; white-space:nowrap;
+  }
+  .tbl td{ padding:16px 18px; font-size:18px; line-height:1.7; color:var(--ink2); border-bottom:1px solid rgba(29,39,51,.09); vertical-align:top; }
+  .tbl tr:last-child td{ border-bottom:none; }
+  .tbl td.k{ color:var(--navy); font-weight:900; font-size:19px; white-space:nowrap; }
+  .tbl td .hi{ color:var(--red); font-weight:800; }
+  .tbl td .hi2{ color:#a8701a; font-weight:800; }
+  .tbl tr.gold td{ background:#fffaf0; }
+
+  /* ============ CHARACTERS ============ */
+  .chars{ display:grid; grid-template-columns:repeat(3,1fr); gap:22px; }
+  .char{ background:var(--paper); border-radius:20px; padding:26px 24px 24px; text-align:center; box-shadow:0 12px 34px rgba(11,31,48,.08); border:1px solid rgba(29,39,51,.07); }
+  .char .avatar{ width:132px; height:132px; border-radius:50%; overflow:hidden; margin:0 auto 14px; border:5px solid #fff; box-shadow:0 10px 24px rgba(11,31,48,.18); }
+  .char .avatar img{ width:100%; height:100%; object-fit:cover; display:block; }
+  .char h4{ font-size:26px; font-weight:900; color:var(--navy); }
+  .char .alias{ font-size:17px; color:#8a6a2c; font-weight:800; margin-top:4px; }
+  .char .role{ font-size:16px; color:var(--ink2); margin-top:12px; line-height:1.7; }
+  .char .tag{ display:inline-block; margin-top:12px; font-size:15px; font-weight:800; padding:6px 14px; border-radius:999px; background:#eef4f8; color:var(--navy2); }
+  .char.hl .avatar{ border-color:var(--gold); }
+  .char.hl .tag{ background:rgba(242,181,68,.2); color:#8a5c07; }
+
+  /* ============ SPLIT (兩條線) ============ */
+  .split{ display:grid; grid-template-columns:1fr 1fr; gap:24px; }
+  .split-col{ background:var(--paper); border-radius:20px; padding:26px 26px 24px; box-shadow:0 12px 34px rgba(11,31,48,.08); }
+  .split-col .head{ display:flex; align-items:center; gap:14px; padding-bottom:16px; border-bottom:2px solid rgba(29,39,51,.10); }
+  .split-col .head img{ width:64px; height:64px; border-radius:50%; object-fit:cover; flex:none; border:3px solid #fff; box-shadow:0 6px 16px rgba(11,31,48,.16); }
+  .split-col .head .t h5{ font-size:25px; font-weight:900; color:var(--navy); }
+  .split-col .head .t p{ font-size:15px; color:var(--ink2); margin-top:2px; }
+  .kv{ display:flex; gap:12px; padding:11px 0; border-bottom:1px dashed rgba(29,39,51,.14); font-size:17px; line-height:1.6; }
+  .kv:last-of-type{ border-bottom:none; }
+  .kv .k{ flex:none; width:92px; color:#8a6a2c; font-weight:800; }
+  .kv .v{ color:var(--ink2); }
+  .kv .v b{ color:var(--navy); }
+  .step{ margin-top:16px; background:#f7f8f6; border-radius:14px; padding:14px 18px; border:1px solid rgba(29,39,51,.08); }
+  .step .st{ display:flex; align-items:center; gap:10px; margin-bottom:7px; }
+  .step .lv{ font-size:14px; font-weight:900; padding:3px 11px; border-radius:7px; color:#fff; letter-spacing:.05em; }
+  .step .lv.l1{ background:#1c8f8a; }
+  .step .lv.l2{ background:#c8871a; }
+  .step .lv.l3{ background:var(--red); }
+  .step .st b{ font-size:19px; color:var(--navy); }
+  .step .amt{ margin-left:auto; font-size:18px; font-weight:900; color:var(--red); }
+  .step p{ font-size:16px; color:var(--ink2); line-height:1.65; }
+  .step p em{ font-style:normal; color:var(--red); font-weight:800; }
+  .step .top{ margin-top:14px; background:#fff; border-radius:12px; padding:14px 16px; border-left:5px solid var(--gold); }
+  .step .top .tl{ font-size:13px; font-weight:900; letter-spacing:.16em; color:#a8701a; margin-bottom:8px; }
+  .step .top .tt{ font-size:19px; font-weight:900; color:var(--navy); line-height:1.5; }
+  .step .top .tw{ font-size:15px; color:var(--ink2); margin-top:6px; line-height:1.6; }
+
+  /* ============ 頭獎雙版本 ============ */
+  .duo{ display:grid; grid-template-columns:1fr 1fr; gap:24px; }
+  .hcard{ background:var(--paper); border-radius:20px; overflow:hidden; box-shadow:0 12px 34px rgba(11,31,48,.08); }
+  .hcard .pic{ position:relative; }
+  .hcard .pic img{ width:100%; display:block; }
+  .hcard .pic .ribbon{
+    position:absolute; left:0; top:18px; background:var(--gold); color:#2a1c04;
+    font-size:17px; font-weight:900; padding:8px 18px; border-radius:0 14px 14px 0; letter-spacing:.06em;
+  }
+  .hcard .pic .ribbon.red{ background:var(--red); color:#fff; }
+  .hcard .body{ padding:24px 26px 26px; }
+  .hcard .body .kicker{ font-size:14px; font-weight:900; letter-spacing:.24em; color:var(--gold); }
+  .hcard .body h5{ font-size:25px; font-weight:900; line-height:1.45; color:var(--navy); margin:8px 0 14px; }
+  .hcard .body p{ font-size:17px; line-height:1.8; color:var(--ink2); text-align:justify; }
+  .hcard .body p + p{ margin-top:12px; }
+  .hcard .body .who{ color:var(--red); font-weight:800; }
+  .hcard .body .cast{ margin-top:16px; border-top:1px dashed rgba(29,39,51,.16); padding-top:14px; font-size:16px; color:var(--ink2); line-height:1.8; }
+  .hcard .body .cast b{ color:var(--navy); }
+
+  /* ============ 網友反應 ============ */
+  .netizen{ background:var(--paper); border-radius:22px; padding:32px 38px 34px; box-shadow:0 12px 34px rgba(11,31,48,.08); border-top:8px solid var(--teal); }
+  .netizen ul{ list-style:none; }
+  .netizen li{ font-size:19px; line-height:1.7; color:var(--ink2); padding:12px 0 12px 34px; position:relative; border-bottom:1px dashed rgba(29,39,51,.14); }
+  .netizen li:last-child{ border-bottom:none; }
+  .netizen li::before{ content:"▸"; position:absolute; left:4px; top:12px; color:var(--teal); font-weight:900; }
+  .netizen li b{ color:var(--navy); }
+
+  /* ============ 官方註記 ============ */
+  .note-box{
+    margin-top:22px; background:#eef3f7; border-radius:16px; padding:20px 26px;
+    font-size:16px; line-height:1.85; color:#5a6b7a; border-left:5px solid #9db4c6;
+  }
+  .note-box b{ color:var(--navy); }
+
+  /* ============ FOOTER ============ */
+  .foot{
+    background:#081826; color:#8fa9ba; padding:34px 64px 40px; font-size:15px; line-height:1.8;
+    border-top:3px solid var(--gold); margin-top:46px;
+  }
+  .foot b{ color:var(--gold2); }
+  .foot .fin{ margin-top:10px; font-size:13px; color:#5f7787; letter-spacing:.04em; }
+</style>
+</head>
+<body>
+<div class="poster">
+
+  <!-- ================= HERO ================= -->
+  <div class="hero">
+    <div class="hero-inner">
+      <div class="badge"><span class="dot"></span>虛構情境喜劇 · 新聞稿</div>
+      <h1 class="title">從中壢圖書館牽手到中壢高中<br>路上買了張威力彩第10期<br><span class="hl">重點是威力彩，牽手是次要</span></h1>
+      <p class="subtitle">兩次散步、兩張彩券、兩組同學給的號碼——<span style="color:#ffd98a;font-weight:800">號碼是同學給的，錢是鋒兄出的</span>，牽手只是剛好順路。而「下次牽手待遇」，取決於中了多少。</p>
+    </div>
+    <div class="hero-figure"><img src="assets/hero_walk.jpg" alt="兩人牽手走在彩券行前的中壢街道"></div>
+    <div class="metabar">
+      <span>發稿日期：<b>2026 / 02 / 02（週一・開獎日）</b></span><i class="sep"></i>
+      <span>彩種：<b>威力彩</b></span><i class="sep"></i>
+      <span>期別：<b>第 115000010 期</b></span><i class="sep"></i>
+      <span>開獎號碼：
+        <span class="balls"><i>01</i><i>12</i><i>14</i><i>15</i><i>27</i><i>29</i><i class="sp">05</i></span>
+      </span>
+    </div>
+  </div>
+
+  <div class="body-wrap">
+
+    <!-- ================= 1 新聞稿全文 ================= -->
+    <div class="sec-head">
+      <div class="sec-no">1</div>
+      <h2>新聞稿全文</h2>
+      <span class="sub">牽手散步中壢圖書館到中壢高中</span>
+      <div class="rule"></div>
+    </div>
+
+    <div class="news">
+      <div class="masthead">
+        <div class="kicker">PRESS RELEASE</div>
+        <h3>沿途買威力彩第10期　號碼同學給、錢鋒兄出<br>「重點是威力彩，牽手是次要」</h3>
+        <div class="dateline">中壢訊　鋒兄昨（1）日表示……</div>
+      </div>
+
+      <p>鋒兄昨（1）日表示，與<strong>高一同班同學芷萱</strong>、<strong>國中同班同學塗哥</strong>，先後牽手自<strong>中壢圖書館</strong>散步至<strong>中壢高中</strong>，沿途各買一張<strong>威力彩（第 10 期）</strong>；號碼分別由芷萱與塗哥提供，彩金由鋒兄一人支付。</p>
+
+      <p>本刊記者詢問「所以牽手才是主因吧」，鋒兄表示<strong>「重點是威力彩，牽手是次要」</strong>。不過兩張彩券均由鋒兄出錢，同學只負責出號碼，此點在該屆同學群引發「原來是別人出錢」的熱議，網友直呼「這才是威力彩的正確玩法」。</p>
+
+      <p>鋒兄同時公布「<strong>牽手獎勵條件</strong>」，並強調條件是事前講好的，開獎後不得翻案：</p>
+
+      <div class="quote-block">
+        <div class="qlabel">牽手獎勵條件（原文）</div>
+        <div class="q">「中 <span class="amt">15 萬</span>（參獎）以上，下次換跟另一個人牽手 → 抱抱 → 親親。」</div>
+        <div class="q">「中 <span class="amt">50 萬</span>（貳獎）以上，下次換跟<span class="who">芷萱</span>或<span class="who">塗哥</span>開房間。」</div>
+        <div class="q">「中 <span class="amt">500 萬</span>（頭獎）以上，新聞稿中兩人就是情侶——<span class="who">傑哥（老公）＋鋒兄（老婆）</span>，或<span class="who">鋒兄（老公）＋小萱萱（老婆）</span>。」</div>
+      </div>
+
+      <div class="sign">發稿人：<b>鋒兄</b>　｜　新聞稿中的老公：<b>傑哥</b>　｜　新聞稿中的老婆：<b>小萱萱</b></div>
+    </div>
+
+    <!-- ================= 2 角色對照 ================= -->
+    <div class="sec-head">
+      <div class="sec-no">2</div>
+      <h2>角色對照表</h2>
+      <span class="sub">同一個人，三種稱呼</span>
+      <div class="rule"></div>
+    </div>
+
+    <div class="chars">
+      <div class="char hl">
+        <div class="avatar"><img src="assets/avatar_fengxiong.jpg" alt="鋒兄"></div>
+        <h4>鋒兄</h4>
+        <div class="alias">主角・出錢的人</div>
+        <div class="role">兩張彩券都是他付的<br>同時拿到兩組同學給的號碼</div>
+        <div class="tag">頭獎時可能當「老婆」也可能當「老公」</div>
+      </div>
+      <div class="char">
+        <div class="avatar"><img src="assets/avatar_tuge.jpg" alt="塗哥／傑哥"></div>
+        <h4>塗哥</h4>
+        <div class="alias">國中同班同學</div>
+        <div class="role">塗哥線的號碼提供者<br>新聞稿裡改名「傑哥」</div>
+        <div class="tag">頭獎時是「老公」（假扮夫妻）</div>
+      </div>
+      <div class="char">
+        <div class="avatar"><img src="assets/avatar_zhixuan.jpg" alt="芷萱／小萱萱"></div>
+        <h4>芷萱</h4>
+        <div class="alias">高一同班同學</div>
+        <div class="role">芷萱線的號碼提供者<br>新聞稿裡改名「小萱萱」</div>
+        <div class="tag">頭獎時是「老婆」（假扮情侶）</div>
+      </div>
+    </div>
+
+    <!-- ================= 3 兩條散步線 ================= -->
+    <div class="sec-head">
+      <div class="sec-no">3</div>
+      <h2>兩條散步線</h2>
+      <span class="sub">同一條路線，兩次牽手</span>
+      <div class="rule"></div>
+    </div>
+
+    <div class="split">
+      <div class="split-col">
+        <div class="head">
+          <img src="assets/avatar_zhixuan.jpg" alt="芷萱">
+          <div class="t"><h5>芷萱線</h5><p>高一同班同學・號碼由芷萱給</p></div>
+        </div>
+        <div class="kv"><div class="k">同行人</div><div class="v"><b>芷萱</b>（高一同班同學）</div></div>
+        <div class="kv"><div class="k">路線</div><div class="v">中壢圖書館 → 中壢高中</div></div>
+        <div class="kv"><div class="k">號碼來源</div><div class="v"><b>芷萱給</b>（每注 100 元）</div></div>
+        <div class="kv"><div class="k">出錢</div><div class="v"><b>鋒兄出</b>，兩張都是他付</div></div>
+        <div class="kv"><div class="k">重點</div><div class="v">威力彩；牽手是次要</div></div>
+
+        <div class="step">
+          <div class="st"><span class="lv l1">參獎</span><b>下次換跟塗哥牽手</b><span class="amt">15 萬+</span></div>
+          <p>依序升級：牽手 → 抱抱 → 親親（<em>親親對象：塗哥</em>）</p>
+        </div>
+        <div class="step">
+          <div class="st"><span class="lv l2">貳獎</span><b>下次換跟芷萱開房間</b><span class="amt">50 萬+</span></div>
+          <p>鋒兄強調：<em>開一間房，冷氣要夠強</em>，談的是彩券心得。</p>
+        </div>
+        <div class="step">
+          <div class="st"><span class="lv l3">頭獎</span><b>新聞稿中是情侶</b><span class="amt">500 萬+</span></div>
+          <div class="top">
+            <div class="tl">新聞稿設定</div>
+            <div class="tt">鋒兄（老公）＋小萱萱（老婆）</div>
+            <div class="tw">假扮情侶出席領獎；鋒兄可能要改叫「小萱萱」。</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="split-col">
+        <div class="head">
+          <img src="assets/avatar_tuge.jpg" alt="塗哥">
+          <div class="t"><h5>塗哥線</h5><p>國中同班同學・號碼由塗哥給</p></div>
+        </div>
+        <div class="kv"><div class="k">同行人</div><div class="v"><b>塗哥</b>（國中同班同學）</div></div>
+        <div class="kv"><div class="k">路線</div><div class="v">中壢圖書館 → 中壢高中</div></div>
+        <div class="kv"><div class="k">號碼來源</div><div class="v"><b>塗哥給</b>（每注 100 元）</div></div>
+        <div class="kv"><div class="k">出錢</div><div class="v"><b>鋒兄出</b>，兩張都是他付</div></div>
+        <div class="kv"><div class="k">重點</div><div class="v">威力彩；牽手是次要</div></div>
+
+        <div class="step">
+          <div class="st"><span class="lv l1">參獎</span><b>下次換跟芷萱牽手</b><span class="amt">15 萬+</span></div>
+          <p>依序升級：牽手 → 抱抱 → 親親（<em>親親對象：芷萱</em>）</p>
+        </div>
+        <div class="step">
+          <div class="st"><span class="lv l2">貳獎</span><b>下次換跟塗哥開房間</b><span class="amt">50 萬+</span></div>
+          <p>鋒兄強調：<em>開一間房，冷氣要夠強</em>，談的是彩券心得。</p>
+        </div>
+        <div class="step">
+          <div class="st"><span class="lv l3">頭獎</span><b>新聞稿中是情侶</b><span class="amt">500 萬+</span></div>
+          <div class="top">
+            <div class="tl">新聞稿設定</div>
+            <div class="tt">傑哥（老公）＋鋒兄（老婆）</div>
+            <div class="tw">假扮夫妻出席領獎；塗哥在新聞稿裡是「傑哥」。</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ================= 4 階梯表 ================= -->
+    <div class="sec-head">
+      <div class="sec-no">4</div>
+      <h2>牽手獎勵階梯</h2>
+      <span class="sub">中越多，下一次越近</span>
+      <div class="rule"></div>
+    </div>
+
+    <table class="tbl">
+      <thead>
+        <tr>
+          <th style="width:150px">開獎結果</th>
+          <th style="width:170px">獎金</th>
+          <th>下次牽手待遇</th>
+          <th style="width:330px">新聞稿中的身分</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td class="k">未中</td>
+          <td>0 元</td>
+          <td>照舊牽手；彩券收進夾鏈當紀念品，「重點是威力彩」這句話仍然成立</td>
+          <td>維持同學身分，朋友圈正常</td>
+        </tr>
+        <tr>
+          <td class="k">參獎以上</td>
+          <td><span class="hi2">15 萬</span>（官方固定）</td>
+          <td>換跟<strong>另一位</strong>牽手 → <span class="hi">抱抱</span> → <span class="hi">親親</span>（親親對象：芷萱或塗哥）</td>
+          <td>維持同學身分，只是要說明「是彩券害的」</td>
+        </tr>
+        <tr class="gold">
+          <td class="k">貳獎以上</td>
+          <td><span class="hi2">情境門檻 50 萬</span></td>
+          <td><span class="hi">開房間</span>（對象：芷萱或塗哥）——鋒兄表示只談彩券心得</td>
+          <td>維持同學身分，只是同學群會突然很安靜</td>
+        </tr>
+        <tr class="gold">
+          <td class="k">頭獎以上</td>
+          <td><span class="hi2">情境門檻 500 萬</span></td>
+          <td>——（牽手已不是重點，問題變成「新聞稿怎麼寫」）</td>
+          <td><span class="hi">傑哥（老公）＋鋒兄（老婆）</span>／<span class="hi">鋒兄（老公）＋小萱萱（老婆）</span>，新聞稿中是情侶</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="note-box">
+      <b>官方獎別對照：</b>威力彩第 10 期（2026/02/02）開獎號碼第一區 01、12、14、15、27、29，第二區 05。頭獎＝第一區 6 碼全中且第二區相符，累計獎金 2 億起；貳獎＝第一區 6 碼全中，依當期獎金 11% 分配；<b>參獎＝第一區中 5 碼且第二區相符，每注固定 15 萬元</b>。本圖的 50 萬／500 萬門檻沿用情境設定，實際獎金遠高於此。中獎金額逾 5,000 元依規定須扣繳 20% 所得稅。
+    </div>
+
+    <!-- ================= 5 頭獎新聞稿 ================= -->
+    <div class="sec-head">
+      <div class="sec-no">5</div>
+      <h2>頭獎情境新聞稿</h2>
+      <span class="sub">兩種版本，照著唸就行</span>
+      <div class="rule"></div>
+    </div>
+
+    <div class="duo">
+      <div class="hcard">
+        <div class="pic">
+          <img src="assets/headline_couple_married.jpg" alt="假扮夫妻的頭獎情境">
+          <div class="ribbon red">版本一・塗哥線</div>
+        </div>
+        <div class="body">
+          <div class="kicker">HEADLINE VERSION A</div>
+          <h5>威力彩第10期頭獎　傑哥攜「太太」現身領獎　「彩券是太太選的，我負責付錢」</h5>
+          <p>（記者 綜合報導）採用國中同班同學塗哥所提供號碼的鋒兄昨（1）日表示，威力彩第 10 期頭獎將由他與「太太」一同領取。傑哥表示，這組號碼是兩人散步時共同商量的結果，「<span class="who">太太選號，我出錢，這叫分工</span>」。</p>
+          <p>至於記者詢問「兩人是怎麼開始的」，傑哥表示「<span class="who">從威力彩開始</span>」，並強調「重點是威力彩，牽手是次要」。被問到是否改名、是否要發喜帖，傑哥笑說「改名可以，戶名不要鬧就好」，隨即拉著「太太」的手離開。</p>
+          <div class="cast"><b>新聞稿角色：</b>傑哥＝塗哥（老公）　｜　鋒兄＝老婆　｜　形式：假扮夫妻</div>
+        </div>
+      </div>
+
+      <div class="hcard">
+        <div class="pic">
+          <img src="assets/headline_couple_girlfriend.jpg" alt="假扮情侶的頭獎情境">
+          <div class="ribbon">版本二・芷萱線</div>
+        </div>
+        <div class="body">
+          <div class="kicker">HEADLINE VERSION B</div>
+          <h5>威力彩第10期頭獎　小萱萱與同學攜手現身　網友：這是交往還是選號？</h5>
+          <p>（記者 綜合報導）採用高一同班同學芷萱所提供號碼的鋒兄昨（1）日表示，威力彩第 10 期頭獎與小萱萱「一同分享」。小萱萱表示，號碼是散步路上想到的，「<span class="who">牽手只是剛好順路，彩券才是重點</span>」。</p>
+          <p>至於外界關心的兩人關係，小萱萱僅表示「開完獎再說」；鋒兄則強調「一年之內不會承認，也沒有拒絕」。記者追問是否要改叫小萱萱，小萱萱笑說「<span class="who">要改名可以，但號碼要歸我</span>」。</p>
+          <div class="cast"><b>新聞稿角色：</b>鋒兄＝老公　｜　小萱萱＝芷萱（老婆）　｜　形式：假扮情侶</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ================= 6 記者會 + 網友 ================= -->
+    <div class="sec-head">
+      <div class="sec-no">6</div>
+      <h2>記者會問答</h2>
+      <span class="sub">每一題都很安全</span>
+      <div class="rule"></div>
+    </div>
+
+    <table class="tbl">
+      <thead><tr><th style="width:420px">記者提問</th><th>鋒兄回答</th></tr></thead>
+      <tbody>
+        <tr><td class="k">你們是情侶嗎？</td><td>彩券是我出的，號碼是他出的，牽手是因為那個路口紅燈太長。</td></tr>
+        <tr><td class="k">為什麼每次都由你出錢？</td><td>選號的人要有決定權，付錢的人要有執行力，這叫分工。</td></tr>
+        <tr><td class="k">頭獎的話你真的要改名？</td><td>改名不要緊，戶名不要鬧就好。</td></tr>
+        <tr><td class="k">參獎 15 萬可以親親嗎？</td><td>條件寫得很清楚，是「下次」——這次先把手牽好。</td></tr>
+        <tr><td class="k">两张彩券都想中，如何取捨？</td><td>不取捨。兩張都出錢，兩張都要；中兩次就升兩級，開房間可以改成兩間。</td></tr>
+      </tbody>
+    </table>
+
+    <div class="sec-head">
+      <div class="sec-no">7</div>
+      <h2>網友反應</h2>
+      <span class="sub">同學群與各路網友</span>
+      <div class="rule"></div>
+    </div>
+
+    <div class="netizen">
+      <ul>
+        <li>「牽手是次要，彩券是主角，這句話我笑了整晚。」</li>
+        <li>「同學出號碼、鋒兄出錢、牽手只是附贈——原來威力彩還能這樣玩。」</li>
+        <li>「15 萬就換一個抱抱，這個 CP 值比威力彩本身還高。」</li>
+        <li>「頭獎新聞稿已經寫好了，就等開獎。」</li>
+        <li>「從中壢圖書館牽到中壢高中再回頭牽同學，這條路線我合理懷疑是彩券行故意設計的。」</li>
+        <li>「去年中壢高中畢業二十年，今年還在牽同學的手，數學很好的。」</li>
+      </ul>
+    </div>
+
+  </div><!-- /body-wrap -->
+
+  <!-- ================= FOOTER ================= -->
+  <div class="foot">
+    <div><b>＊ 本圖為虛構情境喜劇之「新聞稿」，純屬娛樂創作，並非真實中獎消息，亦無任何實際彩金分配或獎勵兌現。</b></div>
+    <div>號碼來源：國中同班同學塗哥（新聞稿中稱「傑哥」）、高一同班同學芷萱（新聞稿中稱「小萱萱」）提供的威力彩第 10 期號碼；彩金由鋒兄支付。</div>
+    <div>情境設定：威力彩第 115000010 期，開獎日 2026/02/02，開獎號碼第一區 01・12・14・15・27・29，第二區 05。</div>
+    <div class="fin">POWER LOTTERY 10TH DRAW · HAND-HOLDING BONUS LADDER　—　鋒兄　2026</div>
+  </div>
+
+</div>
+</body>
+</html>

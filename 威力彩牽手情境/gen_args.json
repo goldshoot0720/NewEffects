@@ -1,0 +1,40 @@
+{
+  "requests": [
+    {
+      "prompt": "Taiwanese small-town street at golden-hour dusk, two Taiwanese high-school students in blue-and-white uniforms walking side by side holding hands, seen from behind at a three-quarter angle, passing a warm-lit corner lottery shop with a blank glowing signboard, a white paper lottery slip in the free hand, a public library building on the left and a school gate with a clock tower far down the road, autumn breeze, cinematic wide shot, modern Taiwanese magazine editorial illustration, clean linework, soft cel shading, warm amber and teal palette, no text, no letters, no readable signage, no watermark",
+      "aspect_ratio": "21:9",
+      "resolution": "2K",
+      "output_file": "hero_walk.jpg"
+    },
+    {
+      "prompt": "Portrait of a cheerful Taiwanese high-school boy, short black hair, blue-and-white school uniform shirt, relaxed warm smile, head and shoulders, centered, soft studio lighting, modern Taiwanese anime-influenced editorial illustration, clean linework, flat warm cream background, no text",
+      "aspect_ratio": "1:1",
+      "resolution": "1K",
+      "output_file": "avatar_fengxiong.jpg"
+    },
+    {
+      "prompt": "Portrait of a slightly deadpan Taiwanese middle-school boy, straight black hair with long bangs, green track jacket over a white tee, subtle smirk, head and shoulders, centered, soft studio lighting, modern Taiwanese anime-influenced editorial illustration, clean linework, flat warm cream background, no text",
+      "aspect_ratio": "1:1",
+      "resolution": "1K",
+      "output_file": "avatar_tuge.jpg"
+    },
+    {
+      "prompt": "Portrait of a bright Taiwanese high-school girl, long straight black hair with side bangs, white blouse and light cardigan, gentle friendly smile, head and shoulders, centered, soft studio lighting, modern Taiwanese anime-influenced editorial illustration, clean linework, flat warm cream background, no text",
+      "aspect_ratio": "1:1",
+      "resolution": "1K",
+      "output_file": "avatar_zhixuan.jpg"
+    },
+    {
+      "prompt": "Two Taiwanese young adults posing as a married couple in front of a lottery shop at night, the man in a dark suit and the woman in an elegant long dress, his arm around her shoulder, they hold a white winning lottery slip together, camera flashes bursting from the left, neon reflections on wet pavement, comedic press-photo moment, modern Taiwanese magazine editorial illustration, clean linework, soft cel shading, no text, no letters, no watermark",
+      "aspect_ratio": "16:9",
+      "resolution": "2K",
+      "output_file": "headline_couple_married.jpg"
+    },
+    {
+      "prompt": "Two Taiwanese high-school sweethearts jumping with joy on a street at night, a boy and a girl in school uniform holding hands and raising a white winning lottery slip, glowing neon storefront behind them, small confetti in the air, comedic celebratory press-photo moment, modern Taiwanese magazine editorial illustration, clean linework, soft cel shading, no text, no letters, no watermark",
+      "aspect_ratio": "16:9",
+      "resolution": "2K",
+      "output_file": "headline_couple_girlfriend.jpg"
+    }
+  ]
+}
