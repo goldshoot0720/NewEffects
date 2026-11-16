@@ -60,11 +60,11 @@ const SONGS = [
    cast: [['casual', 8, '智', '#f0c23a'], ['casual', 7, '羽月', '#e0524f'], ['casual', 11, 'ティーナ', '#79c5a3'], ['casual', 9, '祐里子', '#f4a6b8'], ['casual', 10, '千尋', '#2ba6e1']]},
   {title: '風の中は走るっきゃないっ！', ver: '三月のパンタシア', file: '風の中は走るっきゃないっ！ [三月のパンタシア]',
    subs: '風の中は走るっきゃないっ！.srt', theme: 'wind', art: 'kaze', lead: 0,
-   series: '三月のパンタシア', kicker: 'TVアニメ「生徒会にも穴はある！」OP',
+   series: '三月のパンタシア', tv: '生徒会にも穴はある', kicker: 'OP',
    cast: [['kaze', 0, '梅', '#e07a45'], ['kaze', 1, '寿子', '#e0893a'], ['kaze', 2, 'こころ', '#f08aaa'], ['kaze', 3, 'たん', '#6ecf9a'], ['kaze', 4, '有栖', '#7aa2ff'], ['kaze', 5, '敏深', '#d7c4a8']]},
   {title: 'ぴ', ver: 'ナナヲアカリ', file: 'ぴ [ナナヲアカリ]',
    subs: 'ぴ.srt', theme: 'pit', art: 'anaru',
-   series: 'ナナヲアカリ', kicker: 'TVアニメ「生徒会にも穴はある！」ED',
+   series: 'ナナヲアカリ', tv: '生徒会にも穴はある', kicker: 'ED',
    cast: [['anaru', 0, '梅', '#e07a45'], ['anaru', 1, '寿子', '#e0893a'], ['anaru', 2, 'こころ', '#f08aaa'], ['anaru', 3, 'たん', '#6ecf9a'], ['anaru', 4, '有栖', '#7aa2ff'], ['anaru', 5, '敏深', '#d7c4a8']]},
   {title: '統一發票頭獎得主鋒兄威力彩頭獎得主塗哥', ver: 'Suno v6', file: '統一發票頭獎得主鋒兄威力彩頭獎得主塗哥',
    subs: '統一發票頭獎得主鋒兄威力彩頭獎得主塗哥.srt', theme: 'lucky', art: 'lucky8', lead: 2,
@@ -77,17 +77,17 @@ const SONGS = [
    cast: [['kaguya', 0, 'かぐや', '#f2a7c3'], ['kaguya', 1, '彩葉', '#7fd8bb'], ['kaguya', 2, 'ツキ', '#e9a94f']]},
   {title: 'カニ☆Do-Luck!', ver: 'あいうらぶ', file: 'カニ☆Do-Luck!',
    subs: 'カニ☆Do-Luck!.srt', theme: 'summer', art: 'aiura',
-   series: 'あいうらぶ', kicker: 'カニ☆Do-Luck!',
+   series: 'あいうらぶ', tv: 'あいうら', kicker: 'OP',
    cast: [['aiura', 0, '天谷奏香', '#d58761'], ['aiura', 1, '岩沢彩生', '#c7b75e'], ['aiura', 2, '上原歩子', '#6ea8ac']]},
   {title: 'ユラリユレル', ver: 'NOMELON NOLEMON', file: 'yurariyureru',
    subs: 'yurariyureru.srt', theme: 'growup', art: 'growup', lead: 0,
-   series: 'グロウアップショウ', kicker: 'ひまわりのサーカス団 · OPENING',
+   series: 'グロウアップショウ', tv: 'グロウアップショウ ～ひまわりのサーカス団～', kicker: 'OP',
    cast: [['growup', 0, '鶴巻瑞佳', '#c72d48'], ['growup', 1, '川澄桜翔', '#368fc4'], ['growup', 2, '吾野伊万里', '#73a34b'],
           ['growup', 3, '五十土五十鈴', '#e99038'], ['growup', 4, '由良 葵', '#a28ac4'], ['growup', 5, '由良 茜', '#c74360'],
           ['growup', 6, '酒匂 雫', '#7786ba'], ['growup', 7, 'スヴェトラーナ', '#d7d3c9'], ['growup', 8, '間宮 凛', '#bd8b4c'], ['growup', 9, '麻利亜', '#f1bc3e']]},
   {title: '明日へのBreakShoot', ver: '葉山陽和 ver.', file: '明日へのBreakShoot [葉山陽和ver.]',
    subs: '明日へのBreakShoot.srt', theme: 'wind', art: 'breakshoot', lead: 1, photoAspect: 16/9,
-   series: 'Extreme Hearts', kicker: 'CHARACTER SONG · 葉山陽和',
+   series: 'Extreme Hearts', tv: 'Extreme Hearts', kicker: 'キャラクターソング · 葉山陽和',
    cast: [['casual', 0, '前原純華', '#2ba6e1'], ['casual', 1, '葉山陽和', '#ee5b97'], ['casual', 2, '小鷹咲希', '#3cc39a'], ['casual', 3, '橘雪乃', '#8d6ad6'],
           ['casual', 4, '小日向理瀬', '#f6a531'], ['casual', 5, 'ミシェル・イェーガー', '#d2c8cf'], ['casual', 6, 'アシュリー・ヴァンクロフト', '#9b85ce'],
           ['casual', 7, '桜井羽月', '#ebbd48'], ['casual', 8, '御社智', '#e9819d'], ['casual', 9, '末宗祐里子', '#e5b8b9'], ['casual', 10, '本田千尋', '#54bed5'], ['casual', 11, 'ティーナ・メルキース', '#74c4a5']]},
@@ -251,7 +251,7 @@ const SONGS = [
          ['tsuki',6,'Aiko','#3f6fd0'],['tsuki',7,'Ao Momotose','#d94a6a'],['tsuki',8,'HIZUMI','#8fd14f'],
          ['tsuki',9,'Riina Yambuki','#8d6ad6'],['tsuki',10,'Mito Yambuki','#f0c23a']]},
   {title:'声の軌跡', ver:'Soala', file:'声の軌跡 [Soala]', subs:'声の軌跡.srt', theme:'voice', art:'casual', lead:0, noBike:true,
-   series:'真夜中ハートチューン', kicker:'TVアニメ「真夜中ハートチューン」EDテーマ',
+   series:'真夜中ハートチューン', tv:'真夜中ハートチューン', kicker:'EDテーマ',
    cast:[['casual',4,'理瀬','#f6a531'],['casual',1,'陽和','#ee5b97'],['casual',0,'純華','#2ba6e1'],
          ['casual',2,'咲希','#3cc39a'],['casual',3,'雪乃','#8d6ad6'],['casual',8,'智','#f0c23a']]}
 ];
@@ -1831,6 +1831,9 @@ function shotCharacters(t,sh,u){
 const SHOTS = {film: shotFilm, typo: shotTypo, windows: shotWindows, stage: shotStage, bike: shotBike, outro: shotOutro, characters:shotCharacters};
 
 /* ---------------- 覆蓋層：片頭標題、轉場、HUD ---------------- */
+// 片頭最上方那行來源標注：來源是 TV 動畫的曲子一律標「TVアニメ「作品名」」再接 OP／ED／角色歌；
+// 電影、原創曲等照 kicker 原樣。新增歌曲時只要填 tv，片頭就會自動標上 TVアニメ。
+const kickerOf = s => s.tv ? `TVアニメ「${s.tv}」${s.kicker || ''}` : (s.kicker || 'EXH KANAGAWA TOURNAMENT 2048 · TOP-4 TEAM COMPILATION ALBUM');
 function titleCard(t){
   let end = clamp(cues[0].start - .2, 4, 8);
   // 第一句人聲比鼓點晚。標題若跟著字幕走，節奏段仍會蓋著 Forever。
@@ -1841,7 +1844,7 @@ function titleCard(t){
   g.fillStyle = `rgba(8,6,24,${.45*a})`; g.fillRect(0, 0, W, H);
   g.globalAlpha = a; g.translate(0, -out*60);
   g.textAlign = 'center'; g.font = `600 24px ${FONT.cond}`; g.letterSpacing = '8px'; g.fillStyle = 'rgba(255,255,255,.85)';
-  g.globalAlpha = a*clamp((t - .3)/.6); g.fillText(song.kicker || 'EXH KANAGAWA TOURNAMENT 2048 · TOP-4 TEAM COMPILATION ALBUM', W/2, 250); g.letterSpacing = '0px';
+  g.globalAlpha = a*clamp((t - .3)/.6); g.fillText(kickerOf(song), W/2, 250); g.letterSpacing = '0px';
   g.globalAlpha = a;
   sparkleFade = a; sparkles(t, 12, 12, [200, 180, 1520, 700]); sparkleFade = 1;
   if(song.series) stickerText(song.series, W/2, 360, 72, [T.accent, '#ffffff', T.cool, T.accent2], .5, t);
