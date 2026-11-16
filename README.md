@@ -38,6 +38,8 @@ macOS 也可雙擊 `啟動播放器.command`，會在終端機啟動伺服器並
 - 預覽：開啟 `http://127.0.0.1:8765/pv.html?song=0`（0 大好きだよって叫ぶんだ、1 SUNRISE、2 HELLO HERO、3 風の中は走るっきゃないっ！、4 ぴ、5 統一發票頭獎得主鋒兄威力彩頭獎得主塗哥、6 私は、わたしの事が好き。、7 カニ☆Do-Luck!、8 ユラリユレル、9 明日へのBreakShoot [葉山陽和ver.]、10 統一發票頭獎得主鋒兄威力彩頭獎得主塗哥(英文歌詞)、11 統一發票頭獎得主鋒兄威力彩頭獎得主塗哥(日文歌詞)、12 統一發票頭獎得主鋒兄威力彩頭獎得主塗哥(粵文歌詞)、13 後はやるだけ！ [V西2025]）
 - 輸出：`node render-pv.mjs`（`pv.js` 裡的全部歌曲分批輸出到 `pv/`，預設同時兩首，可用 `--jobs 3` 調整），或 `node render-pv.mjs 1 --from 60 --to 72` 只輸出片段。需要 Google Chrome 與 ffmpeg；Windows 可自動找到標準安裝位置的 Chrome，NVIDIA 顯示卡可加 `--encoder h264_nvenc` 使用硬體 H.264 編碼。
 
+每首歌有自己的配色主題（`pv.js` 的 `THEMES`）。〈我與國中畢業紀念冊的對話〉四語版用 `yearbook`（牛皮紙與午後陽光，天空 `#4a2e06 → #d99b1d → #ffeaa8`、歌詞填色 `#ffd63c → #ff9227`），其餘歌曲沿用原本的 `twilight`、`sunrise`、`lucky` 等。膠卷窗、舞台 LED 螢幕、地板倒影、歌詞描邊與壓暗、騎車路面這些深色底會跟著主題走；主題沒指定時仍是原本的深藍紫，換色不會動到別首。
+
 人物由使用者提供的參考圖去背切出來：把參考圖放進 `assets/ref/`（`rise5.webp` 五人演出服白底、`lineup12.webp` 十二人色條底、`rooftop6.webp`、`stage9.webp`），執行 `node tools/cutout.mjs` 產生 `assets/ref/cast/` 的角色 PNG 與 `cast.json`。每首歌的主視覺與成員在 `pv.js` 的 `ARTS`、`SONGS[].cast` 設定（`lead` 是主唱，預設第一位）：大好きだよって叫ぶんだ 用 RISE 演出服，SUNRISE 用制服，HELLO HERO 用智的隊伍，風の中は走るっきゃないっ！ 用生徒会六人（`assets/ref/cast/anaru-*.png`，主視覺 `assets/ref/anaru6.png`），統一發票頭獎得主… 用招財喵布布八人（見下節），私は、わたしの事が好き。用超かぐや姫！三人（見下節）。角色以切圖分條彎曲、跳躍、壓縮做出跟拍舞動。
 
 ### 超かぐや姫！三人（畫面擷取）
