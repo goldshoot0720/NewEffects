@@ -163,6 +163,12 @@ macOS 也可雙擊 `啟動播放器.command`，會在終端機啟動伺服器並
 
 改以內建 imagegen 逐位重製成獨立透明立繪，去除背景、鄰居人物與所有殘片，保留原臉型、髮色、眼睛、表情、姿勢與服裝細節，替換 `assets/ref/cast/stage-0.png`～`stage-8.png`。執行 `node tools/build-stage-remade.mjs` 可由已保存的透明圖重建九張切圖並更新 `cast.json`；舊入口 `node tools/cutout.mjs` 會略過此組舊垂直分割切割。人物 PV 的黃昏段落仍以整張群像 `assets/ref/stage9-matte.png` 側彎呈現，本組切圖只用於素材頁與下載。來源、索引、去背流程及完整提示見 [assets/ref/stage-remade/README.md](assets/ref/stage-remade/README.md)。
 
+### 風の中は走るっきゃないっ！ 六人
+
+三月のパンタシア演唱的《生徒会にも穴はある！》片頭曲原本沿用 ED 曲「ぴ」的 anaru 六人（站姿看板圖）。新增 `kaze` 群組，改用官方網站公開的六張 OP 版角色立繪——每張都已單獨去背、六人正在跑步，正好對應歌名；並以使用者提供的單曲封面作為這首歌的背景主視覺（`assets/ref/kaze-cover.jpg`，©むちまろ／講談社・アニプレックス）。
+
+`assets/ref/kaze/op-chara-1.png`～`op-chara-6.png` 為官方原圖，切圖索引沿用 anaru 群組順序（梅／寿子／こころ／たん／有栖／敏深）。執行 `node tools/build-kaze.mjs` 會裁出 `cast/kaze-0.png`～`kaze-5.png`、更新 `cast.json` 並拼出群像 `assets/ref/kaze/group.png`。六張都是跑動姿勢畫，標記 `intact: true` 讓舞者整張畫不拆手腳，避免手臂與腿被撕開。來源與索引對照見 [assets/ref/kaze/README.md](assets/ref/kaze/README.md)。
+
 ## 人物動畫 PV
 
 ![人物動畫 PV 預覽](assets/ref/character-pv-preview.png)
