@@ -183,19 +183,19 @@ const SONGS = [
    series:'鋒塗力', kicker:'資訊 · 文化 · 水電科技 · 粵語版',
    cast:[['lucky',0,'鯨魚娘','#3f7fd0'],['lucky',1,'咕咕嘎嘎','#3a4250'],['lucky',2,'鋒兄','#b08a4a'],['lucky',3,'塗哥','#7b8794'],
          ['lucky',4,'喵布布','#d9822b'],['lucky',5,'喵白白','#8d97a3'],['lucky',6,'Claude 娘','#d9874e'],['lucky',7,'GPT 娘','#c2b9e9']]},
-  {title:'我與國中畢業紀念冊的對話', ver:'Suno', file:'我與國中畢業紀念冊的對話', subs:'我與國中畢業紀念冊的對話.srt', theme:'twilight', art:'lucky8', lead:2,
+  {title:'我與國中畢業紀念冊的對話', ver:'Suno', file:'我與國中畢業紀念冊的對話', subs:'我與國中畢業紀念冊的對話.srt', theme:'yearbook', art:'lucky8', lead:2,
    series:'鋒兄 × 畢業紀念冊', kicker:'排列組合 · 一場神秘對話',
    cast:[['lucky',0,'鯨魚娘','#3f7fd0'],['lucky',1,'咕咕嘎嘎','#3a4250'],['lucky',2,'鋒兄','#b08a4a'],['lucky',3,'塗哥','#7b8794'],
          ['lucky',4,'喵布布','#d9822b'],['lucky',5,'喵白白','#8d97a3'],['lucky',6,'Claude 娘','#d9874e'],['lucky',7,'GPT 娘','#c2b9e9']]},
-  {title:'我與國中畢業紀念冊的對話(英文歌詞)', ver:'Suno v6-mini', file:'我與國中畢業紀念冊的對話(英文歌詞)', subs:'我與國中畢業紀念冊的對話(英文歌詞).srt', theme:'twilight', art:'lucky8', lead:2,
+  {title:'我與國中畢業紀念冊的對話(英文歌詞)', ver:'Suno v6-mini', file:'我與國中畢業紀念冊的對話(英文歌詞)', subs:'我與國中畢業紀念冊的對話(英文歌詞).srt', theme:'yearbook', art:'lucky8', lead:2,
    series:'鋒兄 × 畢業紀念冊', kicker:'A YEARBOOK CONVERSATION · ENGLISH VERSION',
    cast:[['lucky',0,'鯨魚娘','#3f7fd0'],['lucky',1,'咕咕嘎嘎','#3a4250'],['lucky',2,'鋒兄','#b08a4a'],['lucky',3,'塗哥','#7b8794'],
          ['lucky',4,'喵布布','#d9822b'],['lucky',5,'喵白白','#8d97a3'],['lucky',6,'Claude 娘','#d9874e'],['lucky',7,'GPT 娘','#c2b9e9']]},
-  {title:'我與國中畢業紀念冊的對話(日文歌詞)', ver:'Suno v6-mini', file:'我與國中畢業紀念冊的對話(日文歌詞)', subs:'我與國中畢業紀念冊的對話(日文歌詞).srt', theme:'twilight', art:'lucky8', lead:2,
+  {title:'我與國中畢業紀念冊的對話(日文歌詞)', ver:'Suno v6-mini', file:'我與國中畢業紀念冊的對話(日文歌詞)', subs:'我與國中畢業紀念冊的對話(日文歌詞).srt', theme:'yearbook', art:'lucky8', lead:2,
    series:'鋒兄 × 畢業紀念冊', kicker:'排列組合 · 畢業紀念冊 · 日本語版',
    cast:[['lucky',0,'鯨魚娘','#3f7fd0'],['lucky',1,'咕咕嘎嘎','#3a4250'],['lucky',2,'鋒兄','#b08a4a'],['lucky',3,'塗哥','#7b8794'],
          ['lucky',4,'喵布布','#d9822b'],['lucky',5,'喵白白','#8d97a3'],['lucky',6,'Claude 娘','#d9874e'],['lucky',7,'GPT 娘','#c2b9e9']]},
-  {title:'我與國中畢業紀念冊的對話(粵文歌詞)', ver:'Suno v6-mini', file:'我與國中畢業紀念冊的對話(粵文歌詞)', subs:'我與國中畢業紀念冊的對話(粵文歌詞).srt', theme:'twilight', art:'lucky8', lead:2,
+  {title:'我與國中畢業紀念冊的對話(粵文歌詞)', ver:'Suno v6-mini', file:'我與國中畢業紀念冊的對話(粵文歌詞)', subs:'我與國中畢業紀念冊的對話(粵文歌詞).srt', theme:'yearbook', art:'lucky8', lead:2,
    series:'鋒兄 × 畢業紀念冊', kicker:'數字 · 回憶 · 夢想 · 粵語版',
    cast:[['lucky',0,'鯨魚娘','#3f7fd0'],['lucky',1,'咕咕嘎嘎','#3a4250'],['lucky',2,'鋒兄','#b08a4a'],['lucky',3,'塗哥','#7b8794'],
          ['lucky',4,'喵布布','#d9822b'],['lucky',5,'喵白白','#8d97a3'],['lucky',6,'Claude 娘','#d9874e'],['lucky',7,'GPT 娘','#c2b9e9']]},
@@ -244,6 +244,13 @@ const THEMES = {
   summer:   {sky: ['#0b3d74', '#2f8fe0', '#bfeaff'], pastel: ['#fff8dc', '#d6f0ff'], accent: '#ffd23f', accent2: '#ff7b54', cool: '#5fd0ff', deep: '#0b2d55', particle: 'petal'},
   sunrise:  {sky: ['#22164a', '#b8487d', '#ffbf7a'], pastel: ['#fff1e6', '#ffe0ef'], accent: '#ffc35c', accent2: '#ff5f93', cool: '#a99bff', deep: '#2a1640', particle: 'spark'},
   twilight: {sky: ['#050820', '#2b2366', '#d0677a'], pastel: ['#eef0ff', '#ffe6ea'], accent: '#ffd56b', accent2: '#9c7bff', cool: '#62d4ff', deep: '#14123a', particle: 'star'},
+  // 我與國中畢業紀念冊的對話：畢業冊的牛皮紙與午後陽光，整首走暖黃，連暗部也不帶紫
+  yearbook: {sky: ['#4a2e06', '#d99b1d', '#ffeaa8'], pastel: ['#fffdf1', '#ffedbe'], accent: '#ffd63c', accent2: '#ff9227', cool: '#ffc247', deep: '#33210a', particle: 'star',
+             film: ['28,18,4', '48,30,8', '20,12,2'], screen: ['32,20,4', '58,34,8', '44,26,4'],
+             floor: ['26,18,4', '12,8,2'], road: ['46,32,14', '22,15,7'],
+             ink: '34,22,6', shade: '22,14,2', starInk: '#ffe9a8', bkInk: '#ffe3a0', paperDots: '150,110,50',
+             charTint: '40,26,6', charFloor: '46,30,6',
+             pop: ['#ffd23f', '#ff9227', '#fff0b8', '#e8a11c', '#ffb703', '#f7d98a']},
   wind:     {sky: ['#0e3a66', '#49b4ef', '#e8f8ff'], pastel: ['#f3fbff', '#e5fff6'], accent: '#ffe14a', accent2: '#3ec6ff', cool: '#d7f6ff', deep: '#0c2748', particle: 'wind'},
   pit:      {sky: ['#431a6b', '#ff79b8', '#ffe9a8'], pastel: ['#fff3fb', '#eafaff'], accent: '#ff4f9a', accent2: '#31d3c6', cool: '#ffd166', deep: '#2a1146', particle: 'dot'},
   lucky:    {sky: ['#4a0a16', '#c8202f', '#ffd98a'], pastel: ['#fff6e2', '#ffe4e6'], accent: '#ffd23f', accent2: '#ff4d6d', cool: '#ffb703', deep: '#33070f', particle: 'coin'},
@@ -298,6 +305,20 @@ if(!RENDER){
 }
 song.audio = song.file + '.mp3';
 const T = THEMES[song.theme];
+// 鏡頭裡的深色底（膠卷窗、LED 螢幕、地板、歌詞描邊）預設是原本的深藍紫；
+// 主題沒特別寫就沿用，其他歌的畫面不會跟著動。
+const INK = T.ink || '12,10,32';
+const SHADE = T.shade || '6,6,20';
+const FILM = T.film || ['10,12,26', '26,16,40', '8,8,18'];
+const SCREEN = T.screen || ['16,10,34', '38,18,48', '18,8,38'];
+const FLOOR = T.floor || ['10,8,30', '4,4,14'];
+const ROAD = T.road || ['28,32,48', '14,16,26'];
+const STAR_INK = T.starInk || '#cfe3ff';
+const BK_INK = T.bkInk || '#cfe8ff';
+const PAPER_DOTS = T.paperDots || '80,90,140';
+const CHAR_TINT = T.charTint || '7,12,34';
+const CHAR_FLOOR = T.charFloor || '8,14,40';
+const POP_T = T.pop || POP;
 const ART = ARTS[song.art], AW = ART.crop[2], AH = ART.crop[3], FACES = ART.faces;
 // 成員：song.lead 是主唱（預設第一位）；名字未知的成員以編號標示
 const MEMBERS = song.cast.map(([sheet, idx, name, color], i) => ({sheet, idx, name: name || `No.${pad(i + 1)}`, color, img: null, meta: null}));
@@ -583,7 +604,7 @@ function prepare(cover){
   sx.fillStyle = gr; sx.fillRect(0, 0, W, H); C.sky = sky;
   const pastel = mk(W, H), px = pastel.getContext('2d'), pg = px.createLinearGradient(0, 0, W, H);
   pg.addColorStop(0, T.pastel[0]); pg.addColorStop(1, T.pastel[1]); px.fillStyle = pg; px.fillRect(0, 0, W, H);
-  px.fillStyle = 'rgba(80,90,140,.10)';
+  px.fillStyle = `rgba(${PAPER_DOTS},.10)`;
   for(let y = 20; y < H; y += 36) for(let x = 20 + (y/36 % 2)*18; x < W; x += 36){ px.beginPath(); px.arc(x, y, 2.2, 0, Math.PI*2); px.fill(); }
   C.pastel = pastel;
   const vig = mk(W, H), vx = vig.getContext('2d'), vg = vx.createRadialGradient(W/2, H/2, H*.35, W/2, H/2, H*1.05);
@@ -596,7 +617,7 @@ function prepare(cover){
   bx.fillStyle = bg; bx.beginPath(); bx.moveTo(165, 0); bx.lineTo(195, 0); bx.lineTo(360, 1300); bx.lineTo(0, 1300); bx.closePath(); bx.filter = 'blur(6px)'; bx.fill();
   C.beam = beam;
   const floor = mk(W, 420), fx = floor.getContext('2d'), fg = fx.createLinearGradient(0, 0, 0, 420);
-  fg.addColorStop(0, 'rgba(10,8,30,.55)'); fg.addColorStop(1, 'rgba(4,4,14,.96)'); fx.fillStyle = fg; fx.fillRect(0, 0, W, 420);
+  fg.addColorStop(0, `rgba(${FLOOR[0]},.55)`); fg.addColorStop(1, `rgba(${FLOOR[1]},.96)`); fx.fillStyle = fg; fx.fillRect(0, 0, W, 420);
   fx.strokeStyle = 'rgba(255,255,255,.08)'; fx.lineWidth = 2;
   for(let i = -14; i <= 14; i++){ fx.beginPath(); fx.moveTo(W/2 + i*40, 0); fx.lineTo(W/2 + i*260, 420); fx.stroke(); }
   for(let k = 1; k < 9; k++){ const y = 420*Math.pow(k/9, 1.7); fx.beginPath(); fx.moveTo(0, y); fx.lineTo(W, y); fx.stroke(); }
@@ -628,7 +649,7 @@ function particles(t, n, layer = 0, kind = T.particle){
     if(kind === 'star'){
       const tw = .5 + .5*Math.sin(t*(1 + h3*3) + h4*6), x = h1*W, y = h2*H*.8, r = 3 + h3*7;
       g.globalCompositeOperation = 'lighter';
-      glow(x, y, r*3, h4 > .7 ? T.accent : '#cfe3ff', .25 + .6*tw);
+      glow(x, y, r*3, h4 > .7 ? T.accent : STAR_INK, .25 + .6*tw);
       if(h3 > .8){ g.strokeStyle = `rgba(255,255,255,${.5*tw})`; g.lineWidth = 1.5; g.beginPath(); g.moveTo(x - r*2.5, y); g.lineTo(x + r*2.5, y); g.moveTo(x, y - r*2.5); g.lineTo(x, y + r*2.5); g.stroke(); }
     } else if(kind === 'spark'){
       const life = 5 + h3*5, age = frac(t/life + h1), x = h2*W + Math.sin(t*.6 + i)*30, y = H*(1.05 - age*1.25);
@@ -731,7 +752,7 @@ function confetti(t, n, amount = 1){
     const h1 = hash(i*5.3 + 11), h2 = hash(i*8.1 + 3), h3 = hash(i*2.2 + 9), life = 3.5 + h3*2.5, age = frac(t/life + h1);
     const x = h2*W + Math.sin(t*2 + i)*40, y = -40 + age*(H + 80);
     g.save(); g.translate(x, y); g.rotate(t*(2 + h3*4) + i); g.scale(1, Math.cos(t*(3 + h1*4) + i));
-    g.globalAlpha = amount*Math.min(1, (1 - age)*4); g.fillStyle = POP[i % POP.length];
+    g.globalAlpha = amount*Math.min(1, (1 - age)*4); g.fillStyle = POP_T[i % POP_T.length];
     g.fillRect(-7, -4, 14, 8); g.restore();
   }
   g.globalAlpha = 1;
@@ -848,8 +869,8 @@ function karaokeCue(c, t, o, alpha = 1, dy = 0){
       const a = alpha*e; if(a <= 0) continue;
       const fs = u.bk ? s*.72 : s, x = rx + it.x, y = ry + (1 - e)*s*.3;
       g.globalAlpha = a; g.font = jpFont(fs);
-      g.lineWidth = fs*.17; g.strokeStyle = 'rgba(12,10,32,.8)'; g.strokeText(u.t, x, y);
-      g.fillStyle = u.bk ? '#cfe8ff' : '#ffffff'; g.fillText(u.t, x, y);
+      g.lineWidth = fs*.17; g.strokeStyle = `rgba(${INK},.8)`; g.strokeText(u.t, x, y);
+      g.fillStyle = u.bk ? BK_INK : '#ffffff'; g.fillText(u.t, x, y);
       const f = clamp((sung - u.cw)/u.w);
       if(f > 0){
         g.save(); g.beginPath(); g.rect(x - 4, y - fs*1.6, (it.w + 8)*f, fs*2); g.clip();
@@ -869,7 +890,7 @@ function karaokeCue(c, t, o, alpha = 1, dy = 0){
     const zs = fitFont(c.zh, zhFont, LyricText.translationSize(c.jp, s, o.zhSize), o.maxW*1.05);
     g.font = zhFont(zs); const zw = g.measureText(c.zh).width, zx = o.cx - zw/2, zy = y0 + (L.rows.length - 1)*rowH + s*.55 + zs*1.15;
     g.globalAlpha = alpha*easeOut((appear - .15)/.4);
-    g.lineWidth = zs*.18; g.strokeStyle = 'rgba(12,10,32,.75)'; g.strokeText(c.zh, zx, zy);
+    g.lineWidth = zs*.18; g.strokeStyle = `rgba(${INK},.75)`; g.strokeText(c.zh, zx, zy);
     g.fillStyle = 'rgba(255,255,255,.72)'; g.fillText(c.zh, zx, zy);
     g.save(); g.beginPath(); g.rect(zx - 2, zy - zs*1.2, (zw + 4)*prog(c, t), zs*1.6); g.clip(); g.fillStyle = '#ffffff'; g.fillText(c.zh, zx, zy); g.restore();
   }
@@ -885,7 +906,7 @@ function karaoke(t, o){
 }
 function lyricShade(y0, a = .6){
   const gr = g.createLinearGradient(0, y0, 0, H);
-  gr.addColorStop(0, 'rgba(6,6,20,0)'); gr.addColorStop(.55, `rgba(6,6,20,${a})`); gr.addColorStop(1, `rgba(6,6,20,${a})`);
+  gr.addColorStop(0, `rgba(${SHADE},0)`); gr.addColorStop(.55, `rgba(${SHADE},${a})`); gr.addColorStop(1, `rgba(${SHADE},${a})`);
   g.fillStyle = gr; g.fillRect(0, y0, W, H - y0);
 }
 
@@ -1002,7 +1023,7 @@ function shotFilm(t, sh, u){
   g.save();
   g.beginPath(); g.rect(px, 0, pw, H); g.clip();
   const bg = g.createLinearGradient(0, 0, 0, H);
-  bg.addColorStop(0, 'rgba(10,12,26,.92)'); bg.addColorStop(.55, 'rgba(26,16,40,.9)'); bg.addColorStop(1, 'rgba(8,8,18,.96)');
+  bg.addColorStop(0, `rgba(${FILM[0]},.92)`); bg.addColorStop(.55, `rgba(${FILM[1]},.9)`); bg.addColorStop(1, `rgba(${FILM[2]},.96)`);
   g.fillStyle = bg; g.fillRect(px, 0, pw, H);
   const fl = g.createLinearGradient(0, 830, 0, H);
   fl.addColorStop(0, 'rgba(255,255,255,0)'); fl.addColorStop(1, 'rgba(255,255,255,.12)');
@@ -1244,7 +1265,7 @@ function shotStage(t, sh, u){
   // 螢幕裡放實際在跳舞的成員（輪替四位），但整排收在舞台眾人的頭以上。
   // 同一個人若以半透明、差不多的大小疊在自己身後，手臂和頭會變成第二層殘影。
   const sg = g.createLinearGradient(0, sy, 0, sy + shh);
-  sg.addColorStop(0, 'rgba(16,10,34,.96)'); sg.addColorStop(1, 'rgba(38,18,48,.96)');
+  sg.addColorStop(0, `rgba(${SCREEN[0]},.96)`); sg.addColorStop(1, `rgba(${SCREEN[1]},.96)`);
   g.fillStyle = sg; g.fillRect(sx, sy, sw, shh);
   const nMem = MEMBERS.length, nShow = Math.min(4, nMem), base = (Math.floor(t/5)*nShow) % nMem;
   // 特寫的縮放會把這排裁到只剩腳，那些腳掛在畫面上方又會像殘影，所以特寫不畫。
@@ -1255,7 +1276,7 @@ function shotStage(t, sh, u){
     const fit = fitDancer(MEMBERS[m].img, slot);
     drawDancer(m, fit.x, fit.y, fit.h, danceState(m, t, {alt: true, e: .72}));
   }
-  g.fillStyle = 'rgba(18,8,38,.28)'; g.fillRect(sx, sy, sw, shh);      // 螢幕色調
+  g.fillStyle = `rgba(${SCREEN[2]},.28)`; g.fillRect(sx, sy, sw, shh);      // 螢幕色調
   g.fillStyle = 'rgba(0,0,0,.2)';                                      // 掃描線
   for(let y = sy; y < sy + shh; y += 7) g.fillRect(sx, y, sw, 3);
   g.font = `600 20px ${FONT.mono}`; g.fillStyle = 'rgba(255,255,255,.55)';
@@ -1294,7 +1315,7 @@ function shotStage(t, sh, u){
   if(sh.variant === 'break' || sh.variant === 'intro'){
     for(let i = 0; i < 48; i++){
       const lvl = clamp(sample(A.low, t)*.6 + sample(A.mid, t - i*.01)*.5*(.5 + hash(i + Math.floor(t*8)*.01)), .05, 1.2);
-      g.fillStyle = POP[i % POP.length]; g.globalAlpha = .45;
+      g.fillStyle = POP_T[i % POP_T.length]; g.globalAlpha = .45;
       g.fillRect(40 + i*39.5, 700 - lvl*120, 28, lvl*120);
     }
     g.globalAlpha = 1;
@@ -1496,7 +1517,7 @@ function drawBicycle(cx, cy, R, spin, pedal, o = {}){
 // 路面：中央虛線往左捲動，遠處加幾道速度線
 function drawRoad(t, horizon, speed){
   const road = g.createLinearGradient(0, horizon, 0, H);
-  road.addColorStop(0, 'rgba(28,32,48,.92)'); road.addColorStop(1, 'rgba(14,16,26,.98)');
+  road.addColorStop(0, `rgba(${ROAD[0]},.92)`); road.addColorStop(1, `rgba(${ROAD[1]},.98)`);
   g.fillStyle = road; g.fillRect(0, horizon, W, H - horizon);
   g.strokeStyle = 'rgba(255,255,255,.85)'; g.lineWidth = 9;
   const off = (t*speed) % 260;
@@ -1711,7 +1732,7 @@ function shotCharacters(t,sh,u){
   const group=CHARACTER_GROUPS[sh.group], local=t-sh.start, actors=group.members;
   g.drawImage(group.backdrop,0,0);
   const pl=pulse(t), floor=g.createLinearGradient(0,600,0,H);
-  floor.addColorStop(0,'rgba(255,255,255,0)');floor.addColorStop(1,'rgba(8,14,40,.8)');
+  floor.addColorStop(0,'rgba(255,255,255,0)');floor.addColorStop(1,`rgba(${CHAR_FLOOR},.8)`);
   g.fillStyle=floor;g.fillRect(0,450,W,H-450);
   for(let i=0;i<5;i++){
     const x=W*(i+.5)/5, sway=Math.sin(t*.6+i)*240;
@@ -1752,7 +1773,7 @@ function shotCharacters(t,sh,u){
     g.save();g.textAlign='center';g.font=`600 16px ${FONT.mono}`;g.fillStyle='rgba(255,255,255,.65)';
     g.globalAlpha=entry;g.fillText(pad(i+1),x,y+24);g.restore();
   });
-  g.save();g.fillStyle='rgba(9,12,34,.5)';roundRect(42,30,620,96,18);g.fill();
+  g.save();g.fillStyle=`rgba(${CHAR_TINT},.5)`;roundRect(42,30,620,96,18);g.fill();
   g.fillStyle='#fff';g.font=`700 34px ${FONT.zh}`;g.fillText(group.title,66,76);
   g.font=`500 18px ${FONT.mono}`;g.fillStyle=group.colors[1];g.fillText(`CHARACTER PV  ·  ${pad(sh.group+1)} / ${pad(CHARACTER_GROUPS.length)}`,68,106);
   g.textAlign='right';g.font=`600 24px ${FONT.mono}`;g.fillStyle='#fff';g.fillText(`${group.count} MEMBERS`,W-60,74);g.restore();
@@ -1779,7 +1800,7 @@ function titleCard(t){
   if(song.series) stickerText(song.series, W/2, 360, 72, [T.accent, '#ffffff', T.cool, T.accent2], .5, t);
   else logo(W/2, 360, 120, .5, t);
   const size = Math.min(200, 1600/[...song.title].length/.96);
-  stickerText(song.title, W/2, 590, size, POP, 1.1, t);
+  stickerText(song.title, W/2, 590, size, POP_T, 1.1, t);
   const pa = easeBack((t - 1.9)/.5);
   if(pa > 0){
     g.font = `800 34px ${FONT.jp}`; g.letterSpacing = '6px';
@@ -1918,7 +1939,7 @@ async function init(){
     if(group.sheet==='stage') group.matte=await loadImg('assets/ref/stage9-matte.png');
     group.backdrop=mk(W,H);const ctx=group.backdrop.getContext('2d'),gradient=ctx.createLinearGradient(0,0,W,H);
     gradient.addColorStop(0,group.colors[0]);gradient.addColorStop(1,group.colors[1]);ctx.fillStyle=gradient;ctx.fillRect(0,0,W,H);
-    ctx.fillStyle='rgba(7,12,34,.48)';ctx.fillRect(0,0,W,H);
+    ctx.fillStyle=`rgba(${CHAR_TINT},.48)`;ctx.fillRect(0,0,W,H);
   }));
   msg('分析節拍…');
   A = await analyse(buf);
