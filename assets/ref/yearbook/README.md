@@ -11,7 +11,7 @@
 
 第二版歌曲 ID 分別為 `suno-790c9c71`、`suno-de68c226`、`suno-ca32a0f1`、`suno-9bd33601`。所有原文、數字、姓名與用字均保留，不以語音辨識結果改寫。
 
-改配色後重輸出的四支成片放在 `pv/release-2026-11-16/`，GitHub Release 為 `pv-yearbook-gold-2026-11-16`（`35-yearbook-zh.mp4`、`36-yearbook-en.mp4`、`37-yearbook-ja.mp4`、`38-yearbook-yue.mp4`，各約 16.1 Mbps）。音源、字幕、分鏡與逐句時間軸都沒有變，只有主題色不同。
+改配色後重輸出的八支成片放在 `pv/release-2026-11-16/`，GitHub Release 為 `pv-yearbook-gold-2026-11-16`：歌詞 PV 為 `35-yearbook-zh.mp4`、`36-yearbook-en.mp4`、`37-yearbook-ja.mp4`、`38-yearbook-yue.mp4`，全曲人物動畫為同名的 `-characters` 版本，各約 16.1 Mbps。音源、字幕、分鏡與逐句時間軸都沒有變，只有主題色不同。
 
 中文長篇原文保存在 `lyrics-original.txt`，依語句拆成 `lyrics-zh.txt` 的 95 個短句；重建時比較去除空白的全文，確認分段沒有刪改文字。英文、日文、粵文原文分別保存在 `lyrics-en.txt`（92 行）、`lyrics-ja.txt`（108 行）、`lyrics-yue.txt`（109 行）。粵語實際重唱的「五同十八」與跳過兩句，在時間軸再次引用同一組原文行。
 
