@@ -430,8 +430,8 @@
  "anaru": [
   {
    "file": "anaru-0.png",
-   "w": 286,
-   "h": 740,
+   "w": 302,
+   "h": 782,
    "headX": 134,
    "headY": 70,
    "source": [
@@ -442,8 +442,8 @@
   },
   {
    "file": "anaru-1.png",
-   "w": 353,
-   "h": 740,
+   "w": 335,
+   "h": 702,
    "headX": 206,
    "headY": 63,
    "source": [
@@ -454,20 +454,21 @@
   },
   {
    "file": "anaru-2.png",
-   "w": 269,
-   "h": 740,
+   "w": 248,
+   "h": 683,
    "headX": 174,
    "headY": 61,
    "source": [
     731,
     308
    ],
-   "sheet": "anaru6.png"
+   "sheet": "anaru6.png",
+   "intact": true
   },
   {
    "file": "anaru-3.png",
-   "w": 352,
-   "h": 740,
+   "w": 335,
+   "h": 705,
    "headX": 200,
    "headY": 63,
    "source": [
@@ -478,8 +479,8 @@
   },
   {
    "file": "anaru-4.png",
-   "w": 197,
-   "h": 740,
+   "w": 200,
+   "h": 750,
    "headX": 99,
    "headY": 68,
    "source": [
@@ -490,8 +491,8 @@
   },
   {
    "file": "anaru-5.png",
-   "w": 260,
-   "h": 740,
+   "w": 259,
+   "h": 736,
    "headX": 111,
    "headY": 66,
    "source": [
@@ -622,7 +623,8 @@
     574,
     21
    ],
-   "sheet": "kaguya-casual.jpg"
+   "sheet": "kaguya-casual.jpg",
+   "intact": true
   },
   {
    "file": "kaguya-1.png",
