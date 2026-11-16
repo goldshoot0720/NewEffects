@@ -40,7 +40,7 @@ macOS 也可雙擊 `啟動播放器.command`，會在終端機啟動伺服器並
 
 每首歌有自己的配色主題（`pv.js` 的 `THEMES`）。〈我與國中畢業紀念冊的對話〉四語版用 `yearbook`（牛皮紙與午後陽光，天空 `#4a2e06 → #d99b1d → #ffeaa8`、歌詞填色 `#ffd63c → #ff9227`），其餘歌曲沿用原本的 `twilight`、`sunrise`、`lucky` 等。膠卷窗、舞台 LED 螢幕、地板倒影、歌詞描邊與壓暗、騎車路面這些深色底會跟著主題走；主題沒指定時仍是原本的深藍紫，換色不會動到別首。
 
-人物由使用者提供的參考圖去背切出來：把參考圖放進 `assets/ref/`（`rise5.webp` 五人演出服白底、`lineup12.webp` 十二人色條底、`rooftop6.webp`、`stage9.webp`），執行 `node tools/cutout.mjs` 產生 `assets/ref/cast/` 的角色 PNG 與 `cast.json`。每首歌的主視覺與成員在 `pv.js` 的 `ARTS`、`SONGS[].cast` 設定（`lead` 是主唱，預設第一位）：大好きだよって叫ぶんだ 用 RISE 演出服，SUNRISE 用制服，HELLO HERO 用智的隊伍，風の中は走るっきゃないっ！ 用官方 OP 六人（`assets/ref/cast/kaze-*.png`，主視覺 `assets/ref/kaze-cover.jpg`），統一發票頭獎得主… 用招財喵布布八人（見下節），私は、わたしの事が好き。用超かぐや姫！三人（見下節），月に向かって撃て 用月夜十一人（見下節）。角色以切圖分條彎曲、跳躍、壓縮做出跟拍舞動。
+人物由使用者提供的參考圖去背切出來：把參考圖放進 `assets/ref/`（`rise5.webp` 五人演出服白底、`lineup12.webp` 十二人色條底、`rooftop6.webp`、`stage9.webp`），執行 `node tools/cutout.mjs` 產生 `assets/ref/cast/` 的角色 PNG 與 `cast.json`。每首歌的主視覺與成員在 `pv.js` 的 `ARTS`、`SONGS[].cast` 設定（`lead` 是主唱，預設第一位）：大好きだよって叫ぶんだ 用 RISE 演出服，SUNRISE 用制服，HELLO HERO 用智的隊伍，風の中は走るっきゃないっ！ 用官方 OP 六人加單曲封面少女（`assets/ref/cast/kaze-0..6.png`，主視覺 `assets/ref/kaze-cover.jpg`），統一發票頭獎得主… 用招財喵布布八人（見下節），私は、わたしの事が好き。用超かぐや姫！三人（見下節），月に向かって撃て 用月夜十一人（見下節）。角色以切圖分條彎曲、跳躍、壓縮做出跟拍舞動。
 
 ### 超かぐや姫！三人（畫面擷取）
 
@@ -149,6 +149,12 @@ macOS 也可雙擊 `啟動播放器.command`，會在終端機啟動伺服器並
 
 已加入歌詞 PV（編號 49，約 218.67 秒）與第二版播放器，使用使用者提供的 MP3 與 53 段日中雙語字幕。這首是各國貨幣名的唸唱，沿用招財喵布布八人與 `lucky` 主題（紅金、金幣粒子），主唱預設為鋒兄；音檔與字幕均納入 repo。
 
+### 完璧じゃないわたし：前島亜美
+
+已加入歌詞 PV（編號 50，約 216.64 秒）與第二版播放器，為 TV 動畫《才女のお世話》ED 主題曲；使用使用者提供的 MP3 與 42 段日中雙語字幕。人物與同作的 OP「最最最高級のお世話して」共用同一組八位官方立繪（友成伊月、此花雛子、天王寺美麗、都島成香、鶴見静音、大将勝也、朝日花蓮、此花華玄），主視覺 `assets/ref/osewa/group.png`；主題 `perfect` 走薔薇色聚光燈配金邊與火花粒子，與 OP 的學院夜藍區隔，主唱預設為友成伊月。
+
+對時同樣是 `ffmpeg` 轉 16 kHz 單聲道後，用本機 `whisper-cli`（`large-v3-turbo`）取逐字時間戳，再由 `tools/align-lyrics.py` 對齊歌詞、`tools/build-srt.py` 輸出。使用者提供的歌詞少了 C 段四句（「孤独から／救ってくれたヒーロー／どんな日々も／もう怖くないよ」，約 149.7–162.6 秒），三次獨立辨識結果一致，已補進字幕；其餘句子照原文，間奏前的句尾不再拖到下一句。
+
 ### 明日へのBreakShoot：葉山陽和 ver.
 
 已加入歌詞 PV（編號 9）與第二版播放器，使用 `明日へのBreakShoot [葉山陽和ver.].mp3`、35 段日中雙語 `明日へのBreakShoot.srt` 及使用者提供的專輯封面 `assets/ref/breakshoot-cover.png`。十二位人物使用依新參考合圖重製的 `casual` 透明切圖；兩版主唱皆預設為葉山陽和（索引 1），第二版提供十二人的主唱選單，人物 PV 固定使用這組十二人，排成 6×2。音檔與字幕均納入 repo。
@@ -167,11 +173,13 @@ macOS 也可雙擊 `啟動播放器.command`，會在終端機啟動伺服器並
 
 改以內建 imagegen 逐位重製成獨立透明立繪，去除背景、鄰居人物與所有殘片，保留原臉型、髮色、眼睛、表情、姿勢與服裝細節，替換 `assets/ref/cast/stage-0.png`～`stage-8.png`。執行 `node tools/build-stage-remade.mjs` 可由已保存的透明圖重建九張切圖並更新 `cast.json`；舊入口 `node tools/cutout.mjs` 會略過此組舊垂直分割切割。人物 PV 的黃昏段落仍以整張群像 `assets/ref/stage9-matte.png` 側彎呈現，本組切圖只用於素材頁與下載。來源、索引、去背流程及完整提示見 [assets/ref/stage-remade/README.md](assets/ref/stage-remade/README.md)。
 
-### 風の中は走るっきゃないっ！ 六人
+### 風の中は走るっきゃないっ！ 七人（含單曲封面少女）
 
 三月のパンタシア演唱的《生徒会にも穴はある！》片頭曲原本沿用 ED 曲「ぴ」的 anaru 六人（站姿看板圖）。新增 `kaze` 群組，改用官方網站公開的六張 OP 版角色立繪——每張都已單獨去背、六人正在跑步，正好對應歌名；並以使用者提供的單曲封面作為這首歌的背景主視覺（`assets/ref/kaze-cover.jpg`，©むちまろ／講談社・アニプレックス）。
 
-`assets/ref/kaze/op-chara-1.png`～`op-chara-6.png` 為官方原圖，切圖索引沿用 anaru 群組順序（梅／寿子／こころ／たん／有栖／敏深）。執行 `node tools/build-kaze.mjs` 會裁出 `cast/kaze-0.png`～`kaze-5.png`、更新 `cast.json` 並拼出群像 `assets/ref/kaze/group.png`。六張都是跑動姿勢畫，標記 `intact: true` 讓舞者整張畫不拆手腳，避免手臂與腿被撕開。來源與索引對照見 [assets/ref/kaze/README.md](assets/ref/kaze/README.md)。
+`assets/ref/kaze/op-chara-1.png`～`op-chara-6.png` 為官方原圖，切圖索引沿用 anaru 群組順序（梅／寿子／こころ／たん／有栖／敏深）。第七位是使用者另外指定的單曲封面少女（深藍短髮、深藍西裝外套、粉紅圍巾、拿著 SANGATSU PHANTASIA 旗子）：封面只畫到腰際、雙腿被裁掉，因此以內建 imagegen 參照封面重畫成完整全身的跑步立繪，補上裙子下緣、白襪與深藍樂福鞋，原圖與去背結果保存為 `assets/ref/kaze/cover-girl-raw.png`、`cover-girl.png`，提示記在 [assets/ref/kaze/README.md](assets/ref/kaze/README.md)。
+
+執行 `node tools/build-kaze.mjs` 會裁出 `cast/kaze-0.png`～`kaze-6.png`、更新 `cast.json` 並拼出群像 `assets/ref/kaze/group.png`（4×2，第二列三人置中）。七張都是跑動姿勢畫，標記 `intact: true` 讓舞者整張畫不拆手腳，避免手臂與腿被撕開。兩版播放器的主唱選單、人物 PV 與人物圖庫都同步為這七人，預設主唱仍是水之江梅。來源與索引對照見 [assets/ref/kaze/README.md](assets/ref/kaze/README.md)。
 
 ## 人物動畫 PV
 
@@ -179,7 +187,7 @@ macOS 也可雙擊 `啟動播放器.command`，會在終端機啟動伺服器並
 
 - 開啟 `http://127.0.0.1:8765/pv.html?mode=characters` 或從歌詞 PV 按「人物 PV」。也可使用 `serve.sh` 的 8765 埠。
 - 完整歌曲、1920×1080、30 fps；一般歌曲會輪替十二人制服與便服、屋頂六人、RISE 五人演出服、黃昏九人舞台服（每 15 秒換一組），持續到配樂結束，並隨整首歌曲驅動節拍、側擺、微跳、聚光與轉場；招財喵布布則固定用幸運八人這一組。
-- `cast.html` 可檢查與下載全部 102 張透明 PNG，十三組分別為 `casual`（12）、`rooftop`（6）、`idol`（5）、`stage`（9）、`anaru`（6）、`kaze`（6）、`lucky`（8）、`kaguya`（3）、`aiura`（3）、`growup`（10）、`vwest`（17）、`forever`（6）、`tsuki`（11）。這是各組造型切圖數量，包含重複人物。
+- `cast.html` 可檢查與下載全部 103 張透明 PNG，十三組分別為 `casual`（12）、`rooftop`（6）、`idol`（5）、`stage`（9）、`anaru`（6）、`kaze`（7）、`lucky`（8）、`kaguya`（3）、`aiura`（3）、`growup`（10）、`vwest`（17）、`forever`（6）、`tsuki`（11）。這是各組造型切圖數量，包含重複人物。
 - 屋頂與黃昏原圖背景先使用內建 imagegen 分離，透明圖層保存在 `assets/ref/*-matte.png`；切圖工具保留 alpha 並依連通區塊分配人物。去背提示記錄於 [assets/ref/CUTOUTS.md](assets/ref/CUTOUTS.md)。原圖中互相遮擋的部分未補畫；黃昏段落用完整透明群像側彎，保留相連裙襬的接縫。
 - 輸出：`node render-pv.mjs --mode characters --out pv/characters/full`；預設輸出三首完整歌曲 MP4，含音樂淡入淡出。可指定一首歌曲編號，例如 `node render-pv.mjs 1 --mode characters`；需要短片段時使用 `--from` / `--to`。
 - macOS 可加 `--encoder h264_videotoolbox` 使用硬體 H.264 編碼（16 Mbps）；預設仍使用 `libx264`。
@@ -221,7 +229,7 @@ macOS 也可雙擊 `啟動播放器.command`，會在終端機啟動伺服器並
 
 ## 歌曲檔案
 
-本機 MP3 與字幕檔（SRT／LRC）通常不放在這個 repo（見 `.gitignore`）。「風の中は走るっきゃないっ！」、「ぴ [ナナヲアカリ]」、「統一發票頭獎得主鋒兄威力彩頭獎得主塗哥」、「私は、わたしの事が好き。」、「月に向かって撃て」與「声の軌跡」的 MP3 和字幕已納入 repo，供部署版播放及顯示字幕；其他音訊與字幕仍由使用者本機提供。
+本機 MP3 與字幕檔（SRT／LRC）通常不放在這個 repo（見 `.gitignore`）。「風の中は走るっきゃないっ！」、「ぴ [ナナヲアカリ]」、「統一發票頭獎得主鋒兄威力彩頭獎得主塗哥」、「私は、わたしの事が好き。」、「月に向かって撃て」、「声の軌跡」與「完璧じゃないわたし」的 MP3 和字幕已納入 repo，供部署版播放及顯示字幕；其他音訊與字幕仍由使用者本機提供。
 
 「統一發票頭獎得主鋒兄威力彩頭獎得主塗哥」是 Suno 生成的曲子（`v6`，141.6 秒），沒有 YouTube 影片，播放器直接播本機 MP3。它的中文 SRT 是拿歌詞對音訊做強制對齊產生的：`ffmpeg` 轉 16 kHz 單聲道，用本機 `faster-whisper medium` 取詞級時間戳（`language=zh`、`word_timestamps`），再把歌詞逐字對到 ASR 詞上。音訊檔是從 Suno 分享頁的 CDN 取回、以 AES-CTR 解密後轉成 MP3。
 

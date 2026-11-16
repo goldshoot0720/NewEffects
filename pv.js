@@ -46,7 +46,10 @@ const ARTS = {
     faces: [[640, 285]]},
   // 声の軌跡：沒有提供封面，用十二人制服群像當主視覺，再由 voice 主題壓成夜藍
   casual: {src: 'assets/ref/casual-remade/group.png', crop: [0, 0, 1920, 1080],
-    faces: []}
+    faces: []},
+  // 才女のお世話：八張官方立繪由 tools/build-osewa.mjs 去背並拼成學院禮堂群像
+  osewa: {src: 'assets/ref/osewa/group.png', crop: [0, 0, 1920, 1080],
+    faces: [[957, 371], [629, 373], [1285, 373], [411, 196], [259, 393], [972, 165], [1499, 196], [1698, 393]]}
 };
 const SONGS = [
   {title: '大好きだよって叫ぶんだ', ver: '小日向理瀬 ver.', file: '大好きだよって叫ぶんだ [小日向理瀬ver.]',
@@ -61,7 +64,7 @@ const SONGS = [
   {title: '風の中は走るっきゃないっ！', ver: '三月のパンタシア', file: '風の中は走るっきゃないっ！ [三月のパンタシア]',
    subs: '風の中は走るっきゃないっ！.srt', theme: 'wind', art: 'kaze', lead: 0,
    series: '三月のパンタシア', tv: '生徒会にも穴はある', kicker: 'OP',
-   cast: [['kaze', 0, '梅', '#e07a45'], ['kaze', 1, '寿子', '#e0893a'], ['kaze', 2, 'こころ', '#f08aaa'], ['kaze', 3, 'たん', '#6ecf9a'], ['kaze', 4, '有栖', '#7aa2ff'], ['kaze', 5, '敏深', '#d7c4a8']]},
+   cast: [['kaze', 0, '梅', '#e07a45'], ['kaze', 1, '寿子', '#e0893a'], ['kaze', 2, 'こころ', '#f08aaa'], ['kaze', 3, 'たん', '#6ecf9a'], ['kaze', 4, '有栖', '#7aa2ff'], ['kaze', 5, '敏深', '#d7c4a8'], ['kaze', 6, '封面少女', '#f2a3c0']]},
   {title: 'ぴ', ver: 'ナナヲアカリ', file: 'ぴ [ナナヲアカリ]',
    subs: 'ぴ.srt', theme: 'pit', art: 'anaru',
    series: 'ナナヲアカリ', tv: '生徒会にも穴はある', kicker: 'ED',
@@ -253,7 +256,21 @@ const SONGS = [
   {title:'声の軌跡', ver:'Soala', file:'声の軌跡 [Soala]', subs:'声の軌跡.srt', theme:'voice', art:'casual', lead:0, noBike:true,
    series:'真夜中ハートチューン', tv:'真夜中ハートチューン', kicker:'EDテーマ',
    cast:[['casual',4,'理瀬','#f6a531'],['casual',1,'陽和','#ee5b97'],['casual',0,'純華','#2ba6e1'],
-         ['casual',2,'咲希','#3cc39a'],['casual',3,'雪乃','#8d6ad6'],['casual',8,'智','#f0c23a']]}
+         ['casual',2,'咲希','#3cc39a'],['casual',3,'雪乃','#8d6ad6'],['casual',8,'智','#f0c23a']]},
+  {title:'$・¥・€', ver:'ドル・円・ユーロ', file:'$・¥・€', subs:'$・¥・€.srt', theme:'lucky', art:'lucky8', lead:2,
+   series:'マネーソング', kicker:'ドル・円・ユーロ',
+   cast:[['lucky',0,'鯨魚娘','#3f7fd0'],['lucky',1,'咕咕嘎嘎','#3a4250'],['lucky',2,'鋒兄','#b08a4a'],['lucky',3,'塗哥','#7b8794'],
+         ['lucky',4,'喵布布','#d9822b'],['lucky',5,'喵白白','#8d97a3'],['lucky',6,'Claude 娘','#d9874e'],['lucky',7,'GPT 娘','#c2b9e9']]},
+  {title:'完璧じゃないわたし', ver:'前島亜美', file:'完璧じゃないわたし [前島亜美]', subs:'完璧じゃないわたし.srt', theme:'perfect', art:'osewa', lead:0, noBike:true,
+   series:'前島亜美', tv:'才女のお世話', kicker:'EDテーマ',
+   cast:[['osewa',0,'友成伊月','#4a5a78'],['osewa',1,'此花雛子','#e8913f'],['osewa',2,'天王寺美麗','#e8c44a'],
+         ['osewa',3,'都島成香','#8a6ad6'],['osewa',4,'鶴見静音','#4b3f5e'],['osewa',5,'大将勝也','#3f6f4a'],
+         ['osewa',6,'朝日花蓮','#d4674f'],['osewa',7,'此花華玄','#7d2f3c']]},
+  {title:'最最最高級のお世話して', ver:'angela', file:'最最最高級のお世話して [angela]', subs:'最最最高級のお世話して.srt', theme:'osewa', art:'osewa', lead:0, noBike:true,
+   series:'才女のお世話', tv:'才女のお世話', kicker:'OPテーマ',
+   cast:[['osewa',0,'友成伊月','#4a5a78'],['osewa',1,'此花雛子','#e8913f'],['osewa',2,'天王寺美麗','#e8c44a'],
+         ['osewa',3,'都島成香','#8a6ad6'],['osewa',4,'鶴見静音','#4b3f5e'],['osewa',5,'大将勝也','#3f6f4a'],
+         ['osewa',6,'朝日花蓮','#d4674f'],['osewa',7,'此花華玄','#7d2f3c']]}
 ];
 
 // 每首歌一組配色：夏日向日葵、日出、黃昏星空、晴空疾風
@@ -278,7 +295,11 @@ const THEMES = {
   // 月に向かって撃て：深夜藍到月面紫，配瞄準鏡的冷白與擊發紅
   tsuki:    {sky: ['#040a22', '#1b2a68', '#6d5aa6'], pastel: ['#eef3ff', '#ffe7ef'], accent: '#8fd8ff', accent2: '#ff5f7a', cool: '#ffe9a8', deep: '#060a1e', particle: 'star'},
   // 声の軌跡：深夜藍到霧青，配聲音的冷白與一點粉
-  voice:    {sky: ['#040b26', '#153a68', '#6d9bc0'], pastel: ['#eef7ff', '#e6f3ff'], accent: '#7fe3ff', accent2: '#ff9bb5', cool: '#cfe9ff', deep: '#050a1e', particle: 'star'}
+  voice:    {sky: ['#040b26', '#153a68', '#6d9bc0'], pastel: ['#eef7ff', '#e6f3ff'], accent: '#7fe3ff', accent2: '#ff9bb5', cool: '#cfe9ff', deep: '#050a1e', particle: 'star'},
+  // 完璧じゃないわたし：薔薇色的聚光燈配金邊，假面底下才是真心
+  perfect:  {sky: ['#2a0b24', '#a33a63', '#ffd9e2'], pastel: ['#fff6f2', '#ffe3ec'], accent: '#ffd36e', accent2: '#ff6f9c', cool: '#a9e8ff', deep: '#230a1e', particle: 'spark'},
+  // 最最最高級のお世話して：貴皇學院的深夜藍到金色午後，白制服在暗底上最亮
+  osewa:    {sky: ['#0a1330', '#2b3f7d', '#ffd7a1'], pastel: ['#fffaf0', '#ffe8cf'], accent: '#ffd166', accent2: '#ff7a9c', cool: '#bfe3ff', deep: '#0a1024', particle: 'spark'}
 };
 const LOGO = [['B', '#2ba6e1'], ['E', '#f6a531'], ['S', '#ee5b97'], ['T', '#2ba6e1'], [' ', ''], ['4', '#f6a531'], ['U', '#8d6ad6']];
 const POP = ['#ee5b97', '#2ba6e1', '#f6a531', '#8d6ad6', '#3cc39a', '#f08a4b'];
@@ -357,8 +378,8 @@ const BASE_CHARACTER_GROUPS = [
 const CHARACTER_GROUPS = song.cast[0][0] === 'anaru'
   ? [{sheet:'anaru', title:'生徒会六人', src:'assets/ref/anaru6.png', colors:['#49b4ef','#ffe14a'], count:6}]
   : song.cast[0][0] === 'kaze'
-  // 風の中は走るっきゃないっ！：官方 OP 立繪的六人跑步造型
-  ? [{sheet:'kaze', title:'風の中 · 生徒会六人', src:'assets/ref/kaze/group.png', colors:['#3fd0d8','#f7a9c0'], count:6, solo:true}]
+  // 風の中は走るっきゃないっ！：官方 OP 立繪六人＋單曲封面少女的跑步造型
+  ? [{sheet:'kaze', title:'風の中 · 七人（含封面少女）', src:'assets/ref/kaze/group.png', colors:['#3fd0d8','#f7a9c0'], count:7, solo:true}]
   : song.cast[0][0] === 'lucky'
   ? [{sheet:'lucky', title:'招財喵布布 · 幸運八人', src:'assets/ref/lucky8.png', colors:['#c8202f','#ffd98a'], count:8, solo:true}]
   : song.cast[0][0] === 'kaguya'
@@ -373,6 +394,9 @@ const CHARACTER_GROUPS = song.cast[0][0] === 'anaru'
   ? [{sheet:'forever', title:'メモリーズオフ 双想 · 六人', src:'assets/ref/forever/cover.png', colors:['#49b4ef','#ffe9a8'], count:6, solo:true}]
   : song.cast[0][0] === 'tsuki'
   ? [{sheet:'tsuki', title:'月に向かって撃て · 十一人', src:'assets/ref/tsuki-group.png', colors:['#1b2a68','#8fd8ff'], count:11, solo:true}]
+  : song.cast[0][0] === 'osewa'
+  // 才女のお世話：OP 與 ED 共用同一組八位官方立繪
+  ? [{sheet:'osewa', title:'才女のお世話 · 八人', src:'assets/ref/osewa/group.png', colors:['#2b3f7d','#ffd7a1'], count:8, solo:true}]
   : song.art === 'breakshoot'
   ? [{sheet:'casual', title:'Extreme Hearts · 十二人', src:'assets/ref/casual-remade/group.png', colors:['#5cabe0','#f3afd3'], count:12,solo:true}]
   : BASE_CHARACTER_GROUPS;
@@ -1390,6 +1414,9 @@ function shotStage(t, sh, u){
     : O.length >= 7
     ? [{nx:.07, ny:.74, nh:.42, m:O[0]}, {nx:.22, ny:.72, nh:.40, m:O[1]}, {nx:.50, ny:.70, nh:.40, m:O[2]}, {nx:.78, ny:.72, nh:.40, m:O[3]}, {nx:.93, ny:.74, nh:.42, m:O[4]},
        {nx:.36, ny:.90, nh:.52, m:O[5]}, {nx:.64, ny:.90, nh:.52, m:O[6]}, {nx:.50, ny:1, nh:.64, m:LEAD}]
+    : O.length === 6
+    ? [{nx:.14, ny:.74, nh:.42, m:O[0]}, {nx:.34, ny:.72, nh:.40, m:O[1]}, {nx:.66, ny:.72, nh:.40, m:O[2]}, {nx:.86, ny:.74, nh:.42, m:O[3]},
+       {nx:.27, ny:.90, nh:.52, m:O[4]}, {nx:.73, ny:.90, nh:.52, m:O[5]}, {nx:.50, ny:1, nh:.64, m:LEAD}]
     : O.length >= 5
     ? [{nx:.28, ny:.74, nh:.46, m:O[0]}, {nx:.50, ny:.70, nh:.44, m:O[1]}, {nx:.72, ny:.74, nh:.46, m:O[2]},
        {nx:.15, ny:.90, nh:.54, m:O[3]}, {nx:.85, ny:.90, nh:.54, m:O[4]}, {nx:.50, ny:1, nh:.64, m:LEAD}]

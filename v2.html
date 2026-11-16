@@ -499,7 +499,10 @@ const DEFAULT_SONGS = [
   {id:'suno-34fc1d29',title:'鋒兄的傳奇人生(粵文歌詞)',audio:'鋒兄的傳奇人生(粵文歌詞).mp3',subs:'鋒兄的傳奇人生(粵文歌詞).srt',cover:'assets/ref/lucky8.png',lead:2,cast:'lucky'},
   {id:'31bvn6GUtaI',title:'Forever＆ever [彩音]',audio:'Forever＆ever.mp3',subs:'Forever＆ever.srt',fill:'assets/ref/forever/fill-ja.json',cover:'assets/ref/forever/cover.png',lead:3,cast:'forever'},
   {id:'tsuki-sniper',title:'月に向かって撃て [星街すいせい]',audio:'月に向かって撃て [星街すいせい].mp3',subs:'月に向かって撃て.srt',cover:'assets/ref/tsuki-cover.jpg',lead:0,cast:'tsuki'},
-  {id:'soala-koe',title:'声の軌跡 [Soala]',audio:'声の軌跡 [Soala].mp3',subs:'声の軌跡.srt',cover:'assets/ref/casual-remade/group.png',lead:0,cast:'best4u'}
+  {id:'soala-koe',title:'声の軌跡 [Soala]',audio:'声の軌跡 [Soala].mp3',subs:'声の軌跡.srt',cover:'assets/ref/casual-remade/group.png',lead:0,cast:'best4u'},
+  {id:'money-song',title:'$・¥・€ [マネーソング]',audio:'$・¥・€.mp3',subs:'$・¥・€.srt',cover:'assets/ref/lucky8.png',lead:2,cast:'lucky'},
+  {id:'mashima-kanpeki',title:'完璧じゃないわたし [前島亜美]',audio:'完璧じゃないわたし [前島亜美].mp3',subs:'完璧じゃないわたし.srt',cover:'assets/ref/osewa/group.png',lead:0,cast:'osewa'},
+  {id:'osewa-op',title:'最最最高級のお世話して [angela]',audio:'最最最高級のお世話して [angela].mp3',subs:'最最最高級のお世話して.srt',cover:'assets/ref/osewa/group.png',lead:0,cast:'osewa'}
 ];
 // 每首歌的字幕／音訊檔放在同一個資料夾，執行時才讀取
 const cfgOf = id => DEFAULT_SONGS.find(d => d.id === id) || {};
@@ -638,7 +641,7 @@ const LEAD_NAMES = {
   extreme: ['前原純華', '葉山陽和', '小鷹咲希', '橘雪乃', '小日向理瀬', 'ミシェル・イェーガー', 'アシュリー・ヴァンクロフト', '桜井羽月', '御社智', '末宗祐里子', '本田千尋', 'ティーナ・メルキース'],
   forever: ['フェルスター・マリー・暁空', '田中結', '北方和音', '洲宮紗絵', '天羽ねね', '中森雪加'],
   tsuki: ['Arisu Yambuki', 'Rikka Inohana', 'Nene Himekawa', 'Iko Kirino', 'Shinobu Uzuki', 'Lemon Ando', 'Aiko', 'Ao Momotose', 'HIZUMI', 'Riina Yambuki', 'Mito Yambuki'],
-  kaze: ['水之江梅', '古都吹寿子', '陸奥こまろ', '尾鳥たん', '照井有栖', '平塚敏深']
+  kaze: ['水之江梅', '古都吹寿子', '陸奥こまろ', '尾鳥たん', '照井有栖', '平塚敏深', '封面少女']
 };
 function syncLeadMenu(id){
   const names = LEAD_NAMES[cfgOf(id).cast] || LEAD_NAMES.best4u;

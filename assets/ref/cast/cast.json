@@ -1499,6 +1499,180 @@
    "sheet": "kaze/op-chara-2.png",
    "name": "平塚敏深",
    "intact": true
+  },
+  {
+   "file": "kaze-6.png",
+   "w": 410,
+   "h": 916,
+   "headX": 106,
+   "headY": 98,
+   "source": [
+    258,
+    174
+   ],
+   "sheet": "kaze/cover-girl.png",
+   "name": "封面少女",
+   "intact": true
+  }
+ ],
+ "fx": [
+  {
+   "file": "fx-0.png",
+   "w": 471,
+   "h": 1242,
+   "headX": 200,
+   "headY": 124,
+   "source": [
+    293,
+    42
+   ],
+   "sheet": "fx-ref",
+   "name": "福賀くるみ"
+  },
+  {
+   "file": "fx-1.png",
+   "w": 655,
+   "h": 1248,
+   "headX": 238,
+   "headY": 125,
+   "source": [
+    198,
+    23
+   ],
+   "sheet": "fx-ref",
+   "name": "小金萌智子"
+  },
+  {
+   "file": "fx-2.png",
+   "w": 339,
+   "h": 1171,
+   "headX": 180,
+   "headY": 117,
+   "source": [
+    316,
+    96
+   ],
+   "sheet": "fx-ref",
+   "name": "山師芽吹"
+  },
+  {
+   "file": "fx-3.png",
+   "w": 473,
+   "h": 1207,
+   "headX": 236,
+   "headY": 121,
+   "source": [
+    267,
+    75
+   ],
+   "sheet": "fx-ref",
+   "name": "高根やす子"
+  }
+ ],
+ "osewa": [
+  {
+   "file": "osewa-0.png",
+   "w": 272,
+   "h": 976,
+   "headX": 132,
+   "headY": 94,
+   "source": [
+    347,
+    21
+   ],
+   "sheet": "osewa/01-itsuki.png",
+   "name": "友成伊月"
+  },
+  {
+   "file": "osewa-1.png",
+   "w": 385,
+   "h": 976,
+   "headX": 209,
+   "headY": 94,
+   "source": [
+    237,
+    62
+   ],
+   "sheet": "osewa/02-hinako.jpg",
+   "name": "此花雛子"
+  },
+  {
+   "file": "osewa-2.png",
+   "w": 408,
+   "h": 976,
+   "headX": 180,
+   "headY": 94,
+   "source": [
+    259,
+    30
+   ],
+   "sheet": "osewa/03-mirei.jpg",
+   "name": "天王寺美麗"
+  },
+  {
+   "file": "osewa-3.png",
+   "w": 307,
+   "h": 976,
+   "headX": 124,
+   "headY": 94,
+   "source": [
+    352,
+    61
+   ],
+   "sheet": "osewa/04-narika.jpg",
+   "name": "都島成香"
+  },
+  {
+   "file": "osewa-4.png",
+   "w": 424,
+   "h": 976,
+   "headX": 247,
+   "headY": 94,
+   "source": [
+    179,
+    19
+   ],
+   "sheet": "osewa/05-shizune.jpg",
+   "name": "鶴見静音"
+  },
+  {
+   "file": "osewa-5.png",
+   "w": 338,
+   "h": 976,
+   "headX": 186,
+   "headY": 94,
+   "source": [
+    261,
+    0
+   ],
+   "sheet": "osewa/06-taisho.png",
+   "name": "大将勝也"
+  },
+  {
+   "file": "osewa-6.png",
+   "w": 399,
+   "h": 976,
+   "headX": 214,
+   "headY": 94,
+   "source": [
+    220,
+    47
+   ],
+   "sheet": "osewa/07-karen.jpg",
+   "name": "朝日花蓮"
+  },
+  {
+   "file": "osewa-7.png",
+   "w": 382,
+   "h": 976,
+   "headX": 200,
+   "headY": 94,
+   "source": [
+    231,
+    0
+   ],
+   "sheet": "osewa/08-kagen.png",
+   "name": "此花華玄"
   }
  ]
 }
