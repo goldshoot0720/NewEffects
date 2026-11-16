@@ -1414,5 +1414,91 @@
    "sheet": "tsuki-ref",
    "name": "Mito Yambuki"
   }
+ ],
+ "kaze": [
+  {
+   "file": "kaze-0.png",
+   "w": 456,
+   "h": 916,
+   "headX": 153,
+   "headY": 98,
+   "source": [
+    1592,
+    226
+   ],
+   "sheet": "kaze/op-chara-3.png",
+   "name": "水之江梅",
+   "intact": true
+  },
+  {
+   "file": "kaze-1.png",
+   "w": 656,
+   "h": 916,
+   "headX": 437,
+   "headY": 98,
+   "source": [
+    712,
+    321
+   ],
+   "sheet": "kaze/op-chara-1.png",
+   "name": "古都吹寿子",
+   "intact": true
+  },
+  {
+   "file": "kaze-2.png",
+   "w": 484,
+   "h": 898,
+   "headX": 135,
+   "headY": 96,
+   "source": [
+    852,
+    156
+   ],
+   "sheet": "kaze/op-chara-5.png",
+   "name": "陸奥こまろ",
+   "intact": true
+  },
+  {
+   "file": "kaze-3.png",
+   "w": 300,
+   "h": 780,
+   "headX": 142,
+   "headY": 84,
+   "source": [
+    1902,
+    342
+   ],
+   "sheet": "kaze/op-chara-6.png",
+   "name": "尾鳥たん",
+   "intact": true
+  },
+  {
+   "file": "kaze-4.png",
+   "w": 352,
+   "h": 848,
+   "headX": 155,
+   "headY": 91,
+   "source": [
+    694,
+    320
+   ],
+   "sheet": "kaze/op-chara-4.png",
+   "name": "照井有栖",
+   "intact": true
+  },
+  {
+   "file": "kaze-5.png",
+   "w": 365,
+   "h": 916,
+   "headX": 81,
+   "headY": 98,
+   "source": [
+    1298,
+    68
+   ],
+   "sheet": "kaze/op-chara-2.png",
+   "name": "平塚敏深",
+   "intact": true
+  }
  ]
 }

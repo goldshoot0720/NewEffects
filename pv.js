@@ -27,6 +27,9 @@ const ARTS = {
     faces: [[195, 165], [345, 200], [510, 195], [690, 195], [860, 215], [1060, 205], [1235, 215], [1400, 205], [1580, 190]]},
   anaru: {src: 'assets/ref/anaru6.png', crop: [0, 0, 1920, 1080],
     faces: [[181, 369], [588, 377], [919, 402], [1216, 372], [1486, 367], [1726, 380]]},
+  // 風の中は走るっきゃないっ！：使用者提供的單曲封面（©むちまろ／講談社・アニプレックス）
+  kaze: {src: 'assets/ref/kaze-cover.jpg', crop: [0, 0, 1279, 720],
+    faces: [[375, 170]]},
   // 招財喵布布八人：由 tools/build-group.mjs 把 tools/cutout-solo.mjs 的切圖拼成群像
   lucky8: {src: 'assets/ref/lucky8.png', crop: [0, 0, 1920, 1080],
     faces: [[234, 111], [720, 104], [718, 644], [1195, 644], [1198, 104], [1679, 105], [244, 644], [1674, 644]]},
@@ -40,7 +43,10 @@ const ARTS = {
     faces: [[250, 115], [500, 120], [195, 360], [400, 310], [360, 500], [165, 590]]},
   // 月に向かって撃て：使用者提供的官方 MV 截圖，已裁掉底部播放器 UI
   tsuki: {src: 'assets/ref/tsuki-cover.jpg', crop: [0, 0, 1279, 600],
-    faces: [[640, 285]]}
+    faces: [[640, 285]]},
+  // 声の軌跡：沒有提供封面，用十二人制服群像當主視覺，再由 voice 主題壓成夜藍
+  casual: {src: 'assets/ref/casual-remade/group.png', crop: [0, 0, 1920, 1080],
+    faces: []}
 };
 const SONGS = [
   {title: '大好きだよって叫ぶんだ', ver: '小日向理瀬 ver.', file: '大好きだよって叫ぶんだ [小日向理瀬ver.]',
@@ -53,9 +59,9 @@ const SONGS = [
    subs: 'Subtitle_これまでもこれからも　変わらずいるよヨ...る_1790795207681.srt', theme: 'twilight', art: 'stage',
    cast: [['casual', 8, '智', '#f0c23a'], ['casual', 7, '羽月', '#e0524f'], ['casual', 11, 'ティーナ', '#79c5a3'], ['casual', 9, '祐里子', '#f4a6b8'], ['casual', 10, '千尋', '#2ba6e1']]},
   {title: '風の中は走るっきゃないっ！', ver: '三月のパンタシア', file: '風の中は走るっきゃないっ！ [三月のパンタシア]',
-   subs: '風の中は走るっきゃないっ！.srt', theme: 'wind', art: 'anaru',
+   subs: '風の中は走るっきゃないっ！.srt', theme: 'wind', art: 'kaze', lead: 0,
    series: '三月のパンタシア', kicker: 'TVアニメ「生徒会にも穴はある！」OP',
-   cast: [['anaru', 0, '梅', '#e07a45'], ['anaru', 1, '寿子', '#e0893a'], ['anaru', 2, 'こころ', '#f08aaa'], ['anaru', 3, 'たん', '#6ecf9a'], ['anaru', 4, '有栖', '#7aa2ff'], ['anaru', 5, '敏深', '#d7c4a8']]},
+   cast: [['kaze', 0, '梅', '#e07a45'], ['kaze', 1, '寿子', '#e0893a'], ['kaze', 2, 'こころ', '#f08aaa'], ['kaze', 3, 'たん', '#6ecf9a'], ['kaze', 4, '有栖', '#7aa2ff'], ['kaze', 5, '敏深', '#d7c4a8']]},
   {title: 'ぴ', ver: 'ナナヲアカリ', file: 'ぴ [ナナヲアカリ]',
    subs: 'ぴ.srt', theme: 'pit', art: 'anaru',
    series: 'ナナヲアカリ', kicker: 'TVアニメ「生徒会にも穴はある！」ED',
@@ -243,7 +249,11 @@ const SONGS = [
    cast:[['tsuki',0,'Arisu Yambuki','#e8e4d8'],['tsuki',1,'Rikka Inohana','#b97a4a'],['tsuki',2,'Nene Himekawa','#f2a7c3'],
          ['tsuki',3,'Iko Kirino','#d8d8e8'],['tsuki',4,'Shinobu Uzuki','#d94a5a'],['tsuki',5,'Lemon Ando','#e8d36a'],
          ['tsuki',6,'Aiko','#3f6fd0'],['tsuki',7,'Ao Momotose','#d94a6a'],['tsuki',8,'HIZUMI','#8fd14f'],
-         ['tsuki',9,'Riina Yambuki','#8d6ad6'],['tsuki',10,'Mito Yambuki','#f0c23a']]}
+         ['tsuki',9,'Riina Yambuki','#8d6ad6'],['tsuki',10,'Mito Yambuki','#f0c23a']]},
+  {title:'声の軌跡', ver:'Soala', file:'声の軌跡 [Soala]', subs:'声の軌跡.srt', theme:'voice', art:'casual', lead:0, noBike:true,
+   series:'真夜中ハートチューン', kicker:'TVアニメ「真夜中ハートチューン」EDテーマ',
+   cast:[['casual',4,'理瀬','#f6a531'],['casual',1,'陽和','#ee5b97'],['casual',0,'純華','#2ba6e1'],
+         ['casual',2,'咲希','#3cc39a'],['casual',3,'雪乃','#8d6ad6'],['casual',8,'智','#f0c23a']]}
 ];
 
 // 每首歌一組配色：夏日向日葵、日出、黃昏星空、晴空疾風
@@ -266,7 +276,9 @@ const THEMES = {
   // 超かぐや姫！：祭典夜的紫藍到燈籠橘，配上升的燈籠光點
   kaguya:   {sky: ['#120e34', '#5a2472', '#ffb45e'], pastel: ['#fff2f8', '#ffe9d2'], accent: '#ffcf6a', accent2: '#ff7fae', cool: '#9ad7ff', deep: '#1a0f33', particle: 'lantern'},
   // 月に向かって撃て：深夜藍到月面紫，配瞄準鏡的冷白與擊發紅
-  tsuki:    {sky: ['#040a22', '#1b2a68', '#6d5aa6'], pastel: ['#eef3ff', '#ffe7ef'], accent: '#8fd8ff', accent2: '#ff5f7a', cool: '#ffe9a8', deep: '#060a1e', particle: 'star'}
+  tsuki:    {sky: ['#040a22', '#1b2a68', '#6d5aa6'], pastel: ['#eef3ff', '#ffe7ef'], accent: '#8fd8ff', accent2: '#ff5f7a', cool: '#ffe9a8', deep: '#060a1e', particle: 'star'},
+  // 声の軌跡：深夜藍到霧青，配聲音的冷白與一點粉
+  voice:    {sky: ['#040b26', '#153a68', '#6d9bc0'], pastel: ['#eef7ff', '#e6f3ff'], accent: '#7fe3ff', accent2: '#ff9bb5', cool: '#cfe9ff', deep: '#050a1e', particle: 'star'}
 };
 const LOGO = [['B', '#2ba6e1'], ['E', '#f6a531'], ['S', '#ee5b97'], ['T', '#2ba6e1'], [' ', ''], ['4', '#f6a531'], ['U', '#8d6ad6']];
 const POP = ['#ee5b97', '#2ba6e1', '#f6a531', '#8d6ad6', '#3cc39a', '#f08a4b'];
@@ -344,6 +356,9 @@ const BASE_CHARACTER_GROUPS = [
 ];
 const CHARACTER_GROUPS = song.cast[0][0] === 'anaru'
   ? [{sheet:'anaru', title:'生徒会六人', src:'assets/ref/anaru6.png', colors:['#49b4ef','#ffe14a'], count:6}]
+  : song.cast[0][0] === 'kaze'
+  // 風の中は走るっきゃないっ！：官方 OP 立繪的六人跑步造型
+  ? [{sheet:'kaze', title:'風の中 · 生徒会六人', src:'assets/ref/kaze/group.png', colors:['#3fd0d8','#f7a9c0'], count:6, solo:true}]
   : song.cast[0][0] === 'lucky'
   ? [{sheet:'lucky', title:'招財喵布布 · 幸運八人', src:'assets/ref/lucky8.png', colors:['#c8202f','#ffd98a'], count:8, solo:true}]
   : song.cast[0][0] === 'kaguya'
@@ -557,7 +572,18 @@ function buildShots(){
   // 字幕比句子的開始早 0.25 秒出現。畫面從這句字幕出現切進來，到下一句字幕出現切走。
   // 分鏡數仍用句子本身的長度，避免提早開鏡把後面的舞台樣式整段錯開。
   const showAt = t => Math.max(0, t - .25);
-  if(first.start > 1.2) add('stage', 0, showAt(first.start), {variant: 'intro'});
+  if(first.start > 1.2){
+    const introEnd = showAt(first.start);
+    if(introEnd > 20){
+      // 四十幾秒的前奏不要同一個舞台撐到底，拆成舞台／膠卷輪替
+      const chunks = Math.max(2, Math.ceil(introEnd / 10));
+      for(let k = 0; k < chunks; k++){
+        const s = introEnd*k/chunks, e = introEnd*(k + 1)/chunks;
+        if(k % 2 === 0) add('stage', s, e, {variant: ['intro', 'wide', 'close', 'screen'][k % 4]});
+        else add('film', s, e, {rotationOffset: k*2});
+      }
+    } else add('stage', 0, introEnd, {variant: 'intro'});
+  }
   cues.forEach((c, i) => {
     const next = cues[i + 1];
     const vis = showAt(c.start);
@@ -592,6 +618,14 @@ function buildShots(){
       // 空檔收到下一句字幕出現為止，字幕和畫面一起換。
       if(gap > 1.5 && gap <= 2.5 && prevShot?.type === 'typo' && c.sec?.label === 'B-MELO' && next.sec?.label === 'B-MELO'){
         prevShot.end = gapEnd;
+      } else if(gap > 20){
+        // 長間奏不要同一個鏡頭撐 50 秒：拆成 10 秒左右的舞台／膠卷輪替
+        const chunks = Math.max(2, Math.ceil(gap / 10));
+        for(let k = 0; k < chunks; k++){
+          const s = c.end + gap*k/chunks, e = c.end + gap*(k + 1)/chunks;
+          if(k % 2 === 0) add('stage', s, e, {variant: ['wide', 'close', 'screen', 'close2'][k % 4]});
+          else add('film', s, e, {rotationOffset: k*2});
+        }
       } else if(gap > 4) add(song.noBike ? 'stage' : 'bike', c.end, gapEnd, song.noBike ? {variant: 'wide'} : {});
       else add('stage', c.end, gapEnd, {variant: 'break'});
     }
@@ -1753,7 +1787,7 @@ function shotCharacters(t,sh,u){
     light.addColorStop(0,'rgba(255,255,255,.16)');light.addColorStop(1,'rgba(255,255,255,0)');
     g.fillStyle=light;g.beginPath();g.moveTo(x-6,0);g.lineTo(x+6,0);g.lineTo(x+sway+130,900);g.lineTo(x+sway-130,900);g.closePath();g.fill();
   }
-  const sizes={casual:[1920,1080],rooftop:[1536,1024],idol:[1536,1024],stage:[1774,887],anaru:[1920,1080],lucky:[1920,1080],kaguya:[1920,1080],aiura:[1920,1080],growup:[1920,1080],vwest:[1920,1080],forever:[1920,1080],tsuki:[1920,1080]};
+  const sizes={casual:[1920,1080],rooftop:[1536,1024],idol:[1536,1024],stage:[1774,887],anaru:[1920,1080],lucky:[1920,1080],kaguya:[1920,1080],aiura:[1920,1080],growup:[1920,1080],vwest:[1920,1080],forever:[1920,1080],tsuki:[1920,1080],kaze:[1920,1080]};
   const [sourceW,sourceH]=sizes[group.sheet] || [1920,1080],scale=Math.min((W-160)/sourceW,740/sourceH);
   const originX=(W-sourceW*scale)/2,originY=150;
   if(group.matte){
