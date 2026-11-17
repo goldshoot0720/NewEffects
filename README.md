@@ -42,12 +42,13 @@ macOS 也可雙擊 `啟動播放器.command`，會在終端機啟動伺服器並
 
 人物由使用者提供的參考圖去背切出來：把參考圖放進 `assets/ref/`（`rise5.webp` 五人演出服白底、`lineup12.webp` 十二人色條底、`rooftop6.webp`、`stage9.webp`），執行 `node tools/cutout.mjs` 產生 `assets/ref/cast/` 的角色 PNG 與 `cast.json`。每首歌的主視覺與成員在 `pv.js` 的 `ARTS`、`SONGS[].cast` 設定（`lead` 是主唱，預設第一位）：大好きだよって叫ぶんだ 用 RISE 演出服，SUNRISE 用制服，HELLO HERO 用智的隊伍，風の中は走るっきゃないっ！ 用官方 OP 六人加單曲封面少女（`assets/ref/cast/kaze-0..6.png`，主視覺 `assets/ref/kaze-cover.jpg`），統一發票頭獎得主… 用招財喵布布八人（見下節），私は、わたしの事が好き。用超かぐや姫！三人（見下節），月に向かって撃て 用月夜十一人（見下節）。角色以切圖分條彎曲、跳躍、壓縮做出跟拍舞動。
 
-### 超かぐや姫！三人（畫面擷取）
+### 超かぐや姫！三人（畫面擷取後重畫）
 
-這組沒有立繪，人物是從使用者提供的歌詞影片定格裡取下來的，走第三條工具鏈：
+這組沒有官方立繪，人物是從使用者提供的歌詞影片定格裡取下來的。最早的切圖直接沿用定格，畫面邊緣把かぐや與ツキ的腳、彩葉的前腳與手臂裁掉了，PV 與圖鑑裡都「沒有手沒有腳」，因此改用 imagegen 依原圖重畫全身立繪：
 
-- `tools/matte-vision.py` 先對 `assets/ref/kaguya-casual.jpg`（かぐや 黑色連身裙）、`kaguya-beach.jpg`（彩葉）、`kaguya-fox.jpg`（ツキ）產生 `*-matte.png` 灰階前景遮罩。
-- `python3 tools/cutout-kaguya.py` 依遮罩分配角色、避開燒進畫面的字幕帶，輸出 `assets/ref/cast/kaguya-0.png`～`kaguya-2.png`，併入 `cast.json` 的 `kaguya` 群組，並把三張切圖拼成 1920×1080 的群像主視覺 `assets/ref/kaguya-group.png`。
+- 原圖保留在 `assets/ref/kaguya-casual.jpg`（かぐや 黑色連身裙）、`kaguya-beach.jpg`（彩葉）、`kaguya-fox.jpg`（ツキ），`tools/matte-vision.py` 產生的 `*-matte.png` 是最早切圖用的遮罩，留作對照。
+- 重畫結果放在 `assets/ref/kaguya-remade/`：`generated-N.png` 是模型原圖（棋盤格底色是燒進圖裡的），`matte-N.png` 是 Vision 前景遮罩，`transparent-N.png` 是兩者合成的透明立繪。
+- `python3 tools/build-kaguya-remade.py` 裁透明邊、加 8px 邊距，輸出 `assets/ref/cast/kaguya-0.png`～`kaguya-2.png`（三張都標 `intact`，因為是已經擺好姿勢的舉手／跑步／彈鍵盤，拆手腳會撕裂），更新 `cast.json` 的 `kaguya` 群組，並拼成 1920×1080 群像主視覺 `assets/ref/kaguya-group.png`。
 - 這組只有三個人，PV 的舞台分鏡會自動排成「主唱中央、左右各一位」的三人隊形（`pv.js` 的 `stage` 鏡頭對五人以下有專用配置）。
 
 ### 招財喵布布八人（單張立繪）

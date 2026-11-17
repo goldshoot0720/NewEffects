@@ -655,41 +655,44 @@
  "kaguya": [
   {
    "file": "kaguya-0.png",
-   "w": 855,
-   "h": 1059,
-   "headX": 772,
-   "headY": 95,
+   "w": 939,
+   "h": 1380,
+   "headX": 815,
+   "headY": 124,
    "source": [
     574,
     21
    ],
-   "sheet": "kaguya-casual.jpg",
+   "sheet": "kaguya-remade",
+   "name": "かぐや",
    "intact": true
   },
   {
    "file": "kaguya-1.png",
-   "w": 555,
-   "h": 775,
-   "headX": 302,
-   "headY": 69,
+   "w": 826,
+   "h": 1078,
+   "headX": 426,
+   "headY": 97,
    "source": [
     1365,
     265
    ],
-   "sheet": "kaguya-beach.jpg",
+   "sheet": "kaguya-remade",
+   "name": "彩葉",
    "intact": true
   },
   {
    "file": "kaguya-2.png",
-   "w": 596,
-   "h": 818,
-   "headX": 290,
-   "headY": 73,
+   "w": 815,
+   "h": 1426,
+   "headX": 358,
+   "headY": 128,
    "source": [
     1324,
     175
    ],
-   "sheet": "kaguya-fox.jpg",
+   "sheet": "kaguya-remade",
+   "name": "ツキ",
    "intact": true
   }
  ],
