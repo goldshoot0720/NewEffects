@@ -2166,10 +2166,153 @@ async function renderAll(){
   await post('done', '');
 }
 function preview(buf){
-  const audioURL=URL.createObjectURL(new Blob([buf],{type:'audio/mpeg'}));
-  const audio = new Audio(audioURL);
+  // 以前用 Blob 交給 <audio> 邊播邊解 MP3。畫面每格都在畫 1920×1080，Firefox 的解碼會被主執行緒卡住，音樂就一陣有一陣無。
+  // 這裡先把整首解成 PCM，交給音訊執行緒的 AudioBuffer 播放，畫面再忙也不會把聲音切掉。
+  const ctx = new (window.AudioContext || window.webkitAudioContext)({latencyHint:'playback'});
+  const master = ctx.createGain();
+  master.connect(ctx.destination);
+  const listeners = {};
+  let buffer = null, source = null, offset = 0, startedAt = 0, playing = false, rate = 1, volume = 1, muted = false;
+  const decodePromise = ctx.decodeAudioData(buf.slice(0));
+  let playToken = 0;
+  const fire = type => {
+    const fn = audio['on' + type];
+    if(typeof fn === 'function') fn.call(audio);
+    for(const f of [...(listeners[type] || [])]) f();
+  };
+  const applyGain = () => { master.gain.value = muted ? 0 : volume; };
+  const stopSource = () => {
+    const src = source;
+    source = null;
+    if(!src) return;
+    src.onended = null;
+    try{ src.stop(); }catch{}
+    try{ src.disconnect(); }catch{}
+  };
+  const position = () => {
+    if(!playing || !buffer) return offset;
+    return Math.min(buffer.duration, offset + (ctx.currentTime - startedAt) * rate);
+  };
+  // 播到結尾再 start 會丟 InvalidStateError。剩下不到一格就當作已經結束。
+  const startSource = pos => {
+    stopSource();
+    const end = buffer.duration;
+    offset = Math.min(Math.max(pos, 0), end);
+    if(end - offset < 0.03){
+      offset = end;
+      playing = false;
+      audio.paused = true;
+      return false;
+    }
+    const src = ctx.createBufferSource();
+    src.buffer = buffer;
+    src.playbackRate.value = rate;
+    src.connect(master);
+    const when = ctx.currentTime;
+    src.onended = () => {
+      if(src !== source) return;
+      offset = end;
+      playing = false;
+      audio.paused = true;
+      source = null;
+      fire('pause');
+    };
+    source = src;
+    startedAt = when;
+    try{ src.start(when, offset); }
+    catch(e){
+      source = null;
+      playing = false;
+      audio.paused = true;
+      return false;
+    }
+    playing = true;
+    audio.paused = false;
+    return true;
+  };
+  const audio = {
+    paused: true,
+    readyState: 0,
+    onplay: null,
+    onpause: null,
+    addEventListener(type, fn, opts){
+      const list = listeners[type] || (listeners[type] = []);
+      const wrap = () => {
+        if(opts && opts.once){
+          const i = list.indexOf(wrap);
+          if(i >= 0) list.splice(i, 1);
+        }
+        fn();
+      };
+      list.push(wrap);
+    },
+    play(){
+      const token = ++playToken;
+      return decodePromise.then(async ab => {
+        if(token !== playToken) return;
+        buffer = buffer || ab;
+        let state;
+        try{
+          state = await Promise.race([
+            ctx.resume().then(() => ctx.state),
+            new Promise(resolve => setTimeout(() => resolve('timeout'), 400))
+          ]);
+        }catch(e){ state = e && e.name; }
+        if(token !== playToken) return;
+        if(state !== 'running') throw new DOMException('瀏覽器已暫停自動播放，請按「▶ 播放」開始。', 'NotAllowedError');
+        if(playing) return;
+        if(offset >= buffer.duration - .05) offset = 0;
+        if(startSource(offset)) fire('play');
+      });
+    },
+    pause(){
+      playToken++;
+      if(!playing){ audio.paused = true; return; }
+      offset = position();
+      stopSource();
+      playing = false;
+      audio.paused = true;
+      fire('pause');
+    }
+  };
+  Object.defineProperties(audio, {
+    currentTime: {
+      get: position,
+      set(t){
+        const next = Math.min(Math.max(Number(t) || 0, 0), buffer ? buffer.duration : A.dur);
+        if(playing && buffer) startSource(next);
+        else offset = next;
+      }
+    },
+    playbackRate: {
+      get(){ return rate; },
+      set(v){
+        const pos = position();
+        rate = Number(v) || 1;
+        if(playing && buffer) startSource(pos);
+      }
+    },
+    defaultPlaybackRate: {
+      get(){ return rate; },
+      set(v){ rate = Number(v) || 1; }
+    },
+    volume: {
+      get(){ return volume; },
+      set(v){ volume = Math.min(1, Math.max(0, Number(v) || 0)); applyGain(); }
+    },
+    muted: {
+      get(){ return muted; },
+      set(v){ muted = !!v; applyGain(); }
+    }
+  });
   previewAudio = audio;
   PlayerVolume.bind(audio);
+  decodePromise.then(ab => {
+    buffer = ab;
+    audio.readyState = 4;
+    fire('loadedmetadata');
+  }).catch(e => { msg('音訊解碼失敗：' + e.message); });
+  addEventListener('pagehide', () => { stopSource(); try{ ctx.close(); }catch{} }, {once:true});
   const speed = $('#speed');
   const applySpeed = () => {
     const rate = Number(speed.value);
@@ -2180,9 +2323,8 @@ function preview(buf){
   speed.addEventListener('change', applySpeed);
   applySpeed();
   speed.disabled = false;
-  addEventListener('pagehide',()=>URL.revokeObjectURL(audioURL),{once:true});
   const play = $('#play'), seek = $('#seek'), time = $('#time');
-  let seekDragging = false;
+  let seekDragging = false, writingSeek = false;
   const releaseSeek = () => { seekDragging = false; };
   seek.addEventListener('pointerdown', () => { seekDragging = true; });
   for(const event of ['pointerup','pointercancel','blur']) addEventListener(event,releaseSeek);
@@ -2206,7 +2348,7 @@ function preview(buf){
   };
   audio.onplay = () => { msg(''); play.textContent = '❚❚ 暫停'; };
   audio.onpause = () => { play.textContent = '▶ 播放'; };
-  seek.oninput = () => { window.PV.hold=false;audio.currentTime = seek.value/1000*A.dur; };
+  seek.oninput = () => { if(writingSeek) return; window.PV.hold=false; audio.currentTime = seek.value/1000*A.dur; };
   const start = clamp(+(params.get('t') || 0),0,A.dur);
   audio.addEventListener('loadedmetadata',()=>{
     audio.currentTime=start;
@@ -2227,7 +2369,7 @@ function preview(buf){
         if(renderError !== e.message){ renderError = e.message; msg('畫面錯誤：' + e.message); console.error(e); }
       }
     }
-    if(!seekDragging) seek.value = Math.round(t/A.dur*1000);
+    if(!seekDragging){ writingSeek = true; seek.value = Math.round(t/A.dur*1000); writingSeek = false; }
     time.textContent = `${fmt(t)} / ${fmt(A.dur)}`;
     $('#ui').classList.toggle('idle', !audio.paused && !$('#ui').contains(document.activeElement) && performance.now() - idle > 2500);
     requestAnimationFrame(loop);
