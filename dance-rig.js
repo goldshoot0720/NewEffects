@@ -434,6 +434,9 @@
     const r = measure(img);
     const w = img.width*h/img.height;
     const hop = st.hop || 0, sq = st.squash || 0, tilt = (st.tilt || 0)*.6;
+    // 深色服裝站在深色舞台上會整隻看不見：黑襪子融進背景，看起來像小腿被切斷。
+    // 背後鋪一層柔光把輪廓托出來。st.halo 是強度，0 表示不畫。
+    if(st.halo > 0) halo(ctx, x, y, w, h, hop, tilt, st.halo);
     // 已經擺好姿勢的立繪不是 T 字。再拆手腳會把伸向鏡頭的手臂從肩膀切開，腿上也會留下細縫。
     if(st.intact){
       ctx.save(); ctx.translate(x, y); ctx.translate(0, -hop); ctx.rotate(tilt); ctx.scale(1 + sq*.5, 1 - sq);
@@ -608,6 +611,20 @@
     const srcX = axis === 'x' ? sIn : jx, srcY = axis === 'y' ? sIn : jy;
     const c = Math.cos(A), s = Math.sin(A);
     return [px + c*(sx - srcX) - s*(sy - srcY), py + s*(sx - srcX) + c*(sy - srcY)];
+  }
+
+  // 人物背後的柔光：中心在胸口往外淡到看不見，跟著跳躍與傾斜一起動
+  function halo(ctx, x, y, w, h, hop, tilt, strength){
+    const rr = Math.max(w, h), R = rr*.64;
+    ctx.save();
+    ctx.translate(x, y - hop); ctx.rotate(tilt);
+    const gr = ctx.createRadialGradient(0, -h*.46, rr*.03, 0, -h*.44, R);
+    gr.addColorStop(0, `rgba(255,255,255,${strength})`);
+    gr.addColorStop(.55, `rgba(255,255,255,${strength*.65})`);
+    gr.addColorStop(1, 'rgba(255,255,255,0)');
+    ctx.fillStyle = gr;
+    ctx.fillRect(-R, -h*.44 - R, R*2, R*2);
+    ctx.restore();
   }
 
   function setCacheLimit(count){

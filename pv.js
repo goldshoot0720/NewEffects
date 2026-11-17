@@ -49,7 +49,10 @@ const ARTS = {
     faces: []},
   // 才女のお世話：八張官方立繪由 tools/build-osewa.mjs 去背並拼成學院禮堂群像
   osewa: {src: 'assets/ref/osewa/group.png', crop: [0, 0, 1920, 1080],
-    faces: [[957, 371], [629, 373], [1285, 373], [411, 196], [259, 393], [972, 165], [1499, 196], [1698, 393]]}
+    faces: [[957, 371], [629, 373], [1285, 373], [411, 196], [259, 393], [972, 165], [1499, 196], [1698, 393]]},
+  // FX戦士くるみちゃん：四張官方透明立繪，由 tools/cutout-fx.py 裁切並拼成 K 線走勢群像
+  fx: {src: 'assets/ref/fx-group.png', crop: [0, 0, 1920, 1080],
+    faces: [[281, 423], [704, 370], [1197, 423], [1620, 439]]}
 };
 const SONGS = [
   {title: '大好きだよって叫ぶんだ', ver: '小日向理瀬 ver.', file: '大好きだよって叫ぶんだ [小日向理瀬ver.]',
@@ -270,7 +273,15 @@ const SONGS = [
    series:'才女のお世話', tv:'才女のお世話', kicker:'OPテーマ',
    cast:[['osewa',0,'友成伊月','#4a5a78'],['osewa',1,'此花雛子','#e8913f'],['osewa',2,'天王寺美麗','#e8c44a'],
          ['osewa',3,'都島成香','#8a6ad6'],['osewa',4,'鶴見静音','#4b3f5e'],['osewa',5,'大将勝也','#3f6f4a'],
-         ['osewa',6,'朝日花蓮','#d4674f'],['osewa',7,'此花華玄','#7d2f3c']]}
+         ['osewa',6,'朝日花蓮','#d4674f'],['osewa',7,'此花華玄','#7d2f3c']]},
+  {title:'DAYS!', ver:'Aooo', file:'DAYS!', subs:'DAYS!.srt', theme:'days', art:'growup', lead:0,
+   series:'グロウアップショウ', tv:'グロウアップショウ', kicker:'EDテーマ',
+   cast:[['growup',0,'鶴巻瑞佳','#c72d48'],['growup',1,'川澄桜翔','#368fc4'],['growup',2,'吾野伊万里','#73a34b'],
+         ['growup',3,'五十土五十鈴','#e99038'],['growup',4,'由良 葵','#a28ac4'],['growup',5,'由良 茜','#c74360'],
+         ['growup',6,'酒匂 雫','#7786ba'],['growup',7,'スヴェトラーナ','#d7d3c9'],['growup',8,'間宮 凛','#bd8b4c'],['growup',9,'麻利亜','#f1bc3e']]},
+  {title:'FX戦士くるみちゃん', ver:'福賀くるみ(CV.鈴木愛奈)', file:'FX戦士くるみちゃん', subs:'FX戦士くるみちゃん.srt', theme:'fx', art:'fx', lead:0, noBike:true,
+   series:'FX戦士くるみちゃん', tv:'FX戦士くるみちゃん', kicker:'OPテーマ',
+   cast:[['fx',0,'福賀くるみ','#f2a0c0'],['fx',1,'小金萌智子','#b06ad6'],['fx',2,'山師芽吹','#f0c24a'],['fx',3,'高根やす子','#5b6bb5']]}
 ];
 
 // 每首歌一組配色：夏日向日葵、日出、黃昏星空、晴空疾風
@@ -296,10 +307,14 @@ const THEMES = {
   tsuki:    {sky: ['#040a22', '#1b2a68', '#6d5aa6'], pastel: ['#eef3ff', '#ffe7ef'], accent: '#8fd8ff', accent2: '#ff5f7a', cool: '#ffe9a8', deep: '#060a1e', particle: 'star'},
   // 声の軌跡：深夜藍到霧青，配聲音的冷白與一點粉
   voice:    {sky: ['#040b26', '#153a68', '#6d9bc0'], pastel: ['#eef7ff', '#e6f3ff'], accent: '#7fe3ff', accent2: '#ff9bb5', cool: '#cfe9ff', deep: '#050a1e', particle: 'star'},
+  // DAYS!：放學後的晴空到向日葵黃，白日版的馬戲團，花瓣一路往上飄
+  days:     {sky: ['#0c4a86', '#48b2e8', '#ffe7ad'], pastel: ['#fffdf2', '#e9f8ff'], accent: '#ffd23f', accent2: '#ff8a3d', cool: '#8fe4ff', deep: '#0a2c52', particle: 'petal'},
   // 完璧じゃないわたし：薔薇色的聚光燈配金邊，假面底下才是真心
   perfect:  {sky: ['#2a0b24', '#a33a63', '#ffd9e2'], pastel: ['#fff6f2', '#ffe3ec'], accent: '#ffd36e', accent2: '#ff6f9c', cool: '#a9e8ff', deep: '#230a1e', particle: 'spark'},
   // 最最最高級のお世話して：貴皇學院的深夜藍到金色午後，白制服在暗底上最亮
-  osewa:    {sky: ['#0a1330', '#2b3f7d', '#ffd7a1'], pastel: ['#fffaf0', '#ffe8cf'], accent: '#ffd166', accent2: '#ff7a9c', cool: '#bfe3ff', deep: '#0a1024', particle: 'spark'}
+  osewa:    {sky: ['#0a1330', '#2b3f7d', '#ffd7a1'], pastel: ['#fffaf0', '#ffe8cf'], accent: '#ffd166', accent2: '#ff7a9c', cool: '#bfe3ff', deep: '#0a1024', particle: 'spark'},
+  // FX戦士くるみちゃん：交易畫面的深夜藍到洋紅，配 K 線的紅綠與告警橘
+  fx:       {sky: ['#05081c', '#231a5e', '#8e1f5e'], pastel: ['#eef1ff', '#ffe6f0'], accent: '#ff4d6d', accent2: '#3ee0a0', cool: '#ffd166', deep: '#05061a', particle: 'spark'}
 };
 const LOGO = [['B', '#2ba6e1'], ['E', '#f6a531'], ['S', '#ee5b97'], ['T', '#2ba6e1'], [' ', ''], ['4', '#f6a531'], ['U', '#8d6ad6']];
 const POP = ['#ee5b97', '#2ba6e1', '#f6a531', '#8d6ad6', '#3cc39a', '#f08a4b'];
@@ -397,6 +412,9 @@ const CHARACTER_GROUPS = song.cast[0][0] === 'anaru'
   : song.cast[0][0] === 'osewa'
   // 才女のお世話：OP 與 ED 共用同一組八位官方立繪
   ? [{sheet:'osewa', title:'才女のお世話 · 八人', src:'assets/ref/osewa/group.png', colors:['#2b3f7d','#ffd7a1'], count:8, solo:true}]
+  : song.cast[0][0] === 'fx'
+  // FX戦士くるみちゃん：くるみ・萌智子・芽吹・やす子 四人
+  ? [{sheet:'fx', title:'FX戦士くるみちゃん · 四人', src:'assets/ref/fx-group.png', colors:['#231a5e','#ff4d6d'], count:4, solo:true}]
   : song.art === 'breakshoot'
   ? [{sheet:'casual', title:'Extreme Hearts · 十二人', src:'assets/ref/casual-remade/group.png', colors:['#5cabe0','#f3afd3'], count:12,solo:true}]
   : BASE_CHARACTER_GROUPS;
@@ -861,10 +879,26 @@ function drawDancer(i, x, y, h, st){
   g.save();
   g.fillStyle = 'rgba(0,0,0,.28)'; g.beginPath(); g.ellipse(x, y, w*.32*(1 - Math.min(.35, hop/h*3)), h*.02, 0, 0, Math.PI*2); g.fill();
   g.restore();
+  // 深色服裝站在深色舞台上會整隻看不見：黑襪子融進背景，看起來像小腿被切斷。
+  // 背後鋪一層柔光把輪廓托出來，亮色角色只是多一圈很淡的光暈。
+  dancerHalo(x, y, w, h, hop, st.tilt || 0);
   // st 可以帶 armA/armB/legA/legB 直接指定關節角度（例如合照要一個固定的舞姿）
   SpriteRig.draw(g, img, x, y, h, {wave: st.wave, energy: st.energy, hop, tilt: st.tilt, squash: st.squash*4,
     armA: st.armA, armB: st.armB, legA: st.legA, legB: st.legB, armScale: m.meta?.armScale, legScale: m.meta?.legScale,
     intact: !!m.meta?.intact});
+}
+// 人物背後的柔光：中心在胸口，往外淡到看不見，跟著跳躍與傾斜一起動
+function dancerHalo(x, y, w, h, hop, tilt){
+  const r = Math.max(w, h);
+  g.save();
+  g.translate(x, y - hop); g.rotate(tilt*.6);
+  const gr = g.createRadialGradient(0, -h*.46, r*.03, 0, -h*.44, r*.64);
+  gr.addColorStop(0, 'rgba(255,255,255,.26)');
+  gr.addColorStop(.55, 'rgba(255,255,255,.17)');
+  gr.addColorStop(1, 'rgba(255,255,255,0)');
+  g.fillStyle = gr;
+  g.fillRect(-r*.64, -h*.44 - r*.64, r*1.28, r*1.28);
+  g.restore();
 }
 // 立繪的 h 就是整張圖的高度，腳的錨點在圖的底邊。
 // 手抬起來會高出頭頂，踏步會讓鞋底低於錨點，落地壓縮會把身體再撐寬約一成。
@@ -1420,6 +1454,10 @@ function shotStage(t, sh, u){
     : O.length >= 5
     ? [{nx:.28, ny:.74, nh:.46, m:O[0]}, {nx:.50, ny:.70, nh:.44, m:O[1]}, {nx:.72, ny:.74, nh:.46, m:O[2]},
        {nx:.15, ny:.90, nh:.54, m:O[3]}, {nx:.85, ny:.90, nh:.54, m:O[4]}, {nx:.50, ny:1, nh:.64, m:LEAD}]
+    // 四人卡司（FX戦士くるみちゃん）：三位配角站兩側與後排中央，主唱在中間前面
+    : O.length === 3
+    ? [{nx:.18, ny:.76, nh:.46, m:O[0]}, {nx:.82, ny:.76, nh:.46, m:O[1]},
+       {nx:.50, ny:.64, nh:.40, m:O[2]}, {nx:.50, ny:1, nh:.66, m:LEAD}]
     : O.length >= 3
     ? [{nx:.28, ny:.74, nh:.46, m:O[0]}, {nx:.72, ny:.74, nh:.46, m:O[1]},
        {nx:.13, ny:.90, nh:.54, m:O[2]}, {nx:.87, ny:.90, nh:.54, m:O[3]}, {nx:.50, ny:1, nh:.64, m:LEAD}]
@@ -1436,7 +1474,8 @@ function shotStage(t, sh, u){
   };
   const bw = box.r - box.l, bh = box.b - box.t;
   const cast = [];
-  spots.forEach((s, k) => {
+  // 人數少於配置假設時（例如四人卡司），沒有對應成員的位置直接跳過，不要讓 undefined 進到畫布
+  spots.filter(s => s && MEMBERS[s.m]).forEach((s, k) => {
     if(k === centerBack){
       const img = MEMBERS[s.m]?.img, wide = img && img.width/img.height > .6;
       if(wide || close) return;
@@ -1814,7 +1853,7 @@ function shotCharacters(t,sh,u){
     light.addColorStop(0,'rgba(255,255,255,.16)');light.addColorStop(1,'rgba(255,255,255,0)');
     g.fillStyle=light;g.beginPath();g.moveTo(x-6,0);g.lineTo(x+6,0);g.lineTo(x+sway+130,900);g.lineTo(x+sway-130,900);g.closePath();g.fill();
   }
-  const sizes={casual:[1920,1080],rooftop:[1536,1024],idol:[1536,1024],stage:[1774,887],anaru:[1920,1080],lucky:[1920,1080],kaguya:[1920,1080],aiura:[1920,1080],growup:[1920,1080],vwest:[1920,1080],forever:[1920,1080],tsuki:[1920,1080],kaze:[1920,1080]};
+  const sizes={casual:[1920,1080],rooftop:[1536,1024],idol:[1536,1024],stage:[1774,887],anaru:[1920,1080],lucky:[1920,1080],kaguya:[1920,1080],aiura:[1920,1080],growup:[1920,1080],vwest:[1920,1080],forever:[1920,1080],tsuki:[1920,1080],kaze:[1920,1080],fx:[1920,1080]};
   const [sourceW,sourceH]=sizes[group.sheet] || [1920,1080],scale=Math.min((W-160)/sourceW,740/sourceH);
   const originX=(W-sourceW*scale)/2,originY=150;
   if(group.matte){

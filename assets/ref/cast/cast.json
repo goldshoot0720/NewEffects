@@ -10,7 +10,8 @@
     7,
     63
    ],
-   "sheet": "rise5.webp"
+   "sheet": "rise5.webp",
+   "intact": true
   },
   {
    "file": "idol-1.png",
@@ -22,7 +23,8 @@
     279,
     0
    ],
-   "sheet": "rise5.webp"
+   "sheet": "rise5.webp",
+   "intact": true
   },
   {
    "file": "idol-2.png",
@@ -34,7 +36,8 @@
     608,
     32
    ],
-   "sheet": "rise5.webp"
+   "sheet": "rise5.webp",
+   "intact": true
   },
   {
    "file": "idol-3.png",
@@ -46,7 +49,8 @@
     872,
     41
    ],
-   "sheet": "rise5.webp"
+   "sheet": "rise5.webp",
+   "intact": true
   },
   {
    "file": "idol-4.png",
@@ -58,7 +62,8 @@
     1140,
     1
    ],
-   "sheet": "rise5.webp"
+   "sheet": "rise5.webp",
+   "intact": true
   }
  ],
  "casual": [
@@ -75,7 +80,8 @@
    "sheet": "casual-remade/transparent-0.png",
    "name": "前原純華",
    "armScale": 0.08,
-   "legScale": 0.15
+   "legScale": 0.15,
+   "intact": true
   },
   {
    "file": "casual-1.png",
@@ -90,7 +96,8 @@
    "sheet": "casual-remade/transparent-1.png",
    "name": "葉山陽和",
    "armScale": 0.08,
-   "legScale": 0.15
+   "legScale": 0.15,
+   "intact": true
   },
   {
    "file": "casual-2.png",
@@ -105,7 +112,8 @@
    "sheet": "casual-remade/transparent-2.png",
    "name": "小鷹咲希",
    "armScale": 0.08,
-   "legScale": 0.15
+   "legScale": 0.15,
+   "intact": true
   },
   {
    "file": "casual-3.png",
@@ -120,7 +128,8 @@
    "sheet": "casual-remade/transparent-3.png",
    "name": "橘雪乃",
    "armScale": 0.08,
-   "legScale": 0.15
+   "legScale": 0.15,
+   "intact": true
   },
   {
    "file": "casual-4.png",
@@ -135,7 +144,8 @@
    "sheet": "casual-remade/transparent-4.png",
    "name": "小日向理瀬",
    "armScale": 0.08,
-   "legScale": 0.15
+   "legScale": 0.15,
+   "intact": true
   },
   {
    "file": "casual-5.png",
@@ -150,7 +160,8 @@
    "sheet": "casual-remade/transparent-5.png",
    "name": "ミシェル・イェーガー",
    "armScale": 0.08,
-   "legScale": 0.15
+   "legScale": 0.15,
+   "intact": true
   },
   {
    "file": "casual-6.png",
@@ -165,7 +176,8 @@
    "sheet": "casual-remade/transparent-6.png",
    "name": "アシュリー・ヴァンクロフト",
    "armScale": 0.08,
-   "legScale": 0.15
+   "legScale": 0.15,
+   "intact": true
   },
   {
    "file": "casual-7.png",
@@ -180,7 +192,8 @@
    "sheet": "casual-remade/transparent-7.png",
    "name": "桜井羽月",
    "armScale": 0.08,
-   "legScale": 0.15
+   "legScale": 0.15,
+   "intact": true
   },
   {
    "file": "casual-8.png",
@@ -195,7 +208,8 @@
    "sheet": "casual-remade/transparent-8.png",
    "name": "御社智",
    "armScale": 0.08,
-   "legScale": 0.15
+   "legScale": 0.15,
+   "intact": true
   },
   {
    "file": "casual-9.png",
@@ -210,7 +224,8 @@
    "sheet": "casual-remade/transparent-9.png",
    "name": "末宗祐里子",
    "armScale": 0.08,
-   "legScale": 0.15
+   "legScale": 0.15,
+   "intact": true
   },
   {
    "file": "casual-10.png",
@@ -225,7 +240,8 @@
    "sheet": "casual-remade/transparent-10.png",
    "name": "本田千尋",
    "armScale": 0.08,
-   "legScale": 0.15
+   "legScale": 0.15,
+   "intact": true
   },
   {
    "file": "casual-11.png",
@@ -240,7 +256,8 @@
    "sheet": "casual-remade/transparent-11.png",
    "name": "ティーナ・メルキース",
    "armScale": 0.08,
-   "legScale": 0.15
+   "legScale": 0.15,
+   "intact": true
   }
  ],
  "rooftop": [
@@ -254,7 +271,8 @@
     6,
     121
    ],
-   "sheet": "rooftop6-matte.png"
+   "sheet": "rooftop6-matte.png",
+   "intact": true
   },
   {
    "file": "rooftop-1.png",
@@ -266,7 +284,8 @@
     314,
     135
    ],
-   "sheet": "rooftop6-matte.png"
+   "sheet": "rooftop6-matte.png",
+   "intact": true
   },
   {
    "file": "rooftop-2.png",
@@ -278,7 +297,8 @@
     534,
     88
    ],
-   "sheet": "rooftop6-matte.png"
+   "sheet": "rooftop6-matte.png",
+   "intact": true
   },
   {
    "file": "rooftop-3.png",
@@ -290,7 +310,8 @@
     820,
     148
    ],
-   "sheet": "rooftop6-matte.png"
+   "sheet": "rooftop6-matte.png",
+   "intact": true
   },
   {
    "file": "rooftop-4.png",
@@ -302,7 +323,8 @@
     1051,
     98
    ],
-   "sheet": "rooftop6-matte.png"
+   "sheet": "rooftop6-matte.png",
+   "intact": true
   },
   {
    "file": "rooftop-5.png",
@@ -314,7 +336,8 @@
     1304,
     177
    ],
-   "sheet": "rooftop6-matte.png"
+   "sheet": "rooftop6-matte.png",
+   "intact": true
   }
  ],
  "stage": [
@@ -328,7 +351,8 @@
     -59,
     -83
    ],
-   "sheet": "stage-remade/transparent-0.png"
+   "sheet": "stage-remade/transparent-0.png",
+   "intact": true
   },
   {
    "file": "stage-1.png",
@@ -340,7 +364,8 @@
     146,
     -82
    ],
-   "sheet": "stage-remade/transparent-1.png"
+   "sheet": "stage-remade/transparent-1.png",
+   "intact": true
   },
   {
    "file": "stage-2.png",
@@ -352,7 +377,8 @@
     319,
     -79
    ],
-   "sheet": "stage-remade/transparent-2.png"
+   "sheet": "stage-remade/transparent-2.png",
+   "intact": true
   },
   {
    "file": "stage-3.png",
@@ -364,7 +390,8 @@
     487,
     -79
    ],
-   "sheet": "stage-remade/transparent-3.png"
+   "sheet": "stage-remade/transparent-3.png",
+   "intact": true
   },
   {
    "file": "stage-4.png",
@@ -376,7 +403,8 @@
     676,
     -76
    ],
-   "sheet": "stage-remade/transparent-4.png"
+   "sheet": "stage-remade/transparent-4.png",
+   "intact": true
   },
   {
    "file": "stage-5.png",
@@ -388,7 +416,8 @@
     869,
     -77
    ],
-   "sheet": "stage-remade/transparent-5.png"
+   "sheet": "stage-remade/transparent-5.png",
+   "intact": true
   },
   {
    "file": "stage-6.png",
@@ -400,7 +429,8 @@
     1060,
     -77
    ],
-   "sheet": "stage-remade/transparent-6.png"
+   "sheet": "stage-remade/transparent-6.png",
+   "intact": true
   },
   {
    "file": "stage-7.png",
@@ -412,7 +442,8 @@
     1225,
     -77
    ],
-   "sheet": "stage-remade/transparent-7.png"
+   "sheet": "stage-remade/transparent-7.png",
+   "intact": true
   },
   {
    "file": "stage-8.png",
@@ -424,7 +455,8 @@
     1428,
     -79
    ],
-   "sheet": "stage-remade/transparent-8.png"
+   "sheet": "stage-remade/transparent-8.png",
+   "intact": true
   }
  ],
  "anaru": [
@@ -438,7 +470,8 @@
     56,
     308
    ],
-   "sheet": "anaru6.png"
+   "sheet": "anaru6.png",
+   "intact": true
   },
   {
    "file": "anaru-1.png",
@@ -450,7 +483,8 @@
     360,
     308
    ],
-   "sheet": "anaru6.png"
+   "sheet": "anaru6.png",
+   "intact": true
   },
   {
    "file": "anaru-2.png",
@@ -475,7 +509,8 @@
     1018,
     308
    ],
-   "sheet": "anaru6.png"
+   "sheet": "anaru6.png",
+   "intact": true
   },
   {
    "file": "anaru-4.png",
@@ -487,7 +522,8 @@
     1388,
     308
    ],
-   "sheet": "anaru6.png"
+   "sheet": "anaru6.png",
+   "intact": true
   },
   {
    "file": "anaru-5.png",
@@ -499,7 +535,8 @@
     1603,
     308
    ],
-   "sheet": "anaru6.png"
+   "sheet": "anaru6.png",
+   "intact": true
   }
  ],
  "lucky": [
@@ -514,7 +551,8 @@
     14
    ],
    "sheet": "../characters/whale-sheet.webp",
-   "name": "鯨魚娘"
+   "name": "鯨魚娘",
+   "intact": true
   },
   {
    "file": "lucky-1.png",
@@ -594,7 +632,8 @@
    "sheet": "lucky-remade/lucky-6.png",
    "name": "Claude 娘",
    "armScale": 0.03,
-   "legScale": 0.02
+   "legScale": 0.02,
+   "intact": true
   },
   {
    "file": "lucky-7.png",
@@ -609,7 +648,8 @@
    "sheet": "lucky-remade/lucky-7.png",
    "name": "GPT 娘",
    "armScale": 0.03,
-   "legScale": 0.02
+   "legScale": 0.02,
+   "intact": true
   }
  ],
  "kaguya": [
@@ -636,7 +676,8 @@
     1365,
     265
    ],
-   "sheet": "kaguya-beach.jpg"
+   "sheet": "kaguya-beach.jpg",
+   "intact": true
   },
   {
    "file": "kaguya-2.png",
@@ -648,7 +689,8 @@
     1324,
     175
    ],
-   "sheet": "kaguya-fox.jpg"
+   "sheet": "kaguya-fox.jpg",
+   "intact": true
   }
  ],
  "aiura": [
@@ -664,7 +706,8 @@
    ],
    "sheet": "aiura-sprites.png",
    "name": "天谷奏香",
-   "armScale": 0.12
+   "armScale": 0.12,
+   "intact": true
   },
   {
    "file": "aiura-1.png",
@@ -678,7 +721,8 @@
    ],
    "sheet": "aiura-sprites.png",
    "name": "岩沢彩生",
-   "armScale": 0.12
+   "armScale": 0.12,
+   "intact": true
   },
   {
    "file": "aiura-2.png",
@@ -692,7 +736,8 @@
    ],
    "sheet": "aiura-sprites.png",
    "name": "上原歩子",
-   "armScale": 0.12
+   "armScale": 0.12,
+   "intact": true
   }
  ],
  "growup": [
@@ -709,7 +754,8 @@
    "sheet": "growup/transparent-0.png",
    "name": "鶴巻瑞佳",
    "armScale": 0.08,
-   "legScale": 0.15
+   "legScale": 0.15,
+   "intact": true
   },
   {
    "file": "growup-1.png",
@@ -724,7 +770,8 @@
    "sheet": "growup/transparent-1.png",
    "name": "川澄桜翔",
    "armScale": 0.08,
-   "legScale": 0.15
+   "legScale": 0.15,
+   "intact": true
   },
   {
    "file": "growup-2.png",
@@ -739,7 +786,8 @@
    "sheet": "growup/transparent-2.png",
    "name": "吾野伊万里",
    "armScale": 0.08,
-   "legScale": 0.15
+   "legScale": 0.15,
+   "intact": true
   },
   {
    "file": "growup-3.png",
@@ -754,7 +802,8 @@
    "sheet": "growup/transparent-3.png",
    "name": "五十土五十鈴",
    "armScale": 0.08,
-   "legScale": 0.15
+   "legScale": 0.15,
+   "intact": true
   },
   {
    "file": "growup-4.png",
@@ -769,7 +818,8 @@
    "sheet": "growup/transparent-4.png",
    "name": "由良 葵",
    "armScale": 0.08,
-   "legScale": 0.15
+   "legScale": 0.15,
+   "intact": true
   },
   {
    "file": "growup-5.png",
@@ -784,7 +834,8 @@
    "sheet": "growup/transparent-5.png",
    "name": "由良 茜",
    "armScale": 0.08,
-   "legScale": 0.15
+   "legScale": 0.15,
+   "intact": true
   },
   {
    "file": "growup-6.png",
@@ -799,7 +850,8 @@
    "sheet": "growup/transparent-6.png",
    "name": "酒匂 雫",
    "armScale": 0.08,
-   "legScale": 0.15
+   "legScale": 0.15,
+   "intact": true
   },
   {
    "file": "growup-7.png",
@@ -814,7 +866,8 @@
    "sheet": "growup/transparent-7.png",
    "name": "スヴェトラーナ",
    "armScale": 0.08,
-   "legScale": 0.15
+   "legScale": 0.15,
+   "intact": true
   },
   {
    "file": "growup-8.png",
@@ -829,7 +882,8 @@
    "sheet": "growup/transparent-8.png",
    "name": "間宮 凛",
    "armScale": 0.08,
-   "legScale": 0.15
+   "legScale": 0.15,
+   "intact": true
   },
   {
    "file": "growup-9.png",
@@ -844,7 +898,8 @@
    "sheet": "growup/transparent-9.png",
    "name": "麻利亜",
    "armScale": 0.08,
-   "legScale": 0.15
+   "legScale": 0.15,
+   "intact": true
   }
  ],
  "vwest": [
@@ -865,7 +920,8 @@
    "groupFace": [
     172,
     70
-   ]
+   ],
+   "intact": true
   },
   {
    "file": "vwest-1.png",
@@ -884,7 +940,8 @@
    "groupFace": [
     474,
     55
-   ]
+   ],
+   "intact": true
   },
   {
    "file": "vwest-2.png",
@@ -903,7 +960,8 @@
    "groupFace": [
     796,
     55
-   ]
+   ],
+   "intact": true
   },
   {
    "file": "vwest-3.png",
@@ -922,7 +980,8 @@
    "groupFace": [
     1144,
     91
-   ]
+   ],
+   "intact": true
   },
   {
    "file": "vwest-4.png",
@@ -941,7 +1000,8 @@
    "groupFace": [
     1446,
     55
-   ]
+   ],
+   "intact": true
   },
   {
    "file": "vwest-5.png",
@@ -960,7 +1020,8 @@
    "groupFace": [
     1737,
     64
-   ]
+   ],
+   "intact": true
   },
   {
    "file": "vwest-6.png",
@@ -979,7 +1040,8 @@
    "groupFace": [
     152,
     415
-   ]
+   ],
+   "intact": true
   },
   {
    "file": "vwest-7.png",
@@ -998,7 +1060,8 @@
    "groupFace": [
     474,
     455
-   ]
+   ],
+   "intact": true
   },
   {
    "file": "vwest-8.png",
@@ -1017,7 +1080,8 @@
    "groupFace": [
     784,
     415
-   ]
+   ],
+   "intact": true
   },
   {
    "file": "vwest-9.png",
@@ -1036,7 +1100,8 @@
    "groupFace": [
     1148,
     415
-   ]
+   ],
+   "intact": true
   },
   {
    "file": "vwest-10.png",
@@ -1055,7 +1120,8 @@
    "groupFace": [
     1422,
     427
-   ]
+   ],
+   "intact": true
   },
   {
    "file": "vwest-11.png",
@@ -1074,7 +1140,8 @@
    "groupFace": [
     1765,
     440
-   ]
+   ],
+   "intact": true
   },
   {
    "file": "vwest-12.png",
@@ -1093,7 +1160,8 @@
    "groupFace": [
     332,
     775
-   ]
+   ],
+   "intact": true
   },
   {
    "file": "vwest-13.png",
@@ -1112,7 +1180,8 @@
    "groupFace": [
     627,
     780
-   ]
+   ],
+   "intact": true
   },
   {
    "file": "vwest-14.png",
@@ -1131,7 +1200,8 @@
    "groupFace": [
     952,
     777
-   ]
+   ],
+   "intact": true
   },
   {
    "file": "vwest-15.png",
@@ -1150,7 +1220,8 @@
    "groupFace": [
     1267,
     775
-   ]
+   ],
+   "intact": true
   },
   {
    "file": "vwest-16.png",
@@ -1169,7 +1240,8 @@
    "groupFace": [
     1593,
     784
-   ]
+   ],
+   "intact": true
   }
  ],
  "forever": [
@@ -1282,7 +1354,8 @@
     0
    ],
    "sheet": "tsuki-ref",
-   "name": "Arisu Yambuki"
+   "name": "Arisu Yambuki",
+   "intact": true
   },
   {
    "file": "tsuki-1.png",
@@ -1295,7 +1368,8 @@
     24
    ],
    "sheet": "tsuki-ref",
-   "name": "Rikka Inohana"
+   "name": "Rikka Inohana",
+   "intact": true
   },
   {
    "file": "tsuki-2.png",
@@ -1308,7 +1382,8 @@
     9
    ],
    "sheet": "tsuki-ref",
-   "name": "Nene Himekawa"
+   "name": "Nene Himekawa",
+   "intact": true
   },
   {
    "file": "tsuki-3.png",
@@ -1321,7 +1396,8 @@
     16
    ],
    "sheet": "tsuki-ref",
-   "name": "Iko Kirino"
+   "name": "Iko Kirino",
+   "intact": true
   },
   {
    "file": "tsuki-4.png",
@@ -1334,7 +1410,8 @@
     17
    ],
    "sheet": "tsuki-ref",
-   "name": "Shinobu Uzuki"
+   "name": "Shinobu Uzuki",
+   "intact": true
   },
   {
    "file": "tsuki-5.png",
@@ -1347,7 +1424,8 @@
     7
    ],
    "sheet": "tsuki-ref",
-   "name": "Lemon Ando"
+   "name": "Lemon Ando",
+   "intact": true
   },
   {
    "file": "tsuki-6.png",
@@ -1360,7 +1438,8 @@
     16
    ],
    "sheet": "tsuki-ref",
-   "name": "Aiko"
+   "name": "Aiko",
+   "intact": true
   },
   {
    "file": "tsuki-7.png",
@@ -1373,7 +1452,8 @@
     1
    ],
    "sheet": "tsuki-ref",
-   "name": "Ao Momotose"
+   "name": "Ao Momotose",
+   "intact": true
   },
   {
    "file": "tsuki-8.png",
@@ -1386,7 +1466,8 @@
     16
    ],
    "sheet": "tsuki-ref",
-   "name": "HIZUMI"
+   "name": "HIZUMI",
+   "intact": true
   },
   {
    "file": "tsuki-9.png",
@@ -1399,7 +1480,8 @@
     0
    ],
    "sheet": "tsuki-ref",
-   "name": "Riina Yambuki"
+   "name": "Riina Yambuki",
+   "intact": true
   },
   {
    "file": "tsuki-10.png",
@@ -1412,7 +1494,8 @@
     16
    ],
    "sheet": "tsuki-ref",
-   "name": "Mito Yambuki"
+   "name": "Mito Yambuki",
+   "intact": true
   }
  ],
  "kaze": [
@@ -1527,7 +1610,8 @@
     42
    ],
    "sheet": "fx-ref",
-   "name": "福賀くるみ"
+   "name": "福賀くるみ",
+   "intact": true
   },
   {
    "file": "fx-1.png",
@@ -1540,7 +1624,8 @@
     23
    ],
    "sheet": "fx-ref",
-   "name": "小金萌智子"
+   "name": "小金萌智子",
+   "intact": true
   },
   {
    "file": "fx-2.png",
@@ -1553,7 +1638,8 @@
     96
    ],
    "sheet": "fx-ref",
-   "name": "山師芽吹"
+   "name": "山師芽吹",
+   "intact": true
   },
   {
    "file": "fx-3.png",
@@ -1566,7 +1652,8 @@
     75
    ],
    "sheet": "fx-ref",
-   "name": "高根やす子"
+   "name": "高根やす子",
+   "intact": true
   }
  ],
  "osewa": [
@@ -1581,7 +1668,8 @@
     21
    ],
    "sheet": "osewa/01-itsuki.png",
-   "name": "友成伊月"
+   "name": "友成伊月",
+   "intact": true
   },
   {
    "file": "osewa-1.png",
@@ -1594,7 +1682,8 @@
     62
    ],
    "sheet": "osewa/02-hinako.jpg",
-   "name": "此花雛子"
+   "name": "此花雛子",
+   "intact": true
   },
   {
    "file": "osewa-2.png",
@@ -1607,7 +1696,8 @@
     30
    ],
    "sheet": "osewa/03-mirei.jpg",
-   "name": "天王寺美麗"
+   "name": "天王寺美麗",
+   "intact": true
   },
   {
    "file": "osewa-3.png",
@@ -1620,7 +1710,8 @@
     61
    ],
    "sheet": "osewa/04-narika.jpg",
-   "name": "都島成香"
+   "name": "都島成香",
+   "intact": true
   },
   {
    "file": "osewa-4.png",
@@ -1633,7 +1724,8 @@
     19
    ],
    "sheet": "osewa/05-shizune.jpg",
-   "name": "鶴見静音"
+   "name": "鶴見静音",
+   "intact": true
   },
   {
    "file": "osewa-5.png",
@@ -1646,7 +1738,8 @@
     0
    ],
    "sheet": "osewa/06-taisho.png",
-   "name": "大将勝也"
+   "name": "大将勝也",
+   "intact": true
   },
   {
    "file": "osewa-6.png",
@@ -1659,7 +1752,8 @@
     47
    ],
    "sheet": "osewa/07-karen.jpg",
-   "name": "朝日花蓮"
+   "name": "朝日花蓮",
+   "intact": true
   },
   {
    "file": "osewa-7.png",
@@ -1672,7 +1766,8 @@
     0
    ],
    "sheet": "osewa/08-kagen.png",
-   "name": "此花華玄"
+   "name": "此花華玄",
+   "intact": true
   }
  ]
 }
