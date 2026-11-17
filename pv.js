@@ -262,11 +262,10 @@ const SONGS = [
          ['tsuki',3,'Iko Kirino','#d8d8e8'],['tsuki',4,'Shinobu Uzuki','#d94a5a'],['tsuki',5,'Lemon Ando','#e8d36a'],
          ['tsuki',6,'Aiko','#3f6fd0'],['tsuki',7,'Ao Momotose','#d94a6a'],['tsuki',8,'HIZUMI','#8fd14f'],
          ['tsuki',9,'Riina Yambuki','#8d6ad6'],['tsuki',10,'Mito Yambuki','#f0c23a']]},
-  {title:'$・¥・€', ver:'ドル・円・ユーロ', file:'$・¥・€', subs:'$・¥・€.srt', theme:'lucky', art:'lucky8', lead:0,
+  {title:'$・¥・€', ver:'ドル・円・ユーロ', file:'$・¥・€', subs:'$・¥・€.srt', theme:'lucky', art:'fx', lead:0,
    series:'マネーソング', kicker:'ドル・円・ユーロ',
-   // 這首是舞台曲，卡司優先用 FX戦士くるみちゃん 的動畫人物，不用招財喵布布的真人照片
-   cast:[['fx',0,'福賀くるみ','#f2a0c0'],['fx',1,'小金萌智子','#b06ad6'],['fx',2,'山師芽吹','#f0c24a'],['fx',3,'高根やす子','#5b6bb5'],
-         ['lucky',0,'鯨魚娘','#3f7fd0']]},
+   // 這首是 FX 動畫的 ED，卡司與主視覺都用久留美四人的動畫人物，不用招財喵布布的真人照片
+   cast:[['fx',0,'福賀くるみ','#f2a0c0'],['fx',1,'小金萌智子','#b06ad6'],['fx',2,'山師芽吹','#f0c24a'],['fx',3,'高根やす子','#5b6bb5']]},
   {title:'完璧じゃないわたし', ver:'前島亜美', file:'完璧じゃないわたし [前島亜美]', subs:'完璧じゃないわたし.srt', theme:'perfect', art:'osewa', lead:0, noBike:true,
    series:'前島亜美', tv:'才女のお世話', kicker:'EDテーマ',
    cast:[['osewa',0,'友成伊月','#4a5a78'],['osewa',1,'此花雛子','#e8913f'],['osewa',2,'天王寺美麗','#e8c44a'],
