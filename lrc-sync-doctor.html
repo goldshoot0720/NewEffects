@@ -1,0 +1,508 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>歌詞同步診斷器 · LRC Sync Doctor</title>
+<style>
+  :root{
+    --bg:#f6f7f9; --card:#ffffff; --line:#e4e7ec; --ink:#1f2937; --muted:#6b7280;
+    --accent:#4f46e5; --ok:#059669; --warn:#d97706; --bad:#dc2626;
+  }
+  *{box-sizing:border-box}
+  body{
+    margin:0; background:var(--bg); color:var(--ink);
+    font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Hiragino Sans","Noto Sans CJK SC",sans-serif;
+    font-size:14px; line-height:1.6; padding:28px 20px 60px;
+  }
+  .wrap{max-width:1080px;margin:0 auto}
+  h1{font-size:20px;margin:0 0 6px;letter-spacing:.3px}
+  .sub{color:var(--muted);margin:0 0 22px;font-size:13px}
+  .card{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:18px;margin-bottom:16px}
+  .card h2{font-size:14px;margin:0 0 12px;color:var(--muted);font-weight:600;letter-spacing:.4px}
+  .drop{
+    border:1.5px dashed #cbd5e1;border-radius:10px;padding:22px;text-align:center;color:var(--muted);
+    cursor:pointer;transition:.15s;background:#fbfcfd
+  }
+  .drop:hover,.drop.over{border-color:var(--accent);background:#f5f5ff;color:var(--accent)}
+  textarea{
+    width:100%;min-height:120px;margin-top:12px;padding:12px;border:1px solid var(--line);border-radius:8px;
+    font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:12px;line-height:1.7;resize:vertical;
+    background:#fcfcfd;color:var(--ink)
+  }
+  .row{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+  button{
+    border:1px solid var(--line);background:#fff;color:var(--ink);padding:7px 14px;border-radius:8px;
+    cursor:pointer;font-size:13px;font-family:inherit;transition:.15s
+  }
+  button:hover{border-color:#c7cbd4;background:#fafafa}
+  button.primary{background:var(--accent);border-color:var(--accent);color:#fff}
+  button.primary:hover{background:#4338ca}
+  .stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:12px}
+  .stat{background:#fbfcfd;border:1px solid var(--line);border-radius:10px;padding:12px 14px}
+  .stat .k{font-size:11px;color:var(--muted);letter-spacing:.4px}
+  .stat .v{font-size:22px;font-weight:600;margin-top:2px;font-variant-numeric:tabular-nums}
+  .v.ok{color:var(--ok)} .v.warn{color:var(--warn)} .v.bad{color:var(--bad)}
+  .verdict{margin-top:14px;padding:12px 14px;border-radius:10px;border-left:3px solid var(--accent);background:#f5f5ff;font-size:13px}
+  .verdict.bad{border-color:var(--bad);background:#fef2f2}
+  .verdict.warn{border-color:var(--warn);background:#fffbeb}
+  .verdict.ok{border-color:var(--ok);background:#ecfdf5}
+  canvas{width:100%;height:180px;display:block;border-radius:8px}
+  table{width:100%;border-collapse:collapse;font-size:12.5px}
+  th{text-align:left;color:var(--muted);font-weight:600;font-size:11px;letter-spacing:.4px;padding:6px 8px;border-bottom:1px solid var(--line);white-space:nowrap}
+  td{padding:6px 8px;border-bottom:1px solid #f1f3f6;vertical-align:top}
+  tr.hit{background:#fef2f2}
+  tr.warnrow{background:#fffbeb}
+  .t{font-family:ui-monospace,Menlo,monospace;color:var(--muted);white-space:nowrap}
+  .tag{display:inline-block;font-size:10.5px;padding:1px 7px;border-radius:20px;white-space:nowrap;margin-left:4px}
+  .tag.bad{background:#fee2e2;color:#b91c1c}
+  .tag.warn{background:#fef3c7;color:#92400e}
+  .lyric{font-size:15px;letter-spacing:.2px}
+  .trans{color:var(--muted);font-size:12px;margin-top:2px}
+  .stage{
+    background:#12121a;border-radius:12px;padding:34px 26px;min-height:170px;display:flex;flex-direction:column;
+    align-items:center;justify-content:center;text-align:center;color:#fff;position:relative;overflow:hidden
+  }
+  .stage .jp{font-size:26px;font-weight:700;line-height:1.5;letter-spacing:.5px;text-shadow:0 2px 14px rgba(255,255,255,.15)}
+  .stage .jp span{transition:color .18s,opacity .18s}
+  .stage .zh{margin-top:12px;font-size:13px;color:#b9b9c8}
+  .stage .meta{position:absolute;left:16px;bottom:12px;font-size:11px;color:#6b6b7d;font-family:ui-monospace,Menlo,monospace}
+  .ctrl{display:flex;gap:12px;align-items:center;margin-top:14px;flex-wrap:wrap}
+  input[type=range]{flex:1;min-width:180px;accent-color:var(--accent)}
+  .mono{font-family:ui-monospace,Menlo,monospace;font-variant-numeric:tabular-nums}
+  .hint{font-size:12px;color:var(--muted);margin-top:10px}
+  code{background:#f1f3f6;padding:1px 5px;border-radius:4px;font-size:12px}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>歌詞同步診斷器</h1>
+  <p class="sub">判斷「上一句還沒唱完就切到下一句」到底是 <b>LRC 資料問題</b>，還是 <b>播放器渲染／動畫問題</b>。全部在本機跑，不上傳。</p>
+
+  <div class="card">
+    <h2>1 · 載入歌詞</h2>
+    <div class="drop" id="drop">
+      把 .lrc / .txt 檔拖進來，或點這裡選檔
+      <input type="file" id="file" accept=".lrc,.txt,text/plain" hidden>
+    </div>
+    <textarea id="ta" placeholder="也可以直接貼上 LRC 內容，例如：&#10;[01:12.30]ねえねえくるみ世界で一番アツい&#10;[01:15.80]通貨はなんだと思う"></textarea>
+    <div class="row" style="margin-top:10px">
+      <button class="primary" id="run">解析並診斷</button>
+      <button id="demo">載入示例</button>
+      <button id="clear">清空</button>
+    </div>
+  </div>
+
+  <div class="card" id="reportCard" hidden>
+    <h2>2 · 診斷結果</h2>
+    <div class="stats" id="stats"></div>
+    <div class="verdict" id="verdict"></div>
+    <div style="margin-top:18px">
+      <canvas id="tl" width="2000" height="360"></canvas>
+      <div class="hint">時間軸：每條橫線是一句歌詞。<span style="color:#dc2626">紅色</span>=時長過短（會被下一句搶走）、<span style="color:#d97706">橘色</span>=與下一句間隔 &lt; 0.3s、灰色=正常。滑鼠移到線上可看內容。</div>
+    </div>
+  </div>
+
+  <div class="card" id="tableCard" hidden>
+    <h2>3 · 逐行明細</h2>
+    <div style="max-height:420px;overflow:auto">
+      <table>
+        <thead><tr>
+          <th>#</th><th>開始</th><th>時長</th><th>字數</th><th>字/秒</th><th>內容</th><th>標記</th>
+        </tr></thead>
+        <tbody id="tbody"></tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="card" id="stageCard" hidden>
+    <h2>4 · 正確的切行＋逐字動畫示範</h2>
+    <div class="stage">
+      <div class="jp" id="stageJp">—</div>
+      <div class="zh" id="stageZh"></div>
+      <div class="meta" id="stageMeta"></div>
+    </div>
+    <div class="ctrl">
+      <button class="primary" id="play">播放</button>
+      <button id="reset">回到開頭</button>
+      <span class="mono" id="clock" style="min-width:110px;text-align:right">0.00 / 0.00</span>
+    </div>
+    <div class="ctrl">
+      <span style="font-size:12px;color:var(--muted);white-space:nowrap">整體偏移</span>
+      <input type="range" id="offset" min="-1" max="1" step="0.05" value="0">
+      <span class="mono" id="offsetVal" style="min-width:60px">0.00s</span>
+    </div>
+    <div class="hint">
+      這個示範只用 <code>audio.currentTime</code>（或虛擬時鐘）推導當前該顯示哪一句、逐字進度到哪，<b>完全沒有 setTimeout</b>。
+      切行時舊句子的動畫會自然停止，因為它是由時間算出來的，不是由計時器推進的。
+    </div>
+  </div>
+</div>
+
+<script>
+const $ = s => document.querySelector(s);
+
+/* ---------------- LRC 解析 ---------------- */
+const STAMP = /\[(\d{1,2}):(\d{1,2})(?:[.:](\d{1,3}))?\]/g;
+const WORD  = /<(\d{1,2}):(\d{1,2})(?:[.:](\d{1,3}))?>/g;
+
+function toSec(mm, ss, frac){
+  const f = frac || '0';
+  const ms = f.length === 1 ? +f * 100 : f.length === 2 ? +f * 10 : +f;
+  return (+mm) * 60 + (+ss) + ms / 1000;
+}
+
+function parseLRC(text){
+  const out = [];
+  text.split(/\r?\n/).forEach(raw => {
+    const line = raw.trim();
+    if (!line) return;
+    STAMP.lastIndex = 0;
+    const stamps = [];
+    let m;
+    while ((m = STAMP.exec(line))) stamps.push(toSec(m[1], m[2], m[3]));
+
+    let body = line.replace(STAMP, '').trim();
+
+    if (!stamps.length){
+      // 無時間戳 → 當作上一句的翻譯
+      if (body && out.length) {
+        const last = out[out.length - 1];
+        if (!last.trans) last.trans = body;
+      }
+      return;
+    }
+
+    // 逐字標籤 <mm:ss.xx>
+    const words = [];
+    WORD.lastIndex = 0;
+    let w;
+    while ((w = WORD.exec(body))) words.push({ t: toSec(w[1], w[2], w[3]), i: w.index });
+    const plain = body.replace(WORD, '').trim();
+
+    stamps.forEach(s => out.push({ start: s, text: plain, trans: '', words: words.slice() }));
+  });
+
+  out.sort((a, b) => a.start - b.start);
+  return out;
+}
+
+/* ---------------- 診斷 ---------------- */
+const CJK = /[\u3040-\u30ff\u3400-\u9fff\uff66-\uff9f]/;
+
+function analyse(lines){
+  const n = lines.length;
+  const gaps = [];
+  lines.forEach((l, i) => {
+    const next = lines[i + 1];
+    l.dur = next ? next.start - l.start : null;
+    l.chars = [...l.text].filter(c => !/\s/.test(c)).length;
+    l.cps = l.dur && l.dur > 0 ? l.chars / l.dur : null;
+    l.flags = [];
+  });
+
+  const durs = lines.map(l => l.dur).filter(d => d != null && d > 0).sort((a, b) => a - b);
+  const median = durs.length ? durs[Math.floor(durs.length / 2)] : 0;
+
+  let shortCount = 0, splitCount = 0, wordOverflow = 0, tightGap = 0, longWrap = 0;
+
+  lines.forEach((l, i) => {
+    if (l.dur != null && l.dur < 0.9 && l.chars >= 5){ l.flags.push(['bad','時長過短']); shortCount++; }
+    if (l.dur != null && l.dur < 0.45){ if(!l.flags.some(f=>f[0]==='bad')) l.flags.push(['bad','幾乎沒有停留']); }
+    if (l.dur != null && l.dur > 0 && l.dur < 0.3 * Math.max(1, median)) tightGap++;
+
+    // 疑似同句被拆成兩條：上一行極短，且本行開頭與上一行結尾重疊
+    const prev = lines[i - 1];
+    if (prev && prev.dur != null && prev.dur < 1.0 && l.chars > 0 && prev.chars > 0){
+      const tail = [...prev.text].slice(-2).join('');
+      const head = [...l.text].slice(0, 2).join('');
+      const repeatSyll = /^(\s*(du|dun|la|na|da|ah|oh|yeah)\b[\s,.]*)+$/i.test(l.text);
+      if ((tail && head && tail === head) || repeatSyll){
+        l.flags.push(['warn','疑似同句被拆行']); splitCount++;
+      }
+    }
+
+    // 逐字標籤超出本行結束 → 逐字動畫一定會被下一句打斷
+    if (l.words.length && l.dur != null){
+      const lastWord = Math.max(...l.words.map(w => w.t));
+      if (lastWord > l.start + l.dur + 0.05){ l.flags.push(['bad','逐字時間越界']); wordOverflow++; }
+    }
+
+    if (l.chars > 18){ l.flags.push(['warn','長句需折行']); longWrap++; }
+    if (l.cps != null && l.cps > 12){ l.flags.push(['warn','字/秒 異常高']); }
+  });
+
+  return { median, shortCount, splitCount, wordOverflow, tightGap, longWrap };
+}
+
+/* ---------------- 時間軸 ---------------- */
+let TL = { lines: [], hover: -1 };
+
+function drawTimeline(lines){
+  const cv = $('#tl');
+  const dpr = window.devicePixelRatio || 1;
+  const cssW = cv.clientWidth, cssH = 180;
+  cv.width = cssW * dpr; cv.height = cssH * dpr;
+  const ctx = cv.getContext('2d');
+  ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+  ctx.clearRect(0, 0, cssW, cssH);
+
+  if (!lines.length) return;
+  const t0 = 0;
+  const t1 = Math.max(lines[lines.length - 1].start + (lines[lines.length - 1].dur || 3), 1);
+  const padL = 44, padR = 12, padT = 10, padB = 24;
+  const W = cssW - padL - padR, H = cssH - padT - padB;
+  const x = t => padL + (t - t0) / (t1 - t0) * W;
+  const barH = Math.max(2, Math.min(5, H / lines.length - 1));
+
+  // 網格
+  ctx.strokeStyle = '#eef0f3'; ctx.fillStyle = '#9aa1ad';
+  ctx.font = '10px ui-monospace, Menlo, monospace'; ctx.textAlign = 'center';
+  const step = t1 > 240 ? 60 : t1 > 120 ? 30 : 15;
+  for (let t = 0; t <= t1; t += step){
+    const px = x(t);
+    ctx.beginPath(); ctx.moveTo(px, padT); ctx.lineTo(px, padT + H); ctx.stroke();
+    ctx.fillText(Math.floor(t / 60) + ':' + String(Math.floor(t % 60)).padStart(2, '0'), px, cssH - 8);
+  }
+
+  lines.forEach((l, i) => {
+    const y = padT + i * (H / lines.length);
+    const x0 = x(l.start);
+    const x1 = x(l.start + (l.dur || 0.4));
+    const bad = l.flags.some(f => f[0] === 'bad');
+    const warn = l.flags.some(f => f[0] === 'warn');
+    ctx.fillStyle = bad ? '#dc2626' : warn ? '#d97706' : '#c7cbd4';
+    if (i === TL.hover) ctx.fillStyle = '#4f46e5';
+    ctx.fillRect(x0, y, Math.max(1.2, x1 - x0), barH);
+  });
+
+  TL.t0 = t0; TL.t1 = t1; TL.padL = padL; TL.padR = padR; TL.W = W; TL.cssW = cssW;
+}
+
+$('#tl').addEventListener('mousemove', e => {
+  const cv = $('#tl'), r = cv.getBoundingClientRect();
+  const px = e.clientX - r.left;
+  const t = TL.t0 + (px - TL.padL) / TL.W * (TL.t1 - TL.t0);
+  let best = -1, bd = 1e9;
+  TL.lines.forEach((l, i) => {
+    const d = Math.abs(l.start + (l.dur || 0) / 2 - t);
+    if (d < bd){ bd = d; best = i; }
+  });
+  if (best !== TL.hover){ TL.hover = best; drawTimeline(TL.lines); }
+  cv.title = best >= 0 ? TL.lines[best].text : '';
+});
+
+/* ---------------- 主流程 ---------------- */
+let LINES = [];
+
+function render(lines){
+  LINES = lines;
+  TL.lines = lines;
+
+  const a = analyse(lines);
+  const total = lines.length ? lines[lines.length - 1].start + (lines[lines.length - 1].dur || 0) : 0;
+
+  $('#stats').innerHTML = `
+    <div class="stat"><div class="k">歌詞行數</div><div class="v">${lines.length}</div></div>
+    <div class="stat"><div class="k">總時長</div><div class="v">${fmt(total)}</div></div>
+    <div class="stat"><div class="k">中位行長</div><div class="v">${a.median.toFixed(2)}s</div></div>
+    <div class="stat"><div class="k">時長過短</div><div class="v ${a.shortCount?'bad':'ok'}">${a.shortCount}</div></div>
+    <div class="stat"><div class="k">疑似拆行</div><div class="v ${a.splitCount?'warn':'ok'}">${a.splitCount}</div></div>
+    <div class="stat"><div class="k">逐字越界</div><div class="v ${a.wordOverflow?'bad':'ok'}">${a.wordOverflow}</div></div>
+  `;
+
+  const v = $('#verdict');
+  v.className = 'verdict';
+  if (a.wordOverflow){
+    v.classList.add('bad');
+    v.innerHTML = `<b>資料層問題：逐字時間標籤越界。</b>有 ${a.wordOverflow} 句的 <code>&lt;mm:ss.xx&gt;</code> 逐字時間點超過了這句的結束時間，也就是唱到一半就被下一句覆蓋。修法：把越界的逐字標籤收在本句區間內，或把下一句的 start 往後移。`;
+  } else if (a.splitCount){
+    v.classList.add('warn');
+    v.innerHTML = `<b>資料層問題：同一句被拆成兩條。</b>有 ${a.splitCount} 處是「上一行很短 + 這行是它的重複尾音」的模式，播放器會把兩條當成兩句輪流顯示，看起來就是上一句沒結束就切行。修法：合併成一行，用逐字標籤做重複段的動畫。`;
+  } else if (a.shortCount > lines.length * 0.12){
+    v.classList.add('warn');
+    v.innerHTML = `<b>資料層：時間戳整體偏早或過密。</b>有 ${a.shortCount} 句時長短於 0.9 秒但字數不少，等於這句根本沒時間唱完。多半是 LRC 整體提前了 0.2–0.5 秒，可用下面的「整體偏移」微調確認。`;
+  } else {
+    v.classList.add('ok');
+    v.innerHTML = `<b>資料層看起來正常。</b>行長分佈合理、沒有越界或拆行，問題應該在<b>渲染層</b>：切行時沒有取消上一句的逐字動畫（<code>setTimeout</code> / CSS animation 沒 clear），舊句子還在跑、新句子已經進來，就會出現「上一句還沒結束」的疊字。第 4 節是正確寫法。`;
+  }
+
+  // 表格
+  $('#tbody').innerHTML = lines.map((l, i) => {
+    const bad = l.flags.some(f => f[0] === 'bad');
+    const warn = l.flags.some(f => f[0] === 'warn');
+    const tags = l.flags.map(f => `<span class="tag ${f[0]}">${f[1]}</span>`).join('');
+    return `<tr class="${bad ? 'hit' : warn ? 'warnrow' : ''}">
+      <td class="t">${i + 1}</td>
+      <td class="t">${fmt(l.start)}</td>
+      <td class="t">${l.dur == null ? '—' : l.dur.toFixed(2) + 's'}</td>
+      <td class="t">${l.chars}</td>
+      <td class="t">${l.cps == null ? '—' : l.cps.toFixed(1)}</td>
+      <td><div class="lyric">${esc(l.text) || '<span style="color:#9aa1ad">（空行）</span>'}</div>${l.trans ? `<div class="trans">${esc(l.trans)}</div>` : ''}</td>
+      <td>${tags}</td>
+    </tr>`;
+  }).join('');
+
+  $('#reportCard').hidden = false;
+  $('#tableCard').hidden = false;
+  $('#stageCard').hidden = false;
+
+  requestAnimationFrame(() => drawTimeline(lines));
+  resetPlayback();
+}
+
+function esc(s){ return String(s).replace(/[&<>]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;'}[c])); }
+function fmt(s){
+  s = Math.max(0, s || 0);
+  const m = Math.floor(s / 60), r = s % 60;
+  return String(m).padStart(2, '0') + ':' + r.toFixed(2).padStart(5, '0');
+}
+
+/* ---------------- 示範播放器（正確寫法） ---------------- */
+let playing = false, t0 = 0, base = 0, rafId = null, curIdx = -1;
+const offsetEl = $('#offset');
+
+function duration(){
+  if (!LINES.length) return 0;
+  const last = LINES[LINES.length - 1];
+  return last.start + (last.dur || 4);
+}
+function now(){
+  return playing ? base + (performance.now() - t0) / 1000 : base;
+}
+function resetPlayback(){
+  playing = false; base = 0; curIdx = -1;
+  $('#play').textContent = '播放';
+  paint(0);
+}
+
+function paint(t){
+  const off = parseFloat(offsetEl.value) || 0;
+  const at = t + off;
+
+  // 關鍵：當前句 = 時間落在 [start, end) 的那一句，不是「最後一個 start <= t」
+  let idx = -1;
+  for (let i = 0; i < LINES.length; i++){
+    const s = LINES[i].start;
+    const d = LINES[i].dur == null ? 3.5 : LINES[i].dur;  // 最後一句沒有下一句可借，給個預設停留
+    if (at >= s && at < s + d){ idx = i; break; }
+  }
+
+  $('#clock').textContent = fmt(t) + ' / ' + fmt(duration());
+  $('#stageMeta').textContent = `t=${t.toFixed(2)}s  offset=${off.toFixed(2)}s`;
+
+  if (idx === -1){
+    if (curIdx !== -1){
+      curIdx = -1;
+      $('#stageJp').textContent = '—';
+      $('#stageZh').textContent = '';
+    }
+    return;
+  }
+
+  if (idx !== curIdx){
+    curIdx = idx;
+    const l = LINES[idx];
+    $('#stageJp').innerHTML = [...l.text].map(c =>
+      `<span data-i="${Math.random()}" style="color:#8b8b9e">${esc(c)}</span>`
+    ).join('');
+    $('#stageZh').textContent = l.trans || '';
+  }
+
+  // 逐字進度：由時間直接算，不用任何 timer，切行自然重置
+  const l = LINES[curIdx];
+  const p = Math.min(1, Math.max(0, (at - l.start) / Math.max(0.2, l.dur || 0.2)));
+  const spans = $('#stageJp').children;
+  const total = spans.length;
+  if (total){
+    const reveal = Math.floor(p * total);
+    for (let i = 0; i < total; i++){
+      spans[i].style.color = i < reveal ? '#ffffff' : '#8b8b9e';
+    }
+  }
+}
+
+function loop(){
+  if (!playing) return;
+  const t = now();
+  if (t >= duration()){
+    base = duration(); playing = false; $('#play').textContent = '播放';
+    paint(base); return;
+  }
+  paint(t);
+  rafId = requestAnimationFrame(loop);
+}
+
+$('#play').onclick = () => {
+  if (!LINES.length) return;
+  if (playing){
+    playing = false; base = now(); $('#play').textContent = '播放';
+    if (rafId) cancelAnimationFrame(rafId);
+  } else {
+    if (base >= duration()) base = 0;
+    t0 = performance.now(); playing = true; $('#play').textContent = '暫停';
+    rafId = requestAnimationFrame(loop);
+  }
+};
+$('#reset').onclick = () => { if (rafId) cancelAnimationFrame(rafId); resetPlayback(); };
+offsetEl.oninput = () => {
+  $('#offsetVal').textContent = (parseFloat(offsetEl.value) || 0).toFixed(2) + 's';
+  paint(now());
+};
+
+/* ---------------- 輸入 ---------------- */
+$('#run').onclick = () => {
+  const txt = $('#ta').value.trim();
+  if (!txt){ alert('先貼上或載入 LRC 內容'); return; }
+  const lines = parseLRC(txt);
+  if (!lines.length){ alert('沒解析到任何帶時間戳的歌詞行'); return; }
+  render(lines);
+};
+
+$('#drop').onclick = () => $('#file').click();
+$('#file').onchange = e => {
+  const f = e.target.files[0];
+  if (!f) return;
+  const r = new FileReader();
+  r.onload = () => { $('#ta').value = r.result; $('#run').click(); };
+  r.readAsText(f, 'UTF-8');
+};
+['dragover', 'dragenter'].forEach(ev => $('#drop').addEventListener(ev, e => {
+  e.preventDefault(); $('#drop').classList.add('over');
+}));
+['dragleave', 'drop'].forEach(ev => $('#drop').addEventListener(ev, e => {
+  e.preventDefault(); $('#drop').classList.remove('over');
+}));
+$('#drop').addEventListener('drop', e => {
+  const f = e.dataTransfer.files[0];
+  if (!f) return;
+  const r = new FileReader();
+  r.onload = () => { $('#ta').value = r.result; $('#run').click(); };
+  r.readAsText(f, 'UTF-8');
+});
+
+$('#clear').onclick = () => {
+  $('#ta').value = ''; LINES = [];
+  $('#reportCard').hidden = true; $('#tableCard').hidden = true; $('#stageCard').hidden = true;
+};
+
+$('#demo').onclick = () => {
+  $('#ta').value = `[00:01.00]完璧じゃないわたし
+[00:04.50]歌ってみた
+[00:09.20]きみがほしい
+[00:09.55]du du du
+[00:12.80]誰より近くで
+[00:16.40]ねえねえくるみ世界で一番アツい
+[00:20.10]通貨はなんだと思う
+[00:24.60]ずっと一緒にいたいのに
+[00:28.20]言葉が足りなくて
+[00:32.00]もう一度だけ
+[00:32.35]du du du
+[00:36.50]きみの名前を呼ぶよ`;
+  $('#run').click();
+};
+
+window.addEventListener('resize', () => { if (LINES.length) drawTimeline(LINES); });
+</script>
+</body>
+</html>
