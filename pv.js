@@ -44,7 +44,7 @@ const ARTS = {
   // 月に向かって撃て：使用者提供的官方 MV 截圖，已裁掉底部播放器 UI
   tsuki: {src: 'assets/ref/tsuki-cover.jpg', crop: [0, 0, 1279, 600],
     faces: [[640, 285]]},
-  // 声の軌跡：沒有提供封面，用十二人制服群像當主視覺，再由 voice 主題壓成夜藍
+  // 十二人制服群像。声の軌跡已改用真夜中ハートチューン的 tsuki 主視覺，這張不再掛在任何一首歌上。
   casual: {src: 'assets/ref/casual-remade/group.png', crop: [0, 0, 1920, 1080],
     faces: []},
   // 才女のお世話：八張官方立繪由 tools/build-osewa.mjs 去背並拼成學院禮堂群像
@@ -251,15 +251,17 @@ const SONGS = [
    cast:[['forever',0,'フェルスター・マリー・暁空','#4aa3e8'],['forever',1,'田中結','#e23b6a'],['forever',2,'北方和音','#e0a020'],
          ['forever',3,'洲宮紗絵','#6d5bd0'],['forever',4,'天羽ねね','#ef6a3a'],['forever',5,'中森雪加','#f0a24a']]},
   {title:'月に向かって撃て', ver:'星街すいせい', file:'月に向かって撃て [星街すいせい]', subs:'月に向かって撃て.srt', theme:'tsuki', art:'tsuki', lead:0, noBike:true,
-   series:'星街すいせい', kicker:'月に向かって撃て · official',
+   series:'星街すいせい', tv:'真夜中ハートチューン', kicker:'OPテーマ',
    cast:[['tsuki',0,'Arisu Yambuki','#e8e4d8'],['tsuki',1,'Rikka Inohana','#b97a4a'],['tsuki',2,'Nene Himekawa','#f2a7c3'],
          ['tsuki',3,'Iko Kirino','#d8d8e8'],['tsuki',4,'Shinobu Uzuki','#d94a5a'],['tsuki',5,'Lemon Ando','#e8d36a'],
          ['tsuki',6,'Aiko','#3f6fd0'],['tsuki',7,'Ao Momotose','#d94a6a'],['tsuki',8,'HIZUMI','#8fd14f'],
          ['tsuki',9,'Riina Yambuki','#8d6ad6'],['tsuki',10,'Mito Yambuki','#f0c23a']]},
-  {title:'声の軌跡', ver:'Soala', file:'声の軌跡 [Soala]', subs:'声の軌跡.srt', theme:'voice', art:'casual', lead:0, noBike:true,
+  {title:'声の軌跡', ver:'Soala', file:'声の軌跡 [Soala]', subs:'声の軌跡.srt', theme:'voice', art:'tsuki', lead:0, noBike:true,
    series:'真夜中ハートチューン', tv:'真夜中ハートチューン', kicker:'EDテーマ',
-   cast:[['casual',4,'理瀬','#f6a531'],['casual',1,'陽和','#ee5b97'],['casual',0,'純華','#2ba6e1'],
-         ['casual',2,'咲希','#3cc39a'],['casual',3,'雪乃','#8d6ad6'],['casual',8,'智','#f0c23a']]},
+   cast:[['tsuki',0,'Arisu Yambuki','#e8e4d8'],['tsuki',1,'Rikka Inohana','#b97a4a'],['tsuki',2,'Nene Himekawa','#f2a7c3'],
+         ['tsuki',3,'Iko Kirino','#d8d8e8'],['tsuki',4,'Shinobu Uzuki','#d94a5a'],['tsuki',5,'Lemon Ando','#e8d36a'],
+         ['tsuki',6,'Aiko','#3f6fd0'],['tsuki',7,'Ao Momotose','#d94a6a'],['tsuki',8,'HIZUMI','#8fd14f'],
+         ['tsuki',9,'Riina Yambuki','#8d6ad6'],['tsuki',10,'Mito Yambuki','#f0c23a']]},
   {title:'$・¥・€', ver:'ドル・円・ユーロ', file:'$・¥・€', subs:'$・¥・€.srt', theme:'lucky', art:'lucky8', lead:0,
    series:'マネーソング', kicker:'ドル・円・ユーロ',
    // 這首是舞台曲，卡司優先用 FX戦士くるみちゃん 的動畫人物，不用招財喵布布的真人照片
@@ -281,7 +283,7 @@ const SONGS = [
          ['growup',3,'五十土五十鈴','#e99038'],['growup',4,'由良 葵','#a28ac4'],['growup',5,'由良 茜','#c74360'],
          ['growup',6,'酒匂 雫','#7786ba'],['growup',7,'スヴェトラーナ','#d7d3c9'],['growup',8,'間宮 凛','#bd8b4c'],['growup',9,'麻利亜','#f1bc3e']]},
   {title:'FX戦士くるみちゃん', ver:'福賀くるみ(CV.鈴木愛奈)', file:'FX戦士くるみちゃん', subs:'FX戦士くるみちゃん.srt', theme:'fx', art:'fx', lead:0, noBike:true,
-   series:'FX戦士くるみちゃん', tv:'FX戦士くるみちゃん', kicker:'OPテーマ',
+   series:'福賀くるみ', tv:'FX戦士くるみちゃん', kicker:'OPテーマ',
    cast:[['fx',0,'福賀くるみ','#f2a0c0'],['fx',1,'小金萌智子','#b06ad6'],['fx',2,'山師芽吹','#f0c24a'],['fx',3,'高根やす子','#5b6bb5']]}
 ];
 
@@ -409,7 +411,7 @@ const CHARACTER_GROUPS = song.cast[0][0] === 'anaru'
   : song.cast[0][0] === 'forever'
   ? [{sheet:'forever', title:'メモリーズオフ 双想 · 六人', src:'assets/ref/forever/cover.png', colors:['#49b4ef','#ffe9a8'], count:6, solo:true}]
   : song.cast[0][0] === 'tsuki'
-  ? [{sheet:'tsuki', title:'月に向かって撃て · 十一人', src:'assets/ref/tsuki-group.png', colors:['#1b2a68','#8fd8ff'], count:11, solo:true}]
+  ? [{sheet:'tsuki', title:'真夜中ハートチューン · 十一人', src:'assets/ref/tsuki-group.png', colors:['#1b2a68','#8fd8ff'], count:11, solo:true}]
   : song.cast[0][0] === 'osewa'
   // 才女のお世話：OP 與 ED 共用同一組八位官方立繪
   ? [{sheet:'osewa', title:'才女のお世話 · 八人', src:'assets/ref/osewa/group.png', colors:['#2b3f7d','#ffd7a1'], count:8, solo:true}]
@@ -1430,6 +1432,11 @@ function shotStage(t, sh, u){
     : O.length >= 11
     ? [...O.slice(0, 6).map((m, i) => ({nx:(i+.5)/6, ny:.60, nh:.28, m})),
        ...O.slice(6, 11).map((m, i) => ({nx:(i+.5)/5, ny:.78, nh:.31, m})), {nx:.50, ny:1, nh:.50, m:LEAD}]
+    // 十一人（真夜中ハートチューン）：後六、中四都讓開正中，主唱前面才不會頂著別人的頭。
+    // 十人的配置只畫得到九位配角。
+    : O.length === 10
+    ? [...O.slice(0, 6).map((m, i) => ({nx:(i+.5)/6, ny:.58, nh:.26, m})),
+       ...O.slice(6, 10).map((m, i) => ({nx:(i+.5)/4, ny:.78, nh:.32, m})), {nx:.50, ny:1, nh:.50, m:LEAD}]
     : O.length >= 9
     ? [{nx:.08, ny:.65, nh:.34, m:O[0]}, {nx:.29, ny:.65, nh:.34, m:O[1]}, {nx:.50, ny:.65, nh:.34, m:O[2]}, {nx:.71, ny:.65, nh:.34, m:O[3]}, {nx:.92, ny:.65, nh:.34, m:O[4]},
        {nx:.14, ny:.86, nh:.42, m:O[5]}, {nx:.37, ny:.86, nh:.42, m:O[6]}, {nx:.63, ny:.86, nh:.42, m:O[7]}, {nx:.86, ny:.86, nh:.42, m:O[8]}, {nx:.50, ny:1, nh:.58, m:LEAD}]
@@ -1442,10 +1449,11 @@ function shotStage(t, sh, u){
     : O.length >= 5
     ? [{nx:.28, ny:.74, nh:.46, m:O[0]}, {nx:.50, ny:.70, nh:.44, m:O[1]}, {nx:.72, ny:.74, nh:.46, m:O[2]},
        {nx:.15, ny:.90, nh:.54, m:O[3]}, {nx:.85, ny:.90, nh:.54, m:O[4]}, {nx:.50, ny:1, nh:.64, m:LEAD}]
-    // 四人卡司（FX戦士くるみちゃん）：三位配角站兩側與後排中央，主唱在中間前面
+    // 四人卡司（FX戦士くるみちゃん）：兩位配角站前排兩側，第三位站在主唱左後方；
+    // 後排正中央會被主唱整個擋住，腳也要落在舞台後緣，不能停在 LED 螢幕上
     : O.length === 3
-    ? [{nx:.18, ny:.76, nh:.46, m:O[0]}, {nx:.82, ny:.76, nh:.46, m:O[1]},
-       {nx:.50, ny:.64, nh:.40, m:O[2]}, {nx:.50, ny:1, nh:.66, m:LEAD}]
+    ? [{nx:.13, ny:.88, nh:.50, m:O[0]}, {nx:.87, ny:.88, nh:.50, m:O[1]},
+       {nx:.32, ny:.78, nh:.44, m:O[2]}, {nx:.53, ny:1, nh:.66, m:LEAD}]
     : O.length >= 3
     ? [{nx:.28, ny:.74, nh:.46, m:O[0]}, {nx:.72, ny:.74, nh:.46, m:O[1]},
        {nx:.13, ny:.90, nh:.54, m:O[2]}, {nx:.87, ny:.90, nh:.54, m:O[3]}, {nx:.50, ny:1, nh:.64, m:LEAD}]
