@@ -165,7 +165,7 @@ macOS 也可雙擊 `啟動播放器.command`，會在終端機啟動伺服器並
 
 ### DAYS!：Aooo
 
-已加入歌詞 PV（編號 52，約 231.00 秒）與第二版播放器，為 TV 動畫《グロウアップショウ ～ひまわりのサーカス団～》ED 主題曲；使用使用者提供的 MP3 與 57 段日中雙語字幕。人物沿用同作的十人（`growup`），主視覺 `assets/ref/growup/group.png`，主題 `days` 是放學後的晴空到向日葵黃，主唱預設為鶴巻瑞佳。原文、翻譯與時間軸保存在 `assets/ref/days/`，可用 `node tools/build-days-subtitles.mjs` 重建 SRT。
+已加入歌詞 PV（編號 52，約 231.00 秒）與第二版播放器，為 TV 動畫《グロウアップショウ ～ひまわりのサーカス団～》ED 主題曲；使用使用者提供的 MP3 與 57 段日中雙語字幕。人物沿用同作的十人（`growup`），主視覺 `assets/ref/growup/group.png`，主題 `days` 是放學後的晴空到向日葵黃，主唱預設為鶴巻瑞佳。原文、翻譯與時間軸保存在 `assets/ref/days/`（見 [assets/ref/days/README.md](assets/ref/days/README.md)），可用 `node tools/build-days-subtitles.mjs` 重建 SRT。
 
 ### FX戦士くるみちゃん：福賀くるみ(CV.鈴木愛奈)
 
