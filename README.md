@@ -169,6 +169,8 @@ macOS 也可雙擊 `啟動播放器.command`，會在終端機啟動伺服器並
 
 逐字填色由 `tools/build-perfect-fill.mjs` 產生：把每一句的每個字對到 `assets/ref/perfect/asr-ja.json` 的逐字時間，寫回 `assets/ref/perfect/fill-ja.json`。標了 `hand: true` 的句子是人工逐句核對過的，重建時改用句子文字對回目前的分鏡（字幕重排後索引會變），不會被覆蓋。目前 43 句裡有 38 句是逐字時間，其餘 5 句（兩句 `(Fu nya nya)` 和聲、三句對不上的短句）沿用原本的線性＋能量估算。`tools/check-srt-timing.py` 會列出每句與 ASR 的起唱、收尾落差，`tools/retime-from-asr.py` 可在需要時整句重對。
 
+整首一次轉錄會累積漂移（後半段可差三秒以上），所以另有 `tools/retime-by-cue.py`：**逐句**開小視窗、帶該句歌詞當提示跑 `whisper-cli`（`large-v3-turbo`，DTW token 時間），再與歌詞做 Levenshtein 對齊，起唱取第一個對上的字的詞頭、收尾取最後一個對上的字的詞尾。逐句結果互相獨立，不會漂移；短應答句（`じゃないあなた` 等）用單調性保護避免咬到前一句。最終時間軸固定在 `tools/build-perfect-subtitles.mjs`（`node tools/build-perfect-subtitles.mjs` 可重建 SRT），與逐字填色的時間互相對齊。
+
 ### DAYS!：Aooo
 
 已加入歌詞 PV（編號 52，約 231.00 秒）與第二版播放器，為 TV 動畫《グロウアップショウ ～ひまわりのサーカス団～》ED 主題曲；使用使用者提供的 MP3 與 57 段日中雙語字幕。人物沿用同作的十人（`growup`），主視覺 `assets/ref/growup/group.png`，主題 `days` 是放學後的晴空到向日葵黃，主唱預設為鶴巻瑞佳。原文、翻譯與時間軸保存在 `assets/ref/days/`（見 [assets/ref/days/README.md](assets/ref/days/README.md)），可用 `node tools/build-days-subtitles.mjs` 重建 SRT。
