@@ -561,7 +561,9 @@ function prog(c, t){
   const lin = (t - c.start)/(e - c.start);
   const m0 = cumMid(c.start), m1 = cumMid(e);
   const en = m1 - m0 > 1e-6 ? clamp((cumMid(t) - m0)/(m1 - m0)) : lin;
-  return clamp(.45*lin + .55*en);
+  // 句首如果接在前一句的長音後面，能量項會在一瞬間吃滿，整句剛出現就亮掉一半。
+  // 填色最多只准領先線性時間 15%，其他情況（能量落後）照舊。
+  return clamp(Math.min(.45*lin + .55*en, lin + .15));
 }
 function lastStarted(t){ let r = null; for(const c of cues){ if(c.start <= t) r = c; else break; } return r; }
 function activeCue(t){ const c = lastStarted(t + .25); return c && t < c.end + .35 ? c : null; }
