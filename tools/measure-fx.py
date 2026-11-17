@@ -182,7 +182,7 @@ def main():
         times = spread(chars, [float(T[p]) for p in pk], d['start'], end)
         if i == 36 and len(chars) == 10:
             # 「円」是拉長的長音（到 1:51.55 才換氣）；顫音會被當成音節峰，這裡照實際唱法切成一段。
-            head = [[109.95, 111.55]]
+            head = [[d['start'], 111.55]]
             tail, cur = [], 111.55
             for _ in range(9):
                 nxt = cur + (d['end'] - 111.55) / 9
