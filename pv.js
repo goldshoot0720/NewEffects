@@ -260,10 +260,11 @@ const SONGS = [
    series:'真夜中ハートチューン', tv:'真夜中ハートチューン', kicker:'EDテーマ',
    cast:[['casual',4,'理瀬','#f6a531'],['casual',1,'陽和','#ee5b97'],['casual',0,'純華','#2ba6e1'],
          ['casual',2,'咲希','#3cc39a'],['casual',3,'雪乃','#8d6ad6'],['casual',8,'智','#f0c23a']]},
-  {title:'$・¥・€', ver:'ドル・円・ユーロ', file:'$・¥・€', subs:'$・¥・€.srt', theme:'lucky', art:'lucky8', lead:2,
+  {title:'$・¥・€', ver:'ドル・円・ユーロ', file:'$・¥・€', subs:'$・¥・€.srt', theme:'lucky', art:'lucky8', lead:0,
    series:'マネーソング', kicker:'ドル・円・ユーロ',
-   cast:[['lucky',0,'鯨魚娘','#3f7fd0'],['lucky',1,'咕咕嘎嘎','#3a4250'],['lucky',2,'鋒兄','#b08a4a'],['lucky',3,'塗哥','#7b8794'],
-         ['lucky',4,'喵布布','#d9822b'],['lucky',5,'喵白白','#8d97a3'],['lucky',6,'Claude 娘','#d9874e'],['lucky',7,'GPT 娘','#c2b9e9']]},
+   // 這首是舞台曲，卡司優先用 FX戦士くるみちゃん 的動畫人物，不用招財喵布布的真人照片
+   cast:[['fx',0,'福賀くるみ','#f2a0c0'],['fx',1,'小金萌智子','#b06ad6'],['fx',2,'山師芽吹','#f0c24a'],['fx',3,'高根やす子','#5b6bb5'],
+         ['lucky',0,'鯨魚娘','#3f7fd0']]},
   {title:'完璧じゃないわたし', ver:'前島亜美', file:'完璧じゃないわたし [前島亜美]', subs:'完璧じゃないわたし.srt', theme:'perfect', art:'osewa', lead:0, noBike:true,
    series:'前島亜美', tv:'才女のお世話', kicker:'EDテーマ',
    cast:[['osewa',0,'友成伊月','#4a5a78'],['osewa',1,'此花雛子','#e8913f'],['osewa',2,'天王寺美麗','#e8c44a'],
@@ -500,7 +501,9 @@ function parseSrt(text){
     const [start, end] = ls[i].split('-->').map(tt); if(start == null) continue;
     const body = ls.slice(i + 1).map(x => x.replace(/<[^>]+>/g, '').trim()).filter(Boolean);
     let zh = '';
-    if(body.length > 1 && !/[぀-ヿ]/.test(body[body.length - 1])) zh = body.pop();
+    // 只有假名才算「這行是日文」。原本的 [぀-ヿ] 把 U+30FB「・」和 U+30A0「゠」也算進去，
+    // 中文翻譯只要用了間隔號（錢・文・厘），整行就會被當成日文併進主歌詞，畫面上變成兩行疊在一起。
+    if(body.length > 1 && !/[ぁ-ゖゝ-ゟァ-ヺヽ-ヿー]/.test(body[body.length - 1])) zh = body.pop();
     const jp = LyricText.clean(body.join(' '));
     zh=LyricText.clean(zh);
     if(jp) out.push({start, end: Math.max(end, start + .5), jp, zh});
