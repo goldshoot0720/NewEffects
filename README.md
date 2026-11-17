@@ -167,6 +167,8 @@ macOS 也可雙擊 `啟動播放器.command`，會在終端機啟動伺服器並
 
 對時同樣是 `ffmpeg` 轉 16 kHz 單聲道後，用本機 `whisper-cli`（`large-v3-turbo`）取逐字時間戳，再由 `tools/align-lyrics.py` 對齊歌詞、`tools/build-srt.py` 輸出。使用者提供的歌詞少了 C 段四句（「孤独から／救ってくれたヒーロー／どんな日々も／もう怖くないよ」，約 149.7–162.6 秒），三次獨立辨識結果一致，已補進字幕；其餘句子照原文，間奏前的句尾不再拖到下一句。
 
+逐字填色由 `tools/build-perfect-fill.mjs` 產生：把每一句的每個字對到 `assets/ref/perfect/asr-ja.json` 的逐字時間，寫回 `assets/ref/perfect/fill-ja.json`。標了 `hand: true` 的句子是人工逐句核對過的，重建時改用句子文字對回目前的分鏡（字幕重排後索引會變），不會被覆蓋。目前 43 句裡有 38 句是逐字時間，其餘 5 句（兩句 `(Fu nya nya)` 和聲、三句對不上的短句）沿用原本的線性＋能量估算。`tools/check-srt-timing.py` 會列出每句與 ASR 的起唱、收尾落差，`tools/retime-from-asr.py` 可在需要時整句重對。
+
 ### DAYS!：Aooo
 
 已加入歌詞 PV（編號 52，約 231.00 秒）與第二版播放器，為 TV 動畫《グロウアップショウ ～ひまわりのサーカス団～》ED 主題曲；使用使用者提供的 MP3 與 57 段日中雙語字幕。人物沿用同作的十人（`growup`），主視覺 `assets/ref/growup/group.png`，主題 `days` 是放學後的晴空到向日葵黃，主唱預設為鶴巻瑞佳。原文、翻譯與時間軸保存在 `assets/ref/days/`（見 [assets/ref/days/README.md](assets/ref/days/README.md)），可用 `node tools/build-days-subtitles.mjs` 重建 SRT。
