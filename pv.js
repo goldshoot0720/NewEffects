@@ -281,7 +281,7 @@ const SONGS = [
    cast:[['growup',0,'鶴巻瑞佳','#c72d48'],['growup',1,'川澄桜翔','#368fc4'],['growup',2,'吾野伊万里','#73a34b'],
          ['growup',3,'五十土五十鈴','#e99038'],['growup',4,'由良 葵','#a28ac4'],['growup',5,'由良 茜','#c74360'],
          ['growup',6,'酒匂 雫','#7786ba'],['growup',7,'スヴェトラーナ','#d7d3c9'],['growup',8,'間宮 凛','#bd8b4c'],['growup',9,'麻利亜','#f1bc3e']]},
-  {title:'FX戦士くるみちゃん', ver:'福賀くるみ(CV.鈴木愛奈)', file:'FX戦士くるみちゃん', subs:'FX戦士くるみちゃん.srt', theme:'fx', art:'fx', lead:0, noBike:true,
+  {title:'FX戦士くるみちゃん', ver:'福賀くるみ(CV.鈴木愛奈)', file:'FX戦士くるみちゃん', subs:'FX戦士くるみちゃん.srt', theme:'fx', art:'fx', lead:0, noBike:true, fillEnergy:.3,
    series:'福賀くるみ', tv:'FX戦士くるみちゃん', kicker:'OPテーマ',
    cast:[['fx',0,'福賀くるみ','#f2a0c0'],['fx',1,'小金萌智子','#b06ad6'],['fx',2,'山師芽吹','#f0c24a'],['fx',3,'高根やす子','#5b6bb5']]}
 ];
@@ -563,7 +563,10 @@ function prog(c, t){
   const en = m1 - m0 > 1e-6 ? clamp((cumMid(t) - m0)/(m1 - m0)) : lin;
   // 句首如果接在前一句的長音後面，能量項會在一瞬間吃滿，整句剛出現就亮掉一半。
   // 填色最多只准領先線性時間 15%，其他情況（能量落後）照舊。
-  return clamp(Math.min(.45*lin + .55*en, lin + .15));
+  // song.fillEnergy 是能量項的比重：對時準的歌（人工核對過的 SRT）調低，
+  // 填色才會跟著時間穩定往前走，不會卡在句首等鼓聲。
+  const w = clamp(song.fillEnergy ?? .55, 0, 1);
+  return clamp(Math.min((1 - w)*lin + w*en, lin + .15));
 }
 function lastStarted(t){ let r = null; for(const c of cues){ if(c.start <= t) r = c; else break; } return r; }
 function activeCue(t){ const c = lastStarted(t + .25); return c && t < c.end + .35 ? c : null; }
