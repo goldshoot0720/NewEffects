@@ -512,6 +512,9 @@ function parseSrt(text){
   return out.sort((a, b) => a.start - b.start);
 }
 const PUNCT = '、。・「」『』…,.';
+// 逐字填色時間只記「唱出來的字」：空白、標點與符號（\p{P}\p{S}）都沒有時間。
+// v2.html 的歌詞先用 LyricText.clean 去掉 \p{P}\p{S}，這條讓 pv.js 的原始字幕跟它對齊。
+const SKIP_FILL = /[\s\p{P}\p{S}]/u;
 function tokenize(text){
   const out = []; let bk = false;
   const re = /([一-鿿々〆ヶ]+|[A-Za-z]+(?: +[A-Za-z]+)*)[(（]([ぁ-ゟ゠-ヿ]+)[)）]|[A-Za-z0-9'’!?！？\-_~]+|./gsu;
@@ -2112,11 +2115,13 @@ async function init(){
     const fill = [];
     for(const u of units){
       if(u.sp){ w += u.w; continue; }
-      const n = [...u.t].length;
-      if(k + n > times.length) return null;     // 字數對不上就放棄這句，寧可退回原本的估算
-      const per = u.w / n;
-      for(let j = 0; j < n; j++){
+      const cs = [...u.t];
+      const per = u.w / cs.length;
+      for(const ch of cs){
         w += per;
+        // 標點、引號、・、…、！？不唱，逐字時間裡也沒有它們：寬度照走，不記時間。
+        if(SKIP_FILL.test(ch)) continue;
+        if(k >= times.length) return null;     // 字數對不上就放棄這句，寧可退回原本的估算
         const [s, e] = times[k++];
         fill.push({w, s, e});
       }
