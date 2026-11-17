@@ -266,7 +266,7 @@ const SONGS = [
    series:'マネーソング', kicker:'ドル・円・ユーロ',
    // 這首是 FX 動畫的 ED，卡司與主視覺都用久留美四人的動畫人物，不用招財喵布布的真人照片
    cast:[['fx',0,'福賀くるみ','#f2a0c0'],['fx',1,'小金萌智子','#b06ad6'],['fx',2,'山師芽吹','#f0c24a'],['fx',3,'高根やす子','#5b6bb5']]},
-  {title:'完璧じゃないわたし', ver:'前島亜美', file:'完璧じゃないわたし [前島亜美]', subs:'完璧じゃないわたし.srt', theme:'perfect', art:'osewa', lead:0, noBike:true,
+  {title:'完璧じゃないわたし', ver:'前島亜美', file:'完璧じゃないわたし [前島亜美]', subs:'完璧じゃないわたし.srt', fill:'assets/ref/perfect/fill-ja.json', theme:'perfect', art:'osewa', lead:0, noBike:true,
    series:'前島亜美', tv:'才女のお世話', kicker:'EDテーマ',
    cast:[['osewa',0,'友成伊月','#4a5a78'],['osewa',1,'此花雛子','#e8913f'],['osewa',2,'天王寺美麗','#e8c44a'],
          ['osewa',3,'都島成香','#8a6ad6'],['osewa',4,'鶴見静音','#4b3f5e'],['osewa',5,'大将勝也','#3f6f4a'],
@@ -281,7 +281,7 @@ const SONGS = [
    cast:[['growup',0,'鶴巻瑞佳','#c72d48'],['growup',1,'川澄桜翔','#368fc4'],['growup',2,'吾野伊万里','#73a34b'],
          ['growup',3,'五十土五十鈴','#e99038'],['growup',4,'由良 葵','#a28ac4'],['growup',5,'由良 茜','#c74360'],
          ['growup',6,'酒匂 雫','#7786ba'],['growup',7,'スヴェトラーナ','#d7d3c9'],['growup',8,'間宮 凛','#bd8b4c'],['growup',9,'麻利亜','#f1bc3e']]},
-  {title:'FX戦士くるみちゃん', ver:'福賀くるみ(CV.鈴木愛奈)', file:'FX戦士くるみちゃん', subs:'FX戦士くるみちゃん.srt', theme:'fx', art:'fx', lead:0, noBike:true, fillEnergy:.3,
+  {title:'FX戦士くるみちゃん', ver:'福賀くるみ(CV.鈴木愛奈)', file:'FX戦士くるみちゃん', subs:'FX戦士くるみちゃん.srt', fill:'assets/ref/fx/fill-ja.json', theme:'fx', art:'fx', lead:0, noBike:true, fillEnergy:.3,
    series:'福賀くるみ', tv:'FX戦士くるみちゃん', kicker:'OPテーマ',
    cast:[['fx',0,'福賀くるみ','#f2a0c0'],['fx',1,'小金萌智子','#b06ad6'],['fx',2,'山師芽吹','#f0c24a'],['fx',3,'高根やす子','#5b6bb5']]}
 ];
@@ -538,24 +538,24 @@ function tapeUnits(units){
   }
   return out;
 }
-// 演唱進度：線性時間與中頻（人聲）能量累積各半
+// 演唱進度：沒有逐字時間時，線性時間與中頻能量各佔一部分。
+// 逐字時間的字與字之間是停頓，寬度停在那裡等下一個字起唱。
+function fillProg(fill, total, t){
+  let prevW = 0;
+  for(const m of fill){
+    if(t < m.s) return clamp(prevW/total);
+    if(t < m.e){
+      const u = (t - m.s)/Math.max(.04, m.e - m.s);
+      return clamp((prevW + (m.w - prevW)*u)/total);
+    }
+    prevW = m.w;
+  }
+  return 1;
+}
 function prog(c, t){
   if(t <= c.start) return 0;
   // 有逐字時間時，填色跟那個字走，不用整句的音量。鼓和伴奏會把後面的字提前填完。
-  if(c.fill){
-    // 每個字有「開始唱」與「唱完」兩個時間。字與字之間的空白是停頓，
-    // 寬度要停在那裡等下一個字起唱，否則停頓會被下一個字提前填掉。
-    let prevW = 0;
-    for(const m of c.fill){
-      if(t < m.s) return clamp(prevW/c.jW);                       // 這個字還沒唱
-      if(t < m.e){                                                 // 正在唱這個字
-        const u = (t - m.s)/Math.max(.04, m.e - m.s);
-        return clamp((prevW + (m.w - prevW)*u)/c.jW);
-      }
-      prevW = m.w;                                                // 這個字唱完了
-    }
-    return 1;
-  }
+  if(c.fill) return fillProg(c.fill, c.jW, t);
   const e = c.sungEnd ?? (c.start + (c.end - c.start)*.93);
   if(t >= e) return 1;
   const lin = (t - c.start)/(e - c.start);
@@ -991,7 +991,8 @@ function karaokeCue(c, t, o, alpha = 1, dy = 0){
     g.globalAlpha = alpha*easeOut((appear - .15)/.4);
     g.lineWidth = zs*.18; g.strokeStyle = `rgba(${INK},.75)`; g.strokeText(c.zh, zx, zy);
     g.fillStyle = 'rgba(255,255,255,.72)'; g.fillText(c.zh, zx, zy);
-    g.save(); g.beginPath(); g.rect(zx - 2, zy - zs*1.2, (zw + 4)*prog(c, t), zs*1.6); g.clip(); g.fillStyle = '#ffffff'; g.fillText(c.zh, zx, zy); g.restore();
+    const zhP = c.fillZh ? fillProg(c.fillZh, c.zW, t) : prog(c, t);
+    g.save(); g.beginPath(); g.rect(zx - 2, zy - zs*1.2, (zw + 4)*zhP, zs*1.6); g.clip(); g.fillStyle = '#ffffff'; g.fillText(c.zh, zx, zy); g.restore();
   }
   g.restore();
 }
@@ -1061,11 +1062,33 @@ function logo(cx, cy, size, t0, t, alpha = 1){
 
 /* ---------------- 鏡頭 ---------------- */
 // 膠卷：左為日文、右為中文，一格一字隨演唱捲動（參考膠卷歌詞 PV）
+// 有逐字時間時，膠卷停在正在唱的那一格。線性進度會把拉長的第一個字一下子捲過去。
+function sungCell(c, t, kind){
+  const units = kind === 'jp' ? c.ju : c.zu;
+  const fill = kind === 'jp' ? c.fill : c.fillZh;
+  const total = kind === 'jp' ? c.jW : c.zW;
+  const target = (fill ? fillProg(fill, total, t) : prog(c, t)) * total;
+  let w = 0, i = 0;
+  for(const u of units){
+    const skip = u.sp || (u.punct && PUNCT.includes(u.t));
+    if(skip){ w += u.w; if(target < w) return i; continue; }
+    const cells = u.latin || u.punct ? 1 : [...u.t].length;
+    const next = w + u.w;
+    if(target < next) return i + clamp((target - w)/Math.max(u.w, 1e-6)) * cells;
+    w = next; i += cells;
+  }
+  return i;
+}
 function tapePos(t, kind){
   const c = lastStarted(t);
   if(!c) return -3 + 3*smooth(t/Math.max(.5, cues[0].start));
   const off = kind === 'jp' ? c.jo : c.zo, n = kind === 'jp' ? c.jn : c.zn;
-  return off + easeOut((t - c.start)/.4) + prog(c, t)*n;
+  const intro = easeOut((t - c.start)/.4);
+  if(kind === 'jp' ? c.fill : c.fillZh){
+    const cell = sungCell(c, t, kind);
+    return off + (cell <= 0 ? intro : 1 + Math.min(cell, n));
+  }
+  return off + intro + prog(c, t)*n;
 }
 function strip(x, w, tape, pos, t, kind){
   const fh = 190, cy = H/2;
@@ -2081,29 +2104,39 @@ async function init(){
   // 改成用 ASR 對到音訊的逐字時間：每個字記「開始唱」與「唱完」兩個時間，
   // 唱到哪個字就填到哪個字，句中停頓時填色就停在那個字，不會被下一個字提前点亮。
   // 時間軸由 tools/build-forever-fill.mjs 產生（來源 assets/ref/forever/asr-ja.json）。
+  const attachFill = (units, times, total) => {
+    let k = 0, w = 0;
+    const fill = [];
+    for(const u of units){
+      if(u.sp){ w += u.w; continue; }
+      const n = [...u.t].length;
+      if(k + n > times.length) return null;     // 字數對不上就放棄這句，寧可退回原本的估算
+      const per = u.w / n;
+      for(let j = 0; j < n; j++){
+        w += per;
+        const [s, e] = times[k++];
+        fill.push({w, s, e});
+      }
+    }
+    if(k !== times.length) return null;
+    if(fill.length) fill[fill.length - 1].w = total;   // 讓填色剛好走完，不留最後一截
+    return fill;
+  };
   if(fillData?.lines){
     fillData.lines.forEach(line => {
       const c = cues[line.i];
       if(!c) return;
       // 寬度沿用 pv.js 的斷詞：漢字與假名逐字，英文單字拆成字母（英文也是逐字母填色）。
-      let k = 0, w = 0;
-      const fill = [];
-      for(const u of c.ju){
-        if(u.sp){ w += u.w; continue; }
-        const n = [...u.t].length;
-        if(k + n > line.t.length) return;       // 字數對不上就放棄這句，寧可退回原本的估算
-        const per = u.w / n;
-        for(let j = 0; j < n; j++){
-          w += per;
-          const [s, e] = line.t[k++];
-          fill.push({w, s, e});
-        }
-      }
-      if(k !== line.t.length) return;
-      if(fill.length) fill[fill.length - 1].w = c.jW;   // 讓填色剛好走完，不留最後一截
+      const fill = attachFill(c.ju, line.t, c.jW);
+      if(!fill) return;
       c.fill = fill;
       c.sungStart = line.start;
       c.sungEnd = line.end;
+      if(line.z){
+        c.zW = c.zu.reduce((a, u) => a + u.w, 0);
+        const zh = attachFill(c.zu, line.z, c.zW);
+        if(zh) c.fillZh = zh;
+      }
     });
   }
   sections = buildSections();
