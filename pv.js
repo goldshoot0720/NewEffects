@@ -879,26 +879,11 @@ function drawDancer(i, x, y, h, st){
   g.save();
   g.fillStyle = 'rgba(0,0,0,.28)'; g.beginPath(); g.ellipse(x, y, w*.32*(1 - Math.min(.35, hop/h*3)), h*.02, 0, 0, Math.PI*2); g.fill();
   g.restore();
-  // 深色服裝站在深色舞台上會整隻看不見：黑襪子融進背景，看起來像小腿被切斷。
-  // 背後鋪一層柔光把輪廓托出來，亮色角色只是多一圈很淡的光暈。
-  dancerHalo(x, y, w, h, hop, st.tilt || 0);
   // st 可以帶 armA/armB/legA/legB 直接指定關節角度（例如合照要一個固定的舞姿）
+  // halo 是背後柔光強度：深色服裝在深色舞台上要靠它才看得出輪廓，cast.json 可逐人調整。
   SpriteRig.draw(g, img, x, y, h, {wave: st.wave, energy: st.energy, hop, tilt: st.tilt, squash: st.squash*4,
     armA: st.armA, armB: st.armB, legA: st.legA, legB: st.legB, armScale: m.meta?.armScale, legScale: m.meta?.legScale,
-    intact: !!m.meta?.intact});
-}
-// 人物背後的柔光：中心在胸口，往外淡到看不見，跟著跳躍與傾斜一起動
-function dancerHalo(x, y, w, h, hop, tilt){
-  const r = Math.max(w, h);
-  g.save();
-  g.translate(x, y - hop); g.rotate(tilt*.6);
-  const gr = g.createRadialGradient(0, -h*.46, r*.03, 0, -h*.44, r*.64);
-  gr.addColorStop(0, 'rgba(255,255,255,.26)');
-  gr.addColorStop(.55, 'rgba(255,255,255,.17)');
-  gr.addColorStop(1, 'rgba(255,255,255,0)');
-  g.fillStyle = gr;
-  g.fillRect(-r*.64, -h*.44 - r*.64, r*1.28, r*1.28);
-  g.restore();
+    intact: !!m.meta?.intact, halo: m.meta?.halo ?? .18});
 }
 // 立繪的 h 就是整張圖的高度，腳的錨點在圖的底邊。
 // 手抬起來會高出頭頂，踏步會讓鞋底低於錨點，落地壓縮會把身體再撐寬約一成。

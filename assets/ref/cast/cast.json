@@ -1355,7 +1355,8 @@
    ],
    "sheet": "tsuki-ref",
    "name": "Arisu Yambuki",
-   "intact": true
+   "intact": true,
+   "halo": 0.3
   },
   {
    "file": "tsuki-1.png",
@@ -1369,7 +1370,8 @@
    ],
    "sheet": "tsuki-ref",
    "name": "Rikka Inohana",
-   "intact": true
+   "intact": true,
+   "halo": 0.3
   },
   {
    "file": "tsuki-2.png",
@@ -1383,7 +1385,8 @@
    ],
    "sheet": "tsuki-ref",
    "name": "Nene Himekawa",
-   "intact": true
+   "intact": true,
+   "halo": 0.3
   },
   {
    "file": "tsuki-3.png",
@@ -1397,7 +1400,8 @@
    ],
    "sheet": "tsuki-ref",
    "name": "Iko Kirino",
-   "intact": true
+   "intact": true,
+   "halo": 0.3
   },
   {
    "file": "tsuki-4.png",
@@ -1411,7 +1415,8 @@
    ],
    "sheet": "tsuki-ref",
    "name": "Shinobu Uzuki",
-   "intact": true
+   "intact": true,
+   "halo": 0.3
   },
   {
    "file": "tsuki-5.png",
@@ -1425,7 +1430,8 @@
    ],
    "sheet": "tsuki-ref",
    "name": "Lemon Ando",
-   "intact": true
+   "intact": true,
+   "halo": 0.3
   },
   {
    "file": "tsuki-6.png",
@@ -1439,7 +1445,8 @@
    ],
    "sheet": "tsuki-ref",
    "name": "Aiko",
-   "intact": true
+   "intact": true,
+   "halo": 0.3
   },
   {
    "file": "tsuki-7.png",
@@ -1453,7 +1460,8 @@
    ],
    "sheet": "tsuki-ref",
    "name": "Ao Momotose",
-   "intact": true
+   "intact": true,
+   "halo": 0.3
   },
   {
    "file": "tsuki-8.png",
@@ -1467,7 +1475,8 @@
    ],
    "sheet": "tsuki-ref",
    "name": "HIZUMI",
-   "intact": true
+   "intact": true,
+   "halo": 0.3
   },
   {
    "file": "tsuki-9.png",
@@ -1481,7 +1490,8 @@
    ],
    "sheet": "tsuki-ref",
    "name": "Riina Yambuki",
-   "intact": true
+   "intact": true,
+   "halo": 0.3
   },
   {
    "file": "tsuki-10.png",
@@ -1495,7 +1505,8 @@
    ],
    "sheet": "tsuki-ref",
    "name": "Mito Yambuki",
-   "intact": true
+   "intact": true,
+   "halo": 0.3
   }
  ],
  "kaze": [
