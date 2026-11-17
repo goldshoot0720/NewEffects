@@ -143,13 +143,15 @@ macOS 也可雙擊 `啟動播放器.command`，會在終端機啟動伺服器並
 
 ### 声の軌跡：Soala
 
-已加入歌詞 PV（編號 48，約 259.31 秒）與第二版播放器，為 TV 動畫《真夜中ハートチューン》ED 主題曲；使用使用者提供的 MP3 與 29 段日中雙語字幕。這首沒有提供人物圖，沿用十二人制服組的六位成員（理瀬、陽和、純華、咲希、雪乃、智）；主視覺用 `assets/ref/casual-remade/group.png`，主題 `voice` 把畫面壓成夜藍與霧青，主唱預設為理瀬。
+已加入歌詞 PV（編號 48，約 259.31 秒）與第二版播放器，為 TV 動畫《真夜中ハートチューン》ED 主題曲；使用使用者提供的 MP3 與 29 段日中雙語字幕。人物與同作 OP「月に向かって撃て」共用十一位角色（山吹有栖、井ノ華六花、日芽川寧々、霧乃イコ、雨月しのぶ、安藤檸檬、アイコ、百歳あお、ヒズミ、山吹りいな、山吹美兎），主視覺 `assets/ref/tsuki-cover.jpg`，群像 `assets/ref/tsuki-group.png`。主題 `voice` 仍把畫面壓成夜藍與霧青，和 OP 的月面紫分開；主唱預設為山吹有栖。
 
 ### $・¥・€：ドル・円・ユーロ
 
-已加入歌詞 PV（編號 49，約 218.67 秒）與第二版播放器，使用使用者提供的 MP3 與 53 段日中雙語字幕。這首是各國貨幣名的唸唱，沿用招財喵布布八人與 `lucky` 主題（紅金、金幣粒子），主唱預設為鋒兄；音檔與字幕均納入 repo。
+已加入歌詞 PV（編號 49，約 218.67 秒）與第二版播放器，使用使用者提供的 MP3 與 53 段日中雙語字幕。這首是各國貨幣名的唸唱，用 `lucky` 主題（紅金、金幣粒子）；卡司改用 FX戦士くるみちゃん 的四位動畫人物（福賀くるみ、小金萌智子、山師芽吹、高根やす子）加鯨魚娘，主唱預設為福賀くるみ。音檔與字幕均納入 repo。
 
-日文原文與繁中翻譯存在 `assets/ref/money/lyrics-ja.txt`、`lyrics-zh.txt`，時間軸是 `timings-ja.json`。歌詞是使用者提供的完整 53 行，對時走 `faster-whisper large-v3-turbo` 取詞級時間戳後由 `tools/align-lyrics.py` 逐字對齊；唸唱段（セント／コペイカ 起那幾句）與末段副歌 ASR 認不出來，改用帶歌詞提示的分段轉錄結果手動定起唱點，`timings-ja.json` 全部標了 `final`，`tools/build-srt.py` 因此不再套用提前與延長的舊規則。
+日文原文與繁中翻譯存在 `assets/ref/money/lyrics-ja.txt`、`lyrics-zh.txt`，時間軸是 `timings-ja.json`。歌詞是使用者提供的完整 53 行，對時走 `faster-whisper large-v3-turbo` 取詞級時間戳後由 `tools/align-lyrics.py` 逐字對齊；唸唱段（セント／コペイカ 起那幾句）與末段副歌 ASR 認不出來，改用帶歌詞提示的分段轉錄結果手動定起唱點，`timings-ja.json` 全部標了 `final`，`tools/build-srt.py` 因此不再套用提前與延長的舊規則。八個句子起點另外用 `large-v3-turbo` 重聽確認，聽到的詞與該句歌詞一致。
+
+`parseSrt` 原本用 U+3040–U+30FF 判斷「這行有沒有假名」，這個範圍把 U+30FB「・」也算進去，中文翻譯只要用了間隔號就會被當成日文併進主歌詞；這首的「錢・文・厘！…」正好踩到，畫面上變成兩行疊在一起。判斷已縮到真正的假名區間（含長音符），這句恢復成日文主詞＋下方中文翻譯。
 
 ### 最最最高級のお世話して：angela
 
@@ -203,7 +205,7 @@ macOS 也可雙擊 `啟動播放器.command`，會在終端機啟動伺服器並
 
 - 開啟 `http://127.0.0.1:8765/pv.html?mode=characters` 或從歌詞 PV 按「人物 PV」。也可使用 `serve.sh` 的 8765 埠。
 - 完整歌曲、1920×1080、30 fps；一般歌曲會輪替十二人制服與便服、屋頂六人、RISE 五人演出服、黃昏九人舞台服（每 15 秒換一組），持續到配樂結束，並隨整首歌曲驅動節拍、側擺、微跳、聚光與轉場；招財喵布布則固定用幸運八人這一組。
-- `cast.html` 可檢查與下載全部 111 張透明 PNG，十四組分別為 `casual`（12）、`rooftop`（6）、`idol`（5）、`stage`（9）、`anaru`（6）、`kaze`（7）、`lucky`（8）、`kaguya`（3）、`aiura`（3）、`growup`（10）、`vwest`（17）、`forever`（6）、`tsuki`（11）、`osewa`（8）。這是各組造型切圖數量，包含重複人物。
+- `cast.html` 可檢查與下載全部 115 張透明 PNG，十五組分別為 `casual`（12）、`rooftop`（6）、`idol`（5）、`stage`（9）、`anaru`（6）、`kaze`（7）、`lucky`（8）、`kaguya`（3）、`aiura`（3）、`growup`（10）、`vwest`（17）、`forever`（6）、`tsuki`（11）、`osewa`（8）、`fx`（4）。這是各組造型切圖數量，包含重複人物。
 - 屋頂與黃昏原圖背景先使用內建 imagegen 分離，透明圖層保存在 `assets/ref/*-matte.png`；切圖工具保留 alpha 並依連通區塊分配人物。去背提示記錄於 [assets/ref/CUTOUTS.md](assets/ref/CUTOUTS.md)。原圖中互相遮擋的部分未補畫；黃昏段落用完整透明群像側彎，保留相連裙襬的接縫。
 - 輸出：`node render-pv.mjs --mode characters --out pv/characters/full`；預設輸出三首完整歌曲 MP4，含音樂淡入淡出。可指定一首歌曲編號，例如 `node render-pv.mjs 1 --mode characters`；需要短片段時使用 `--from` / `--to`。
 - macOS 可加 `--encoder h264_videotoolbox` 使用硬體 H.264 編碼（16 Mbps）；預設仍使用 `libx264`。
