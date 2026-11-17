@@ -917,7 +917,7 @@ let T0 = 0;
 /* 文字排版：依寬度斷行，必要時縮小字級 */
 const layoutCache = new Map();
 function layout(units, font, size, maxW, maxRows = 2, minSize = 30){
-  const key = units.map(u => u.t).join('') + font + size + maxW + maxRows;
+  const key = units.map(u => u.t).join('') + font + size + maxW + maxRows + minSize;
   if(layoutCache.has(key)) return layoutCache.get(key);
   let s = size, rows;
   for(;;){
@@ -936,8 +936,11 @@ function layout(units, font, size, maxW, maxRows = 2, minSize = 30){
       if(it.u.sp) lastSp = r.length;
       r.push(it); x += it.w;
     }
-    if(rows.length <= maxRows || s <= minSize) break;
-    s *= .9;
+    // 最後一行只剩一個字時，字會被放大般掛在句尾。還縮得動就再縮，讓「変動」留在同一行。
+    const tail = rows[rows.length - 1] || [];
+    const orphan = rows.length > 1 && tail.filter(it => !it.u.sp && !it.u.punct).length < 2;
+    if((rows.length <= maxRows && !orphan) || s <= minSize) break;
+    s = Math.max(minSize, s * .9);
   }
   const res = {size: s, rows: rows.filter(r => r.length).map(r => { let x = 0; for(const it of r){ it.x = x; x += it.w; } return {items: r, w: x}; })};
   layoutCache.set(key, res);
