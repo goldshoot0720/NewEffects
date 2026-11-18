@@ -25,6 +25,7 @@
 import fs from 'node:fs';
 import path from 'node:path';
 import vm from 'node:vm';
+import {execFileSync} from 'node:child_process';
 import {fileURLToPath} from 'node:url';
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
@@ -132,6 +133,31 @@ const overrides = JSON.parse(fs.readFileSync(path.join(REF, 'fill-overrides.json
 const lineGlyphs = lines.map(glyphsOf);
 const zhGlyphs = zhLines.map(glyphsOf);
 
+// Phrase anchors preserve pauses and repeated calls; interpolating an entire
+// sentence loses the opening calls when ASR recognizes only its second half.
+for (const [key, ov] of Object.entries(overrides)) {
+  if (!ov.phrases) continue;
+  const li = Number(key);
+  if (ov.phrases.flatMap(p => glyphsOf(p[0])).join('') !== lineGlyphs[li].join(''))
+    throw new Error(`Line ${li + 1}: phrase text does not match the source lyrics`);
+  ov.t = ov.phrases.flatMap(([text, start, end]) => {
+    const n = glyphsOf(text).length;
+    if (!(end > start)) throw new Error(`Line ${li + 1}: invalid phrase range`);
+    return Array.from({length: n}, (_, k) => [
+      +(start + (end - start)*k/n).toFixed(3),
+      +(start + (end - start)*(k + 1)/n).toFixed(3),
+    ]);
+  });
+}
+for (const [key, ov] of Object.entries(overrides)) {
+  if (!ov.t) continue;
+  const li = Number(key);
+  if (ov.t.length !== lineGlyphs[li].length) throw new Error(`Line ${li + 1}: override glyph count`);
+  prior[li].start = ov.t[0][0];
+  prior[li].end = ov.t.at(-1)[1];
+  prior[li].final = true;
+}
+
 // 歌詞全部攤平成一個字序列，記住每個字屬於哪一句
 const LYR = [];
 lineGlyphs.forEach((g, li) => g.forEach(c => LYR.push({c, line: li})));
@@ -232,7 +258,9 @@ for (let li = 0; li < lines.length; li++) {
       best = {score, cover, frame, hits: g.hits, chars: run.chars, path: run.path, text: g.text};
     }
   }
-  if (best && best.cover >= COVER_MIN) {
+  if (best && best.cover >= COVER_MIN &&
+      best.hits[0].gi <= Math.floor(N * .15) &&
+      best.hits.at(-1).gi >= Math.ceil(N * .85) - 1) {
     const times = new Array(N).fill(null);
     for (const h of best.hits) {
       const c = best.chars[h.ai];
@@ -306,11 +334,15 @@ function sanitize(times, lo, hi) {
 for (let li = 0; li < lines.length; li++) {
   const pick = picks[li];
   const pStart = prior[li].start, pEnd = prior[li].end;
-  // 句框以對到的區間為準；對不上時就是人工句框
-  const lo = Math.max(0, Math.min(pStart, pick.frame.s) - 0.15);
-  const hi = Math.min(AUDIO_END, Math.max(pEnd, pick.frame.e) + 0.15);
+  // 整句字幕與逐字填色必須使用同一個句框。
+  const lo = pStart;
+  const hi = pEnd;
 
   const times = sanitize(pick.times, lo, hi);
+  // The checked cue bounds are authoritative for both SRT and karaoke fill.
+  // A partial ASR match must never discard the first call or the English tail.
+  times[0].s = lo;
+  times[times.length - 1].e = hi;
   const start = times[0].s;
   const end = times[times.length - 1].e;
 
@@ -333,10 +365,9 @@ for (let li = 0; li < lines.length; li++) {
     z: zhTimes,
   });
 
-  // 建議的句框：起點對齊人聲，訖點沿用「下一句起點」的慣例
-  const nextStart = li + 1 < prior.length ? prior[li + 1].start : AUDIO_END;
-  const newStart = Math.max(0, Math.min(start, nextStart - 0.1));
-  const newEnd = Math.max(newStart + 0.4, Math.min(nextStart - 0.02, Math.max(end + 0.6, pEnd)));
+  // 共同句框直接重建 SRT，不能讓逐字資料另行移動字幕。
+  const newStart = pStart;
+  const newEnd = pEnd;
   proposed.push({...prior[li], start: +newStart.toFixed(3), end: +newEnd.toFixed(3), hits: prior[li].hits ?? 0, final: true});
   report.push({
     i: li, jp: lines[li], method: pick.method, cover: +pick.cover.toFixed(3),
@@ -348,15 +379,28 @@ for (let li = 0; li < lines.length; li++) {
   });
 }
 
+for (const line of out) {
+  if (!(line.start >= 0 && line.end > line.start && line.end <= AUDIO_END))
+    throw new Error(`Line ${line.i + 1}: invalid cue bounds`);
+  if (line.i && line.start < out[line.i - 1].end)
+    throw new Error(`Line ${line.i + 1}: overlapping cues`);
+  for (const [s, e] of [...line.t, ...line.z])
+    if (!Number.isFinite(s) || !Number.isFinite(e) || s > e || s < line.start || e > line.end)
+      throw new Error(`Line ${line.i + 1}: invalid glyph bounds`);
+}
 fs.writeFileSync(path.join(REF, 'fill-ja.json'), JSON.stringify({
   song: 'FX戦士くるみちゃん',
-  note: '逐字填色時間軸：[開始, 唱完]。以 ASR 的詞級時間戳對全歌歌詞做單調對齊，再逐句選出最可靠的一段；少數句子另見 fill-overrides.json。',
+  note: '逐字填色時間軸：[開始, 唱完]。全歌ASR對齊與樂句錨點共用timings-ja.json句框，同時重建SRT。樂句內插值及未能可靠辨識的段落見README.md與fill-overrides.json。',
   lines: out,
 }, null, 1) + '\n');
 
 fs.mkdirSync(path.join(root, '.zwork/fx'), {recursive: true});
 fs.writeFileSync(path.join(root, '.zwork/fx/fx-report.json'), JSON.stringify(report, null, 1) + '\n');
 fs.writeFileSync(path.join(root, '.zwork/fx/timings-proposed.json'), JSON.stringify(proposed, null, 1) + '\n');
+fs.writeFileSync(path.join(REF, 'timings-ja.json'), JSON.stringify(proposed, null, 1) + '\n');
+execFileSync('python3', [path.join(root, 'tools/build-srt.py'),
+  path.join(REF, 'timings-ja.json'), path.join(REF, 'lyrics-zh.txt'),
+  path.join(root, 'FX戦士くるみちゃん.srt')], {stdio: 'inherit'});
 
 console.log(`${out.length}/${lines.length} 行 → assets/ref/fx/fill-ja.json`);
 console.log('  行  方法      覆蓋  句首  舊起點   新起點   位移   舊訖點   新訖點  歌詞');

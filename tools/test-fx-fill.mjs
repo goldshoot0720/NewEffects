@@ -4,6 +4,7 @@
 import fs from 'node:fs';
 import path from 'node:path';
 import {fileURLToPath} from 'node:url';
+import assert from 'node:assert/strict';
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const PUNCT = '、。・「」『』…,.';
@@ -59,10 +60,29 @@ for(const block of srt.trim().split(/\n\n/)){
 }
 
 const data = JSON.parse(fs.readFileSync(path.join(root, 'assets/ref/fx/fill-ja.json'), 'utf8'));
+const timings = JSON.parse(fs.readFileSync(path.join(root, 'assets/ref/fx/timings-ja.json'), 'utf8'));
+assert.equal(data.lines.length, cues.length);
+assert.equal(timings.length, cues.length);
+assert.equal(cues.length, 60);
 let ok = 0, bad = [];
 for(const line of data.lines){
   const c = cues[line.i];
   if(!c){ bad.push(`${line.i}: 沒有這句字幕`); continue; }
+  const source = timings[line.i];
+  assert.equal(line.jp, source.jp);
+  assert.equal(c.jp, source.jp);
+  for (const field of ['start', 'end']) {
+    assert.ok(Math.abs(c[field] - source[field]) < .0011, `${line.i}: SRT differs from timings`);
+    assert.ok(Math.abs(line[field] - source[field]) < .0011, `${line.i}: fill differs from timings`);
+  }
+  assert.ok(c.end > c.start);
+  if (line.i) assert.ok(c.start >= cues[line.i - 1].end, `${line.i}: overlapping cues`);
+  for (const [s, e] of [...line.t, ...(line.z || [])]) {
+    assert.ok(Number.isFinite(s) && Number.isFinite(e) && s <= e);
+    assert.ok(s >= c.start - .001 && e <= c.end + .001);
+  }
+  assert.equal(line.t[0][0], line.start);
+  assert.equal(line.t.at(-1)[1], line.end);
   const ju = tokenize(c.jp);
   const jW = ju.reduce((a, u) => a + u.w, 0);
   const fill = attachFill(ju, line.t, jW);
@@ -83,3 +103,11 @@ if(bad.length){
   process.exit(1);
 }
 console.log('每一句的字數、順序與時間範圍都對得上');
+// Regression anchors from independent audio windows: include opening calls
+// and keep the English tail active after the Japanese melody has finished.
+assert.equal(cues[49].start, 158.52);
+assert.equal(cues[51].start, 164.44);
+assert.ok(data.lines[46].t.at(-1)[1] > 155);
+assert.ok(cues[55].start > 178.5);
+assert.ok(cues[58].start > 193);
+console.log('SRT、逐字填色與時間軸一致，後段喊聲及英文尾段回歸檢查通過');
