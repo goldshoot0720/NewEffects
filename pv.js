@@ -55,7 +55,10 @@ const ARTS = {
     faces: [[281, 423], [704, 370], [1197, 423], [1620, 439]]},
   // 人にやさしく：四張官方立繪由 tools/cutout-rolling.py 去背並拼成夜景街道群像
   rolling: {src: 'assets/ref/rolling-group.png', crop: [0, 0, 1920, 1080],
-    faces: [[290, 187], [621, 188], [1016, 187], [1299, 188]]}
+    faces: [[290, 187], [621, 188], [1016, 187], [1299, 188]]},
+  // 未来は僕等の手の中：官方九人合圖（©ろくでなしBLUES）由 tools/cutout-mirai.py 去背
+  mirai: {src: 'assets/ref/mirai-group.png', crop: [0, 0, 1920, 1080],
+    faces: [[930, 189]]}
 };
 const SONGS = [
   {title: '大好きだよって叫ぶんだ', ver: '小日向理瀬 ver.', file: '大好きだよって叫ぶんだ [小日向理瀬ver.]',
@@ -289,7 +292,10 @@ const SONGS = [
    cast:[['fx',0,'福賀くるみ','#f2a0c0'],['fx',1,'小金萌智子','#b06ad6'],['fx',2,'山師芽吹','#f0c24a'],['fx',3,'高根やす子','#5b6bb5']]},
   {title:'人にやさしく', ver:'THE ROLLING GIRLS', file:'人にやさしく', subs:'人にやさしく.srt', theme:'rolling', art:'rolling', lead:0, noBike:true,
    series:'ローリング☆ガールズ', tv:'ローリング☆ガールズ', kicker:'EDテーマ',
-   cast:[['rolling',1,'森友望未','#9db06a'],['rolling',0,'御園千綾','#f0a8c0'],['rolling',2,'響逢衣','#e08a5a'],['rolling',3,'小坂結季奈','#9fb8c8']]}
+   cast:[['rolling',1,'森友望未','#9db06a'],['rolling',0,'御園千綾','#f0a8c0'],['rolling',2,'響逢衣','#e08a5a'],['rolling',3,'小坂結季奈','#9fb8c8']]},
+  {title:'未来は僕等の手の中', ver:'ろくでなしBLUES', file:'未来は僕等の手の中', subs:'未来は僕等の手の中.srt', theme:'mirai', art:'mirai', lead:0, noBike:true,
+   series:'ろくでなしBLUES', tv:'ろくでなしBLUES', kicker:'EDテーマ',
+   cast:[['mirai',0,'前田太尊','#3f7a4a']]}
 ];
 
 // 每首歌一組配色：夏日向日葵、日出、黃昏星空、晴空疾風
@@ -324,7 +330,9 @@ const THEMES = {
   // FX戦士くるみちゃん：交易畫面的深夜藍到洋紅，配 K 線的紅綠與告警橘
   fx:       {sky: ['#05081c', '#231a5e', '#8e1f5e'], pastel: ['#eef1ff', '#ffe6f0'], accent: '#ff4d6d', accent2: '#3ee0a0', cool: '#ffd166', deep: '#05061a', particle: 'spark'},
   // 人にやさしく：旅途小鎮的黃昏到夜色，路燈的暖橘與天空的藍紫
-  rolling:  {sky: ['#0d1430', '#2d4a7a', '#e8c48a'], pastel: ['#fdf6e6', '#ffe6c4'], accent: '#ffb545', accent2: '#ff6f8e', cool: '#6fc8f0', deep: '#0a0f24', particle: 'spark'}
+  rolling:  {sky: ['#0d1430', '#2d4a7a', '#e8c48a'], pastel: ['#fdf6e6', '#ffe6c4'], accent: '#ffb545', accent2: '#ff6f8e', cool: '#6fc8f0', deep: '#0a0f24', particle: 'spark'},
+  // 未来は僕等の手の中：不良漫畫的夕陽與鐵鏽紅，配制服深藍
+  mirai:    {sky: ['#120c1c', '#7a2f2a', '#f0a94a'], pastel: ['#fff3dd', '#ffd7a8'], accent: '#ffb03a', accent2: '#e0452f', cool: '#5aa8d8', deep: '#0d0a16', particle: 'spark'}
 };
 const LOGO = [['B', '#2ba6e1'], ['E', '#f6a531'], ['S', '#ee5b97'], ['T', '#2ba6e1'], [' ', ''], ['4', '#f6a531'], ['U', '#8d6ad6']];
 const POP = ['#ee5b97', '#2ba6e1', '#f6a531', '#8d6ad6', '#3cc39a', '#f08a4b'];
@@ -428,6 +436,9 @@ const CHARACTER_GROUPS = song.cast[0][0] === 'anaru'
   : song.cast[0][0] === 'rolling'
   // ローリング☆ガールズ：望未・結季奈・逢衣・千綾 四人
   ? [{sheet:'rolling', title:'ローリング☆ガールズ · 四人', src:'assets/ref/rolling-group.png', colors:['#1b2a68','#ffd8a8'], count:4, solo:true}]
+  : song.cast[0][0] === 'mirai'
+  // 未来は僕等の手の中：九人合圖彼此重疊，整組當一個 intact 精靈
+  ? [{sheet:'mirai', title:'ろくでなしBLUES · 九人', src:'assets/ref/mirai-group.png', colors:['#1a1024','#ffb45e'], count:1, solo:true}]
   : song.art === 'breakshoot'
   ? [{sheet:'casual', title:'Extreme Hearts · 十二人', src:'assets/ref/casual-remade/group.png', colors:['#5cabe0','#f3afd3'], count:12,solo:true}]
   : BASE_CHARACTER_GROUPS;
@@ -658,7 +669,9 @@ function buildShots(){
     if(end <= vis) return;
     const label = c.sec?.label || 'A-MELO';
     const v = n.verse++;
-    let type = label === 'CHORUS' ? 'stage' : label === 'B-MELO' ? 'typo' : song.noBike ? (Math.floor(v/2) % 2 ? 'windows' : 'film') : (v % 3 === 2 ? 'bike' : (Math.floor(v/2) % 2 ? 'windows' : 'film'));
+    // 三窗分鏡要三個人才有意義；卡司不足三人時重複同一張圖會很怪，改用單人膠卷。
+    const canWin = MEMBERS.length >= 3;
+    let type = label === 'CHORUS' ? 'stage' : label === 'B-MELO' ? 'typo' : song.noBike ? (canWin && Math.floor(v/2) % 2 ? 'windows' : 'film') : (v % 3 === 2 ? 'bike' : (canWin && Math.floor(v/2) % 2 ? 'windows' : 'film'));
     const parts = Math.max(1, Math.round((Math.max(0, cueEnd - c.start))/6.5));
     for(let p = 0; p < parts; p++){
       const s = p ? snap(vis + (end - vis)*p/parts) : vis;

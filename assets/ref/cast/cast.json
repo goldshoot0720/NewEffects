@@ -1841,5 +1841,21 @@
    "name": "小坂結季奈",
    "intact": true
   }
+ ],
+ "mirai": [
+  {
+   "file": "mirai-0.png",
+   "w": 412,
+   "h": 564,
+   "headX": 189,
+   "headY": 101,
+   "source": [
+    0,
+    0
+   ],
+   "sheet": "mirai-ref",
+   "name": "前田太尊",
+   "intact": true
+  }
  ]
 }
