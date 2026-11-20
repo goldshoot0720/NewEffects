@@ -9,7 +9,10 @@ from scipy import ndimage
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 OUT = os.path.join(ROOT, 'assets/ref/cast')
 MANIFEST = os.path.join(OUT, 'cast.json')
-SRC = os.path.join(ROOT, 'assets/ref/mirai/lineup.png')
+# 兩張來源同一構圖：優先用 1024×1536 的高解析版，沒有才退回 446×667
+SRC = os.path.join(ROOT, 'assets/ref/mirai/lineup-hi.jpg')
+if not os.path.exists(SRC):
+    SRC = os.path.join(ROOT, 'assets/ref/mirai/lineup.png')
 
 
 def cut_group():
@@ -118,8 +121,8 @@ def main():
     cut = cut_group()
     data = json.load(open(MANIFEST, encoding='utf-8'))
     # 主唱＝中央的前田太尊，頭部約在原圖 (205,120)；裁切後座標按比例換算
-    head_x = int(205 * cut.width / 446)
-    head_y = int(120 * cut.height / 667)
+    head_x = int(.459 * cut.width)
+    head_y = int(.179 * cut.height)
     data['mirai'] = [{'file': 'mirai-0.png', 'w': cut.width, 'h': cut.height,
                       'headX': head_x, 'headY': head_y,
                       'source': [0, 0], 'sheet': 'mirai-ref',

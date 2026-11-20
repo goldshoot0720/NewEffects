@@ -295,6 +295,9 @@ const SONGS = [
    cast:[['rolling',1,'森友望未','#9db06a'],['rolling',0,'御園千綾','#f0a8c0'],['rolling',2,'響逢衣','#e08a5a'],['rolling',3,'小坂結季奈','#9fb8c8']]},
   {title:'未来は僕等の手の中', ver:'ろくでなしBLUES', file:'未来は僕等の手の中', subs:'未来は僕等の手の中.srt', theme:'mirai', art:'mirai', lead:0, noBike:true,
    series:'ろくでなしBLUES', tv:'ろくでなしBLUES', kicker:'EDテーマ',
+   cast:[['mirai',0,'前田太尊','#3f7a4a']]},
+  {title:'負け犬たちのレクイエム', ver:'ろくでなしBLUES', file:'負け犬たちのレクイエム', subs:'負け犬たちのレクイエム.srt', theme:'makeinu', art:'mirai', lead:0, noBike:true,
+   series:'ろくでなしBLUES', tv:'ろくでなしBLUES', kicker:'挿入歌',
    cast:[['mirai',0,'前田太尊','#3f7a4a']]}
 ];
 
@@ -332,7 +335,9 @@ const THEMES = {
   // 人にやさしく：旅途小鎮的黃昏到夜色，路燈的暖橘與天空的藍紫
   rolling:  {sky: ['#0d1430', '#2d4a7a', '#e8c48a'], pastel: ['#fdf6e6', '#ffe6c4'], accent: '#ffb545', accent2: '#ff6f8e', cool: '#6fc8f0', deep: '#0a0f24', particle: 'spark'},
   // 未来は僕等の手の中：不良漫畫的夕陽與鐵鏽紅，配制服深藍
-  mirai:    {sky: ['#120c1c', '#7a2f2a', '#f0a94a'], pastel: ['#fff3dd', '#ffd7a8'], accent: '#ffb03a', accent2: '#e0452f', cool: '#5aa8d8', deep: '#0d0a16', particle: 'spark'}
+  mirai:    {sky: ['#120c1c', '#7a2f2a', '#f0a94a'], pastel: ['#fff3dd', '#ffd7a8'], accent: '#ffb03a', accent2: '#e0452f', cool: '#5aa8d8', deep: '#0d0a16', particle: 'spark'},
+  // 負け犬たちのレクイエム：同一組人物的黑暗版，深紫黑到血紅，配灰白餘燼
+  makeinu:  {sky: ['#07060c', '#2a0d1c', '#8e1b22'], pastel: ['#efe6e4', '#d8bfc0'], accent: '#e03a3a', accent2: '#9b6bd6', cool: '#7f8fa8', deep: '#050409', particle: 'star'}
 };
 const LOGO = [['B', '#2ba6e1'], ['E', '#f6a531'], ['S', '#ee5b97'], ['T', '#2ba6e1'], [' ', ''], ['4', '#f6a531'], ['U', '#8d6ad6']];
 const POP = ['#ee5b97', '#2ba6e1', '#f6a531', '#8d6ad6', '#3cc39a', '#f08a4b'];
