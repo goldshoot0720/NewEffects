@@ -318,6 +318,15 @@ const SONGS = [
          ['matryoshka',4,'三國壮一郎','#3a3a5a'],['matryoshka',5,'Q','#7ad0c0'],['matryoshka',6,'生田羽奈日','#b8a0d8'],['matryoshka',7,'ジェニファー','#d8d0a8'],['matryoshka',8,'竹田崎重臣','#7a9a4a']]},
   {title:'月の爆撃機', ver:'カバー', file:'月の爆撃機', subs:'月の爆撃機.srt', theme:'bakugeki', art:'rolling', lead:0, noBike:true,
    series:'月の爆撃機',
+   cast:[['rolling',1,'森友望未','#9db06a'],['rolling',0,'御園千綾','#f0a8c0'],['rolling',2,'響逢衣','#e08a5a'],['rolling',3,'小坂結季奈','#9fb8c8']]},
+  {title:'英雄にあこがれて', ver:'カバー', file:'英雄にあこがれて', subs:'英雄にあこがれて.srt', theme:'eiyuu', art:'rolling', lead:0, noBike:true,
+   series:'英雄にあこがれて',
+   cast:[['rolling',1,'森友望未','#9db06a'],['rolling',0,'御園千綾','#f0a8c0'],['rolling',2,'響逢衣','#e08a5a'],['rolling',3,'小坂結季奈','#9fb8c8']]},
+  {title:'1000のバイオリン', ver:'カバー', file:'1000のバイオリン', subs:'1000のバイオリン.srt', theme:'violin', art:'rolling', lead:0, noBike:true,
+   series:'1000のバイオリン',
+   cast:[['rolling',1,'森友望未','#9db06a'],['rolling',0,'御園千綾','#f0a8c0'],['rolling',2,'響逢衣','#e08a5a'],['rolling',3,'小坂結季奈','#9fb8c8']]},
+  {title:'脳天気', ver:'カバー', file:'脳天気', subs:'脳天気.srt', theme:'notenki', art:'rolling', lead:0, noBike:true,
+   series:'脳天気',
    cast:[['rolling',1,'森友望未','#9db06a'],['rolling',0,'御園千綾','#f0a8c0'],['rolling',2,'響逢衣','#e08a5a'],['rolling',3,'小坂結季奈','#9fb8c8']]}
 ];
 
@@ -367,7 +376,13 @@ const THEMES = {
   // RPG：遊戲畫面的深藍到霓虹青，配洋紅的箭頭與血條
   rpg:      {sky: ['#050a1e', '#123a6e', '#5ff0e0'], pastel: ['#eafcff', '#c8e8ff'], accent: '#3ff0c8', accent2: '#ff4fa8', cool: '#7d8cff', deep: '#03061a', particle: 'spark'},
   // 月の爆撃機：深夜的鈷藍與銀白月光，配警示紅
-  bakugeki: {sky: ['#03040f', '#12244a', '#cfd8ea'], pastel: ['#eef2fa', '#cfd8e8'], accent: '#dfe8f5', accent2: '#d8323a', cool: '#6f8fd8', deep: '#02030a', particle: 'star'}
+  bakugeki: {sky: ['#03040f', '#12244a', '#cfd8ea'], pastel: ['#eef2fa', '#cfd8e8'], accent: '#dfe8f5', accent2: '#d8323a', cool: '#6f8fd8', deep: '#02030a', particle: 'star'},
+  // 英雄にあこがれて：鏽紅與鐵灰的少年叛逆，配警示黃
+  eiyuu:    {sky: ['#140a0a', '#6a2418', '#e8a441'], pastel: ['#fff1e0', '#ffd9b0'], accent: '#ffb02e', accent2: '#c9302c', cool: '#6a8ab0', deep: '#0e0706', particle: 'spark'},
+  // 1000のバイオリン：冒險的晴空藍與草原綠，配金色琴弦
+  violin:   {sky: ['#0a2a4a', '#2f86c8', '#bfe8b0'], pastel: ['#f2fff4', '#d8f0ff'], accent: '#ffd24a', accent2: '#3fb87a', cool: '#5fd0e8', deep: '#08203a', particle: 'petal'},
+  // 脳天気：正午的晴空與白雲，配檸檬黃
+  notenki:  {sky: ['#1a5fa8', '#6fc0ee', '#fff6cc'], pastel: ['#ffffff', '#fff2c4'], accent: '#ffd93a', accent2: '#ff8a3a', cool: '#7fe0d0', deep: '#0f3a66', particle: 'spark'}
 };
 const LOGO = [['B', '#2ba6e1'], ['E', '#f6a531'], ['S', '#ee5b97'], ['T', '#2ba6e1'], [' ', ''], ['4', '#f6a531'], ['U', '#8d6ad6']];
 const POP = ['#ee5b97', '#2ba6e1', '#f6a531', '#8d6ad6', '#3cc39a', '#f08a4b'];
