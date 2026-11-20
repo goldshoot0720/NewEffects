@@ -298,6 +298,9 @@ const SONGS = [
    cast:[['mirai',0,'前田太尊','#3f7a4a']]},
   {title:'負け犬たちのレクイエム', ver:'ろくでなしBLUES', file:'負け犬たちのレクイエム', subs:'負け犬たちのレクイエム.srt', theme:'makeinu', art:'mirai', lead:0, noBike:true,
    series:'ろくでなしBLUES', tv:'ろくでなしBLUES', kicker:'挿入歌',
+   cast:[['mirai',0,'前田太尊','#3f7a4a']]},
+  {title:'Chase the Light!', ver:'Fear, and Loathing in Las Vegas', file:'Chase the Light!', subs:'Chase the Light!.srt', theme:'chase', art:'mirai', lead:0, noBike:true,
+   series:'Fear, and Loathing in Las Vegas',
    cast:[['mirai',0,'前田太尊','#3f7a4a']]}
 ];
 
@@ -337,7 +340,9 @@ const THEMES = {
   // 未来は僕等の手の中：不良漫畫的夕陽與鐵鏽紅，配制服深藍
   mirai:    {sky: ['#120c1c', '#7a2f2a', '#f0a94a'], pastel: ['#fff3dd', '#ffd7a8'], accent: '#ffb03a', accent2: '#e0452f', cool: '#5aa8d8', deep: '#0d0a16', particle: 'spark'},
   // 負け犬たちのレクイエム：同一組人物的黑暗版，深紫黑到血紅，配灰白餘燼
-  makeinu:  {sky: ['#07060c', '#2a0d1c', '#8e1b22'], pastel: ['#efe6e4', '#d8bfc0'], accent: '#e03a3a', accent2: '#9b6bd6', cool: '#7f8fa8', deep: '#050409', particle: 'star'}
+  makeinu:  {sky: ['#07060c', '#2a0d1c', '#8e1b22'], pastel: ['#efe6e4', '#d8bfc0'], accent: '#e03a3a', accent2: '#9b6bd6', cool: '#7f8fa8', deep: '#050409', particle: 'star'},
+  // Chase the Light!：高速電子金屬，深夜藍到電光青，配洋紅脈衝
+  chase:    {sky: ['#03040e', '#102a63', '#41d8ff'], pastel: ['#eaf8ff', '#c9e6ff'], accent: '#41e0ff', accent2: '#ff3d9a', cool: '#8b6bff', deep: '#02030a', particle: 'spark'}
 };
 const LOGO = [['B', '#2ba6e1'], ['E', '#f6a531'], ['S', '#ee5b97'], ['T', '#2ba6e1'], [' ', ''], ['4', '#f6a531'], ['U', '#8d6ad6']];
 const POP = ['#ee5b97', '#2ba6e1', '#f6a531', '#8d6ad6', '#3cc39a', '#f08a4b'];
