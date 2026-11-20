@@ -315,7 +315,10 @@ const SONGS = [
   {title:'RPG', ver:'SEKAI NO OWARI', file:'RPG', subs:'RPG.srt', theme:'rpg', art:'matryoshka', lead:3, noBike:true,
    series:'SEKAI NO OWARI',
    cast:[['matryoshka',3,'余賀公磨','#5c8fd6'],['matryoshka',0,'井稲田','#8a7a5a'],['matryoshka',1,'真坂本','#c04a6a'],['matryoshka',2,'真朱','#d63a3a'],
-         ['matryoshka',4,'三國壮一郎','#3a3a5a'],['matryoshka',5,'Q','#7ad0c0'],['matryoshka',6,'生田羽奈日','#b8a0d8'],['matryoshka',7,'ジェニファー','#d8d0a8'],['matryoshka',8,'竹田崎重臣','#7a9a4a']]}
+         ['matryoshka',4,'三國壮一郎','#3a3a5a'],['matryoshka',5,'Q','#7ad0c0'],['matryoshka',6,'生田羽奈日','#b8a0d8'],['matryoshka',7,'ジェニファー','#d8d0a8'],['matryoshka',8,'竹田崎重臣','#7a9a4a']]},
+  {title:'月の爆撃機', ver:'カバー', file:'月の爆撃機', subs:'月の爆撃機.srt', theme:'bakugeki', art:'rolling', lead:0, noBike:true,
+   series:'月の爆撃機',
+   cast:[['rolling',1,'森友望未','#9db06a'],['rolling',0,'御園千綾','#f0a8c0'],['rolling',2,'響逢衣','#e08a5a'],['rolling',3,'小坂結季奈','#9fb8c8']]}
 ];
 
 // 每首歌一組配色：夏日向日葵、日出、黃昏星空、晴空疾風
@@ -362,7 +365,9 @@ const THEMES = {
   // マトリョーシカ：俄羅斯娃娃的深紫與暗紅，一層層剝開的冷光
   matryoshka: {sky: ['#07060e', '#2a1038', '#8e1f3a'], pastel: ['#f3e9f0', '#d8bfd4'], accent: '#e0447a', accent2: '#8f6bff', cool: '#6fd0e0', deep: '#050409', particle: 'star'},
   // RPG：遊戲畫面的深藍到霓虹青，配洋紅的箭頭與血條
-  rpg:      {sky: ['#050a1e', '#123a6e', '#5ff0e0'], pastel: ['#eafcff', '#c8e8ff'], accent: '#3ff0c8', accent2: '#ff4fa8', cool: '#7d8cff', deep: '#03061a', particle: 'spark'}
+  rpg:      {sky: ['#050a1e', '#123a6e', '#5ff0e0'], pastel: ['#eafcff', '#c8e8ff'], accent: '#3ff0c8', accent2: '#ff4fa8', cool: '#7d8cff', deep: '#03061a', particle: 'spark'},
+  // 月の爆撃機：深夜的鈷藍與銀白月光，配警示紅
+  bakugeki: {sky: ['#03040f', '#12244a', '#cfd8ea'], pastel: ['#eef2fa', '#cfd8e8'], accent: '#dfe8f5', accent2: '#d8323a', cool: '#6f8fd8', deep: '#02030a', particle: 'star'}
 };
 const LOGO = [['B', '#2ba6e1'], ['E', '#f6a531'], ['S', '#ee5b97'], ['T', '#2ba6e1'], [' ', ''], ['4', '#f6a531'], ['U', '#8d6ad6']];
 const POP = ['#ee5b97', '#2ba6e1', '#f6a531', '#8d6ad6', '#3cc39a', '#f08a4b'];
