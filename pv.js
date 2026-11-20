@@ -301,6 +301,9 @@ const SONGS = [
    cast:[['mirai',0,'前田太尊','#3f7a4a']]},
   {title:'Chase the Light!', ver:'Fear, and Loathing in Las Vegas', file:'Chase the Light!', subs:'Chase the Light!.srt', theme:'chase', art:'mirai', lead:0, noBike:true,
    series:'Fear, and Loathing in Las Vegas',
+   cast:[['mirai',0,'前田太尊','#3f7a4a']]},
+  {title:'CからはじまるABC', ver:'忘れらんねえよ', file:'CからはじまるABC', subs:'CからはじまるABC.srt', theme:'abc', art:'mirai', lead:0, noBike:true,
+   series:'忘れらんねえよ',
    cast:[['mirai',0,'前田太尊','#3f7a4a']]}
 ];
 
@@ -342,7 +345,9 @@ const THEMES = {
   // 負け犬たちのレクイエム：同一組人物的黑暗版，深紫黑到血紅，配灰白餘燼
   makeinu:  {sky: ['#07060c', '#2a0d1c', '#8e1b22'], pastel: ['#efe6e4', '#d8bfc0'], accent: '#e03a3a', accent2: '#9b6bd6', cool: '#7f8fa8', deep: '#050409', particle: 'star'},
   // Chase the Light!：高速電子金屬，深夜藍到電光青，配洋紅脈衝
-  chase:    {sky: ['#03040e', '#102a63', '#41d8ff'], pastel: ['#eaf8ff', '#c9e6ff'], accent: '#41e0ff', accent2: '#ff3d9a', cool: '#8b6bff', deep: '#02030a', particle: 'spark'}
+  chase:    {sky: ['#03040e', '#102a63', '#41d8ff'], pastel: ['#eaf8ff', '#c9e6ff'], accent: '#41e0ff', accent2: '#ff3d9a', cool: '#8b6bff', deep: '#02030a', particle: 'spark'},
+  // CからはじまるABC：日式搖滾的晴天色，奶油黃到橙紅，配青綠點綴
+  abc:      {sky: ['#1d2a52', '#f0a03a', '#ffe9a8'], pastel: ['#fffdf3', '#ffe6b8'], accent: '#ff8a2b', accent2: '#e8402f', cool: '#3fc7b4', deep: '#231a12', particle: 'spark'}
 };
 const LOGO = [['B', '#2ba6e1'], ['E', '#f6a531'], ['S', '#ee5b97'], ['T', '#2ba6e1'], [' ', ''], ['4', '#f6a531'], ['U', '#8d6ad6']];
 const POP = ['#ee5b97', '#2ba6e1', '#f6a531', '#8d6ad6', '#3cc39a', '#f08a4b'];
