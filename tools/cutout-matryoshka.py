@@ -10,7 +10,10 @@ from scipy import ndimage
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 OUT = os.path.join(ROOT, 'assets/ref/cast')
 MANIFEST = os.path.join(OUT, 'cast.json')
-SRC = os.path.join(ROOT, 'assets/ref/matryoshka/lineup.jpg')
+# 優先用沒有名牌的版本；沒有的話才退回帶名牌的舊圖
+SRC = os.path.join(ROOT, 'assets/ref/matryoshka/lineup-clean.jpg')
+if not os.path.exists(SRC):
+    SRC = os.path.join(ROOT, 'assets/ref/matryoshka/lineup.jpg')
 PLATE_TOP = 712          # 名牌從這裡開始，整條切掉
 
 # 索引＝PV 卡司順序；主唱是中央的余賀公磨

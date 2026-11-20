@@ -1861,9 +1861,9 @@
  "matryoshka": [
   {
    "file": "matryoshka-0.png",
-   "w": 179,
-   "h": 603,
-   "headX": 92,
+   "w": 178,
+   "h": 605,
+   "headX": 91,
    "headY": 60,
    "source": [
     29,
@@ -1877,7 +1877,7 @@
    "file": "matryoshka-1.png",
    "w": 210,
    "h": 680,
-   "headX": 132,
+   "headX": 131,
    "headY": 68,
    "source": [
     208,
@@ -1890,7 +1890,7 @@
   {
    "file": "matryoshka-2.png",
    "w": 204,
-   "h": 649,
+   "h": 651,
    "headX": 144,
    "headY": 65,
    "source": [
@@ -1903,9 +1903,9 @@
   },
   {
    "file": "matryoshka-3.png",
-   "w": 221,
-   "h": 627,
-   "headX": 119,
+   "w": 220,
+   "h": 630,
+   "headX": 118,
    "headY": 63,
    "source": [
     622,
@@ -1918,7 +1918,7 @@
   {
    "file": "matryoshka-4.png",
    "w": 180,
-   "h": 687,
+   "h": 689,
    "headX": 85,
    "headY": 69,
    "source": [
@@ -1932,8 +1932,8 @@
   {
    "file": "matryoshka-5.png",
    "w": 194,
-   "h": 608,
-   "headX": 102,
+   "h": 609,
+   "headX": 101,
    "headY": 61,
    "source": [
     1032,
@@ -1946,7 +1946,7 @@
   {
    "file": "matryoshka-6.png",
    "w": 154,
-   "h": 595,
+   "h": 597,
    "headX": 73,
    "headY": 60,
    "source": [
@@ -1960,8 +1960,8 @@
   {
    "file": "matryoshka-7.png",
    "w": 190,
-   "h": 651,
-   "headX": 87,
+   "h": 653,
+   "headX": 86,
    "headY": 65,
    "source": [
     1412,
@@ -1974,7 +1974,7 @@
   {
    "file": "matryoshka-8.png",
    "w": 204,
-   "h": 618,
+   "h": 620,
    "headX": 99,
    "headY": 62,
    "source": [
