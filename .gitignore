@@ -163,6 +163,18 @@
 !/脳天気.mp3
 !/脳天気.srt
 
+# TRAIN-TRAIN、シャララ、STONES、夕暮れ、終わらない歌 隨歌曲清單部署
+!/TRAIN-TRAIN.mp3
+!/TRAIN-TRAIN.srt
+!/シャララ.mp3
+!/シャララ.srt
+!/STONES.mp3
+!/STONES.srt
+!/夕暮れ.mp3
+!/夕暮れ.srt
+!/終わらない歌.mp3
+!/終わらない歌.srt
+
 .DS_Store
 .claude/
 

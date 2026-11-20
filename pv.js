@@ -327,6 +327,21 @@ const SONGS = [
    cast:[['rolling',1,'森友望未','#9db06a'],['rolling',0,'御園千綾','#f0a8c0'],['rolling',2,'響逢衣','#e08a5a'],['rolling',3,'小坂結季奈','#9fb8c8']]},
   {title:'脳天気', ver:'カバー', file:'脳天気', subs:'脳天気.srt', theme:'notenki', art:'rolling', lead:0, noBike:true,
    series:'脳天気',
+   cast:[['rolling',1,'森友望未','#9db06a'],['rolling',0,'御園千綾','#f0a8c0'],['rolling',2,'響逢衣','#e08a5a'],['rolling',3,'小坂結季奈','#9fb8c8']]},
+  {title:'TRAIN-TRAIN', ver:'カバー', file:'TRAIN-TRAIN', subs:'TRAIN-TRAIN.srt', theme:'traintrain', art:'rolling', lead:0, noBike:true,
+   series:'TRAIN-TRAIN',
+   cast:[['rolling',1,'森友望未','#9db06a'],['rolling',0,'御園千綾','#f0a8c0'],['rolling',2,'響逢衣','#e08a5a'],['rolling',3,'小坂結季奈','#9fb8c8']]},
+  {title:'シャララ', ver:'カバー', file:'シャララ', subs:'シャララ.srt', theme:'sharara', art:'rolling', lead:0, noBike:true,
+   series:'シャララ',
+   cast:[['rolling',1,'森友望未','#9db06a'],['rolling',0,'御園千綾','#f0a8c0'],['rolling',2,'響逢衣','#e08a5a'],['rolling',3,'小坂結季奈','#9fb8c8']]},
+  {title:'STONES', ver:'カバー', file:'STONES', subs:'STONES.srt', theme:'stones', art:'rolling', lead:0, noBike:true,
+   series:'STONES',
+   cast:[['rolling',1,'森友望未','#9db06a'],['rolling',0,'御園千綾','#f0a8c0'],['rolling',2,'響逢衣','#e08a5a'],['rolling',3,'小坂結季奈','#9fb8c8']]},
+  {title:'夕暮れ', ver:'カバー', file:'夕暮れ', subs:'夕暮れ.srt', theme:'yuugure', art:'rolling', lead:0, noBike:true,
+   series:'夕暮れ',
+   cast:[['rolling',1,'森友望未','#9db06a'],['rolling',0,'御園千綾','#f0a8c0'],['rolling',2,'響逢衣','#e08a5a'],['rolling',3,'小坂結季奈','#9fb8c8']]},
+  {title:'終わらない歌', ver:'カバー', file:'終わらない歌', subs:'終わらない歌.srt', theme:'owaranai', art:'rolling', lead:0, noBike:true,
+   series:'終わらない歌',
    cast:[['rolling',1,'森友望未','#9db06a'],['rolling',0,'御園千綾','#f0a8c0'],['rolling',2,'響逢衣','#e08a5a'],['rolling',3,'小坂結季奈','#9fb8c8']]}
 ];
 
@@ -382,7 +397,17 @@ const THEMES = {
   // 1000のバイオリン：冒險的晴空藍與草原綠，配金色琴弦
   violin:   {sky: ['#0a2a4a', '#2f86c8', '#bfe8b0'], pastel: ['#f2fff4', '#d8f0ff'], accent: '#ffd24a', accent2: '#3fb87a', cool: '#5fd0e8', deep: '#08203a', particle: 'petal'},
   // 脳天気：正午的晴空與白雲，配檸檬黃
-  notenki:  {sky: ['#1a5fa8', '#6fc0ee', '#fff6cc'], pastel: ['#ffffff', '#fff2c4'], accent: '#ffd93a', accent2: '#ff8a3a', cool: '#7fe0d0', deep: '#0f3a66', particle: 'spark'}
+  notenki:  {sky: ['#1a5fa8', '#6fc0ee', '#fff6cc'], pastel: ['#ffffff', '#fff2c4'], accent: '#ffd93a', accent2: '#ff8a3a', cool: '#7fe0d0', deep: '#0f3a66', particle: 'spark'},
+  // TRAIN-TRAIN：夜行列車的深藍與前燈的琥珀
+  traintrain:{sky: ['#050a18', '#16305c', '#e8b45a'], pastel: ['#fdf3e2', '#ffe0b0'], accent: '#ffc247', accent2: '#d84a3a', cool: '#6fa8e0', deep: '#04060f', particle: 'spark'},
+  // シャララ：童話感的粉紫與奶油黃
+  sharara:  {sky: ['#2a1840', '#a45a9e', '#ffd9a8'], pastel: ['#fff2fa', '#ffe4f0'], accent: '#ffb0d8', accent2: '#ffd166', cool: '#a88ce0', deep: '#1c0f2c', particle: 'star'},
+  // STONES：苔綠與石灰，溪谷的石頭
+  stones:   {sky: ['#0e1a12', '#3d6a4a', '#cfd8b8'], pastel: ['#f4f8ea', '#dce8c8'], accent: '#9ed06a', accent2: '#d8a24a', cool: '#7fc8b8', deep: '#08120c', particle: 'petal'},
+  // 夕暮れ：晚霞的橘紅到紫
+  yuugure:  {sky: ['#2a1030', '#c2452f', '#ffcf7a'], pastel: ['#fff3e0', '#ffd8c0'], accent: '#ff8a3a', accent2: '#c9305a', cool: '#8f6bd6', deep: '#1c0a1e', particle: 'spark'},
+  // 終わらない歌：深夜的紅與黑，配白色標語
+  owaranai: {sky: ['#0a0508', '#4a0f18', '#c8302a'], pastel: ['#f6eeee', '#e0c8c8'], accent: '#e83a32', accent2: '#ffd24a', cool: '#8a8a9a', deep: '#060304', particle: 'star'}
 };
 const LOGO = [['B', '#2ba6e1'], ['E', '#f6a531'], ['S', '#ee5b97'], ['T', '#2ba6e1'], [' ', ''], ['4', '#f6a531'], ['U', '#8d6ad6']];
 const POP = ['#ee5b97', '#2ba6e1', '#f6a531', '#8d6ad6', '#3cc39a', '#f08a4b'];
