@@ -147,9 +147,11 @@
 !/CからはじまるABC.mp3
 !/CからはじまるABC.srt
 
-# マトリョーシカ 隨歌曲清單部署
+# マトリョーシカ 與 RPG 隨歌曲清單部署
 !/マトリョーシカ.mp3
 !/マトリョーシカ.srt
+!/RPG.mp3
+!/RPG.srt
 
 .DS_Store
 .claude/
