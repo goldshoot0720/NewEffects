@@ -1787,41 +1787,41 @@
  "rolling": [
   {
    "file": "rolling-0.png",
-   "w": 286,
-   "h": 1323,
-   "headX": 172,
-   "headY": 132,
+   "w": 387,
+   "h": 935,
+   "headX": 237,
+   "headY": 94,
    "source": [
-    0,
-    151
-   ],
-   "sheet": "rolling-ref",
-   "name": "御園千綾",
-   "intact": true
-  },
-  {
-   "file": "rolling-1.png",
-   "w": 250,
-   "h": 1340,
-   "headX": 121,
-   "headY": 134,
-   "source": [
-    280,
-    139
+    87,
+    3
    ],
    "sheet": "rolling-ref",
    "name": "森友望未",
    "intact": true
   },
   {
-   "file": "rolling-2.png",
-   "w": 298,
-   "h": 1454,
-   "headX": 223,
-   "headY": 145,
+   "file": "rolling-1.png",
+   "w": 325,
+   "h": 938,
+   "headX": 136,
+   "headY": 94,
    "source": [
-    524,
+    517,
     0
+   ],
+   "sheet": "rolling-ref",
+   "name": "小坂結季奈",
+   "intact": true
+  },
+  {
+   "file": "rolling-2.png",
+   "w": 320,
+   "h": 934,
+   "headX": 168,
+   "headY": 93,
+   "source": [
+    877,
+    4
    ],
    "sheet": "rolling-ref",
    "name": "響逢衣",
@@ -1829,16 +1829,16 @@
   },
   {
    "file": "rolling-3.png",
-   "w": 206,
-   "h": 1329,
-   "headX": 93,
-   "headY": 133,
+   "w": 382,
+   "h": 933,
+   "headX": 187,
+   "headY": 93,
    "source": [
-    818,
-    144
+    1203,
+    5
    ],
    "sheet": "rolling-ref",
-   "name": "小坂結季奈",
+   "name": "御園千綾",
    "intact": true
   }
  ],

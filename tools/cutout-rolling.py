@@ -9,14 +9,18 @@ from scipy import ndimage
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 OUT = os.path.join(ROOT, 'assets/ref/cast')
 MANIFEST = os.path.join(OUT, 'cast.json')
-SRC = os.path.join(ROOT, 'assets/ref/rolling/lineup.jpg')
+# 兩張來源同一構圖：優先用 1677×938 的高解析版
+SRC = os.path.join(ROOT, 'assets/ref/rolling/lineup-hi.jpg')
+if not os.path.exists(SRC):
+    SRC = os.path.join(ROOT, 'assets/ref/rolling/lineup.jpg')
 
 # 索引順序＝PV 卡司順序；望未 是主唱
+# 對照官方四人立繪：左起 望未（洋紅髮藍外套）・結季奈（銀髮戴帽）・逢衣（黑髮粉衣）・千綾（金髮綠外套）
 CHARS = [
-    ('御園千綾', 0, 286),
-    ('森友望未', 280, 530),
-    ('響逢衣', 524, 822),
-    ('小坂結季奈', 818, 1024),
+    ('森友望未', 87, 474),
+    ('小坂結季奈', 517, 842),
+    ('響逢衣', 877, 1197),
+    ('御園千綾', 1203, 1585),
 ]
 
 

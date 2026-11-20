@@ -6,7 +6,8 @@ TV 動畫《ローリング☆ガールズ》ED 主題曲的翻唱版。PV 編�
 
 | 檔案 | 內容 |
 | --- | --- |
-| `lineup.jpg` | 使用者提供的四人並排立繪（純白背景，1024×1536），切圖來源 |
+| `lineup-hi.jpg` | 使用者提供的四人並排立繪（純白背景，1677×938），目前切圖來源 |
+| `lineup.jpg` | 較早的 1024×1536 版本，僅作備份 |
 | `asr-ja.json` | `tools/asr.py`（faster-whisper large-v3-turbo）的逐句與逐詞時間 |
 | `../../人にやさしく.srt` | 35 句日中雙語字幕，由 `tools/build-rolling-subtitles.mjs` 產生 |
 
@@ -22,7 +23,7 @@ node tools/build-rolling-subtitles.mjs
 
 ## 角色切圖
 
-四位角色森友望未、御園千綾、響逢衣、小坂結季奈由 `tools/cutout-rolling.py` 從 `lineup.jpg` 切出：
+四位角色森友望未、小坂結季奈、響逢衣、御園千綾由 `tools/cutout-rolling.py` 從 `lineup-hi.jpg` 切出。**新圖的左起順序是望未・結季奈・逢衣・千綾**（和舊圖的 2、4 位對調），改圖時要一起改 `CHARS` 與 `pv.js` 的卡司索引：
 
 1. 依列佔用率的谷值定分界（286 / 528 / 822），第三位舉起的手臂會伸進第四位的區域，所以邊界要取到 822。
 2. 近白像素從邊界連通才移除，裙子的白色不會被吃掉。
