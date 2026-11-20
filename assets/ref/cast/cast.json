@@ -1857,5 +1857,133 @@
    "name": "前田太尊",
    "intact": true
   }
+ ],
+ "matryoshka": [
+  {
+   "file": "matryoshka-0.png",
+   "w": 179,
+   "h": 603,
+   "headX": 92,
+   "headY": 60,
+   "source": [
+    29,
+    0
+   ],
+   "sheet": "matryoshka-ref",
+   "name": "井稲田",
+   "intact": true
+  },
+  {
+   "file": "matryoshka-1.png",
+   "w": 210,
+   "h": 680,
+   "headX": 132,
+   "headY": 68,
+   "source": [
+    208,
+    0
+   ],
+   "sheet": "matryoshka-ref",
+   "name": "真坂本",
+   "intact": true
+  },
+  {
+   "file": "matryoshka-2.png",
+   "w": 204,
+   "h": 649,
+   "headX": 144,
+   "headY": 65,
+   "source": [
+    418,
+    0
+   ],
+   "sheet": "matryoshka-ref",
+   "name": "真朱",
+   "intact": true
+  },
+  {
+   "file": "matryoshka-3.png",
+   "w": 221,
+   "h": 627,
+   "headX": 119,
+   "headY": 63,
+   "source": [
+    622,
+    0
+   ],
+   "sheet": "matryoshka-ref",
+   "name": "余賀公磨",
+   "intact": true
+  },
+  {
+   "file": "matryoshka-4.png",
+   "w": 180,
+   "h": 687,
+   "headX": 85,
+   "headY": 69,
+   "source": [
+    852,
+    0
+   ],
+   "sheet": "matryoshka-ref",
+   "name": "三國壮一郎",
+   "intact": true
+  },
+  {
+   "file": "matryoshka-5.png",
+   "w": 194,
+   "h": 608,
+   "headX": 102,
+   "headY": 61,
+   "source": [
+    1032,
+    0
+   ],
+   "sheet": "matryoshka-ref",
+   "name": "Q",
+   "intact": true
+  },
+  {
+   "file": "matryoshka-6.png",
+   "w": 154,
+   "h": 595,
+   "headX": 73,
+   "headY": 60,
+   "source": [
+    1238,
+    0
+   ],
+   "sheet": "matryoshka-ref",
+   "name": "生田羽奈日",
+   "intact": true
+  },
+  {
+   "file": "matryoshka-7.png",
+   "w": 190,
+   "h": 651,
+   "headX": 87,
+   "headY": 65,
+   "source": [
+    1412,
+    0
+   ],
+   "sheet": "matryoshka-ref",
+   "name": "ジェニファー",
+   "intact": true
+  },
+  {
+   "file": "matryoshka-8.png",
+   "w": 204,
+   "h": 618,
+   "headX": 99,
+   "headY": 62,
+   "source": [
+    1602,
+    0
+   ],
+   "sheet": "matryoshka-ref",
+   "name": "竹田崎重臣",
+   "intact": true
+  }
  ]
 }

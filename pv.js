@@ -58,7 +58,10 @@ const ARTS = {
     faces: [[290, 187], [621, 188], [1016, 187], [1299, 188]]},
   // 未来は僕等の手の中：官方九人合圖（©ろくでなしBLUES）由 tools/cutout-mirai.py 去背
   mirai: {src: 'assets/ref/mirai-group.png', crop: [0, 0, 1920, 1080],
-    faces: [[930, 189]]}
+    faces: [[930, 189]]},
+  // マトリョーシカ：黑底九人立繪由 tools/cutout-matryoshka.py 去背並拼成群像
+  matryoshka: {src: 'assets/ref/matryoshka-group.png', crop: [0, 0, 1920, 1080],
+    faces: [[300, 300], [530, 300], [740, 300], [960, 300], [1180, 300], [1390, 300], [1570, 300], [1740, 300]]}
 };
 const SONGS = [
   {title: '大好きだよって叫ぶんだ', ver: '小日向理瀬 ver.', file: '大好きだよって叫ぶんだ [小日向理瀬ver.]',
@@ -304,7 +307,11 @@ const SONGS = [
    cast:[['mirai',0,'前田太尊','#3f7a4a']]},
   {title:'CからはじまるABC', ver:'忘れらんねえよ', file:'CからはじまるABC', subs:'CからはじまるABC.srt', theme:'abc', art:'mirai', lead:0, noBike:true,
    series:'忘れらんねえよ',
-   cast:[['mirai',0,'前田太尊','#3f7a4a']]}
+   cast:[['mirai',0,'前田太尊','#3f7a4a']]},
+  {title:'マトリョーシカ', ver:'NICO Touches the Walls', file:'マトリョーシカ', subs:'マトリョーシカ.srt', theme:'matryoshka', art:'matryoshka', lead:3, noBike:true,
+   series:'NICO Touches the Walls',
+   cast:[['matryoshka',3,'余賀公磨','#5c8fd6'],['matryoshka',0,'井稲田','#8a7a5a'],['matryoshka',1,'真坂本','#c04a6a'],['matryoshka',2,'真朱','#d63a3a'],
+         ['matryoshka',4,'三國壮一郎','#3a3a5a'],['matryoshka',5,'Q','#7ad0c0'],['matryoshka',6,'生田羽奈日','#b8a0d8'],['matryoshka',7,'ジェニファー','#d8d0a8'],['matryoshka',8,'竹田崎重臣','#7a9a4a']]}
 ];
 
 // 每首歌一組配色：夏日向日葵、日出、黃昏星空、晴空疾風
@@ -347,7 +354,9 @@ const THEMES = {
   // Chase the Light!：高速電子金屬，深夜藍到電光青，配洋紅脈衝
   chase:    {sky: ['#03040e', '#102a63', '#41d8ff'], pastel: ['#eaf8ff', '#c9e6ff'], accent: '#41e0ff', accent2: '#ff3d9a', cool: '#8b6bff', deep: '#02030a', particle: 'spark'},
   // CからはじまるABC：日式搖滾的晴天色，奶油黃到橙紅，配青綠點綴
-  abc:      {sky: ['#1d2a52', '#f0a03a', '#ffe9a8'], pastel: ['#fffdf3', '#ffe6b8'], accent: '#ff8a2b', accent2: '#e8402f', cool: '#3fc7b4', deep: '#231a12', particle: 'spark'}
+  abc:      {sky: ['#1d2a52', '#f0a03a', '#ffe9a8'], pastel: ['#fffdf3', '#ffe6b8'], accent: '#ff8a2b', accent2: '#e8402f', cool: '#3fc7b4', deep: '#231a12', particle: 'spark'},
+  // マトリョーシカ：俄羅斯娃娃的深紫與暗紅，一層層剝開的冷光
+  matryoshka: {sky: ['#07060e', '#2a1038', '#8e1f3a'], pastel: ['#f3e9f0', '#d8bfd4'], accent: '#e0447a', accent2: '#8f6bff', cool: '#6fd0e0', deep: '#050409', particle: 'star'}
 };
 const LOGO = [['B', '#2ba6e1'], ['E', '#f6a531'], ['S', '#ee5b97'], ['T', '#2ba6e1'], [' ', ''], ['4', '#f6a531'], ['U', '#8d6ad6']];
 const POP = ['#ee5b97', '#2ba6e1', '#f6a531', '#8d6ad6', '#3cc39a', '#f08a4b'];
@@ -454,6 +463,9 @@ const CHARACTER_GROUPS = song.cast[0][0] === 'anaru'
   : song.cast[0][0] === 'mirai'
   // 未来は僕等の手の中：九人合圖彼此重疊，整組當一個 intact 精靈
   ? [{sheet:'mirai', title:'ろくでなしBLUES · 九人', src:'assets/ref/mirai-group.png', colors:['#1a1024','#ffb45e'], count:1, solo:true}]
+  : song.cast[0][0] === 'matryoshka'
+  // マトリョーシカ：黑底九人立繪已切成九張獨立精靈
+  ? [{sheet:'matryoshka', title:'マトリョーシカ · 九人', src:'assets/ref/matryoshka-group.png', colors:['#1a0a1e','#e0447a'], count:9, solo:true}]
   : song.art === 'breakshoot'
   ? [{sheet:'casual', title:'Extreme Hearts · 十二人', src:'assets/ref/casual-remade/group.png', colors:['#5cabe0','#f3afd3'], count:12,solo:true}]
   : BASE_CHARACTER_GROUPS;
