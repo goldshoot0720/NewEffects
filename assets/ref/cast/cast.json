@@ -1783,5 +1783,63 @@
    "name": "此花華玄",
    "intact": true
   }
+ ],
+ "rolling": [
+  {
+   "file": "rolling-0.png",
+   "w": 286,
+   "h": 1323,
+   "headX": 172,
+   "headY": 132,
+   "source": [
+    0,
+    151
+   ],
+   "sheet": "rolling-ref",
+   "name": "御園千綾",
+   "intact": true
+  },
+  {
+   "file": "rolling-1.png",
+   "w": 250,
+   "h": 1340,
+   "headX": 121,
+   "headY": 134,
+   "source": [
+    280,
+    139
+   ],
+   "sheet": "rolling-ref",
+   "name": "森友望未",
+   "intact": true
+  },
+  {
+   "file": "rolling-2.png",
+   "w": 298,
+   "h": 1454,
+   "headX": 223,
+   "headY": 145,
+   "source": [
+    524,
+    0
+   ],
+   "sheet": "rolling-ref",
+   "name": "響逢衣",
+   "intact": true
+  },
+  {
+   "file": "rolling-3.png",
+   "w": 206,
+   "h": 1329,
+   "headX": 93,
+   "headY": 133,
+   "source": [
+    818,
+    144
+   ],
+   "sheet": "rolling-ref",
+   "name": "小坂結季奈",
+   "intact": true
+  }
  ]
 }

@@ -17,9 +17,10 @@
     tsuki: {sheet: 'tsuki', idx: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10]},
     kaze: {sheet: 'kaze', idx: [0, 1, 2, 3, 4, 5, 6]},
     osewa: {sheet: 'osewa', idx: [0, 1, 2, 3, 4, 5, 6, 7]},
-    fx: {sheet: 'fx', idx: [0, 1, 2, 3]}
+    fx: {sheet: 'fx', idx: [0, 1, 2, 3]},
+    rolling: {sheet: 'rolling', idx: [0, 1, 2, 3]}
   };
-  const actors = {best4u: [], anaru: [], lucky: [], kaguya: [], aiura: [], growup: [], extreme: [], vwest:[], forever:[], tsuki:[], kaze:[], osewa:[], fx:[]};
+  const actors = {best4u: [], anaru: [], lucky: [], kaguya: [], aiura: [], growup: [], extreme: [], vwest:[], forever:[], tsuki:[], kaze:[], osewa:[], fx:[], rolling:[]};
   let active = 'best4u';
   const api = window.SpriteDancers = {ready: false, error: null, draw, use, count};
   function use(name){ if(actors[name]?.length) active = name; }

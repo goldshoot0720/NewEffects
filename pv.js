@@ -52,7 +52,10 @@ const ARTS = {
     faces: [[957, 371], [629, 373], [1285, 373], [411, 196], [259, 393], [972, 165], [1499, 196], [1698, 393]]},
   // FX戦士くるみちゃん：四張官方透明立繪，由 tools/cutout-fx.py 裁切並拼成 K 線走勢群像
   fx: {src: 'assets/ref/fx-group.png', crop: [0, 0, 1920, 1080],
-    faces: [[281, 423], [704, 370], [1197, 423], [1620, 439]]}
+    faces: [[281, 423], [704, 370], [1197, 423], [1620, 439]]},
+  // 人にやさしく：四張官方立繪由 tools/cutout-rolling.py 去背並拼成夜景街道群像
+  rolling: {src: 'assets/ref/rolling-group.png', crop: [0, 0, 1920, 1080],
+    faces: [[290, 187], [621, 188], [1016, 187], [1299, 188]]}
 };
 const SONGS = [
   {title: '大好きだよって叫ぶんだ', ver: '小日向理瀬 ver.', file: '大好きだよって叫ぶんだ [小日向理瀬ver.]',
@@ -283,7 +286,10 @@ const SONGS = [
          ['growup',6,'酒匂 雫','#7786ba'],['growup',7,'スヴェトラーナ','#d7d3c9'],['growup',8,'間宮 凛','#bd8b4c'],['growup',9,'麻利亜','#f1bc3e']]},
   {title:'FX戦士くるみちゃん', ver:'福賀くるみ(CV.鈴木愛奈)', file:'FX戦士くるみちゃん', subs:'FX戦士くるみちゃん.srt', fill:'assets/ref/fx/fill-ja.json', theme:'fx', art:'fx', lead:0, noBike:true, fillEnergy:.3,
    series:'福賀くるみ', tv:'FX戦士くるみちゃん', kicker:'OPテーマ',
-   cast:[['fx',0,'福賀くるみ','#f2a0c0'],['fx',1,'小金萌智子','#b06ad6'],['fx',2,'山師芽吹','#f0c24a'],['fx',3,'高根やす子','#5b6bb5']]}
+   cast:[['fx',0,'福賀くるみ','#f2a0c0'],['fx',1,'小金萌智子','#b06ad6'],['fx',2,'山師芽吹','#f0c24a'],['fx',3,'高根やす子','#5b6bb5']]},
+  {title:'人にやさしく', ver:'THE ROLLING GIRLS', file:'人にやさしく', subs:'人にやさしく.srt', theme:'rolling', art:'rolling', lead:0, noBike:true,
+   series:'ローリング☆ガールズ', tv:'ローリング☆ガールズ', kicker:'EDテーマ',
+   cast:[['rolling',1,'森友望未','#9db06a'],['rolling',0,'御園千綾','#f0a8c0'],['rolling',2,'響逢衣','#e08a5a'],['rolling',3,'小坂結季奈','#9fb8c8']]}
 ];
 
 // 每首歌一組配色：夏日向日葵、日出、黃昏星空、晴空疾風
@@ -316,7 +322,9 @@ const THEMES = {
   // 最最最高級のお世話して：貴皇學院的深夜藍到金色午後，白制服在暗底上最亮
   osewa:    {sky: ['#0a1330', '#2b3f7d', '#ffd7a1'], pastel: ['#fffaf0', '#ffe8cf'], accent: '#ffd166', accent2: '#ff7a9c', cool: '#bfe3ff', deep: '#0a1024', particle: 'spark'},
   // FX戦士くるみちゃん：交易畫面的深夜藍到洋紅，配 K 線的紅綠與告警橘
-  fx:       {sky: ['#05081c', '#231a5e', '#8e1f5e'], pastel: ['#eef1ff', '#ffe6f0'], accent: '#ff4d6d', accent2: '#3ee0a0', cool: '#ffd166', deep: '#05061a', particle: 'spark'}
+  fx:       {sky: ['#05081c', '#231a5e', '#8e1f5e'], pastel: ['#eef1ff', '#ffe6f0'], accent: '#ff4d6d', accent2: '#3ee0a0', cool: '#ffd166', deep: '#05061a', particle: 'spark'},
+  // 人にやさしく：旅途小鎮的黃昏到夜色，路燈的暖橘與天空的藍紫
+  rolling:  {sky: ['#0d1430', '#2d4a7a', '#e8c48a'], pastel: ['#fdf6e6', '#ffe6c4'], accent: '#ffb545', accent2: '#ff6f8e', cool: '#6fc8f0', deep: '#0a0f24', particle: 'spark'}
 };
 const LOGO = [['B', '#2ba6e1'], ['E', '#f6a531'], ['S', '#ee5b97'], ['T', '#2ba6e1'], [' ', ''], ['4', '#f6a531'], ['U', '#8d6ad6']];
 const POP = ['#ee5b97', '#2ba6e1', '#f6a531', '#8d6ad6', '#3cc39a', '#f08a4b'];
@@ -417,6 +425,9 @@ const CHARACTER_GROUPS = song.cast[0][0] === 'anaru'
   : song.cast[0][0] === 'fx'
   // FX戦士くるみちゃん：くるみ・萌智子・芽吹・やす子 四人
   ? [{sheet:'fx', title:'FX戦士くるみちゃん · 四人', src:'assets/ref/fx-group.png', colors:['#231a5e','#ff4d6d'], count:4, solo:true}]
+  : song.cast[0][0] === 'rolling'
+  // ローリング☆ガールズ：望未・結季奈・逢衣・千綾 四人
+  ? [{sheet:'rolling', title:'ローリング☆ガールズ · 四人', src:'assets/ref/rolling-group.png', colors:['#1b2a68','#ffd8a8'], count:4, solo:true}]
   : song.art === 'breakshoot'
   ? [{sheet:'casual', title:'Extreme Hearts · 十二人', src:'assets/ref/casual-remade/group.png', colors:['#5cabe0','#f3afd3'], count:12,solo:true}]
   : BASE_CHARACTER_GROUPS;
