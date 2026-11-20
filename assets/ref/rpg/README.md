@@ -1,4 +1,4 @@
-# RPG（SEKAI NO OWARI）
+# RPG（School Food Punishment）
 
 PV 編號 60，長度 245.32 秒。
 

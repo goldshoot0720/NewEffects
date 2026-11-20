@@ -315,7 +315,7 @@ const SONGS = [
    series:'[C]', tv:'[C] - THE MONEY OF SOUL AND POSSIBILITY CONTROL', kicker:'OPテーマ',
    cast:[['matryoshka',3,'余賀公磨','#5c8fd6'],['matryoshka',0,'井稲田','#8a7a5a'],['matryoshka',1,'真坂本','#c04a6a'],['matryoshka',2,'真朱','#d63a3a'],
          ['matryoshka',4,'三國壮一郎','#3a3a5a'],['matryoshka',5,'Q','#7ad0c0'],['matryoshka',6,'生田羽奈日','#b8a0d8'],['matryoshka',7,'ジェニファー','#d8d0a8'],['matryoshka',8,'竹田崎重臣','#7a9a4a']]},
-  {title:'RPG', ver:'SEKAI NO OWARI', file:'RPG', subs:'RPG.srt', theme:'rpg', art:'matryoshka', lead:3, noBike:true,
+  {title:'RPG', ver:'School Food Punishment', file:'RPG', subs:'RPG.srt', theme:'rpg', art:'matryoshka', lead:3, noBike:true,
    series:'[C]', tv:'[C] - THE MONEY OF SOUL AND POSSIBILITY CONTROL', kicker:'EDテーマ',
    cast:[['matryoshka',3,'余賀公磨','#5c8fd6'],['matryoshka',0,'井稲田','#8a7a5a'],['matryoshka',1,'真坂本','#c04a6a'],['matryoshka',2,'真朱','#d63a3a'],
          ['matryoshka',4,'三國壮一郎','#3a3a5a'],['matryoshka',5,'Q','#7ad0c0'],['matryoshka',6,'生田羽奈日','#b8a0d8'],['matryoshka',7,'ジェニファー','#d8d0a8'],['matryoshka',8,'竹田崎重臣','#7a9a4a']]},
