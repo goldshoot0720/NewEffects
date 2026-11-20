@@ -183,13 +183,13 @@ macOS 也可雙擊 `啟動播放器.command`，會在終端機啟動伺服器並
 
 已加入歌詞 PV（編號 54，約 201.45 秒）與第二版播放器，為 TV 動畫《ローリング☆ガールズ》ED 主題曲的翻唱版；使用使用者提供的 MP3 與 35 段日中雙語字幕。時間軸以 `tools/asr.py`（large-v3-turbo）的逐句結果為底，長句依樂句切開，103.4–136 秒是純間奏不掛字幕，可用 `node tools/build-rolling-subtitles.mjs` 重建 SRT。四位角色森友望未、御園千綾、響逢衣、小坂結季奈由 `tools/cutout-rolling.py` 從並排立繪去背、只保留最大連通域（避免夾到鄰人的頭髮與身體），拼成群像 `assets/ref/rolling-group.png`；主題 `rolling` 走旅途小鎮的黃昏到夜色，路燈暖橘配藍紫天空，主唱預設為森友望未。
 
-### 未来は僕等の手の中：ろくでなしBLUES
+### 未来は僕等の手の中：逆境無頼カイジ
 
-已加入歌詞 PV（編號 55，約 149.00 秒）與第二版播放器，為 TV 動畫《ろくでなしBLUES》ED 主題曲；使用使用者提供的 MP3 與 28 段日中雙語字幕。時間軸由 `tools/asr.py`（large-v3-turbo）加上開頭 0–36 秒的局部視窗重跑取得：0–11.98 秒前奏、60.98–93.30 秒吉他間奏、95.48–101.04 秒間奏都不掛字幕，可用 `node tools/build-mirai-subtitles.mjs` 重建 SRT。九人合圖彼此重疊，無法自動分離成單人立繪，因此由 `tools/cutout-mirai.py` 去背後整組當一個 `intact` 精靈（`assets/ref/mirai-group.png` 是加上模糊底圖的 1920×1080 主視覺）；卡司只有一人，分鏡會避開需要三個人的三窗鏡頭。主題 `mirai` 走夕陽與鐵鏽紅。
+已加入歌詞 PV（編號 55，約 149.00 秒）與第二版播放器，為 TV 動畫《逆境無頼カイジ》OP 主題曲；使用使用者提供的 MP3 與 28 段日中雙語字幕。時間軸由 `tools/asr.py`（large-v3-turbo）加上開頭 0–36 秒的局部視窗重跑取得：0–11.98 秒前奏、60.98–93.30 秒吉他間奏、95.48–101.04 秒間奏都不掛字幕，可用 `node tools/build-mirai-subtitles.mjs` 重建 SRT。角色改用 `tools/cutout-kaiji.py` 從白底八人立繪切出的八張獨立精靈（船井、遠藤勇次、古畑、北見、伊藤開司、石田、大槻、兵藤和尊），主唱伊藤開司；主題 `mirai` 走夕陽與鐵鏽紅。
 
-### 負け犬たちのレクイエム：ろくでなしBLUES
+### 負け犬たちのレクイエム：逆境無頼カイジ
 
-已加入歌詞 PV（編號 56，約 322.20 秒）與第二版播放器，為 TV 動畫《ろくでなしBLUES》插入曲；使用使用者提供的 MP3 與 33 段日中雙語字幕。歌詞唱兩輪，末尾多一次「今 負け犬達の勝負の時が始まる」與一句「アーメン」；197–199 秒 ASR 冒出的「作詞・作曲」是幻聽，不採計。時間軸寫在 `tools/build-makeinu-subtitles.mjs`，可用 `node tools/build-makeinu-subtitles.mjs` 重建。角色沿用 `mirai` 那組九人合圖（同一部作品），主題 `makeinu` 是深紫黑到血紅的黑暗版配色。
+已加入歌詞 PV（編號 56，約 322.20 秒）與第二版播放器，為 TV 動畫《逆境無頼カイジ》ED 主題曲；使用使用者提供的 MP3 與 33 段日中雙語字幕。歌詞唱兩輪，末尾多一次「今 負け犬達の勝負の時が始まる」與一句「アーメン」；197–199 秒 ASR 冒出的「作詞・作曲」是幻聽，不採計。時間軸寫在 `tools/build-makeinu-subtitles.mjs`，可用 `node tools/build-makeinu-subtitles.mjs` 重建。角色沿用同一組 `kaiji` 八人精靈，主題 `makeinu` 是深紫黑到血紅的黑暗版配色。
 
 ### Chase the Light!：Fear, and Loathing in Las Vegas
 

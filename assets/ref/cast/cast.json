@@ -1985,5 +1985,119 @@
    "name": "竹田崎重臣",
    "intact": true
   }
+ ],
+ "kaiji": [
+  {
+   "file": "kaiji-0.png",
+   "w": 228,
+   "h": 617,
+   "headX": 119,
+   "headY": 62,
+   "source": [
+    0,
+    0
+   ],
+   "sheet": "kaiji-ref",
+   "name": "船井",
+   "intact": true
+  },
+  {
+   "file": "kaiji-1.png",
+   "w": 175,
+   "h": 635,
+   "headX": 74,
+   "headY": 64,
+   "source": [
+    245,
+    0
+   ],
+   "sheet": "kaiji-ref",
+   "name": "遠藤勇次",
+   "intact": true
+  },
+  {
+   "file": "kaiji-2.png",
+   "w": 230,
+   "h": 669,
+   "headX": 99,
+   "headY": 67,
+   "source": [
+    420,
+    0
+   ],
+   "sheet": "kaiji-ref",
+   "name": "古畑",
+   "intact": true
+  },
+  {
+   "file": "kaiji-3.png",
+   "w": 225,
+   "h": 667,
+   "headX": 79,
+   "headY": 67,
+   "source": [
+    650,
+    0
+   ],
+   "sheet": "kaiji-ref",
+   "name": "北見",
+   "intact": true
+  },
+  {
+   "file": "kaiji-4.png",
+   "w": 230,
+   "h": 711,
+   "headX": 87,
+   "headY": 71,
+   "source": [
+    875,
+    0
+   ],
+   "sheet": "kaiji-ref",
+   "name": "伊藤開司",
+   "intact": true
+  },
+  {
+   "file": "kaiji-5.png",
+   "w": 215,
+   "h": 696,
+   "headX": 142,
+   "headY": 70,
+   "source": [
+    1105,
+    0
+   ],
+   "sheet": "kaiji-ref",
+   "name": "石田",
+   "intact": true
+  },
+  {
+   "file": "kaiji-6.png",
+   "w": 228,
+   "h": 648,
+   "headX": 151,
+   "headY": 65,
+   "source": [
+    1320,
+    0
+   ],
+   "sheet": "kaiji-ref",
+   "name": "大槻",
+   "intact": true
+  },
+  {
+   "file": "kaiji-7.png",
+   "w": 371,
+   "h": 710,
+   "headX": 161,
+   "headY": 71,
+   "source": [
+    1548,
+    0
+   ],
+   "sheet": "kaiji-ref",
+   "name": "兵藤和尊",
+   "intact": true
+  }
  ]
 }

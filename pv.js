@@ -59,6 +59,9 @@ const ARTS = {
   // 未来は僕等の手の中：官方九人合圖（©ろくでなしBLUES）由 tools/cutout-mirai.py 去背
   mirai: {src: 'assets/ref/mirai-group.png', crop: [0, 0, 1920, 1080],
     faces: [[930, 189]]},
+  // 逆境無頼カイジ：白底八人立繪由 tools/cutout-kaiji.py 去背並拼成群像
+  kaiji: {src: 'assets/ref/kaiji-group.png', crop: [0, 0, 1920, 1080],
+    faces: [[114, 282], [332, 284], [535, 287], [762, 287], [990, 291], [1212, 290], [1434, 285], [1733, 291]]},
   // マトリョーシカ：黑底九人立繪由 tools/cutout-matryoshka.py 去背並拼成群像
   matryoshka: {src: 'assets/ref/matryoshka-group.png', crop: [0, 0, 1920, 1080],
     faces: [[300, 300], [530, 300], [740, 300], [960, 300], [1180, 300], [1390, 300], [1570, 300], [1740, 300]]}
@@ -296,12 +299,12 @@ const SONGS = [
   {title:'人にやさしく', ver:'THE ROLLING GIRLS', file:'人にやさしく', subs:'人にやさしく.srt', theme:'rolling', art:'rolling', lead:0, noBike:true,
    series:'ローリング☆ガールズ', tv:'ローリング☆ガールズ', kicker:'EDテーマ',
    cast:[['rolling',1,'森友望未','#9db06a'],['rolling',0,'御園千綾','#f0a8c0'],['rolling',2,'響逢衣','#e08a5a'],['rolling',3,'小坂結季奈','#9fb8c8']]},
-  {title:'未来は僕等の手の中', ver:'ろくでなしBLUES', file:'未来は僕等の手の中', subs:'未来は僕等の手の中.srt', theme:'mirai', art:'mirai', lead:0, noBike:true,
-   series:'ろくでなしBLUES', tv:'ろくでなしBLUES', kicker:'EDテーマ',
-   cast:[['mirai',0,'前田太尊','#3f7a4a']]},
-  {title:'負け犬たちのレクイエム', ver:'ろくでなしBLUES', file:'負け犬たちのレクイエム', subs:'負け犬たちのレクイエム.srt', theme:'makeinu', art:'mirai', lead:0, noBike:true,
-   series:'ろくでなしBLUES', tv:'ろくでなしBLUES', kicker:'挿入歌',
-   cast:[['mirai',0,'前田太尊','#3f7a4a']]},
+  {title:'未来は僕等の手の中', ver:'逆境無頼カイジ', file:'未来は僕等の手の中', subs:'未来は僕等の手の中.srt', theme:'mirai', art:'kaiji', lead:0, noBike:true,
+   series:'逆境無頼カイジ', tv:'逆境無頼カイジ', kicker:'OPテーマ',
+   cast:[['kaiji',4,'伊藤開司','#5c8fd6'],['kaiji',0,'船井','#7a8ab0'],['kaiji',1,'遠藤勇次','#8a8070'],['kaiji',2,'古畑','#3f5fa0'],['kaiji',3,'北見','#5a8a4a'],['kaiji',5,'石田','#b04a4a'],['kaiji',6,'大槻','#8a4a8a'],['kaiji',7,'兵藤和尊','#2a5aa8']]},
+  {title:'負け犬たちのレクイエム', ver:'逆境無頼カイジ', file:'負け犬たちのレクイエム', subs:'負け犬たちのレクイエム.srt', theme:'makeinu', art:'kaiji', lead:0, noBike:true,
+   series:'逆境無頼カイジ', tv:'逆境無頼カイジ', kicker:'EDテーマ',
+   cast:[['kaiji',4,'伊藤開司','#5c8fd6'],['kaiji',0,'船井','#7a8ab0'],['kaiji',1,'遠藤勇次','#8a8070'],['kaiji',2,'古畑','#3f5fa0'],['kaiji',3,'北見','#5a8a4a'],['kaiji',5,'石田','#b04a4a'],['kaiji',6,'大槻','#8a4a8a'],['kaiji',7,'兵藤和尊','#2a5aa8']]},
   {title:'Chase the Light!', ver:'Fear, and Loathing in Las Vegas', file:'Chase the Light!', subs:'Chase the Light!.srt', theme:'chase', art:'mirai', lead:0, noBike:true,
    series:'Fear, and Loathing in Las Vegas',
    cast:[['mirai',0,'前田太尊','#3f7a4a']]},
@@ -517,6 +520,9 @@ const CHARACTER_GROUPS = song.cast[0][0] === 'anaru'
   : song.cast[0][0] === 'matryoshka'
   // マトリョーシカ：黑底九人立繪已切成九張獨立精靈
   ? [{sheet:'matryoshka', title:'マトリョーシカ · 九人', src:'assets/ref/matryoshka-group.png', colors:['#1a0a1e','#e0447a'], count:9, solo:true}]
+  : song.cast[0][0] === 'kaiji'
+  // 逆境無頼カイジ：OP/ED 共用同一組八人官方立繪
+  ? [{sheet:'kaiji', title:'逆境無頼カイジ · 八人', src:'assets/ref/kaiji-group.png', colors:['#1a1a22','#e8b45a'], count:8, solo:true}]
   : song.art === 'breakshoot'
   ? [{sheet:'casual', title:'Extreme Hearts · 十二人', src:'assets/ref/casual-remade/group.png', colors:['#5cabe0','#f3afd3'], count:12,solo:true}]
   : BASE_CHARACTER_GROUPS;
