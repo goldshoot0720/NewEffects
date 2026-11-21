@@ -2,6 +2,8 @@
 
 彩音的〈Forever＆ever〉，恋愛アドベンチャー《メモリーズオフ 双想 Break out of my shell》片頭曲。作詞彩音，作曲・編曲磯江俊道。使用者提供的音訊約 256.92 秒，檔案內的 YouTube ID 是 `31bvn6GUtaI`。
 
+[遊戲官方片頭曲資訊](https://memoriesoff.jp/sousou/fd/news/1/)確認歌名與演唱者。兩版第一層選單標為 `ゲーム「メモリーズオフ 双想 Break out of my shell」`，第二層為 `Forever＆ever（彩音）`；PV 片頭標示遊戲全名及「オープニングテーマ」。
+
 - `lyrics-ja.txt` 是使用者提供的 43 行日文，保留全形 `＆`、`Story－旅路－` 與 `Storyー旅路ー` 的兩種寫法、`扉ードアー`，以及「“約束”」「“誓い”」的空格。
 - `lyrics-zh.txt` 是對應的 43 行繁中。
 - `timings-ja.json` 是對到音訊後的 43 段時間軸，與 `lyrics-ja.txt` 逐行對應。片尾在第二次「世界まで変えよう」之後是間奏，接著只再唱「Storyー旅路ー」與「あの潮風に乗って」。

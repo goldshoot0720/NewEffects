@@ -17,6 +17,13 @@ for(const [label,count] of [['ローリング☆ガールズ',10],['逆境無頼
 const growup=groups.find(g=>g.label==='グロウアップショウ ～ひまわりのサーカス団～');
 assert.deepEqual(Array.from(growup.items,s=>s.index).sort((a,b)=>a-b),[8,52]);
 assert.ok(!groups.some(g=>g.id==='song:yurariyureru'),'romanized audio filenames must not create their own category');
+const memories=groups.find(g=>g.items.some(s=>s.index===46));
+assert.equal(memories.kind,'game');
+assert.equal(memories.label,'ゲーム「メモリーズオフ 双想 Break out of my shell」');
+assert.equal(SongOrder.optionLabel(memories.items[0],memories),'Forever＆ever（彩音）');
+assert.equal(SONGS[46].kicker,'ゲーム「メモリーズオフ 双想 Break out of my shell」オープニングテーマ');
+assert.equal(SONGS[46].tv,undefined);
+assert.equal(SongOrder.categories([{title:'Forever&ever'}])[0].kind,'game');
 const family=groups.find(g=>g.items.some(s=>s.index===18));
 assert.equal(family.items.length,4);
 assert.deepEqual(Array.from(family.items,s=>SongOrder.optionLabel(s,family)),['中文','英文','日文','粵文']);

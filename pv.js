@@ -259,7 +259,7 @@ const SONGS = [
    cast:[['lucky',0,'鯨魚娘','#3f7fd0'],['lucky',1,'咕咕嘎嘎','#3a4250'],['lucky',2,'鋒兄','#b08a4a'],['lucky',3,'塗哥','#7b8794'],
          ['lucky',4,'喵布布','#d9822b'],['lucky',5,'喵白白','#8d97a3'],['lucky',6,'Claude 娘','#d9874e'],['lucky',7,'GPT 娘','#c2b9e9']]},
   {title:'Forever＆ever', ver:'彩音', file:'Forever＆ever', subs:'Forever＆ever.srt', fill:'assets/ref/forever/fill-ja.json', theme:'summer', art:'forever', lead:3,
-   series:'メモリーズオフ 双想', kicker:'Break out of my shell · OPENING',
+   series:'メモリーズオフ 双想', kicker:'ゲーム「メモリーズオフ 双想 Break out of my shell」オープニングテーマ',
    cast:[['forever',0,'フェルスター・マリー・暁空','#4aa3e8'],['forever',1,'田中結','#e23b6a'],['forever',2,'北方和音','#e0a020'],
          ['forever',3,'洲宮紗絵','#6d5bd0'],['forever',4,'天羽ねね','#ef6a3a'],['forever',5,'中森雪加','#f0a24a']]},
   {title:'月に向かって撃て', ver:'星街すいせい', file:'月に向かって撃て [星街すいせい]', subs:'月に向かって撃て.srt', theme:'tsuki', art:'tsuki', lead:0, noBike:true,
