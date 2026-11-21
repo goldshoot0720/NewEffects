@@ -2,6 +2,8 @@
 
 歌曲：NOMELON NOLEMON〈ユラリユレル〉，音訊為使用者提供的 yurariyureru.mp3（208 秒），內含 YouTube ID `2SHNY5v6DnM`。歌名與作品關係參照 [Sony Music 官方歌曲資訊](https://www.sonymusic.co.jp/PR/NOMELONNOLEMON/info/584231)，人物名稱與圖片順序核對 [動畫官方角色資料](https://growupshow.com/)。
 
+本曲為 2026 年 TV 動畫《グロウアップショウ ～ひまわりのサーカス団～》OP，ED 為 Aooo〈DAYS!〉（[動畫官方主題歌資訊](https://growupshow.com/news/?id=70612)）。兩段式選單依日文歌名辨認作品，兩曲共用同一動畫分類；不以音檔別名 `yurariyureru` 建立獨立分類。
+
 使用者提供十張人物圖，原圖保存為 `source-0.png`～`source-9.png`。以內建 imagegen 逐張去除黃色背景、地面及側邊文字，保留服裝、臉型、髮型與原本姿勢；透明輸出為 `transparent-0.png`～`transparent-9.png`，沒有把合掌、叉腰、抱臂或抬腿姿勢改成 T-pose。
 
 | 索引 | 人物 | 透明原圖 | 使用中的切圖 |

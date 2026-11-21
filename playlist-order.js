@@ -54,7 +54,9 @@
     const result=new Map(),byId=new Map(reference.filter(s=>s.id!=null).map(s=>[s.id,s]));
     for(const item of group(items,reference)){
       const song=byId.get(item.id)||item;
-      const {base}=describe(song.file||song.audio?.replace(/\.mp3$/,'')||song.title);
+      // Display titles identify the work; audio filenames may be romanized
+      // aliases (ユラリユレル is stored as yurariyureru.mp3).
+      const {base}=describe(song.title||song.file||song.audio?.replace(/\.mp3$/,''));
       const anime=animeByTitle.get(bareName(base));
       const kind=anime?'anime':'song',label=anime||base,id=`${kind}:${label}`;
       if(!result.has(id))result.set(id,{id,label,kind,items:[]});
@@ -64,7 +66,7 @@
   }
   function optionLabel(item,category){
     if(category.kind==='anime') return item.ver?`${item.title}（${item.ver}）`:item.title;
-    const {language}=describe(item.file||item.audio?.replace(/\.mp3$/,'')||item.title);
+    const {language}=describe(item.title||item.file||item.audio?.replace(/\.mp3$/,''));
     return ['中文','英文','日文','粵文'][language]=== '中文' && category.items.length===1
       ? '原版' : ['中文','英文','日文','粵文'][language];
   }
