@@ -515,8 +515,9 @@ const CHARACTER_GROUPS = song.cast[0][0] === 'anaru'
   // ローリング☆ガールズ：望未・結季奈・逢衣・千綾 四人
   ? [{sheet:'rolling', title:'ローリング☆ガールズ · 四人', src:'assets/ref/rolling-group.png', colors:['#1b2a68','#ffd8a8'], count:4, solo:true}]
   : song.cast[0][0] === 'mirai'
-  // 未来は僕等の手の中：九人合圖彼此重疊，整組當一個 intact 精靈
-  ? [{sheet:'mirai', title:'ろくでなしBLUES · 九人', src:'assets/ref/mirai-group.png', colors:['#1a1024','#ffb45e'], count:1, solo:true}]
+  // Chase the Light!／CからはじまるABC：原本沿用那張九人合圖，人物在圖裡本來就互相重疊，
+  // 人物 PV 只看得到中間擠成一團（還被標成 1 MEMBERS）。改用カイジ那組已切好的八張精靈排排站。
+  ? [{sheet:'kaiji', title:'逆境無頼カイジ · 八人', src:'assets/ref/kaiji-group.png', colors:['#1a1a22','#e8b45a'], count:8, solo:true}]
   : song.cast[0][0] === 'matryoshka'
   // マトリョーシカ：黑底九人立繪已切成九張獨立精靈
   ? [{sheet:'matryoshka', title:'マトリョーシカ · 九人', src:'assets/ref/matryoshka-group.png', colors:['#1a0a1e','#e0447a'], count:9, solo:true}]
