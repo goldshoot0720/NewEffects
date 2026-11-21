@@ -514,15 +514,15 @@ const DEFAULT_SONGS = [
   {id:'c-kara-hajimaru-abc',title:'CからはじまるABC [忘れらんねえよ]',audio:'CからはじまるABC.mp3',subs:'CからはじまるABC.srt',cover:'assets/ref/mirai-group.png',lead:0,cast:'mirai'},
   {id:'matryoshka',title:'マトリョーシカ [NICO Touches the Walls]',audio:'マトリョーシカ.mp3',subs:'マトリョーシカ.srt',cover:'assets/ref/matryoshka-group.png',lead:3,cast:'matryoshka'},
   {id:'rpg-sfp',title:'RPG [School Food Punishment]',audio:'RPG.mp3',subs:'RPG.srt',cover:'assets/ref/matryoshka-group.png',lead:3,cast:'matryoshka'},
-  {id:'tsuki-bakugeki',title:'月の爆撃機 [カバー]',audio:'月の爆撃機.mp3',subs:'月の爆撃機.srt',cover:'assets/ref/rolling-group.png',lead:0,cast:'rolling'},
-  {id:'eiyuu-akogare',title:'英雄にあこがれて [カバー]',audio:'英雄にあこがれて.mp3',subs:'英雄にあこがれて.srt',cover:'assets/ref/rolling-group.png',lead:0,cast:'rolling'},
-  {id:'sen-no-violin',title:'1000のバイオリン [カバー]',audio:'1000のバイオリン.mp3',subs:'1000のバイオリン.srt',cover:'assets/ref/rolling-group.png',lead:0,cast:'rolling'},
-  {id:'notenki',title:'脳天気 [カバー]',audio:'脳天気.mp3',subs:'脳天気.srt',cover:'assets/ref/rolling-group.png',lead:0,cast:'rolling'},
-  {id:'train-train',title:'TRAIN-TRAIN [カバー]',audio:'TRAIN-TRAIN.mp3',subs:'TRAIN-TRAIN.srt',cover:'assets/ref/rolling-group.png',lead:0,cast:'rolling'},
-  {id:'sharara',title:'シャララ [カバー]',audio:'シャララ.mp3',subs:'シャララ.srt',cover:'assets/ref/rolling-group.png',lead:0,cast:'rolling'},
+  {id:'tsuki-bakugeki',title:'月の爆撃機 [THE ROLLING GIRLS]',audio:'月の爆撃機.mp3',subs:'月の爆撃機.srt',cover:'assets/ref/rolling-group.png',lead:0,cast:'rolling'},
+  {id:'eiyuu-akogare',title:'英雄にあこがれて [THE ROLLING GIRLS]',audio:'英雄にあこがれて.mp3',subs:'英雄にあこがれて.srt',cover:'assets/ref/rolling-group.png',lead:0,cast:'rolling'},
+  {id:'sen-no-violin',title:'1000のバイオリン [THE ROLLING GIRLS]',audio:'1000のバイオリン.mp3',subs:'1000のバイオリン.srt',cover:'assets/ref/rolling-group.png',lead:0,cast:'rolling'},
+  {id:'notenki',title:'脳天気 [THE ROLLING GIRLS]',audio:'脳天気.mp3',subs:'脳天気.srt',cover:'assets/ref/rolling-group.png',lead:0,cast:'rolling'},
+  {id:'train-train',title:'TRAIN-TRAIN [THE ROLLING GIRLS]',audio:'TRAIN-TRAIN.mp3',subs:'TRAIN-TRAIN.srt',cover:'assets/ref/rolling-group.png',lead:0,cast:'rolling'},
+  {id:'sharara',title:'シャララ [THE ROLLING GIRLS]',audio:'シャララ.mp3',subs:'シャララ.srt',cover:'assets/ref/rolling-group.png',lead:0,cast:'rolling'},
   {id:'stones',title:'STONES [THE ROLLING GIRLS]',audio:'STONES.mp3',subs:'STONES.srt',cover:'assets/ref/rolling-group.png',lead:0,cast:'rolling'},
-  {id:'yuugure',title:'夕暮れ [カバー]',audio:'夕暮れ.mp3',subs:'夕暮れ.srt',cover:'assets/ref/rolling-group.png',lead:0,cast:'rolling'},
-  {id:'owaranai-uta',title:'終わらない歌 [カバー]',audio:'終わらない歌.mp3',subs:'終わらない歌.srt',cover:'assets/ref/rolling-group.png',lead:0,cast:'rolling'}
+  {id:'yuugure',title:'夕暮れ [THE ROLLING GIRLS]',audio:'夕暮れ.mp3',subs:'夕暮れ.srt',cover:'assets/ref/rolling-group.png',lead:0,cast:'rolling'},
+  {id:'owaranai-uta',title:'終わらない歌 [THE ROLLING GIRLS]',audio:'終わらない歌.mp3',subs:'終わらない歌.srt',cover:'assets/ref/rolling-group.png',lead:0,cast:'rolling'}
 ];
 // 每首歌的字幕／音訊檔放在同一個資料夾，執行時才讀取
 const cfgOf = id => DEFAULT_SONGS.find(d => d.id === id) || {};
@@ -557,8 +557,15 @@ function getLyricsData(key){
 let songs = store.get('lyricfx:songs') || [];
 let removedSongs = store.get('lyricfx:removed') || [];
 const saveSongs = () => { store.set('lyricfx:songs', songs); store.set('lyricfx:removed', removedSongs); };
-// 預設清單新增的歌曲會自動補進已存的清單（使用者刪掉的不會再補回）
-for(const d of DEFAULT_SONGS) if(!songs.some(s => s.id === d.id) && !removedSongs.includes(d.id)) songs.push({...d});
+// 預設清單新增的歌曲會自動補進已存的清單（使用者刪掉的不會再補回）；
+// 已存的預設歌曲則跟著程式更新顯示名稱，否則舊的「[カバー]」等標籤會一直留在瀏覽器裡。
+let metaChanged = false;
+for(const d of DEFAULT_SONGS){
+  const s = songs.find(x => x.id === d.id);
+  if(!s){ if(!removedSongs.includes(d.id)) songs.push({...d}); continue; }
+  if(s.title !== d.title){ s.title = d.title; metaChanged = true; }
+}
+if(metaChanged) saveSongs();
 const orderedSongs=()=>SongOrder.group(songs,DEFAULT_SONGS);
 
 function renderSongs(){
