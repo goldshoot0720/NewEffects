@@ -11,9 +11,13 @@
   const scripts={en:1,ja:2,zh:3};
   // 歌名後面常附「[歌手ver.]」，判斷語言前先去掉，免得歌手的日文假名把英文歌名算成日文
   const bareName=base=>base.replace(/\s*[\[【][^\]】]*[\]】]\s*$/,'').trim()||base;
+  // 有些日文歌名整首都是漢字，沒有假名可判斷（例：脳天気）。下面這些是新字體，
+  // 只有日本這樣寫，繁體與簡體都不使用；出現任何一個就當日文，免得日文歌被排到中文歌後面。
+  const JA_ONLY=/[脳気変図実発経対応売読鉄駅転伝単戦様悪圧囲栄営円塩縁穏仮価広払抜沢択訳辺弁歩桜涙覚観関験険剣検権歓銭闘雑霊頼竜亀増蔵臓醸陥徳恵蛍齢斎剤済砕粋酔髄摂渋猟塁圏顕]/;
   const scriptOf=base=>{
     const name=bareName(base);
     if(/[\u3040-\u30ff]/.test(name)) return scripts.ja;
+    if(JA_ONLY.test(name)) return scripts.ja;
     if(/[\u3400-\u9fff]/.test(name)) return scripts.zh;
     return scripts.en;
   };
