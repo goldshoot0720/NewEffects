@@ -217,6 +217,9 @@ kbd{background:var(--panel2);border:1px solid var(--line);border-bottom-width:2p
 #songs .st{font-size:11.5px;color:var(--muted);flex:none}
 #songs .st.ok{color:#7fe0b0}
 #songs .del{border:0;background:none;color:var(--muted);cursor:pointer;opacity:0;padding:0 2px;font-size:15px;flex:none}
+.song-picker{display:grid;gap:8px;margin-bottom:12px}
+.song-picker label{display:grid;grid-template-columns:3em minmax(0,1fr);align-items:center;gap:8px;font-size:13px}
+.song-picker select{min-width:0;width:100%;padding:7px;border:1px solid var(--line);border-radius:8px;background:var(--panel2)}
 #songs li:hover .del{opacity:1}
 #toast{position:fixed;left:50%;bottom:28px;translate:-50% 0;background:#2b2236;border:1px solid #4a3d5a;padding:10px 18px;border-radius:10px;opacity:0;transition:opacity .25s;pointer-events:none;z-index:9}
 #toast.show{opacity:1}
@@ -292,6 +295,10 @@ kbd{background:var(--panel2);border:1px solid var(--line);border-bottom-width:2p
   <aside class="panel">
     <div class="card">
       <h2>歌曲清單</h2>
+      <div class="song-picker" role="group" aria-label="分類選曲">
+        <label>分類 <select id="songCategory" aria-label="動畫或歌曲分類"></select></label>
+        <label>曲目 <select id="songChoice" aria-label="歌曲或語言版本"></select></label>
+      </div>
       <ul id="songs"></ul>
       <p class="keys">預設 LRC 的時間為估算值，可用「開始打點」校準。</p>
       <div class="row">
@@ -508,10 +515,10 @@ const DEFAULT_SONGS = [
   {id:'aooo-days',title:'DAYS! [Aooo]',audio:'DAYS!.mp3',subs:'DAYS!.srt',cover:'assets/ref/growup/group.png',lead:0,cast:'growup'},
   {id:'fx-kurumi-op',title:'FX戦士くるみちゃん [福賀くるみ(CV.鈴木愛奈)]',audio:'FX戦士くるみちゃん.mp3',subs:'FX戦士くるみちゃん.srt',cover:'assets/ref/fx-group.png',lead:0,cast:'fx'},
   {id:'rolling-girls-friendly',title:'人にやさしく [THE ROLLING GIRLS]',audio:'人にやさしく.mp3',subs:'人にやさしく.srt',cover:'assets/ref/rolling-group.png',lead:0,cast:'rolling'},
-  {id:'mirai-bokura',title:'未来は僕等の手の中 [ろくでなしBLUES]',audio:'未来は僕等の手の中.mp3',subs:'未来は僕等の手の中.srt',cover:'assets/ref/kaiji-group.png',lead:0,cast:'kaiji'},
-  {id:'makeinu-requiem',title:'負け犬たちのレクイエム [ろくでなしBLUES]',audio:'負け犬たちのレクイエム.mp3',subs:'負け犬たちのレクイエム.srt',cover:'assets/ref/kaiji-group.png',lead:0,cast:'kaiji'},
-  {id:'chase-the-light',title:'Chase the Light! [Fear, and Loathing in Las Vegas]',audio:'Chase the Light!.mp3',subs:'Chase the Light!.srt',cover:'assets/ref/mirai-group.png',lead:0,cast:'mirai'},
-  {id:'c-kara-hajimaru-abc',title:'CからはじまるABC [忘れらんねえよ]',audio:'CからはじまるABC.mp3',subs:'CからはじまるABC.srt',cover:'assets/ref/mirai-group.png',lead:0,cast:'mirai'},
+  {id:'mirai-bokura',title:'未来は僕等の手の中 [逆境無頼カイジ]',audio:'未来は僕等の手の中.mp3',subs:'未来は僕等の手の中.srt',cover:'assets/ref/kaiji-group.png',lead:4,cast:'kaiji'},
+  {id:'makeinu-requiem',title:'負け犬たちのレクイエム [逆境無頼カイジ]',audio:'負け犬たちのレクイエム.mp3',subs:'負け犬たちのレクイエム.srt',cover:'assets/ref/kaiji-group.png',lead:4,cast:'kaiji'},
+  {id:'chase-the-light',title:'Chase the Light! [Fear, and Loathing in Las Vegas]',audio:'Chase the Light!.mp3',subs:'Chase the Light!.srt',cover:'assets/ref/kaiji-group.png',lead:4,cast:'kaiji'},
+  {id:'c-kara-hajimaru-abc',title:'CからはじまるABC [忘れらんねえよ]',audio:'CからはじまるABC.mp3',subs:'CからはじまるABC.srt',cover:'assets/ref/kaiji-group.png',lead:4,cast:'kaiji'},
   {id:'matryoshka',title:'マトリョーシカ [NICO Touches the Walls]',audio:'マトリョーシカ.mp3',subs:'マトリョーシカ.srt',cover:'assets/ref/matryoshka-group.png',lead:3,cast:'matryoshka'},
   {id:'rpg-sfp',title:'RPG [School Food Punishment]',audio:'RPG.mp3',subs:'RPG.srt',cover:'assets/ref/matryoshka-group.png',lead:3,cast:'matryoshka'},
   {id:'tsuki-bakugeki',title:'月の爆撃機 [THE ROLLING GIRLS]',audio:'月の爆撃機.mp3',subs:'月の爆撃機.srt',cover:'assets/ref/rolling-group.png',lead:0,cast:'rolling'},
@@ -558,20 +565,35 @@ let songs = store.get('lyricfx:songs') || [];
 let removedSongs = store.get('lyricfx:removed') || [];
 const saveSongs = () => { store.set('lyricfx:songs', songs); store.set('lyricfx:removed', removedSongs); };
 // 預設清單新增的歌曲會自動補進已存的清單（使用者刪掉的不會再補回）；
-// 已存的預設歌曲則跟著程式更新顯示名稱，否則舊的「[カバー]」等標籤會一直留在瀏覽器裡。
+// 已存的預設歌曲也更新名稱、素材與主唱，讓舊瀏覽器清單套用陣容修正。
 let metaChanged = false;
 for(const d of DEFAULT_SONGS){
   const s = songs.find(x => x.id === d.id);
-  if(!s){ if(!removedSongs.includes(d.id)) songs.push({...d}); continue; }
-  if(s.title !== d.title){ s.title = d.title; metaChanged = true; }
+  if(!s){ if(!removedSongs.includes(d.id)){songs.push({...d});metaChanged=true;} continue; }
+  for(const key of ['title','audio','subs','cover','lead','cast','fill']){
+    if(d[key]!==undefined && s[key]!==d[key]){s[key]=d[key];metaChanged=true;}
+  }
 }
 if(metaChanged) saveSongs();
 const orderedSongs=()=>SongOrder.group(songs,DEFAULT_SONGS);
+let selectedSongCategory=null;
 
 function renderSongs(){
   $('#prevSong').disabled = $('#nextSong').disabled = songs.length<2;
+  const groups=SongOrder.categories(songs,DEFAULT_SONGS);
+  const active=groups.find(g=>g.id===selectedSongCategory)||groups.find(g=>g.items.some(s=>s.id===curSong))||groups[0];
+  selectedSongCategory=active?.id||null;
+  const category=$('#songCategory'),choice=$('#songChoice');
+  category.innerHTML='';choice.innerHTML='';
+  category.disabled=choice.disabled=!active;
+  groups.forEach(g=>category.add(new Option(g.label,g.id,false,g===active)));
+  if(active){
+    const playing=active.items.some(s=>s.id===curSong);
+    if(!playing)choice.add(new Option('選擇歌曲或語言版本…','',true,true));
+    active.items.forEach(s=>choice.add(new Option(SongOrder.optionLabel(s,active),s.id,false,s.id===curSong)));
+  }
   const ul = $('#songs'); ul.innerHTML = '';
-  orderedSongs().forEach((s, i) => {
+  (active?.items||[]).forEach((s, i) => {
     const d = getLyricsData('yt:' + s.id);
     const ls = d?.lrc ? parse(d.lrc) : [];
     const nt = ls.filter(l => l.t != null && l.text).length, n = ls.filter(l => l.text).length;
@@ -586,6 +608,8 @@ function renderSongs(){
     ul.appendChild(li);
   });
 }
+$('#songCategory').onchange=()=>{selectedSongCategory=$('#songCategory').value;renderSongs();};
+$('#songChoice').onchange=()=>{if($('#songChoice').value)playSong($('#songChoice').value);};
 $('#songs').addEventListener('click', e => {
   const li = e.target.closest('li'); if(!li) return;
   const id = li.dataset.id;
@@ -668,7 +692,10 @@ const LEAD_NAMES = {
   extreme: ['前原純華', '葉山陽和', '小鷹咲希', '橘雪乃', '小日向理瀬', 'ミシェル・イェーガー', 'アシュリー・ヴァンクロフト', '桜井羽月', '御社智', '末宗祐里子', '本田千尋', 'ティーナ・メルキース'],
   forever: ['フェルスター・マリー・暁空', '田中結', '北方和音', '洲宮紗絵', '天羽ねね', '中森雪加'],
   tsuki: ['山吹有栖', '井ノ華六花', '日芽川寧々', '霧乃イコ', '雨月しのぶ', '安藤檸檬', 'アイコ', '百歳あお', 'ヒズミ', '山吹りいな', '山吹美兎'],
-  kaze: ['水之江梅', '古都吹寿子', '陸奥こまろ', '尾鳥たん', '照井有栖', '平塚敏深', '封面少女']
+  kaze: ['水之江梅', '古都吹寿子', '陸奥こまろ', '尾鳥たん', '照井有栖', '平塚敏深', '封面少女'],
+  rolling:['森友望未','小坂結季奈','響逢衣','御園千綾'],
+  kaiji:['船井','遠藤勇次','古畑','北見','伊藤開司','石田','大槻','兵藤和尊'],
+  matryoshka:['井稲田','真坂本','真朱','余賀公磨','三國壮一郎','Q','生田羽奈日','ジェニファー','竹田崎重臣']
 };
 function syncLeadMenu(id){
   const names = LEAD_NAMES[cfgOf(id).cast] || LEAD_NAMES.best4u;
@@ -682,6 +709,7 @@ function syncLeadMenu(id){
 function playSong(id, autoplay = true){
   const s = songs.find(x => x.id === id);
   curSong = id;
+  selectedSongCategory=SongOrder.categories(songs,DEFAULT_SONGS).find(g=>g.items.some(s=>s.id===id))?.id||null;
   syncLeadMenu(id);
   applySource(id, autoplay);
   songTitle = s ? s.title : songTitle; setTitle();

@@ -305,17 +305,17 @@ const SONGS = [
   {title:'負け犬たちのレクイエム', ver:'逆境無頼カイジ', file:'負け犬たちのレクイエム', subs:'負け犬たちのレクイエム.srt', theme:'makeinu', art:'kaiji', lead:0, noBike:true,
    series:'逆境無頼カイジ', tv:'逆境無頼カイジ', kicker:'EDテーマ',
    cast:[['kaiji',4,'伊藤開司','#5c8fd6'],['kaiji',0,'船井','#7a8ab0'],['kaiji',1,'遠藤勇次','#8a8070'],['kaiji',2,'古畑','#3f5fa0'],['kaiji',3,'北見','#5a8a4a'],['kaiji',5,'石田','#b04a4a'],['kaiji',6,'大槻','#8a4a8a'],['kaiji',7,'兵藤和尊','#2a5aa8']]},
-  {title:'Chase the Light!', ver:'Fear, and Loathing in Las Vegas', file:'Chase the Light!', subs:'Chase the Light!.srt', theme:'chase', art:'mirai', lead:0, noBike:true,
+  {title:'Chase the Light!', ver:'Fear, and Loathing in Las Vegas', file:'Chase the Light!', subs:'Chase the Light!.srt', theme:'chase', art:'kaiji', lead:0, noBike:true,
    series:'Fear, and Loathing in Las Vegas',
-   cast:[['mirai',0,'前田太尊','#3f7a4a']]},
-  {title:'CからはじまるABC', ver:'忘れらんねえよ', file:'CからはじまるABC', subs:'CからはじまるABC.srt', theme:'abc', art:'mirai', lead:0, noBike:true,
+   cast:[['kaiji',4,'伊藤開司','#5c8fd6'],['kaiji',0,'船井','#7a8ab0'],['kaiji',1,'遠藤勇次','#8a8070'],['kaiji',2,'古畑','#3f5fa0'],['kaiji',3,'北見','#5a8a4a'],['kaiji',5,'石田','#b04a4a'],['kaiji',6,'大槻','#8a4a8a'],['kaiji',7,'兵藤和尊','#2a5aa8']]},
+  {title:'CからはじまるABC', ver:'忘れらんねえよ', file:'CからはじまるABC', subs:'CからはじまるABC.srt', theme:'abc', art:'kaiji', lead:0, noBike:true,
    series:'忘れらんねえよ',
-   cast:[['mirai',0,'前田太尊','#3f7a4a']]},
-  {title:'マトリョーシカ', ver:'NICO Touches the Walls', file:'マトリョーシカ', subs:'マトリョーシカ.srt', theme:'matryoshka', art:'matryoshka', lead:3, noBike:true,
+   cast:[['kaiji',4,'伊藤開司','#5c8fd6'],['kaiji',0,'船井','#7a8ab0'],['kaiji',1,'遠藤勇次','#8a8070'],['kaiji',2,'古畑','#3f5fa0'],['kaiji',3,'北見','#5a8a4a'],['kaiji',5,'石田','#b04a4a'],['kaiji',6,'大槻','#8a4a8a'],['kaiji',7,'兵藤和尊','#2a5aa8']]},
+  {title:'マトリョーシカ', ver:'NICO Touches the Walls', file:'マトリョーシカ', subs:'マトリョーシカ.srt', theme:'matryoshka', art:'matryoshka', lead:0, noBike:true,
    series:'[C]', tv:'[C] - THE MONEY OF SOUL AND POSSIBILITY CONTROL', kicker:'OPテーマ',
    cast:[['matryoshka',3,'余賀公磨','#5c8fd6'],['matryoshka',0,'井稲田','#8a7a5a'],['matryoshka',1,'真坂本','#c04a6a'],['matryoshka',2,'真朱','#d63a3a'],
          ['matryoshka',4,'三國壮一郎','#3a3a5a'],['matryoshka',5,'Q','#7ad0c0'],['matryoshka',6,'生田羽奈日','#b8a0d8'],['matryoshka',7,'ジェニファー','#d8d0a8'],['matryoshka',8,'竹田崎重臣','#7a9a4a']]},
-  {title:'RPG', ver:'School Food Punishment', file:'RPG', subs:'RPG.srt', theme:'rpg', art:'matryoshka', lead:3, noBike:true,
+  {title:'RPG', ver:'School Food Punishment', file:'RPG', subs:'RPG.srt', theme:'rpg', art:'matryoshka', lead:0, noBike:true,
    series:'[C]', tv:'[C] - THE MONEY OF SOUL AND POSSIBILITY CONTROL', kicker:'EDテーマ',
    cast:[['matryoshka',3,'余賀公磨','#5c8fd6'],['matryoshka',0,'井稲田','#8a7a5a'],['matryoshka',1,'真坂本','#c04a6a'],['matryoshka',2,'真朱','#d63a3a'],
          ['matryoshka',4,'三國壮一郎','#3a3a5a'],['matryoshka',5,'Q','#7ad0c0'],['matryoshka',6,'生田羽奈日','#b8a0d8'],['matryoshka',7,'ジェニファー','#d8d0a8'],['matryoshka',8,'竹田崎重臣','#7a9a4a']]},
@@ -513,17 +513,17 @@ const CHARACTER_GROUPS = song.cast[0][0] === 'anaru'
   ? [{sheet:'fx', title:'FX戦士くるみちゃん · 四人', src:'assets/ref/fx-group.png', colors:['#231a5e','#ff4d6d'], count:4, solo:true}]
   : song.cast[0][0] === 'rolling'
   // ローリング☆ガールズ：望未・結季奈・逢衣・千綾 四人
-  ? [{sheet:'rolling', title:'ローリング☆ガールズ · 四人', src:'assets/ref/rolling-group.png', colors:['#1b2a68','#ffd8a8'], count:4, solo:true}]
+  ? [{sheet:'rolling', title:'ローリング☆ガールズ · 四人', src:'assets/ref/rolling-group.png', colors:['#1b2a68','#ffd8a8'], count:4, solo:true, lineup:true}]
   : song.cast[0][0] === 'mirai'
   // Chase the Light!／CからはじまるABC：原本沿用那張九人合圖，人物在圖裡本來就互相重疊，
   // 人物 PV 只看得到中間擠成一團（還被標成 1 MEMBERS）。改用カイジ那組已切好的八張精靈排排站。
-  ? [{sheet:'kaiji', title:'逆境無頼カイジ · 八人', src:'assets/ref/kaiji-group.png', colors:['#1a1a22','#e8b45a'], count:8, solo:true}]
+  ? [{sheet:'kaiji', title:'逆境無頼カイジ · 八人', src:'assets/ref/kaiji-group.png', colors:['#1a1a22','#e8b45a'], count:8, solo:true, lineup:true}]
   : song.cast[0][0] === 'matryoshka'
   // マトリョーシカ：黑底九人立繪已切成九張獨立精靈
-  ? [{sheet:'matryoshka', title:'マトリョーシカ · 九人', src:'assets/ref/matryoshka-group.png', colors:['#1a0a1e','#e0447a'], count:9, solo:true}]
+  ? [{sheet:'matryoshka', title:'マトリョーシカ · 九人', src:'assets/ref/matryoshka-group.png', colors:['#1a0a1e','#e0447a'], count:9, solo:true, lineup:true}]
   : song.cast[0][0] === 'kaiji'
   // 逆境無頼カイジ：OP/ED 共用同一組八人官方立繪
-  ? [{sheet:'kaiji', title:'逆境無頼カイジ · 八人', src:'assets/ref/kaiji-group.png', colors:['#1a1a22','#e8b45a'], count:8, solo:true}]
+  ? [{sheet:'kaiji', title:'逆境無頼カイジ · 八人', src:'assets/ref/kaiji-group.png', colors:['#1a1a22','#e8b45a'], count:8, solo:true, lineup:true}]
   : song.art === 'breakshoot'
   ? [{sheet:'casual', title:'Extreme Hearts · 十二人', src:'assets/ref/casual-remade/group.png', colors:['#5cabe0','#f3afd3'], count:12,solo:true}]
   : BASE_CHARACTER_GROUPS;
@@ -1978,7 +1978,22 @@ function shotOutro(t, sh, u){
   g.restore();
   karaoke(t, {cx: W/2, y: 120, size: 52, maxW: 1500, zhSize: 30});
 }
-// 四張參考圖的角色展示：每組保留全身，輪替至整首歌曲結束。
+// A common baseline and height keep a whole cast in one row. Reserve room
+// for the small animated tilt, rather than allowing neighboring sprites to overlap.
+function characterLineup(actors){
+  const left=80,right=W-80,gap=18,pad=.06;
+  const ratios=actors.map(a=>a.meta.w/a.meta.h);
+  const height=Math.min(660,(right-left-gap*(actors.length-1))/ratios.reduce((s,r)=>s+r+pad,0));
+  const width=ratios.reduce((s,r)=>s+(r+pad)*height,0)+gap*(actors.length-1);
+  let x=(W-width)/2;
+  return ratios.map(r=>{
+    const cell=(r+pad)*height;
+    const slot={x:x+cell/2,y:860,h:height,left:x,right:x+cell};
+    x+=cell+gap;
+    return slot;
+  });
+}
+// 每組保留全身，輪替至整首歌曲結束。
 function shotCharacters(t,sh,u){
   const group=CHARACTER_GROUPS[sh.group], local=t-sh.start, actors=group.members;
   g.drawImage(group.backdrop,0,0);
@@ -2007,19 +2022,20 @@ function shotCharacters(t,sh,u){
   const solo=!!group.solo,n=actors.length,gw=sourceW*scale,gh=sourceH*scale;
   const cols=solo?(n>12?6:n===12?6:n===11?6:n===10?5:Math.min(4,Math.max(1,n))):1,rows=solo?Math.ceil(n/cols):1;
   const cw=solo?gw/cols:0,chh=solo?gh/rows:0;
+  const lineup=group.lineup?characterLineup(actors):null;
   actors.forEach((actor,i)=>{
     const slot=group.sheet==='lucky'?[0,1,5,6,2,3,4,7][i]:i;
     const col=solo?slot%cols:i,row=solo?Math.floor(slot/cols):0;
     const inRow=solo?Math.min(cols,n-row*cols):1;
-    const h=solo?Math.min(chh*.9,cw*.95*actor.meta.h/actor.meta.w):actor.meta.h*scale;
-    const x=solo?originX+(gw-inRow*cw)/2+(col+.5)*cw:originX+(actor.meta.source[0]+actor.meta.w/2)*scale;
-    const y=solo?originY+(row+1)*chh-6:originY+(actor.meta.source[1]+actor.meta.h)*scale;
+    const h=lineup?lineup[i].h:solo?Math.min(chh*.9,cw*.95*actor.meta.h/actor.meta.w):actor.meta.h*scale;
+    const x=lineup?lineup[i].x:solo?originX+(gw-inRow*cw)/2+(col+.5)*cw:originX+(actor.meta.source[0]+actor.meta.w/2)*scale;
+    const y=lineup?lineup[i].y:solo?originY+(row+1)*chh-6:originY+(actor.meta.source[1]+actor.meta.h)*scale;
     const entry=easeOut((local-i*.045)/.65);
     const state=danceState(i,t,{e:.23,alt:true});state.actor=actor;
     state.hop=Math.min(state.hop,8);
     g.save();g.globalAlpha=entry;
     if(i===focus){g.globalCompositeOperation='lighter';glow(x,y-h*.5,h*.48,group.colors[0],.18+.12*pl);g.globalCompositeOperation='source-over';}
-    if(!group.matte) drawDancer(i,x+(1-entry)*(i%2 ? 100 : -100),y,h*entry,state);
+    if(!group.matte) drawDancer(i,x+(lineup?0:(1-entry)*(i%2 ? 100 : -100)),y,h*entry,state);
     g.restore();
     g.save();g.textAlign='center';g.font=`600 16px ${FONT.mono}`;g.fillStyle='rgba(255,255,255,.65)';
     g.globalAlpha=entry;g.fillText(pad(i+1),x,y+24);g.restore();
@@ -2161,10 +2177,20 @@ async function init(){
   window.SpriteRig?.setCacheLimit?.(Math.max(MEMBERS.length,...(CHARACTER_PV?CHARACTER_GROUPS.map(g=>g.count):[])));
   if(RENDER) document.body.classList.add('render');
   const sel = $('#song');
-  const order=SongOrder.group(SONGS.map((s,index)=>({title:s.title,index})));
+  const entries=SONGS.map((s,index)=>({...s,index}));
+  const order=SongOrder.group(entries);
   const position=order.findIndex(item=>item.index===songIndex);
-  order.forEach(({index})=>{const s=SONGS[index];sel.add(new Option(`${s.title}（${s.ver}）`,index,false,index===songIndex));});
-  sel.onchange = () => changeSong(+sel.value);
+  const groups=SongOrder.categories(entries),category=$('#category');
+  const currentGroup=groups.find(g=>g.items.some(s=>s.index===songIndex));
+  groups.forEach(g=>category.add(new Option(g.label,g.id,false,g===currentGroup)));
+  const showSongs=(group,selected)=>{
+    sel.innerHTML='';
+    if(selected==null)sel.add(new Option('選擇歌曲或語言版本…','',true,true));
+    group.items.forEach(s=>sel.add(new Option(SongOrder.optionLabel(s,group),s.index,false,s.index===selected)));
+  };
+  showSongs(currentGroup,songIndex);
+  category.onchange=()=>showSongs(groups.find(g=>g.id===category.value),null);
+  sel.onchange = () => {if(sel.value!=='')changeSong(+sel.value);};
   $('#prevSong').onclick = () => changeSong(order[(position-1+order.length)%order.length].index);
   $('#nextSong').onclick = () => changeSong(order[(position+1)%order.length].index);
   $('#prevSong').disabled = $('#nextSong').disabled = SONGS.length<2;

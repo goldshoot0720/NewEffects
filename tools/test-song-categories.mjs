@@ -1,0 +1,74 @@
+#!/usr/bin/env node
+import fs from 'node:fs';
+import vm from 'node:vm';
+import assert from 'node:assert/strict';
+import path from 'node:path';
+import {fileURLToPath} from 'node:url';
+const root=path.resolve(path.dirname(fileURLToPath(import.meta.url)),'..');
+const pv=fs.readFileSync(path.join(root,'pv.js'),'utf8'),v2=fs.readFileSync(path.join(root,'v2.html'),'utf8');
+const registry=(s,key)=>{const a=s.indexOf(`const ${key} = [`),b=s.indexOf('\n];',a);return vm.runInNewContext(s.slice(a,b+3)+`;${key}`);};
+const SONGS=registry(pv,'SONGS'),DEFAULT_SONGS=registry(v2,'DEFAULT_SONGS');
+const box={window:{}};vm.runInNewContext(fs.readFileSync(path.join(root,'playlist-order.js'),'utf8'),box);
+const {SongOrder}=box.window;
+const entries=SONGS.map((s,index)=>({...s,index})),groups=SongOrder.categories(entries);
+const flat=groups.flatMap(g=>g.items.map(s=>s.index));
+assert.equal(flat.length,SONGS.length);assert.equal(new Set(flat).size,SONGS.length);
+for(const [label,count] of [['ローリング☆ガールズ',10],['逆境無頼カイジ',4],['[C] THE MONEY OF SOUL AND POSSIBILITY CONTROL',2],['Extreme Hearts',4]])assert.equal(groups.find(g=>g.label===label).items.length,count,label);
+const family=groups.find(g=>g.items.some(s=>s.index===18));
+assert.equal(family.items.length,4);
+assert.deepEqual(Array.from(family.items,s=>SongOrder.optionLabel(s,family)),['中文','英文','日文','粵文']);
+const v2groups=SongOrder.categories(DEFAULT_SONGS,DEFAULT_SONGS);
+for(const g of groups){
+  const other=v2groups.find(x=>x.id===g.id);assert.ok(other,g.label);
+  assert.equal(other.items.length,g.items.length,g.label);
+}
+assert.equal(SongOrder.categories([]).length,0);
+assert.equal(SongOrder.categories([{id:'custom',title:'My own song'}])[0].items.length,1);
+assert.equal(SongOrder.categories(DEFAULT_SONGS.filter(s=>s.id!=='rpg-sfp'),DEFAULT_SONGS).find(g=>g.label.startsWith('[C]')).items.length,1);
+// Previously saved defaults must receive the new cast and default lead;
+// custom records and explicitly removed defaults must be preserved.
+{
+  const stale={id:'mirai-bokura',title:'old',cast:'mirai',lead:0};
+  const custom={id:'custom',title:'My song',cast:'custom-art'};
+  let saves=0;
+  const a=v2.indexOf('let metaChanged = false;'),b=v2.indexOf('const orderedSongs=',a);
+  const state={DEFAULT_SONGS,songs:[stale,custom],removedSongs:['rpg-sfp'],saveSongs:()=>saves++};
+  vm.runInNewContext(v2.slice(a,b),state);
+  assert.equal(stale.cast,'kaiji');assert.equal(stale.lead,4);assert.equal(saves,1);
+  assert.equal(custom.cast,'custom-art');assert.ok(!state.songs.some(s=>s.id==='rpg-sfp'));
+}
+class Option{constructor(text,value,_default=false,selected=false){this.text=text;this.value=String(value);this.selected=selected;}}
+class Element{
+  constructor(){this.options=[];this.children=[];this.dataset={};this.classList={toggle(){}};this._value=undefined;}
+  set innerHTML(_){this.options=[];this.children=[];this._value=undefined;}
+  get value(){return this._value??this.options.find(o=>o.selected)?.value??this.options[0]?.value??'';}
+  set value(v){this._value=String(v);}
+  add(o){this.options.push(o);if(o.selected)this._value=o.value;}
+  appendChild(e){this.children.push(e);}
+  querySelector(){return {classList:{toggle(){}}};}
+}
+// Exercise the actual two-stage PV controls at every existing song URL.
+const a=pv.indexOf("  const sel = $('#song');",pv.indexOf('async function init()'));
+const b=pv.indexOf("  const speed = $('#speed');",a);
+for(let songIndex=0;songIndex<SONGS.length;songIndex++){
+  const els=new Map();const $=id=>{if(!els.has(id))els.set(id,new Element());return els.get(id);};const calls=[];
+  vm.runInNewContext(pv.slice(a,b),{SongOrder,SONGS,songIndex,$,Option,changeSong:i=>calls.push(i)});
+  assert.equal(+$('#song').value,songIndex);
+  const group=groups.find(g=>g.id===$('#category').value);
+  assert.equal($('#song').options.length,group.items.length);
+  $('#nextSong').onclick();assert.ok(Number.isInteger(calls.pop()));
+  const other=groups.find(g=>g.id!==group.id);$('#category').value=other.id;$('#category').onchange();
+  assert.equal($('#song').value,'');assert.equal(calls.length,0,'category selection must not switch audio');
+  $('#song').value=other.items[0].index;$('#song').onchange();assert.equal(calls.pop(),other.items[0].index);
+}
+// The second player filters its list and picker using the same category model.
+{
+ const els=new Map();const $=id=>{if(!els.has(id))els.set(id,new Element());return els.get(id);};const calls=[];
+ const context={SongOrder,DEFAULT_SONGS,songs:DEFAULT_SONGS,curSong:'rolling-girls-friendly',selectedSongCategory:null,$,Option,document:{createElement:()=>new Element()},getLyricsData:()=>null,parse:()=>[],mediaKey:'yt:rolling-girls-friendly',cfgOf:id=>DEFAULT_SONGS.find(s=>s.id===id)||{},playSong:id=>calls.push(id)};
+ const a=v2.indexOf('function renderSongs(){'),b=v2.indexOf("$('#songs').addEventListener",a);vm.createContext(context);vm.runInContext(v2.slice(a,b)+';renderSongs();',context);
+ assert.equal($('#songChoice').options.length,10);assert.equal($('#songs').children.length,10);
+ $('#songCategory').value=family.id;$('#songCategory').onchange();assert.equal($('#songs').children.length,4);assert.equal($('#songChoice').value,'');assert.equal(calls.length,0);
+ const id=$('#songChoice').options[1].value;$('#songChoice').value=id;$('#songChoice').onchange();assert.equal(calls.pop(),id);
+ context.songs=[];vm.runInContext('renderSongs()',context);assert.equal($('#songChoice').disabled,true);
+}
+console.log(`PASS: ${SONGS.length} song URLs, ${groups.length} categories, both two-stage pickers, language ordering and empty lists`);

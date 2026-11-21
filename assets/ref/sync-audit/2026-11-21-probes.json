@@ -1,0 +1,380 @@
+{
+  "note": "Independent clips, no lyric prompt, whisper-cli large-v3-turbo-q8_0 CPU. Recognition can be wrong and segment boundaries are approximate; compare the original saved ASR word anchors as well.",
+  "probes": [
+    {
+      "song": "人にやさしく",
+      "window": [
+        149,
+        166
+      ],
+      "language": "ja",
+      "segments": [
+        {
+          "start": 149.0,
+          "end": 154.0,
+          "text": "期待はずれの"
+        },
+        {
+          "start": 157.0,
+          "end": 160.0,
+          "text": "言葉を言うときに"
+        },
+        {
+          "start": 161.0,
+          "end": 163.0,
+          "text": "心の中では"
+        },
+        {
+          "start": 164.0,
+          "end": 166.0,
+          "text": "「頑張れ」って言っても"
+        }
+      ]
+    },
+    {
+      "song": "Chase the Light!",
+      "window": [
+        49,
+        61
+      ],
+      "language": "en",
+      "segments": [
+        {
+          "start": 49.0,
+          "end": 49.01,
+          "text": ""
+        },
+        {
+          "start": 49.01,
+          "end": 49.29,
+          "text": " It's"
+        },
+        {
+          "start": 49.29,
+          "end": 49.59,
+          "text": " time"
+        },
+        {
+          "start": 49.59,
+          "end": 49.74,
+          "text": " to"
+        },
+        {
+          "start": 49.74,
+          "end": 50.2,
+          "text": " listen"
+        },
+        {
+          "start": 50.2,
+          "end": 50.59,
+          "text": " Tell"
+        },
+        {
+          "start": 50.59,
+          "end": 50.79,
+          "text": " me"
+        },
+        {
+          "start": 50.79,
+          "end": 51.0,
+          "text": " to"
+        },
+        {
+          "start": 51.0,
+          "end": 51.4,
+          "text": " do"
+        },
+        {
+          "start": 51.4,
+          "end": 51.56,
+          "text": " it"
+        },
+        {
+          "start": 51.56,
+          "end": 51.8,
+          "text": " right"
+        },
+        {
+          "start": 51.8,
+          "end": 52.1,
+          "text": " up"
+        },
+        {
+          "start": 52.1,
+          "end": 52.4,
+          "text": " to"
+        },
+        {
+          "start": 52.4,
+          "end": 53.0,
+          "text": " this"
+        },
+        {
+          "start": 53.0,
+          "end": 53.53,
+          "text": " side"
+        },
+        {
+          "start": 53.53,
+          "end": 53.79,
+          "text": " by"
+        },
+        {
+          "start": 53.79,
+          "end": 54.18,
+          "text": " all"
+        },
+        {
+          "start": 54.18,
+          "end": 54.57,
+          "text": " the"
+        },
+        {
+          "start": 54.57,
+          "end": 55.0,
+          "text": " way"
+        },
+        {
+          "start": 55.0,
+          "end": 55.4,
+          "text": " Take"
+        },
+        {
+          "start": 55.4,
+          "end": 55.6,
+          "text": " me"
+        },
+        {
+          "start": 55.6,
+          "end": 56.19,
+          "text": " down,"
+        },
+        {
+          "start": 56.19,
+          "end": 56.58,
+          "text": " it's"
+        },
+        {
+          "start": 56.58,
+          "end": 57.07,
+          "text": " gonna"
+        },
+        {
+          "start": 57.07,
+          "end": 57.27,
+          "text": " be"
+        },
+        {
+          "start": 57.27,
+          "end": 58.0,
+          "text": " alright"
+        },
+        {
+          "start": 58.0,
+          "end": 58.2,
+          "text": " My"
+        },
+        {
+          "start": 58.2,
+          "end": 58.89,
+          "text": " friends"
+        },
+        {
+          "start": 58.89,
+          "end": 59.38,
+          "text": " don't"
+        },
+        {
+          "start": 59.38,
+          "end": 59.78,
+          "text": " just"
+        },
+        {
+          "start": 59.78,
+          "end": 60.27,
+          "text": " wanna"
+        },
+        {
+          "start": 60.27,
+          "end": 60.67,
+          "text": " fuck"
+        },
+        {
+          "start": 60.67,
+          "end": 61.0,
+          "text": " you"
+        },
+        {
+          "start": 61.0,
+          "end": 61.0,
+          "text": " up"
+        }
+      ]
+    },
+    {
+      "song": "英雄にあこがれて",
+      "window": [
+        168,
+        194
+      ],
+      "language": "ja",
+      "segments": [
+        {
+          "start": 168.0,
+          "end": 170.28,
+          "text": "そうです"
+        },
+        {
+          "start": 170.28,
+          "end": 172.0,
+          "text": " これが"
+        },
+        {
+          "start": 172.0,
+          "end": 175.0,
+          "text": " 英雄に憧れ"
+        },
+        {
+          "start": 175.0,
+          "end": 176.74,
+          "text": "そうです"
+        },
+        {
+          "start": 176.74,
+          "end": 178.04,
+          "text": " これが"
+        },
+        {
+          "start": 178.04,
+          "end": 182.0,
+          "text": " 英雄に憧れ"
+        },
+        {
+          "start": 182.0,
+          "end": 186.0,
+          "text": "惜しまれながら死んでゆく"
+        },
+        {
+          "start": 186.0,
+          "end": 189.0,
+          "text": "英雄に憧れ"
+        },
+        {
+          "start": 189.0,
+          "end": 194.0,
+          "text": "惜しまれながら死んでゆく"
+        }
+      ]
+    },
+    {
+      "song": "STONES",
+      "window": [
+        134,
+        151
+      ],
+      "language": "ja",
+      "segments": [
+        {
+          "start": 134.0,
+          "end": 142.0,
+          "text": "7時のストーンを選んだ道は違うけど"
+        },
+        {
+          "start": 142.0,
+          "end": 147.0,
+          "text": "コケムスなんてまだ早いだろう"
+        },
+        {
+          "start": 147.0,
+          "end": 151.0,
+          "text": "似合わないだろう"
+        }
+      ]
+    },
+    {
+      "song": "TRAIN-TRAIN",
+      "window": [
+        145,
+        151
+      ],
+      "language": "ja",
+      "segments": [
+        {
+          "start": 145.0,
+          "end": 147.0,
+          "text": "トレイトレイ"
+        },
+        {
+          "start": 147.0,
+          "end": 148.33,
+          "text": " トレイトレイトレイ"
+        },
+        {
+          "start": 148.33,
+          "end": 151.0,
+          "text": " トレイトレイどこまでも"
+        }
+      ]
+    },
+    {
+      "song": "RPG",
+      "window": [
+        204,
+        214
+      ],
+      "language": "ja",
+      "segments": [
+        {
+          "start": 204.0,
+          "end": 206.0,
+          "text": "行くんじゃないわ"
+        },
+        {
+          "start": 206.0,
+          "end": 210.0,
+          "text": "世界中の全ての謎より知りたい"
+        },
+        {
+          "start": 210.0,
+          "end": 214.0,
+          "text": "君の心は"
+        }
+      ]
+    },
+    {
+      "song": "シャララ",
+      "window": [
+        130,
+        144
+      ],
+      "language": "ja",
+      "segments": [
+        {
+          "start": 130.0,
+          "end": 132.0,
+          "text": "oh"
+        },
+        {
+          "start": 132.0,
+          "end": 135.0,
+          "text": "すべての罪は"
+        },
+        {
+          "start": 135.0,
+          "end": 139.0,
+          "text": "oh"
+        },
+        {
+          "start": 139.0,
+          "end": 142.0,
+          "text": "みんなで分けましょうよ"
+        },
+        {
+          "start": 142.0,
+          "end": 144.0,
+          "text": "みんなで"
+        }
+      ]
+    }
+  ]
+}

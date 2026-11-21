@@ -6,6 +6,7 @@
 import fs from 'node:fs';
 import path from 'node:path';
 import vm from 'node:vm';
+import assert from 'node:assert/strict';
 import {fileURLToPath} from 'node:url';
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
@@ -15,9 +16,13 @@ const raw = fs.readFileSync(path.join(ROOT, 'pv.js'), 'utf8');
 // 把 init() 換成測試掛勾，其餘原封不動地載入
 const cut = raw.lastIndexOf('init().catch(');
 if(cut < 0) throw new Error('找不到 init()，pv.js 結構可能變了');
-const hook = `window.__t = {buildShots, SHOTS, MEMBERS, LEAD, OTHERS, parseSrt, SONGS,
+const hook = `window.__t = {buildShots, SHOTS, MEMBERS, LEAD, OTHERS, parseSrt, SONGS, CHARACTER_GROUPS, characterLineup,
   setA(a){ A = a; },
   setup(list, cast){
+    for(const group of CHARACTER_GROUPS){
+      group.members=(cast[group.sheet]||[]).map(meta=>({meta,img:{width:meta.w,height:meta.h}}));
+      group.backdrop={width:1920,height:1080};
+    }
     if(song.art==='vwest') FACES.push(...cast.vwest.map(m=>m.groupFace));
     cues = list;
     cues.forEach((c, i) => {
@@ -50,6 +55,7 @@ const el = () => ({getContext: () => ctx, width: 1920, height: 1080, style: {set
   textContent: '', addEventListener(){}, appendChild(){}, querySelector: () => el(), href: '', options: [], value: ''});
 
 const sandbox = {
+  SpriteRig:{draw(){}},
   console, Math, Date, JSON, Number, String, Array, Object, Float32Array, Int32Array, Uint8Array, Uint8ClampedArray,
   ImageData: class { constructor(d, w, h){ this.data = d; this.width = w; this.height = h; } },
   URLSearchParams, performance: {now: () => Date.now()},
@@ -111,5 +117,32 @@ for(const [name, fn] of Object.entries(T.SHOTS)){
   }
 }
 console.log(`鏡頭函式：${ok} 次通過、${fail} 次失敗`);
+// Previously the character shot was skipped entirely. Exercise every member
+// with real sprite dimensions, including entry animation and later beats.
+const cast = JSON.parse(fs.readFileSync(path.join(ROOT,'assets/ref/cast/cast.json'),'utf8'));
+for(const [i,group] of T.CHARACTER_GROUPS.entries()){
+  assert.equal(group.members.length,group.count);
+  for(const actor of group.members) assert.ok(fs.existsSync(path.join(ROOT,'assets/ref/cast',actor.meta.file)));
+  if(group.lineup){
+    const layout=T.characterLineup(group.members);
+    assert.equal(new Set(layout.map(p=>p.y)).size,1,'all actors share a baseline');
+    layout.forEach((p,j)=>{
+      assert.ok(p.left>=79.99 && p.right<=1840.01 && p.h>0 && p.y-p.h>=150);
+      if(j)assert.ok(p.left-layout[j-1].right>=17.99,'no overlapping character cells');
+    });
+  }
+  for(const t of [0,.3,1,7,14])T.SHOTS.characters(t,{group:i,start:0,end:15},t/15);
+}
+if(songIndex>=54 && songIndex<=69){
+  const v2=fs.readFileSync(path.join(ROOT,'v2.html'),'utf8');
+  const a=v2.indexOf('const DEFAULT_SONGS = ['),b=v2.indexOf('\n];',a);
+  const cfg=vm.runInNewContext(v2.slice(a,b+3)+';DEFAULT_SONGS').find(s=>s.subs===song.subs);
+  const group=T.CHARACTER_GROUPS[0];
+  assert.equal(cfg.cast,group.sheet);
+  assert.equal(T.MEMBERS.length,group.count);
+  assert.equal(cast[cfg.cast][cfg.lead].file,cast[T.MEMBERS[T.LEAD].sheet][T.MEMBERS[T.LEAD].idx].file,'both players use the same lead');
+  assert.deepEqual([...new Set(T.MEMBERS.map(m=>m.idx))].sort((a,b)=>a-b),Array.from({length:group.count},(_,i)=>i));
+  assert.ok(group.lineup);
+}
 if(fail) process.exit(1);
 console.log('✅ 分鏡與所有鏡頭函式都沒有丟出例外');

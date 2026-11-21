@@ -23,19 +23,22 @@ const FIXED = [
   [88.64, 91.74, '探せなくて目を逸らすけど', '找不到 所以別開了眼'],
   [91.74, 94.93, '君なら出来る', '你做得到的'],
   [94.93, 98.12, 'その手を伸ばせ', '伸出那隻手吧'],
+  // 2026-11-21 independent English clip (49–61s) confirms these calls.
+  [55.18, 56.56, 'Take it easy', '放輕鬆'],
+  [56.56, 57.98, "It's gonna be alright", '一切都會好的'],
 ];
 
 // 區段：[起, 訖, [[原文, 繁中], …]]，段內按字數比例分配
 const SPANS = [
-  [39.70, 66.18, [
+  [39.70, 55.18, [
     ['(From) time to time,', '偶爾'],
     ['I feel like running away', '我會想逃開'],
     ['Trying to face away', '試著別過臉'],
     ['from this situation', '不去面對這一切'],
     ['But for me to live', '但為了活下去'],
     ['I have to decide my own way', '我得決定自己的路'],
-    ['Take it easy', '放輕鬆'],
-    ["It's gonna be alright", '一切都會好的'],
+  ]],
+  [57.98, 66.18, [
     ['Have faith and trust what a person you are', '相信自己 相信你是什麼樣的人'],
     ['In times when you feel lost believe yourself', '迷惘的時候 就相信你自己'],
     ['Overcome all the enemies', '跨越所有的敵人'],

@@ -24,7 +24,7 @@ I can't do it with my life / Paranacally / FERONOCALLY
 | --- | --- | --- |
 | 前奏 | 0–30.00 | 無字幕 |
 | 日文主歌 | 30.00–39.70 | 3 句，用 ASR 的詞邊界定錨 |
-| 英文 A | 39.70–66.18 | 12 句，段內按字數分配 |
+| 英文 A | 39.70–66.18 | 12 句，其中 55.18–57.98 秒兩句呼喊另有獨立切片錨點，其餘按字數分配 |
 | 英文 A′ | 69.80–76.38 | 2 句 |
 | 日文副歌 | 78.20–98.12 | 6 句，用 ASR 的詞邊界定錨 |
 | 嘶吼／間奏 | 98.12–151.70 | 無字幕（能量持續但無對應歌詞） |
@@ -38,3 +38,5 @@ I can't do it with my life / Paranacally / FERONOCALLY
 ```bash
 node tools/build-chase-subtitles.mjs
 ```
+
+2026-11-21：獨立英文切片再次確認「Take it easy」與「It's gonna be alright」的段落，見 `../sync-audit/2026-11-21-probes.json`；其餘英文仍不能宣稱逐句同步。兩版舞台與人物 PV 統一使用 kaiji 八人。
