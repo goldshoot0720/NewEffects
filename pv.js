@@ -2208,9 +2208,15 @@ async function init(){
   showSongs(currentGroup,songIndex);
   category.onchange=()=>showSongs(groups.find(g=>g.id===category.value),null);
   sel.onchange = () => {if(sel.value!=='')changeSong(+sel.value);};
-  $('#prevSong').onclick = () => changeSong(order[(position-1+order.length)%order.length].index);
-  $('#nextSong').onclick = () => changeSong(order[(position+1)%order.length].index);
+  const prevItem=order[(position-1+order.length)%order.length],nextItem=order[(position+1)%order.length];
+  $('#prevSong').onclick = () => changeSong(prevItem.index);
+  $('#nextSong').onclick = () => changeSong(nextItem.index);
   $('#prevSong').disabled = $('#nextSong').disabled = SONGS.length<2;
+  // 滑鼠移到按鈕上就看得到會切到哪一首
+  $('#prevSong').title = `上一首：${prevItem.title}`;
+  $('#nextSong').title = `下一首：${nextItem.title}`;
+  $('#prevSong').setAttribute('aria-label', $('#prevSong').title);
+  $('#nextSong').setAttribute('aria-label', $('#nextSong').title);
   const speed = $('#speed');
   const requestedSpeed = params.get('speed');
   if([...speed.options].some(option => option.value === requestedSpeed)) speed.value = requestedSpeed;

@@ -628,6 +628,7 @@ function renderSongs(){
     st.classList.toggle('ok', n > 0 && nt === n);
     ul.appendChild(li);
   });
+  updateNeighborTitles();
 }
 $('#songCategory').onchange=()=>{selectedSongCategory=$('#songCategory').value;renderSongs();};
 $('#songChoice').onchange=()=>{if($('#songChoice').value)playSong($('#songChoice').value);};
@@ -1304,12 +1305,28 @@ function frame(ts){
 }
 
 /* ---------------- controls ---------------- */
-function stepSong(direction, autoplay){
+// 目前歌曲在清單裡的前／後一首（和 ⏮／⏭ 按鈕同一份順序）
+function neighborSong(direction){
   const list=orderedSongs();
-  if(!list.length) return;
+  if(!list.length) return null;
   const current=list.findIndex(s=>s.id===curSong);
-  const next=current<0 ? (direction>0?0:list.length-1) : (current+direction+list.length)%list.length;
-  playSong(list[next].id, autoplay ?? media.playing());
+  const index=current<0 ? (direction>0?0:list.length-1) : (current+direction+list.length)%list.length;
+  return list[index];
+}
+// 滑鼠移到按鈕上就看得到會切到哪一首
+function updateNeighborTitles(){
+  const pairs=[['#prevSong','上一首',neighborSong(-1)],['#nextSong','下一首',neighborSong(1)]];
+  for(const [selector,label,song] of pairs){
+    const button=$(selector); if(!button) continue;
+    const text=song ? `${label}：${song.title}` : label;
+    button.title=text;
+    button.setAttribute('aria-label',text);
+  }
+}
+function stepSong(direction, autoplay){
+  const song=neighborSong(direction);
+  if(!song) return;
+  playSong(song.id, autoplay ?? media.playing());
 }
 $('#prevSong').onclick = () => stepSong(-1);
 $('#nextSong').onclick = () => stepSong(1);
