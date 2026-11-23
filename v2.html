@@ -158,6 +158,8 @@ header .pv-link+.pv-link{margin-left:0}
 .icon.ghost{background:var(--panel2);color:var(--text)}
 /* 單曲循環開啟時跟分段按鈕一樣亮粉色 */
 .icon.on{background:var(--pink);color:#2a0717}
+/* 自動下一首是文字標籤，不用圓形 */
+.icon.wide{width:auto;min-width:40px;padding:0 10px;font-size:11px;white-space:nowrap}
 .icon svg{width:18px;height:18px}
 .icon:disabled{opacity:.4;cursor:default}
 .icon.seek-step{font-size:11px;white-space:nowrap}
@@ -259,6 +261,7 @@ kbd{background:var(--panel2);border:1px solid var(--line);border-bottom-width:2p
       <button class="icon ghost seek-step" id="forward5" type="button" aria-label="快轉 5 秒" title="快轉 5 秒">+5秒</button>
       <button class="icon ghost" id="nextSong" type="button" aria-label="下一首" title="下一首">⏭</button>
       <button class="icon ghost" id="loopSingle" type="button" aria-label="單曲循環：關" aria-pressed="false" title="單曲循環：關">🔁</button>
+      <button class="icon ghost wide" id="autoNext" type="button" aria-label="自動播放下一首：關" aria-pressed="false" title="自動播放下一首：關">自動下一首</button>
       <span id="timeLbl">0:00 / 0:00</span>
       <div class="seg" id="srcSeg" hidden title="音源"><button data-src="mp3">MP3</button><button data-src="yt">YouTube</button></div>
       <input type="range" id="seek" min="0" max="1000" value="0" step="1">
@@ -391,11 +394,11 @@ const media = {
 };
 const volumeControl = PlayerVolume.bind(vid);
 const loopControl = PlayerLoop.bind($('#loopSingle'));
-// 單曲循環：本機 MP3 播完直接回到開頭續播
+const autoNextControl = PlayerLoop.bindNext($('#autoNext'));
+// 單曲循環：本機 MP3 播完直接回到開頭續播；自動下一首：換到清單的下一首接著播
 vid.addEventListener('ended', () => {
-  if(!loopControl.single) return;
-  vid.currentTime = 0;
-  vid.play().catch(() => {});
+  if(loopControl.single){ vid.currentTime = 0; vid.play().catch(() => {}); return; }
+  if(autoNextControl.auto) stepSong(1, true);
 });
 
 function parseYtId(s){
@@ -422,8 +425,11 @@ window.onYouTubeIframeAPIReady = () => {
       },
       onStateChange(e){
         volumeControl.syncYouTube(media.yt); updateTitleFromYt();
-        // 單曲循環：YouTube 播完（state 0）回到開頭再播
-        if(e?.data === 0 && loopControl.single){ media.seek(0); media.play(); }
+        // 播完（state 0）：單曲循環回到開頭，自動下一首則換下一首
+        if(e?.data === 0){
+          if(loopControl.single){ media.seek(0); media.play(); }
+          else if(autoNextControl.auto) stepSong(1, true);
+        }
       },
       onError(e){
         const why = {2:'影片 ID 無效', 5:'播放器錯誤', 100:'找不到影片', 101:'影片擁有者禁止嵌入播放', 150:'影片擁有者禁止嵌入播放', 153:'需要透過 http://localhost 開啟本頁'}[e.data] || ('錯誤碼 ' + e.data);
@@ -1298,12 +1304,12 @@ function frame(ts){
 }
 
 /* ---------------- controls ---------------- */
-function stepSong(direction){
+function stepSong(direction, autoplay){
   const list=orderedSongs();
   if(!list.length) return;
   const current=list.findIndex(s=>s.id===curSong);
   const next=current<0 ? (direction>0?0:list.length-1) : (current+direction+list.length)%list.length;
-  playSong(list[next].id,media.playing());
+  playSong(list[next].id, autoplay ?? media.playing());
 }
 $('#prevSong').onclick = () => stepSong(-1);
 $('#nextSong').onclick = () => stepSong(1);

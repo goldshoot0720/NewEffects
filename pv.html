@@ -19,8 +19,8 @@ body{--ui-h:104px;display:grid;place-items:center;box-sizing:border-box;padding-
 #ui select,#ui button{font:inherit;font-size:14px;color:#fff;background:#2c2c40;border:1px solid #47476a;border-radius:8px;padding:6px 10px;cursor:pointer}
 #ui button{white-space:nowrap}
 #ui button:disabled{opacity:.5;cursor:wait}
-/* 單曲循環開啟時按鈕亮起來，跟其他控制項的深色底區分 */
-#loopSingle[aria-pressed="true"]{background:#f6a531;border-color:#f6a531;color:#1a1a22}
+/* 單曲循環／自動下一首開啟時按鈕亮起來，跟其他控制項的深色底區分 */
+#loopSingle[aria-pressed="true"],#autoNext[aria-pressed="true"]{background:#f6a531;border-color:#f6a531;color:#1a1a22}
 .control-row{display:flex;flex-wrap:wrap;align-items:center;gap:8px 12px;min-width:0}
 .timeline-row{padding-top:10px;border-top:1px solid #323248}
 #seek{flex:1;min-width:0;max-width:320px;margin-inline:0;accent-color:#f6a531}
@@ -58,6 +58,7 @@ body.render #pv{width:min(100vw,calc(100vh*16/9))}
       <button id="play" disabled>載入中…</button>
       <button id="nextSong" type="button" aria-label="下一首" title="下一首">下一首 ⏭</button>
       <button id="loopSingle" type="button" aria-label="單曲循環：關" aria-pressed="false" title="單曲循環：關">🔁 循環</button>
+      <button id="autoNext" type="button" aria-label="自動播放下一首：關" aria-pressed="false" title="自動播放下一首：關">自動下一首</button>
     </div>
     <label class="speed-control">
       播放速度

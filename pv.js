@@ -2160,6 +2160,8 @@ window.addEventListener('unhandledrejection', e => { if(RENDER) post('error', St
 let previewAudio = null;
 // 單曲循環開關（loop.js）：開啟時播完從 0 秒重播，畫面也重跑一次片頭。
 let loopControl = null;
+// 自動下一首開關（loop.js）：開啟時播完直接換到清單的下一首並自動播放。
+let autoNextControl = null;
 function pvQuery(index, characterMode){
   const query = new URLSearchParams({song:String(index)});
   if(characterMode) query.set('mode','characters');
@@ -2170,12 +2172,25 @@ function pvQuery(index, characterMode){
 function updateModeLink(){
   $('#modeLink').href = `pv.html?${pvQuery(songIndex, !CHARACTER_PV)}`;
 }
-function changeSong(index){
+let navigating = false;
+function changeSong(index, autoplay){
+  // 自動下一首和主迴圈可能同時判定播完，只排一次換頁
+  if(navigating) return;
+  navigating = true;
   const query = pvQuery((index+SONGS.length)%SONGS.length, CHARACTER_PV);
-  if(previewAudio && !previewAudio.paused) query.set('autoplay','1');
+  if(autoplay ?? (previewAudio && !previewAudio.paused)) query.set('autoplay','1');
   location.search = query.toString();
 }
+// 自動下一首要跳的那一首：跟「下一首」按鈕用同一份排序
+function nextSongIndex(){
+  const order = SongOrder.group(SONGS.map((s,index)=>({title:s.title,index})));
+  const position = order.findIndex(item => item.index === songIndex);
+  return order[(position+1) % order.length].index;
+}
 async function init(){
+  // 播放模式開關先綁好，不用等音訊解碼完才能按
+  loopControl = window.PlayerLoop?.bind($('#loopSingle')) || null;
+  autoNextControl = window.PlayerLoop?.bindNext($('#autoNext')) || null;
   window.SpriteRig?.setCacheLimit?.(Math.max(MEMBERS.length,...(CHARACTER_PV?CHARACTER_GROUPS.map(g=>g.count):[])));
   if(RENDER) document.body.classList.add('render');
   const sel = $('#song');
@@ -2359,6 +2374,8 @@ function preview(buf){
       source = null;
       // 單曲循環：直接回到開頭續播，不送 pause，播放鍵不會閃一下「▶ 播放」
       if(loopControl?.single && startSource(0)){ fire('play'); return; }
+      // 自動下一首：換到清單的下一首並自動播放（和按「下一首」走同一條路）
+      if(autoNextControl?.auto){ changeSong(nextSongIndex(), true); return; }
       fire('pause');
     };
     source = src;
@@ -2451,7 +2468,6 @@ function preview(buf){
   });
   previewAudio = audio;
   PlayerVolume.bind(audio);
-  loopControl = window.PlayerLoop?.bind($('#loopSingle')) || null;
   decodePromise.then(ab => {
     buffer = ab;
     audio.readyState = 4;
@@ -2506,9 +2522,10 @@ function preview(buf){
   const loop = () => {
     const t = Math.min(audio.readyState ? audio.currentTime : start,A.dur);
     // 走到結尾：單曲循環直接回到開頭，不等音訊的 ended（A.dur 和音訊長度可能差幾毫秒，
-    // 這裡先停下來的話就永遠等不到 ended）。沒開循環才照舊停在結尾。
+    // 這裡先停下來的話就永遠等不到 ended）。自動下一首則直接換頁，沒開才照舊停在結尾。
     if(audio.currentTime>=A.dur && !audio.paused){
       if(loopControl?.single) audio.currentTime = 0;
+      else if(autoNextControl?.auto) changeSong(nextSongIndex(), true);
       else audio.pause();
     }
     if(!window.PV.hold){
