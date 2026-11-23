@@ -69,13 +69,13 @@ body.render #pv{width:min(100vw,calc(100vh*16/9))}
         <option value="2">2x</option>
       </select>
     </label>
+  </div>
+  <div class="control-row timeline-row">
     <div class="volume-control" role="group" aria-label="音量控制">
       <button id="mute" type="button" aria-label="靜音" aria-pressed="false" title="靜音" disabled>🔊</button>
       <input id="volume" type="range" min="0" max="100" step="1" value="100" aria-label="音量" disabled>
       <span id="volumeValue">100%</span>
     </div>
-  </div>
-  <div class="control-row timeline-row">
     <div class="seek-controls" role="group" aria-label="播放位置控制">
       <button id="rewind5" type="button" aria-label="倒退 5 秒" title="倒退 5 秒" disabled>−5秒</button>
       <input id="seek" type="range" min="0" max="1000" value="0" aria-label="播放位置">
