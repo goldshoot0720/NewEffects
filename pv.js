@@ -2158,6 +2158,8 @@ window.addEventListener('error', e => { if(RENDER) post('error', String(e.messag
 window.addEventListener('unhandledrejection', e => { if(RENDER) post('error', String(e.reason?.stack || e.reason)); });
 
 let previewAudio = null;
+// 單曲循環開關（loop.js）：開啟時播完從 0 秒重播，畫面也重跑一次片頭。
+let loopControl = null;
 function pvQuery(index, characterMode){
   const query = new URLSearchParams({song:String(index)});
   if(characterMode) query.set('mode','characters');
@@ -2355,6 +2357,8 @@ function preview(buf){
       playing = false;
       audio.paused = true;
       source = null;
+      // 單曲循環：直接回到開頭續播，不送 pause，播放鍵不會閃一下「▶ 播放」
+      if(loopControl?.single && startSource(0)){ fire('play'); return; }
       fire('pause');
     };
     source = src;
@@ -2447,6 +2451,7 @@ function preview(buf){
   });
   previewAudio = audio;
   PlayerVolume.bind(audio);
+  loopControl = window.PlayerLoop?.bind($('#loopSingle')) || null;
   decodePromise.then(ab => {
     buffer = ab;
     audio.readyState = 4;
@@ -2500,7 +2505,12 @@ function preview(buf){
   let renderError = '';
   const loop = () => {
     const t = Math.min(audio.readyState ? audio.currentTime : start,A.dur);
-    if(audio.currentTime>=A.dur && !audio.paused) audio.pause();
+    // 走到結尾：單曲循環直接回到開頭，不等音訊的 ended（A.dur 和音訊長度可能差幾毫秒，
+    // 這裡先停下來的話就永遠等不到 ended）。沒開循環才照舊停在結尾。
+    if(audio.currentTime>=A.dur && !audio.paused){
+      if(loopControl?.single) audio.currentTime = 0;
+      else audio.pause();
+    }
     if(!window.PV.hold){
       // 停在 0 秒時角色還在入場動畫裡（透明），片頭也還沒淡入；預覽先畫 2.2 秒那格當海報。
       PREVIEW_IDLE = audio.paused && audio.currentTime < .05;

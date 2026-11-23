@@ -156,6 +156,8 @@ header .pv-link+.pv-link{margin-left:0}
 .bar{display:flex;flex-wrap:wrap;align-items:center;gap:12px;margin-top:12px}
 .icon{width:40px;height:40px;border-radius:50%;border:0;background:var(--pink);color:#2a0717;display:grid;place-items:center;cursor:pointer;flex:none}
 .icon.ghost{background:var(--panel2);color:var(--text)}
+/* 單曲循環開啟時跟分段按鈕一樣亮粉色 */
+.icon.on{background:var(--pink);color:#2a0717}
 .icon svg{width:18px;height:18px}
 .icon:disabled{opacity:.4;cursor:default}
 .icon.seek-step{font-size:11px;white-space:nowrap}
@@ -256,6 +258,7 @@ kbd{background:var(--panel2);border:1px solid var(--line);border-bottom-width:2p
       <button class="icon" id="playBtn" title="播放／暫停 (K)"></button>
       <button class="icon ghost seek-step" id="forward5" type="button" aria-label="快轉 5 秒" title="快轉 5 秒">+5秒</button>
       <button class="icon ghost" id="nextSong" type="button" aria-label="下一首" title="下一首">⏭</button>
+      <button class="icon ghost" id="loopSingle" type="button" aria-label="單曲循環：關" aria-pressed="false" title="單曲循環：關">🔁</button>
       <span id="timeLbl">0:00 / 0:00</span>
       <div class="seg" id="srcSeg" hidden title="音源"><button data-src="mp3">MP3</button><button data-src="yt">YouTube</button></div>
       <input type="range" id="seek" min="0" max="1000" value="0" step="1">
@@ -335,6 +338,7 @@ kbd{background:var(--panel2);border:1px solid var(--line);border-bottom-width:2p
 <div id="toast"></div>
 
 <script src="volume.js"></script>
+<script src="loop.js"></script>
 <script src="playlist-order.js"></script>
 <script src="lyric-text.js"></script>
 <script>
@@ -386,6 +390,13 @@ const media = {
   toggle(){ this.playing() ? this.pause() : this.play(); }
 };
 const volumeControl = PlayerVolume.bind(vid);
+const loopControl = PlayerLoop.bind($('#loopSingle'));
+// 單曲循環：本機 MP3 播完直接回到開頭續播
+vid.addEventListener('ended', () => {
+  if(!loopControl.single) return;
+  vid.currentTime = 0;
+  vid.play().catch(() => {});
+});
 
 function parseYtId(s){
   s = s.trim();
@@ -409,7 +420,11 @@ window.onYouTubeIframeAPIReady = () => {
         }
         updateTitleFromYt();
       },
-      onStateChange(){ volumeControl.syncYouTube(media.yt); updateTitleFromYt(); },
+      onStateChange(e){
+        volumeControl.syncYouTube(media.yt); updateTitleFromYt();
+        // 單曲循環：YouTube 播完（state 0）回到開頭再播
+        if(e?.data === 0 && loopControl.single){ media.seek(0); media.play(); }
+      },
       onError(e){
         const why = {2:'影片 ID 無效', 5:'播放器錯誤', 100:'找不到影片', 101:'影片擁有者禁止嵌入播放', 150:'影片擁有者禁止嵌入播放', 153:'需要透過 http://localhost 開啟本頁'}[e.data] || ('錯誤碼 ' + e.data);
         if(media.kind === 'yt') showMsg(`無法播放這支 YouTube 影片：${why}<br>可改用右側「本機影音檔」載入音源，歌詞特效照常運作。`);
