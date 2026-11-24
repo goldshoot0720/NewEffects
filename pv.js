@@ -2202,11 +2202,20 @@ async function init(){
   groups.forEach(g=>category.add(new Option(g.label,g.id,false,g===currentGroup)));
   const showSongs=(group,selected)=>{
     sel.innerHTML='';
-    if(selected==null)sel.add(new Option('選擇歌曲或語言版本…','',true,true));
+    if(!group?.items.length){ sel.add(new Option('沒有歌曲','',true,true)); return; }
     group.items.forEach(s=>sel.add(new Option(SongOrder.optionLabel(s,group),s.index,false,s.index===selected)));
   };
   showSongs(currentGroup,songIndex);
-  category.onchange=()=>showSongs(groups.find(g=>g.id===category.value),null);
+  // 換分類時直接選第一首（正在播的那首若屬於這個分類就留著），不要停在「請選擇」；
+  // 選到的不是正在播的那首就跟著切過去，免得下拉顯示的歌和畫面上播的不一樣。
+  category.onchange=()=>{
+    const group=groups.find(g=>g.id===category.value);
+    if(!group?.items.length) return;
+    const keep=group.items.some(s=>s.index===songIndex);
+    const target=keep?songIndex:group.items[0].index;
+    showSongs(group,target);
+    if(target!==songIndex) changeSong(target);
+  };
   sel.onchange = () => {if(sel.value!=='')changeSong(+sel.value);};
   const prevItem=order[(position-1+order.length)%order.length],nextItem=order[(position+1)%order.length];
   $('#prevSong').onclick = () => changeSong(prevItem.index);
