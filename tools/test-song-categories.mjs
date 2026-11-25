@@ -53,6 +53,7 @@ class Element{
   set innerHTML(_){this.options=[];this.children=[];this._value=undefined;}
   get value(){return this._value??this.options.find(o=>o.selected)?.value??this.options[0]?.value??'';}
   set value(v){this._value=String(v);}
+  setAttribute(name,value){this[name]=value;}
   add(o){this.options.push(o);if(o.selected)this._value=o.value;}
   appendChild(e){this.children.push(e);}
   querySelector(){return {classList:{toggle(){}}};}
@@ -68,13 +69,14 @@ for(let songIndex=0;songIndex<SONGS.length;songIndex++){
   assert.equal($('#song').options.length,group.items.length);
   $('#nextSong').onclick();assert.ok(Number.isInteger(calls.pop()));
   const other=groups.find(g=>g.id!==group.id);$('#category').value=other.id;$('#category').onchange();
-  assert.equal($('#song').value,'');assert.equal(calls.length,0,'category selection must not switch audio');
+  assert.equal(+$('#song').value,other.items[0].index);
+  assert.equal(calls.pop(),other.items[0].index,'switching PV categories plays the first song');
   $('#song').value=other.items[0].index;$('#song').onchange();assert.equal(calls.pop(),other.items[0].index);
 }
 // The second player filters its list and picker using the same category model.
 {
  const els=new Map();const $=id=>{if(!els.has(id))els.set(id,new Element());return els.get(id);};const calls=[];
- const context={SongOrder,DEFAULT_SONGS,songs:DEFAULT_SONGS,curSong:'rolling-girls-friendly',selectedSongCategory:null,$,Option,document:{createElement:()=>new Element()},getLyricsData:()=>null,parse:()=>[],mediaKey:'yt:rolling-girls-friendly',cfgOf:id=>DEFAULT_SONGS.find(s=>s.id===id)||{},playSong:id=>calls.push(id)};
+ const context={SongOrder,DEFAULT_SONGS,songs:DEFAULT_SONGS,curSong:'rolling-girls-friendly',selectedSongCategory:null,$,Option,document:{createElement:()=>new Element()},getLyricsData:()=>null,parse:()=>[],mediaKey:'yt:rolling-girls-friendly',cfgOf:id=>DEFAULT_SONGS.find(s=>s.id===id)||{},playSong:id=>calls.push(id),updateNeighborTitles(){}};
  const a=v2.indexOf('function renderSongs(){'),b=v2.indexOf("$('#songs').addEventListener",a);vm.createContext(context);vm.runInContext(v2.slice(a,b)+';renderSongs();',context);
  assert.equal($('#songChoice').options.length,10);assert.equal($('#songs').children.length,10);
  $('#songCategory').value=family.id;$('#songCategory').onchange();assert.equal($('#songs').children.length,4);assert.equal($('#songChoice').value,'');assert.equal(calls.length,0);

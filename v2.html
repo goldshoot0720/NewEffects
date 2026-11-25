@@ -532,10 +532,10 @@ const DEFAULT_SONGS = [
   {id:'tsuki-sniper',title:'月に向かって撃て [星街すいせい]',audio:'月に向かって撃て [星街すいせい].mp3',subs:'月に向かって撃て.srt',cover:'assets/ref/tsuki-cover.jpg',lead:0,cast:'tsuki'},
   {id:'soala-koe',title:'声の軌跡 [Soala]',audio:'声の軌跡 [Soala].mp3',subs:'声の軌跡.srt',cover:'assets/ref/tsuki-group.png',lead:0,cast:'tsuki'},
   {id:'money-song',title:'$・¥・€ [マネーソング]',audio:'$・¥・€.mp3',subs:'$・¥・€.srt',cover:'assets/ref/fx-group.png',lead:0,cast:'fx'},
-  {id:'mashima-kanpeki',title:'完璧じゃないわたし [前島亜美]',audio:'完璧じゃないわたし [前島亜美].mp3',subs:'完璧じゃないわたし.srt',cover:'assets/ref/osewa/group.png',lead:0,cast:'osewa'},
+  {id:'mashima-kanpeki',title:'完璧じゃないわたし [前島亜美]',audio:'完璧じゃないわたし [前島亜美].mp3',subs:'完璧じゃないわたし.srt',fill:'assets/ref/perfect/fill-ja.json',cover:'assets/ref/osewa/group.png',lead:0,cast:'osewa'},
   {id:'osewa-op',title:'最最最高級のお世話して [angela]',audio:'最最最高級のお世話して [angela].mp3',subs:'最最最高級のお世話して.srt',cover:'assets/ref/osewa/group.png',lead:0,cast:'osewa'},
   {id:'aooo-days',title:'DAYS! [Aooo]',audio:'DAYS!.mp3',subs:'DAYS!.srt',cover:'assets/ref/growup/group.png',lead:0,cast:'growup'},
-  {id:'fx-kurumi-op',title:'FX戦士くるみちゃん [福賀くるみ(CV.鈴木愛奈)]',audio:'FX戦士くるみちゃん.mp3',subs:'FX戦士くるみちゃん.srt',cover:'assets/ref/fx-group.png',lead:0,cast:'fx'},
+  {id:'fx-kurumi-op',title:'FX戦士くるみちゃん [福賀くるみ(CV.鈴木愛奈)]',audio:'FX戦士くるみちゃん.mp3',subs:'FX戦士くるみちゃん.srt',fill:'assets/ref/fx/fill-ja.json',cover:'assets/ref/fx-group.png',lead:0,cast:'fx'},
   {id:'rolling-girls-friendly',title:'人にやさしく [THE ROLLING GIRLS]',audio:'人にやさしく.mp3',subs:'人にやさしく.srt',cover:'assets/ref/rolling-group.png',lead:0,cast:'rolling'},
   {id:'mirai-bokura',title:'未来は僕等の手の中 [逆境無頼カイジ]',audio:'未来は僕等の手の中.mp3',subs:'未来は僕等の手の中.srt',cover:'assets/ref/kaiji-group.png',lead:4,cast:'kaiji'},
   {id:'makeinu-requiem',title:'負け犬たちのレクイエム [逆境無頼カイジ]',audio:'負け犬たちのレクイエム.mp3',subs:'負け犬たちのレクイエム.srt',cover:'assets/ref/kaiji-group.png',lead:4,cast:'kaiji'},
@@ -556,9 +556,7 @@ const DEFAULT_SONGS = [
 ];
 // 每首歌的字幕／音訊檔放在同一個資料夾，執行時才讀取
 const cfgOf = id => DEFAULT_SONGS.find(d => d.id === id) || {};
-const fileLrc = {};   // id -> {lrc, hash}
-const fileFill = {};  // id -> {lines:[{jp,t:[[開始,唱完],...]}]}
-let fillMap = new Map();   // 這一句 → 每個字「開始唱／唱完」的時間
+const fileLrc = {};   // id → LRC、翻譯、依 LRC 起點索引的原始 SRT 句子
 const hashStr = s => { let h = 5381; for(let i = 0; i < s.length; i++) h = (h*33 ^ s.charCodeAt(i)) >>> 0; return h.toString(36); };
 async function preloadFiles(){
   await Promise.all(DEFAULT_SONGS.filter(d => d.subs).map(async d => {
@@ -569,12 +567,22 @@ async function preloadFiles(){
       const lrc = toLRC(ls);
       const zh = {};
       for(const l of ls) if(l.zh) zh[l.text] = l.zh;
-      fileLrc[d.id] = {lrc, hash: hashStr(lrc), zh};
+      const cues = ls.filter(l => l.text);
+      const byStart = new Map(cues.map(l => [Math.round(l.t * 100), l]));
+      fileLrc[d.id] = {lrc, hash: hashStr(lrc), zh, cues, byStart};
     }catch{}
   }));
   // 逐字填色時間軸（有的歌才有）：由 ASR 對到音訊後產生，見 tools/build-forever-fill.mjs
   await Promise.all(DEFAULT_SONGS.filter(d=>d.fill).map(async d=>{
-    try{ const r = await fetch(d.fill); if(!r.ok) return; fileFill[d.id] = await r.json(); }catch{}
+    try{
+      const r = await fetch(d.fill);
+      if(!r.ok) return;
+      const data = await r.json();
+      for(const [index, spec] of data.lines.entries()){
+        const cue = fileLrc[d.id]?.cues[spec.i ?? index];
+        if(cue && cue.text === LyricText.clean(spec.jp)) cue.fill = spec.t;
+      }
+    }catch{}
   }));
 }
 function getLyricsData(key){
@@ -779,12 +787,12 @@ function parseSrt(text){
     const body = ls.slice(i + 1).map(x => x.replace(/<[^>]+>/g, '').trim()).filter(Boolean);
     // 雙語字幕：第二行若不含假名就視為中文翻譯
     let zh = '';
-    if(body.length > 1 && !/[\u3040-\u30ff]/.test(body[body.length - 1])) zh = body.pop();
+    if(body.length > 1 && !/[ぁ-ゖゝ-ゟァ-ヺヽ-ヿー]/.test(body[body.length - 1])) zh = body.pop();
     const text = LyricText.clean(body.join(' '));
     zh=LyricText.clean(zh);
     // 兩句之間空隔超過 1 秒就插入間奏，讓字幕消失
     if(prevEnd != null && a - prevEnd > 1) out.push({t: +prevEnd.toFixed(2), text: ''});
-    if(text) out.push(zh ? {t: +a.toFixed(2), text, zh} : {t: +a.toFixed(2), text});
+    if(text) out.push({t: +a.toFixed(2), end: e, text, zh});
     prevEnd = e;
   }
   if(prevEnd != null) out.push({t: +prevEnd.toFixed(2), text: ''});
@@ -806,6 +814,7 @@ function parse(text){
 const toLRC = ls => ls.map(l => (l.t != null ? `[${fmt(l.t)}]` : '') + l.text).join('\n');
 
 function commit(fromText){
+  redraw = true;
   timed = lines.filter(l => l.t != null).sort((a,b) => a.t - b.t);
   if(!fromText) ta.value = toLRC(lines);
   store.set('lyricfx:' + mediaKey, {lrc: toLRC(lines), offset, srcHash: curSrcHash});
@@ -820,18 +829,6 @@ function switchKey(key){
   ta.value = d?.lrc || '';
   lines = parse(ta.value);
   zhMap = (key.startsWith('yt:') && fileLrc[key.slice(3)]?.zh) || {};
-  // 逐字時間：依去掉間奏空白的句子順序對應，並用歌詞文字再確認一次對錯。
-  fillMap = new Map();
-  const fd = key.startsWith('yt:') ? fileFill[key.slice(3)] : null;
-  if(fd?.lines){
-    const byCue = new Map(fd.lines.map((spec, index) => [spec.i ?? index, spec]));
-    let cue = 0;
-    for(const l of lines){
-      if(l.text === '') continue;
-      const spec = byCue.get(cue++);
-      if(spec && LyricText.clean(spec.jp) === l.text) fillMap.set(l, spec.t);
-    }
-  }
   stopTap(true);
   slot.replaceChildren(); curLine = null; curEl = null; curWrap = null; curZh = null; nextText = null; nextZhText = null;
   nextEl.textContent = ''; nextZhEl.textContent = '';
@@ -975,7 +972,9 @@ $('#exportSrtBtn').onclick = () => {
   const out = [];
   cues.forEach((l, i) => {
     const nx = timed[timed.indexOf(l) + 1];
-    out.push(String(i + 1), `${srtTime(l.t)} --> ${srtTime(Math.max(l.t + .5, (nx ? nx.t : l.t + 4) - .05))}`, LyricText.plain(l.text));
+    const end = sourceCue(l)?.end;
+    const stop = end > l.t ? Math.min(end, nx?.t ?? end) : Math.max(l.t + .5, (nx ? nx.t : l.t + 4) - .05);
+    out.push(String(i + 1), `${srtTime(l.t)} --> ${srtTime(stop)}`, LyricText.plain(l.text));
     if(zhMap[l.text]) out.push(LyricText.plain(zhMap[l.text]));
     out.push('');
   });
@@ -995,8 +994,16 @@ $('#lrcInput').onchange = async e => {
 let curLine = null, curEl = null, curWrap = null, curZh = null, redraw = false, nextText = null, nextZhText = null;
 let zhMap = {};
 
+// 兩個條件一起比對，打點或改詞後不會套用舊的絕對填色時間。
+function sourceCue(L){
+  if(L.t == null || !mediaKey.startsWith('yt:')) return null;
+  const cue = fileLrc[mediaKey.slice(3)]?.byStart.get(Math.round(L.t * 100));
+  return cue?.text === L.text ? cue : null;
+}
 function lineSpan(L){
   const k = timed.indexOf(L), nx = timed[k + 1];
+  const end = sourceCue(L)?.end;
+  if(end > L.t) return Math.max(.01, Math.min(end, nx?.t ?? end) - L.t);
   const n = tokenize(L.text).length;
   const gap = (nx ? nx.t : L.t + 6) - L.t;
   return clamp(Math.min(gap - .25, n * .42 + .6), .4, 30);
@@ -1127,7 +1134,7 @@ function showLine(L){
     });
     el._dur = lineSpan(L);
     // 逐字時間（有的歌才有）：空白沒有時間，逐字時間要略過空白
-    const ft = fillMap.get(L);
+    const ft = sourceCue(L)?.fill;
     if(ft){
       const arr = [];
       let ti = 0, ok = true;

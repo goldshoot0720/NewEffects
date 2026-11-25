@@ -454,6 +454,6 @@ This is the dialogue of combination,
 這就是排列組合的對話，
 
 92
-00:04:28,235 --> 00:04:31,445
+00:04:28,235 --> 00:04:32,800
 A yearbook's mysterious conversation!
 一場畢業紀念冊的神祕交談！

@@ -135,6 +135,7 @@ lChars.forEach((_, k) => {
   if (glyphEnd[li][gi] == null || aEnd[ei[k]] > glyphEnd[li][gi]) glyphEnd[li][gi] = aEnd[ei[k]];
 });
 
+const cueTimings = JSON.parse(fs.readFileSync(path.join(REF, 'timings-ja.json'), 'utf8'));
 const out = [];
 let missing = 0;
 for (let li = 0; li < lines.length; li++) {
@@ -157,6 +158,7 @@ for (let li = 0; li < lines.length; li++) {
     if (e == null) e = s;
     times.push({s: +s.toFixed(3), e: +e.toFixed(3)});
   }
+  if (cueTimings[li]?.heldEnding) times[N - 1].e = cueTimings[li].end;
   out.push({
     i: li,
     jp: lines[li],

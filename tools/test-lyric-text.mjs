@@ -33,7 +33,7 @@ const sample='1\n00:00:01,000 --> 00:00:02,500\nHello, world!\n你好，世界�
 const a=pv(sample),b=v2(sample).filter(c=>c.text);
 assert.equal(a[0].jp,'Hello world');
 assert.equal(a[0].zh,'你好世界');
-assert.equal(a[0].start,1);assert.equal(a[0].end,2.5);
+assert.equal(a[0].start,1);assert.equal(a[0].end,2.5);assert.equal(b[0].end,2.5);
 assert.equal(a[1].jp,'雨(あめ)');
 assert.equal(JSON.stringify(a.map(c=>[c.jp,c.zh])),JSON.stringify(b.map(c=>[c.text,c.zh])));
 let count=0;
@@ -44,9 +44,32 @@ for(const name of fs.readdirSync(root).filter(f=>f.endsWith('.srt'))){
   for(let i=0;i<p.length;i++){
     assert.equal(p[i].jp,q[i].text,name);
     assert.equal(p[i].zh,q[i].zh||'',name);
+    assert.equal(p[i].end,Math.max(p[i].start + .5,q[i].end),name);
     assert.ok(!/[\p{P}\p{S}]/u.test(LyricText.plain(p[i].jp)+p[i].zh),name);
     count++;
   }
+}
+// 同一句重唱時各自使用原定收尾。打點或改詞後，不能沿用舊的逐字時間。
+{
+  const code=fs.readFileSync(path.join(root,'v2.html'),'utf8');
+  const first={t:1,text:'あー',end:8,fill:[[1,2],[2,8]]};
+  const repeat={t:10,text:'あー',end:14,fill:[[10,11],[11,14]]};
+  const player={
+    mediaKey:'yt:demo', timed:[first,repeat],
+    fileLrc:{demo:{byStart:new Map([[100,first],[1000,repeat]])}},
+    tokenize:text=>[...text],clamp:(v,min,max)=>Math.max(min,Math.min(v,max))
+  };
+  vm.runInNewContext(code.slice(code.indexOf('function sourceCue('),code.indexOf('// 把一句拆成')),player);
+  assert.equal(player.lineSpan(first),7);
+  assert.equal(player.lineSpan(repeat),4);
+  assert.equal(player.sourceCue({...repeat}).fill,repeat.fill);
+  player.timed=[first,{t:5,text:'下一句'}];
+  assert.equal(player.lineSpan(first),4);
+  assert.equal(player.sourceCue({...first,t:2}),null);
+  assert.equal(player.sourceCue({...first,text:'新詞'}),null);
+  player.mediaKey='local:custom';
+  assert.equal(player.sourceCue(first),null);
+  assert.equal(player.lineSpan(first),1.44);
 }
 // Forever＆ever 的逐字填色時間：每個字要對得上 tokenize() 切出來的字母數，時間也不能倒退。
 {

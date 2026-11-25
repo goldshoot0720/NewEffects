@@ -59,9 +59,10 @@
   "i": 7,
   "jp": "あの潮風に乗って",
   "start": 29.05,
-  "end": 32.01,
+  "end": 33.37,
   "final": true,
-  "hits": 8
+  "hits": 8,
+  "heldEnding": true
  },
  {
   "i": 8,
@@ -155,9 +156,10 @@
   "i": 19,
   "jp": "世界まで変えよう",
   "start": 97.13,
-  "end": 100.03,
+  "end": 101.11,
   "final": true,
-  "hits": 8
+  "hits": 8,
+  "heldEnding": true
  },
  {
   "i": 20,
@@ -339,8 +341,9 @@
   "i": 42,
   "jp": "あの潮風に乗って",
   "start": 235.11,
-  "end": 237.95,
+  "end": 239.28,
   "final": true,
-  "hits": 8
+  "hits": 8,
+  "heldEnding": true
  }
 ]
