@@ -815,7 +815,16 @@ function shotAt(t){
 
 /* ---------------- 預先繪製的素材 ---------------- */
 function prepare(cover){
-  const art = mk(AW, AH); art.getContext('2d').drawImage(cover, ART.crop[0], ART.crop[1], AW, AH, 0, 0, AW, AH);
+  const art = mk(AW, AH), ctx = art.getContext('2d');
+  if(cover) ctx.drawImage(cover, ART.crop[0], ART.crop[1], AW, AH, 0, 0, AW, AH);
+  else {
+    ctx.fillStyle=T.sky[1]; ctx.fillRect(0,0,AW,AH);
+    const members=MEMBERS.filter(m=>m.img), cell=AW/Math.max(1,members.length);
+    members.forEach(({img},i)=>{
+      const scale=Math.min(cell*.94/img.width,AH*.82/img.height);
+      ctx.drawImage(img,(i+.5)*cell-img.width*scale/2,AH*.91-img.height*scale,img.width*scale,img.height*scale);
+    });
+  }
   const blurred = (scale, px) => { const c = mk(Math.round(AW*scale), Math.round(AH*scale)), x = c.getContext('2d'); x.filter = `blur(${px}px)`; x.drawImage(art, -AW*scale*.05, -AH*scale*.05, AW*scale*1.1, AH*scale*1.1); return c; };
   // C.blur 是各鏡頭共用的背景底：模糊要夠重，否則人物會在半透明底圖上留下像殘影的重影，
   // 所以這裡只留大塊的色塊分布（看得出主題色），看不出角色輪廓。
@@ -2028,6 +2037,10 @@ function shotCharacters(t,sh,u){
       g.drawImage(group.matte,0,sy,sourceW,sh,originX+wave*Math.pow(1-v,1.7),originY+sy*scale,sourceW*scale,sh*scale);
     }
   }
+  if(group.fallbackArt){
+    const art=group.fallbackArt, fit=Math.min((W-160)/art.width,740/art.height);
+    g.drawImage(art,(W-art.width*fit)/2,originY+(740-art.height*fit)/2,art.width*fit,art.height*fit);
+  }
   const focus=Math.floor(Math.max(0,local-2)/2)%actors.length;
   // solo 組的切圖來自各自獨立的立繪，沒有群像座標，改用網格平均排列（人數少時一列排開、每列置中）
   const solo=!!group.solo,n=actors.length,gw=sourceW*scale,gh=sourceH*scale;
@@ -2035,6 +2048,7 @@ function shotCharacters(t,sh,u){
   const cw=solo?gw/cols:0,chh=solo?gh/rows:0;
   const lineup=group.lineup?characterLineup(actors):null;
   actors.forEach((actor,i)=>{
+    if(group.fallbackArt) return;
     const slot=group.sheet==='lucky'?[0,1,5,6,2,3,4,7][i]:i;
     const col=solo?slot%cols:i,row=solo?Math.floor(slot/cols):0;
     const inRow=solo?Math.min(cols,n-row*cols):1;
@@ -2244,7 +2258,22 @@ async function init(){
   $('#modeLink').textContent=CHARACTER_PV ? '歌詞 PV' : '人物 PV';
   if(CHARACTER_PV) document.title='人物動畫 PV · '+song.title;
   msg('載入音訊與素材…');
-  const loadImg = src => new Promise((ok, no) => { const im = new Image(); im.onload = () => ok(im); im.onerror = () => no(new Error('找不到 ' + src)); im.src = src; });
+  const images = new Map();
+  function loadImg(src){
+    if(!images.has(src)){
+      images.set(src, new Promise((resolve, reject) => {
+        const image = new Image();
+        image.onload = () => resolve(image);
+        image.onerror = () => {
+          const error = new Error('找不到圖片 ' + src);
+          if(RENDER) reject(error);
+          else { console.warn(error.message); resolve(null); }
+        };
+        image.src = src;
+      }));
+    }
+    return images.get(src);
+  }
   const get = async (name, kind) => { const r = await fetch(encodeURIComponent(name)); if(!r.ok) throw new Error('找不到 ' + name); return r[kind](); };
   const [cover, srt, buf] = await Promise.all([loadImg(ART.src), get(song.subs, 'text'), get(song.audio, 'arrayBuffer')]);
   // 逐字填色時間軸（有的歌才有）：由 ASR 對到音訊後產生，見 tools/build-forever-fill.mjs
@@ -2252,14 +2281,22 @@ async function init(){
   const fillData = song.fill ? await fetch(song.fill).then(r => r.ok ? r.json() : null).catch(() => null) : null;
   await Promise.all([jpFont(40), zhFont(40), `300 40px ${FONT.mincho}`, `40px ${FONT.maru}`, `italic 800 40px ${FONT.logo}`, `600 40px ${FONT.cond}`]
     .map(f => document.fonts.load(f, 'あ漢字ABC')));
-  const castJson = await fetch('assets/ref/cast/cast.json').then(r => { if(!r.ok) throw new Error('找不到角色切圖，請先執行 node tools/cutout.mjs'); return r.json(); });
-  if(song.art==='vwest') FACES.push(...castJson.vwest.map(m=>m.groupFace));
-  await Promise.all(MEMBERS.map(async m => { m.meta = castJson[m.sheet][m.idx]; m.img = await loadImg('assets/ref/cast/' + m.meta.file); }));
+  const castJson = await fetch('assets/ref/cast/cast.json').then(r => { if(!r.ok) throw new Error('人物切圖清單載入失敗'); return r.json(); }).catch(error=>{
+    if(RENDER) throw error;
+    console.warn(error.message); return {};
+  });
+  if(song.art==='vwest') FACES.push(...(castJson.vwest||[]).map(m=>m.groupFace));
+  await Promise.all(MEMBERS.map(async m => {
+    m.meta=castJson[m.sheet]?.[m.idx];
+    if(m.meta?.file) m.img=await loadImg('assets/ref/cast/'+m.meta.file);
+    else if(RENDER) throw new Error(`缺少人物切圖：${m.sheet} / ${m.idx}`);
+  }));
   if(CHARACTER_PV) await Promise.all(CHARACTER_GROUPS.map(async group=>{
-    if(castJson[group.sheet]?.length!==group.count) throw new Error(`${group.title}切圖未完成，請執行 node tools/cutout.mjs`);
-    group.members=await Promise.all(castJson[group.sheet].map(async meta=>({meta,img:await loadImg('assets/ref/cast/'+meta.file)})));
-    group.art=await loadImg(group.src);
+    const entries=castJson[group.sheet]||[];
+    if(RENDER && entries.length!==group.count) throw new Error(`${group.title}切圖未齊全`);
+    group.members=await Promise.all(entries.map(async meta=>({meta,img:await loadImg('assets/ref/cast/'+meta.file)})));
     if(group.sheet==='stage') group.matte=await loadImg('assets/ref/stage9-matte.png');
+    if(!group.matte && (entries.length!==group.count || group.members.some(actor=>!actor.img))) group.fallbackArt=await loadImg(group.src);
     group.backdrop=mk(W,H);const ctx=group.backdrop.getContext('2d'),gradient=ctx.createLinearGradient(0,0,W,H);
     gradient.addColorStop(0,group.colors[0]);gradient.addColorStop(1,group.colors[1]);ctx.fillStyle=gradient;ctx.fillRect(0,0,W,H);
     ctx.fillStyle=`rgba(${CHAR_TINT},.48)`;ctx.fillRect(0,0,W,H);
@@ -2569,6 +2606,6 @@ function preview(buf){
   };
   loop();
 }
-window.PV = {ready:false,hold: false, render: t => {if(!A || !shots.length) throw new Error('PV 尚未載入'); window.PV.hold = true; render(t); }, get shots(){ return shots; }, get analysis(){ return A; }, get sections(){ return sections; },get groups(){return CHARACTER_GROUPS.map(({sheet,count,members})=>({sheet,count,loaded:members?.length||0}));}};
+window.PV = {ready:false,hold: false, render: t => {if(!A || !shots.length) throw new Error('PV 尚未載入'); window.PV.hold = true; render(t); }, get shots(){ return shots; }, get analysis(){ return A; }, get sections(){ return sections; },get groups(){return CHARACTER_GROUPS.map(({sheet,count,members})=>({sheet,count,loaded:members?.filter(actor=>actor.img).length||0}));}};
 init().catch(e => { console.error(e); msg('錯誤：' + e.message); if(RENDER) post('error', String(e.stack || e)); });
 })();

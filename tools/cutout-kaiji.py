@@ -1,10 +1,11 @@
 #!/usr/bin/env python3
 # 逆境無頼カイジ OP/ED 用：白底八人立繪切出八張透明 PNG＋一張 1920×1080 群像。
-# 八人靠得很近（只有最左邊有完全透明列），因此用固定的列邊界切開。
+# 八人靠得很近（只有最左邊有完全透明列），依各高度的外輪廓分開袖口與鞋尖。
 import json, os
 from PIL import Image, ImageDraw
 import numpy as np
 from scipy import ndimage
+from lineup_cutouts import split_lineup
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 OUT = os.path.join(ROOT, 'assets/ref/cast')
@@ -12,9 +13,19 @@ MANIFEST = os.path.join(OUT, 'cast.json')
 SRC = os.path.join(ROOT, 'assets/ref/kaiji/lineup.jpg')
 
 # 索引＝PV 卡司順序；主唱是中央的開司
-CHARS = [
-    ('船井', 0, 245), ('遠藤勇次', 245, 420), ('古畑', 420, 650), ('北見', 650, 875),
-    ('伊藤開司', 875, 1105), ('石田', 1105, 1320), ('大槻', 1320, 1548), ('兵藤和尊', 1548, 1920),
+CHARS = ['船井', '遠藤勇次', '古畑', '北見', '伊藤開司', '石田', '大槻', '兵藤和尊']
+# (y, x) guides follow the overlap of each pair, including their shoe tips.
+DIVIDERS = [
+    [(270, 227), (298, 224), (348, 234), (385, 239), (495, 220), (670, 225), (710, 225)],
+    [(200, 438), (350, 416), (470, 416), (655, 422), (710, 416)],
+    [(250, 640), (315, 643), (352, 648), (375, 635), (445, 613), (640, 631), (710, 606)],
+    [(210, 842), (280, 847), (290, 840), (300, 843), (307, 835), (320, 837), (337, 834), (346, 845), (360, 846), (375, 853),
+     (411, 847), (657, 840), (710, 823)],
+    [(210, 1096), (275, 1100), (288, 1097), (295, 1103), (303, 1101), (310, 1107), (326, 1103), (340, 1105), (350, 1097), (395, 1106), (710, 1100)],
+    [(225, 1314), (290, 1318), (320, 1317), (330, 1318), (337, 1316), (345, 1321), (357, 1320), (366, 1325), (377, 1323), (389, 1330),
+     (425, 1340), (650, 1320), (710, 1341)],
+    [(260, 1563), (328, 1548), (354, 1552), (380, 1554), (404, 1557),
+     (443, 1560), (474, 1560), (633, 1556), (683, 1544), (709, 1562)],
 ]
 
 
@@ -30,41 +41,25 @@ def main():
     seed[:, 0] = seed[:, -1] = True
     bg = ndimage.binary_propagation(seed, mask=nw)
     alpha = np.where(bg, 0, 255).astype(np.uint8)
-    # 相鄰角色手臂之間的空白會被包住，連不到邊界；把「高而窄的淺色封閉區」清掉
-    light = (alpha > 200) & (a.mean(axis=2) > 195)
-    lab, n = ndimage.label(light)
-    H = alpha.shape[0]
-    for i in range(1, n + 1):
-        ys, xs = np.where(lab == i)
-        if len(ys) < 200:
-            continue
-        if (ys.max() - ys.min()) > H * .3 and (xs.max() - xs.min()) < 70:
-            alpha[lab == i] = 0
-    # 腳踩在畫面底邊，腳與腳之間的白色被包住清不到；底部 12% 直接把淺色清掉
-    Hb = alpha.shape[0]
-    bottom = np.zeros_like(alpha, dtype=bool)
-    bottom[int(Hb * .88):, :] = True
-    alpha[bottom & (a.mean(axis=2) > 195)] = 0
+    # White spaces between legs/sleeves can be enclosed by the floor shadow.
+    # Select complete background regions reaching the floor to preserve white shoes.
+    labels, _ = ndimage.label(nw)
+    for label, bounds in enumerate(ndimage.find_objects(labels), 1):
+        rows, _ = bounds
+        if rows.start > im.height * .4 and rows.stop > im.height * .93 and rows.stop - rows.start > 75:
+            region = alpha[bounds]
+            region[labels[bounds] == label] = 0
+    # The neutral floor shadow joins neighbouring shoes. Flood from the
+    # cleared background, stopping at the darker outline of each shoe.
+    floor = np.arange(im.height)[:, None] > im.height * .94
+    shadow = floor & (np.ptp(a, axis=2) < 12) & (lum > 86)
+    alpha[ndimage.binary_propagation((alpha == 0) & floor, mask=shadow)] = 0
     soft = ndimage.gaussian_filter(alpha.astype(np.float32), 0.6)
     alpha = np.clip(np.minimum(alpha.astype(np.float32) + 10, soft * 1.04), 0, 255).astype(np.uint8)
     full = Image.fromarray(np.dstack([a.astype(np.uint8), alpha]), 'RGBA')
     entries = []
-    for i, (name, x0, x1) in enumerate(CHARS):
-        part = full.crop((x0, 0, x1, full.height))
-        arr = np.array(part)
-        ys, xs = np.where(arr[:, :, 3] > 24)
-        part = part.crop((xs.min(), ys.min(), xs.max() + 1, ys.max() + 1))
-        # 角色之間被手臂包住的白色會貼著裁切邊緣，這裡再清一次
-        pa = np.array(part)
-        pl = (pa[:, :, 3] > 150) & (pa[:, :, :3].mean(axis=2) > 195)
-        plab, pn = ndimage.label(pl)
-        for j in range(1, pn + 1):
-            yy2, xx2 = np.where(plab == j)
-            if len(yy2) < 300:
-                continue
-            if xx2.min() <= 2 or xx2.max() >= part.width - 3:
-                pa[plab == j, 3] = 0
-        part = Image.fromarray(pa, 'RGBA')
+    for i, (part, source) in enumerate(split_lineup(full, DIVIDERS)):
+        name = CHARS[i]
         file = f'kaiji-{i}.png'
         part.save(os.path.join(OUT, file))
         top = np.array(part)[:, :, 3] > 128
@@ -73,7 +68,7 @@ def main():
         entries.append({'file': file, 'w': part.width, 'h': part.height,
                         'headX': int(round(xx.mean())) if len(xx) else part.width // 2,
                         'headY': int(round(part.height * .10)),
-                        'source': [x0, 0], 'sheet': 'kaiji-ref', 'name': name, 'intact': True})
+                        'source': source, 'sheet': 'kaiji-ref', 'name': name, 'intact': True})
     data = json.load(open(MANIFEST, encoding='utf-8'))
     data['kaiji'] = entries
     json.dump(data, open(MANIFEST, 'w', encoding='utf-8'), ensure_ascii=False, indent=1)

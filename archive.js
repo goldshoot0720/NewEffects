@@ -42,6 +42,7 @@
   let currentCharacter;
   let angle = 0;
   let drag;
+  let pendingView;
 
   cards.innerHTML = characters.map(character => `
     <button class="card" type="button" data-character="${character.id}" data-category="${character.category}" style="--tint:${character.tint}">
@@ -54,6 +55,16 @@
         <span class="card-arrow" aria-hidden="true">↗</span>
       </span>
     </button>`).join('');
+
+  for (const preview of document.querySelectorAll('[data-character] img')) {
+    const portrait = imagePath({id: preview.closest('[data-character]').dataset.character}, 'portrait');
+    const recover = () => {
+      if (preview.getAttribute('src') === portrait) preview.style.visibility = 'hidden';
+      else preview.src = portrait;
+    };
+    preview.onerror = recover;
+    if (preview.complete && !preview.naturalWidth && preview.loading !== 'lazy') recover();
+  }
 
   views.innerHTML = viewTypes.map(view =>
     `<button type="button" data-view="${view.id}" aria-pressed="false">${view.label}</button>`
@@ -78,11 +89,23 @@
     byId('result-count').textContent = `${count} 位角色`;
   });
 
-  function showView(selected) {
+  async function showView(selected) {
     const view = viewTypes.find(type => type.id === selected.dataset.view);
     markSelected(views, selected);
     const rotating = view.id === 'turntable';
     const file = imagePath(currentCharacter, rotating ? 'sheet' : view.id);
+    const preview = new Image();
+    pendingView = preview;
+    download.hidden = turntable.hidden = byId('detail-art').hidden = true;
+    byId('detail-caption').textContent = '載入圖片…';
+    preview.src = file;
+    try {
+      await preview.decode();
+    } catch {
+      if (pendingView === preview) byId('detail-caption').textContent = `${view.label}載入失敗，點選上方檢視可重試。`;
+      return;
+    }
+    if (pendingView !== preview) return;
     byId('detail-art').hidden = rotating;
     turntable.hidden = !rotating;
     if (rotating) {
@@ -96,6 +119,7 @@
     byId('download-label').textContent = rotating ? '下載三視圖' : '下載圖片';
     download.href = file;
     download.download = `${currentCharacter.name}-${rotating ? '三視圖' : view.label}.webp`;
+    download.hidden = false;
   }
 
   function showAngle(index) {

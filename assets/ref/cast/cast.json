@@ -1861,13 +1861,13 @@
  "matryoshka": [
   {
    "file": "matryoshka-0.png",
-   "w": 178,
-   "h": 605,
+   "w": 180,
+   "h": 607,
    "headX": 91,
-   "headY": 60,
+   "headY": 61,
    "source": [
-    29,
-    0
+    30,
+    104
    ],
    "sheet": "matryoshka-ref",
    "name": "井稲田",
@@ -1875,13 +1875,13 @@
   },
   {
    "file": "matryoshka-1.png",
-   "w": 210,
-   "h": 680,
-   "headX": 131,
+   "w": 249,
+   "h": 684,
+   "headX": 132,
    "headY": 68,
    "source": [
-    208,
-    0
+    210,
+    31
    ],
    "sheet": "matryoshka-ref",
    "name": "真坂本",
@@ -1889,13 +1889,13 @@
   },
   {
    "file": "matryoshka-2.png",
-   "w": 204,
-   "h": 651,
-   "headX": 144,
+   "w": 237,
+   "h": 654,
+   "headX": 122,
    "headY": 65,
    "source": [
-    418,
-    0
+    441,
+    58
    ],
    "sheet": "matryoshka-ref",
    "name": "真朱",
@@ -1903,13 +1903,13 @@
   },
   {
    "file": "matryoshka-3.png",
-   "w": 220,
-   "h": 630,
-   "headX": 118,
+   "w": 180,
+   "h": 631,
+   "headX": 77,
    "headY": 63,
    "source": [
-    622,
-    0
+    664,
+    80
    ],
    "sheet": "matryoshka-ref",
    "name": "余賀公磨",
@@ -1917,13 +1917,13 @@
   },
   {
    "file": "matryoshka-4.png",
-   "w": 180,
-   "h": 689,
-   "headX": 85,
+   "w": 230,
+   "h": 690,
+   "headX": 87,
    "headY": 69,
    "source": [
-    852,
-    0
+    850,
+    22
    ],
    "sheet": "matryoshka-ref",
    "name": "三國壮一郎",
@@ -1931,13 +1931,13 @@
   },
   {
    "file": "matryoshka-5.png",
-   "w": 194,
-   "h": 609,
-   "headX": 101,
+   "w": 188,
+   "h": 610,
+   "headX": 93,
    "headY": 61,
    "source": [
-    1032,
-    0
+    1040,
+    102
    ],
    "sheet": "matryoshka-ref",
    "name": "Q",
@@ -1945,13 +1945,13 @@
   },
   {
    "file": "matryoshka-6.png",
-   "w": 154,
-   "h": 597,
-   "headX": 73,
+   "w": 156,
+   "h": 600,
+   "headX": 74,
    "headY": 60,
    "source": [
-    1238,
-    0
+    1236,
+    111
    ],
    "sheet": "matryoshka-ref",
    "name": "生田羽奈日",
@@ -1959,13 +1959,13 @@
   },
   {
    "file": "matryoshka-7.png",
-   "w": 190,
+   "w": 196,
    "h": 653,
-   "headX": 86,
+   "headX": 87,
    "headY": 65,
    "source": [
-    1412,
-    0
+    1411,
+    55
    ],
    "sheet": "matryoshka-ref",
    "name": "ジェニファー",
@@ -1973,13 +1973,13 @@
   },
   {
    "file": "matryoshka-8.png",
-   "w": 204,
-   "h": 620,
-   "headX": 99,
+   "w": 201,
+   "h": 622,
+   "headX": 96,
    "headY": 62,
    "source": [
-    1602,
-    0
+    1605,
+    87
    ],
    "sheet": "matryoshka-ref",
    "name": "竹田崎重臣",
@@ -1989,13 +1989,13 @@
  "kaiji": [
   {
    "file": "kaiji-0.png",
-   "w": 228,
+   "w": 216,
    "h": 617,
-   "headX": 119,
+   "headX": 113,
    "headY": 62,
    "source": [
-    0,
-    0
+    23,
+    96
    ],
    "sheet": "kaiji-ref",
    "name": "船井",
@@ -2003,13 +2003,13 @@
   },
   {
    "file": "kaiji-1.png",
-   "w": 175,
-   "h": 635,
-   "headX": 74,
-   "headY": 64,
+   "w": 210,
+   "h": 634,
+   "headX": 95,
+   "headY": 63,
    "source": [
-    245,
-    0
+    224,
+    79
    ],
    "sheet": "kaiji-ref",
    "name": "遠藤勇次",
@@ -2017,13 +2017,13 @@
   },
   {
    "file": "kaiji-2.png",
-   "w": 230,
-   "h": 669,
-   "headX": 99,
+   "w": 232,
+   "h": 668,
+   "headX": 103,
    "headY": 67,
    "source": [
-    420,
-    0
+    416,
+    46
    ],
    "sheet": "kaiji-ref",
    "name": "古畑",
@@ -2031,13 +2031,13 @@
   },
   {
    "file": "kaiji-3.png",
-   "w": 225,
-   "h": 667,
-   "headX": 79,
+   "w": 242,
+   "h": 666,
+   "headX": 119,
    "headY": 67,
    "source": [
-    650,
-    0
+    610,
+    50
    ],
    "sheet": "kaiji-ref",
    "name": "北見",
@@ -2045,13 +2045,13 @@
   },
   {
    "file": "kaiji-4.png",
-   "w": 230,
-   "h": 711,
-   "headX": 87,
+   "w": 280,
+   "h": 710,
+   "headX": 135,
    "headY": 71,
    "source": [
-    875,
-    0
+    827,
+    7
    ],
    "sheet": "kaiji-ref",
    "name": "伊藤開司",
@@ -2059,13 +2059,13 @@
   },
   {
    "file": "kaiji-5.png",
-   "w": 215,
+   "w": 242,
    "h": 696,
-   "headX": 142,
+   "headX": 154,
    "headY": 70,
    "source": [
-    1105,
-    0
+    1093,
+    21
    ],
    "sheet": "kaiji-ref",
    "name": "石田",
@@ -2073,13 +2073,13 @@
   },
   {
    "file": "kaiji-6.png",
-   "w": 228,
-   "h": 648,
-   "headX": 151,
+   "w": 254,
+   "h": 647,
+   "headX": 158,
    "headY": 65,
    "source": [
-    1320,
-    0
+    1314,
+    67
    ],
    "sheet": "kaiji-ref",
    "name": "大槻",
@@ -2087,13 +2087,13 @@
   },
   {
    "file": "kaiji-7.png",
-   "w": 371,
-   "h": 710,
-   "headX": 161,
+   "w": 376,
+   "h": 709,
+   "headX": 166,
    "headY": 71,
    "source": [
-    1548,
-    0
+    1543,
+    2
    ],
    "sheet": "kaiji-ref",
    "name": "兵藤和尊",

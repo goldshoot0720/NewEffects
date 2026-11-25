@@ -27,7 +27,7 @@
   const actors = {best4u: [], anaru: [], lucky: [], kaguya: [], aiura: [], growup: [], extreme: [], vwest:[], forever:[], tsuki:[], kaze:[], osewa:[], fx:[], rolling:[], mirai:[], matryoshka:[], kaiji:[], inside:[]};
   let active = 'best4u';
   const api = window.SpriteDancers = {ready: false, error: null, draw, use, count};
-  function use(name){ if(actors[name]?.length) active = name; }
+  function use(name){ active = Object.hasOwn(SETS, name) ? name : 'best4u'; }
   // 只有目前這組已載入時才回報人數，讓呼叫端在素材還沒好之前沿用預設的六人
   function count(name){ return active === name ? actors[name].length : 0; }
   function fail(message){
@@ -36,10 +36,12 @@
     console.warn(message);
   }
   function loadSet(cast, spec){
-    return Promise.all(spec.idx.map(i => new Promise((ok, no) => {
-      const meta = cast[spec.sheet][i], img = new Image();
+    return Promise.all(spec.idx.map(i => new Promise(ok => {
+      const meta = cast[spec.sheet]?.[i];
+      if(!meta?.file){ ok(null); return; }
+      const img = new Image();
       img.onload = () => ok({img, meta});
-      img.onerror = () => no(new Error('找不到 ' + (meta && meta.file)));
+      img.onerror = () => { console.warn('找不到 ' + meta.file); ok(null); };
       img.src = 'assets/ref/cast/' + meta.file;
     })));
   }
@@ -56,7 +58,7 @@
 
   function draw(ctx, index, x, y, height, state){
     const actor = actors[active][index];
-    if(!api.ready || !actor) return;
+    if(!api.ready || !actor) return false;
     const {img} = actor, iw = img.width, ih = img.height, w = iw*height/ih;
     const wave = state.wave || 0, energy = state.energy || 0, squash = state.squash || 0;
     ctx.save();
@@ -76,5 +78,6 @@
       ctx.beginPath(); ctx.ellipse(x, y, w*.42, height*.03, 0, 0, Math.PI*2); ctx.stroke();
       ctx.restore();
     }
+    return true;
   }
 })();

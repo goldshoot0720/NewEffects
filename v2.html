@@ -58,6 +58,7 @@ header .pv-link+.pv-link{margin-left:0}
 #dim.off{opacity:0}
 #fx,#dance{position:absolute;inset:0;width:100%;height:100%;pointer-events:none}
 #dance[hidden]{display:none}
+#cover .bg,#cover .art{background-image:var(--img,none),linear-gradient(145deg,#342344,#171328 62%,#552d49)}
 #stage.dancing #cover .art{opacity:.12;filter:blur(3px);height:100%;top:50%}
 #stage.dancing #cover .bg{filter:blur(38px) brightness(.25) saturate(1.2)}
 #stage.dancing #titlecard{justify-content:flex-start;padding-top:3%}
@@ -458,33 +459,33 @@ function showMsg(html){ const m = $('#msg'); m.innerHTML = html; m.classList.tog
 const DEFAULT_SONGS = [
   {id: 'C3G_fAPgQNk', title: '大好きだよって叫ぶんだ [小日向理瀬ver.]',
    audio: '大好きだよって叫ぶんだ [小日向理瀬ver.].mp3',
-   subs: 'Subtitle_この想いは止められないよ いつだって眩...も_1790793102916.srt', lead: 0},
+   subs: 'Subtitle_この想いは止められないよ いつだって眩...も_1790793102916.srt', lead: 0, cover: 'assets/best4u-cover.webp'},
   {id: 'UkGtRu6X72E', title: 'SUNRISE [小日向理瀬ver.]',
    audio: 'SUNRISE [小日向理瀬ver.].mp3',
-   subs: 'Subtitle_《SUN RISE…》手をとっては競い...…_1790794218236.srt', lead: 0},
+   subs: 'Subtitle_《SUN RISE…》手をとっては競い...…_1790794218236.srt', lead: 0, cover: 'assets/ref/rooftop6.webp'},
   {id: '1BV6fsfu7ZU', title: 'HELLO HERO [御社 智ver.]',
    audio: 'HELLO HERO [御社 智ver.].mp3',
-   subs: 'Subtitle_これまでもこれからも　変わらずいるよヨ...る_1790795207681.srt', lead: 5},
+   subs: 'Subtitle_これまでもこれからも　変わらずいるよヨ...る_1790795207681.srt', lead: 5, cover: 'assets/ref/stage9.webp'},
   {id: 'rNbXIeLdU0M', title: '風の中は走るっきゃないっ！ [三月のパンタシア]',
    audio: '風の中は走るっきゃないっ！ [三月のパンタシア].mp3',
    subs: '風の中は走るっきゃないっ！.srt', lead: 0, cast: 'kaze', cover: 'assets/ref/kaze-cover.jpg'},
   {id: 'BFSmN6fQ_04', title: 'ぴ [ナナヲアカリ]',
    audio: 'ぴ [ナナヲアカリ].mp3',
-   subs: 'ぴ.srt', lead: 0, cast: 'anaru'},
+   subs: 'ぴ.srt', lead: 0, cast: 'anaru', cover: 'assets/ref/anaru6.png'},
   // Suno 生成曲，沒有 YouTube 影片，直接播本機 MP3
   {id: 'suno-e093a932', title: '統一發票頭獎得主鋒兄威力彩頭獎得主塗哥',
    audio: '統一發票頭獎得主鋒兄威力彩頭獎得主塗哥.mp3',
    subs: '統一發票頭獎得主鋒兄威力彩頭獎得主塗哥.srt', lead: 2, cast: 'lucky', cover: 'assets/ref/lucky8.png'},
   {id: 'hw-watashi', title: '私は、わたしの事が好き。 [かぐや(cv.夏吉ゆうこ)]',
    audio: '私は、わたしの事が好き。 [かぐや(cv.夏吉ゆうこ)].mp3',
-   subs: '私は、わたしの事が好き。.srt', lead: 0, cast: 'kaguya'},
+   subs: '私は、わたしの事が好き。.srt', lead: 0, cast: 'kaguya', cover: 'assets/ref/kaguya-group.png'},
   {id: 'lk7NsqwWiA0', title: 'カニ☆Do-Luck! [あいうらぶ]',
    audio: 'カニ☆Do-Luck!.mp3',
-   subs: 'カニ☆Do-Luck!.srt', lead: 0, cast: 'aiura'},
+   subs: 'カニ☆Do-Luck!.srt', lead: 0, cast: 'aiura', cover: 'assets/ref/aiura-cover.png'},
   {id: '2SHNY5v6DnM', title: 'ユラリユレル [NOMELON NOLEMON]',
-   audio: 'yurariyureru.mp3', subs: 'yurariyureru.srt', lead: 0, cast: 'growup'},
+   audio: 'yurariyureru.mp3', subs: 'yurariyureru.srt', lead: 0, cast: 'growup', cover: 'assets/ref/growup/group.png'},
   {id: 'ZrRHLwP2_fI', title: '明日へのBreakShoot [葉山陽和ver.]',
-   audio: '明日へのBreakShoot [葉山陽和ver.].mp3', subs: '明日へのBreakShoot.srt', lead: 1, cast: 'extreme'},
+   audio: '明日へのBreakShoot [葉山陽和ver.].mp3', subs: '明日へのBreakShoot.srt', lead: 1, cast: 'extreme', cover: 'assets/ref/breakshoot-cover.png'},
   {id: 'suno-96beab8e', title: '統一發票頭獎得主鋒兄威力彩頭獎得主塗哥(英文歌詞)',
    audio: '統一發票頭獎得主鋒兄威力彩頭獎得主塗哥(英文歌詞).mp3',
    subs: '統一發票頭獎得主鋒兄威力彩頭獎得主塗哥(英文歌詞).srt', lead: 2, cast: 'lucky', cover: 'assets/ref/lucky8.png'},
@@ -696,7 +697,8 @@ function audioUrl(id){
 function showCover(id){
   const c = $('#cover');
   c.hidden = !id;
-  if(id) c.style.setProperty('--img', `url(${cfgOf(id).cover || `https://i.ytimg.com/vi/${id}/maxresdefault.jpg`})`);
+  const cover = cfgOf(id).cover || (/^[\w-]{11}$/.test(id) ? `https://i.ytimg.com/vi/${id}/hqdefault.jpg` : null);
+  c.style.setProperty('--img', cover ? `url("${cover}")` : 'none');
 }
 $('#srcSeg').addEventListener('click', e => {
   const b = e.target.closest('button'); if(!b || !curSong || srcOf(curSong) === b.dataset.src) return;

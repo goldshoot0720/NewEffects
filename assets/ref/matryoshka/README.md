@@ -29,12 +29,9 @@ ASR 把「マトリョーシカ」聽成「惑う力」、「引っ剥がして�
 
 `tools/cutout-matryoshka.py` 從黑底立繪切出九人：
 
-1. 先裁掉底部名牌（y ≥ 712）。
-2. 黑底用「從邊界連通的暗色（亮度 < 26）」判定——衣服的黑色因為被輪廓包住，不會被吃掉。
-3. 九人彼此相連（只有 5 段完全透明列），因此用固定的列邊界切開，而不是連通域。
-4. 輸出 `assets/ref/cast/matryoshka-0..8.png`，寫入 `cast.json` 的 `matryoshka` 群組，並拼成群像 `assets/ref/matryoshka-group.png`。
+優先使用無名牌原圖，保留完整鞋底。從邊界移除相連的黑色背景，清除零星的 JPEG 雜點，再沿相鄰人物的輪廓分開手指、衣物與鞋子。帶名牌的備用原圖才會裁去底部名牌。
 
-已知小瑕疵：少數角色邊緣會夾到隔壁的一小塊（例如鞋尖），不影響整體。
+輸出為 `assets/ref/cast/matryoshka-0..8.png`。原圖座標與尺寸存於 `cast.json`，群像為 `assets/ref/matryoshka-group.png`。
 
 重建：
 

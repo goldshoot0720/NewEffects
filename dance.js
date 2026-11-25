@@ -113,11 +113,11 @@ function drawDancer(m, x, y, s, st){
   if(prefs.danceStyle === 'anime' && window.SpriteDancers?.ready){
     const fit=Math.min(1, CW/CH/2.05);
     const crowded=dancers.length>12;
-    SpriteDancers.draw(g,m.index,x,y,CH*(st.mic ? (crowded?.43:st.duet?.47:.53) : (crowded?.29:.43))*fit,{
+    const painted = SpriteDancers.draw(g,m.index,x,y,CH*(st.mic ? (crowded?.43:st.duet?.47:.53) : (crowded?.29:.43))*fit,{
       wave:st.armWave,energy:st.energy,hop:st.hopY*CH/155,
       tilt:st.tilt,squash:st.squash*.45,mouth:st.mouth,lead:st.mic
     });
-    return st;
+    if(painted) return st;
   }
   const sw = st.sway;
   g.save();

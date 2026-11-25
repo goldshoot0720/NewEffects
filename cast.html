@@ -11,6 +11,7 @@ section{margin-bottom:40px}h2{font-size:18px}.grid{display:grid;grid-template-co
 figure{margin:0;padding:12px;border:1px solid #35435c;border-radius:12px;background:linear-gradient(135deg,#273548,#1a2536)}
 img{width:100%;height:310px;object-fit:contain;display:block}figcaption{display:flex;justify-content:space-between;gap:8px;margin-top:12px;font-size:13px;color:#bbc9dc}
 #status{color:#b5cbdf;font-size:14px}@media(max-width:500px){main{padding:16px}.grid{grid-template-columns:repeat(2,minmax(0,1fr))}img{height:250px}figure{padding:8px}}
+[hidden]{display:none!important}.retry{display:block;margin:1em auto;padding:.6em 1em}
 </style>
 </head>
 <body>
@@ -22,25 +23,41 @@ const groups=[['casual','制服與便服',12],['rooftop','屋頂制服',6],['ido
 const excludedGroups=new Set(['mirai']);
 (async()=>{
   const response=await fetch('assets/ref/cast/cast.json');if(!response.ok)throw new Error('找不到人物清單');
-  const cast=await response.json();let count=0,loaded=0;
+  const cast=await response.json();let loaded=0,failed=0;
   // 之後新增的切圖只要寫進 cast.json，就算沒補到上面的順序表也會自動排在最後，不會整組消失
   const listed=new Set(groups.map(([key])=>key));
   for(const [key,list] of Object.entries(cast)) if(!listed.has(key)&&!excludedGroups.has(key)) groups.push([key,key,list.length]);
-  const total=groups.reduce((sum,group)=>sum+group[2],0);
-  for(const [key,title,expected] of groups){
-    const list=cast[key];if(list?.length!==expected)throw new Error(title+'切圖未齊全');
+  const total=groups.reduce((sum,[key])=>sum+(cast[key]?.length||0),0);
+  const incomplete=groups.filter(([key,,expected])=>cast[key]?.length!==expected).map(([,title])=>title);
+  function updateStatus(){
+    const notes=[`${loaded} / ${total} 張透明 PNG 已載入`];
+    if(failed) notes.push(`${failed} 張讀取失敗，可重新載入`);
+    if(incomplete.length) notes.push('切圖未齊全：'+incomplete.join('、'));
+    document.getElementById('status').textContent=notes.join(' · ');
+  }
+  for(const [key,title] of groups){
+    const list=cast[key]||[];
     const section=document.createElement('section'),heading=document.createElement('h2'),grid=document.createElement('div');
     heading.textContent=`${title} · ${list.length} 張`;grid.className='grid';section.append(heading,grid);document.getElementById('gallery').append(section);
     for(const [i,item] of list.entries()){
       const figure=document.createElement('figure'),image=document.createElement('img'),caption=document.createElement('figcaption'),name=document.createElement('span'),link=document.createElement('a');
-      image.src='assets/ref/cast/'+item.file;image.alt=item.name || `${title}人物 ${i+1}`;
-      image.onload=()=>{loaded++;document.getElementById('status').textContent=`${loaded} / ${total} 張透明 PNG 已載入`;};
-      image.onerror=()=>{document.getElementById('status').textContent='素材讀取失敗：'+item.file;};
-      name.textContent=`${item.name || String(i+1).padStart(2,'0')} · ${item.w}×${item.h}`;link.href=image.src;link.download=item.file;link.textContent='下載';
-      caption.append(name,link);figure.append(image,caption);grid.append(figure);count++;
+      const retry=document.createElement('button');
+      retry.type='button';retry.className='retry';retry.hidden=true;retry.textContent='重新載入圖片';
+      image.alt=item.name || `${title}人物 ${i+1}`;
+      retry.setAttribute('aria-label','重新載入'+image.alt);
+      name.textContent=`${item.name || String(i+1).padStart(2,'0')} · ${item.w}×${item.h}`;
+      link.href='assets/ref/cast/'+item.file;link.download=item.file;link.textContent='下載';link.hidden=true;
+      image.onload=()=>{loaded++;image.hidden=link.hidden=false;updateStatus();};
+      image.onerror=()=>{failed++;image.hidden=true;retry.hidden=false;updateStatus();};
+      retry.onclick=()=>{
+        retry.hidden=true;failed--;updateStatus();
+        const url=new URL(link.href);url.searchParams.set('retry',Date.now());image.src=url.href;
+      };
+      caption.append(name,link);figure.append(image,retry,caption);grid.append(figure);
+      image.src=link.href;
     }
   }
-  document.getElementById('status').textContent=`共 ${count} 張透明 PNG`;
+  updateStatus();
 })().catch(e=>{document.getElementById('status').textContent='錯誤：'+e.message;});
 </script>
 </body></html>

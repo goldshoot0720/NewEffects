@@ -430,8 +430,7 @@
   }
 
   function draw(ctx, img, x, y, h, st = {}){
-    if(!img) return;
-    const r = measure(img);
+    if(!img?.width || !img.height || !Number.isFinite(h) || h <= 0) return;
     const w = img.width*h/img.height;
     const hop = st.hop || 0, sq = st.squash || 0, tilt = (st.tilt || 0)*.6;
     // 深色服裝站在深色舞台上會整隻看不見：黑襪子融進背景，看起來像小腿被切斷。
@@ -442,6 +441,7 @@
       ctx.save(); ctx.translate(x, y); ctx.translate(0, -hop); ctx.rotate(tilt); ctx.scale(1 + sq*.5, 1 - sq);
       ctx.drawImage(img, -w/2, -h, w, h); ctx.restore(); return;
     }
+    const r = measure(img);
     if(!r.ok){
       ctx.save(); ctx.translate(x, y); ctx.translate(0, -hop); ctx.rotate(tilt); ctx.scale(1 + sq*.5, 1 - sq);
       ctx.drawImage(img, -w/2, -h, w, h); ctx.restore(); return;
