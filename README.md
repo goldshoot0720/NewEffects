@@ -242,7 +242,7 @@ macOS 也可雙擊 `啟動播放器.command`，會在終端機啟動伺服器並
 
 已加入歌詞 PV（編號 70，約 260.37 秒）與第二版播放器，為 TV 動畫《中二病でも恋がしたい！》的 ED；使用者提供的是白河しらせ・ももしき・綿宮あひる・すいみゃ 四人的翻唱版，`ver` 沿用原唱 Black Raison d’être。歌詞由使用者提供，時間軸以 `tools/asr.py`（large-v3-turbo）取得，ASR 把「可愛い～って誰かが言って／となりでこだまして」這類句子拆成兩段，字幕照歌詞合回一句；6.1–17.0、89.0–99.7、161.5–182.1 是間奏。可用 `node tools/build-inside-subtitles.mjs` 重建 SRT。
 
-封面（`assets/ref/inside-identity/cover.jpg`，1279×720）的紅底撕紙邊直接當歌詞 PV 的主視覺；四位角色由 `tools/cutout-inside.py` 切出：呼叫 macOS Vision 的前景遮罩（`tools/vision-cutout.swift`）逐人取出，第三、第四人在 864–866 之間分開，只留最大連通域避免夾到鄰人。封面底部的白色標題「INSIDE MY FEELING」壓在鞋子上，切圖時依「字壓在紅地板還是鞋面」分別去掉 alpha 或補色。角色順序照封面署名由左至右對應，`cast` 索引 0–3 為主唱預設。人物 PV 沿用同一組四張精靈（`lineup:true`），主題 `inside` 走暗紅到緋紅。
+歌詞 PV 的主視覺採用原版紅底封面 `assets/ref/inside-identity/cover.jpg`。四位歌手的全身立繪依封面與影片畫面重繪，存於透明人物圖 `assets/ref/inside-identity/lineup.png`。執行 `python3 tools/cutout-inside.py` 可重建四張切圖與清單。歌詞 PV、人物 PV、切圖頁與第二版播放器共用這組立繪。
 
 ### 明日へのBreakShoot：葉山陽和 ver.
 

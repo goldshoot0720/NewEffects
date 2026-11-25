@@ -65,7 +65,7 @@ const ARTS = {
   // マトリョーシカ：黑底九人立繪由 tools/cutout-matryoshka.py 去背並拼成群像
   matryoshka: {src: 'assets/ref/matryoshka-group.png', crop: [0, 0, 1920, 1080],
     faces: [[300, 300], [530, 300], [740, 300], [960, 300], [1180, 300], [1390, 300], [1570, 300], [1740, 300]]},
-  // INSIDE IDENTITY：使用者提供的封面（紅底撕紙邊），四人由 tools/cutout-inside.py 用 Vision 切出
+  // INSIDE IDENTITY：使用者提供的封面（紅底撕紙邊），四人立繪由 tools/cutout-inside.py 從透明人物圖切出
   inside: {src: 'assets/ref/inside-identity/cover.jpg', crop: [0, 0, 1279, 720],
     faces: [[293, 147], [521, 146], [758, 79], [1013, 130]]}
 };

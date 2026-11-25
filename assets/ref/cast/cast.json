@@ -2103,13 +2103,13 @@
  "inside": [
   {
    "file": "inside-0.png",
-   "w": 218,
-   "h": 586,
-   "headX": 118,
-   "headY": 59,
+   "w": 271,
+   "h": 702,
+   "headX": 126,
+   "headY": 70,
    "source": [
-    175,
-    88
+    187,
+    28
    ],
    "sheet": "inside-ref",
    "name": "白河しらせ",
@@ -2117,13 +2117,13 @@
   },
   {
    "file": "inside-1.png",
-   "w": 243,
-   "h": 600,
-   "headX": 113,
-   "headY": 60,
+   "w": 299,
+   "h": 705,
+   "headX": 139,
+   "headY": 70,
    "source": [
-    408,
-    86
+    674,
+    24
    ],
    "sheet": "inside-ref",
    "name": "ももしき",
@@ -2131,13 +2131,13 @@
   },
   {
    "file": "inside-2.png",
-   "w": 222,
-   "h": 675,
-   "headX": 116,
-   "headY": 68,
+   "w": 307,
+   "h": 728,
+   "headX": 148,
+   "headY": 73,
    "source": [
-    642,
-    12
+    1168,
+    4
    ],
    "sheet": "inside-ref",
    "name": "綿宮あひる",
@@ -2145,13 +2145,13 @@
   },
   {
    "file": "inside-3.png",
-   "w": 248,
-   "h": 601,
-   "headX": 147,
-   "headY": 60,
+   "w": 344,
+   "h": 730,
+   "headX": 217,
+   "headY": 73,
    "source": [
-    866,
-    70
+    1635,
+    2
    ],
    "sheet": "inside-ref",
    "name": "すいみゃ",
