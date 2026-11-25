@@ -349,7 +349,7 @@ const SONGS = [
   {title:'終わらない歌', ver:'THE ROLLING GIRLS', file:'終わらない歌', subs:'終わらない歌.srt', theme:'owaranai', art:'rolling', lead:0, noBike:true,
    series:'ローリング☆ガールズ', tv:'ローリング☆ガールズ', kicker:'挿入歌',
    cast:[['rolling',0,'森友望未','#9db06a'],['rolling',3,'御園千綾','#f0a8c0'],['rolling',2,'響逢衣','#e08a5a'],['rolling',1,'小坂結季奈','#9fb8c8']]},
-  {title:'INSIDE IDENTITY', ver:'Black Raison d’être', file:'INSIDE IDENTITY', subs:'INSIDE IDENTITY.srt', theme:'inside', art:'inside', lead:0,
+  {title:'INSIDE IDENTITY', ver:'Black Raison d’être', file:'INSIDE IDENTITY', subs:'INSIDE IDENTITY.srt', fill:'assets/ref/inside-identity/fill-ja.json', theme:'inside', art:'inside', lead:0,
    series:'中二病でも恋がしたい！', tv:'中二病でも恋がしたい！', kicker:'EDテーマ',
    cast:[['inside',0,'白河しらせ','#d9a05b'],['inside',1,'ももしき','#c9c9d6'],['inside',2,'綿宮あひる','#f07a9a'],['inside',3,'すいみゃ','#f0c95a']]}
 ];

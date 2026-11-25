@@ -240,7 +240,7 @@ macOS 也可雙擊 `啟動播放器.command`，會在終端機啟動伺服器並
 
 ### INSIDE IDENTITY：Black Raison d’être
 
-已加入歌詞 PV（編號 70，約 260.37 秒）與第二版播放器，為 TV 動畫《中二病でも恋がしたい！》的 ED；使用者提供的是白河しらせ・ももしき・綿宮あひる・すいみゃ 四人的翻唱版，`ver` 沿用原唱 Black Raison d’être。歌詞由使用者提供，時間軸以 `tools/asr.py`（large-v3-turbo）取得，ASR 把「可愛い～って誰かが言って／となりでこだまして」這類句子拆成兩段，字幕照歌詞合回一句；6.1–17.0、89.0–99.7、161.5–182.1 是間奏。可用 `node tools/build-inside-subtitles.mjs` 重建 SRT。
+已加入歌詞 PV（編號 70，約 260.37 秒）與第二版播放器，為 TV 動畫《中二病でも恋がしたい！》的 ED；使用者提供的是白河しらせ・ももしき・綿宮あひる・すいみゃ 四人的翻唱版，`ver` 沿用原唱 Black Raison d’être。歌詞由使用者提供，時間軸以 `tools/asr.py`（large-v3-turbo）取得，ASR 把「可愛い～って誰かが言って／となりでこだまして」這類句子拆成兩段，字幕照歌詞合回一句；片頭、橋段和副歌的部分句界依這個翻唱版本的人聲校正。九句另有逐詞填色時間，供兩個播放器共用。執行 `node tools/build-inside-subtitles.mjs` 可一起重建 SRT 與填色時間檔。
 
 歌詞 PV 的主視覺採用原版紅底封面 `assets/ref/inside-identity/cover.jpg`。四位歌手的全身立繪依封面與影片畫面重繪，存於透明人物圖 `assets/ref/inside-identity/lineup.png`。執行 `python3 tools/cutout-inside.py` 可重建四張切圖與清單。歌詞 PV、人物 PV、切圖頁與第二版播放器共用這組立繪。
 

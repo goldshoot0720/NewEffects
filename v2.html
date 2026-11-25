@@ -552,7 +552,7 @@ const DEFAULT_SONGS = [
   {id:'stones',title:'STONES [THE ROLLING GIRLS]',audio:'STONES.mp3',subs:'STONES.srt',cover:'assets/ref/rolling-group.png',lead:0,cast:'rolling'},
   {id:'yuugure',title:'夕暮れ [THE ROLLING GIRLS]',audio:'夕暮れ.mp3',subs:'夕暮れ.srt',cover:'assets/ref/rolling-group.png',lead:0,cast:'rolling'},
   {id:'owaranai-uta',title:'終わらない歌 [THE ROLLING GIRLS]',audio:'終わらない歌.mp3',subs:'終わらない歌.srt',cover:'assets/ref/rolling-group.png',lead:0,cast:'rolling'},
-  {id:'inside-identity',title:'INSIDE IDENTITY [Black Raison d’être]',audio:'INSIDE IDENTITY.mp3',subs:'INSIDE IDENTITY.srt',cover:'assets/ref/inside-identity/cover.jpg',lead:0,cast:'inside'}
+  {id:'inside-identity',title:'INSIDE IDENTITY [Black Raison d’être]',audio:'INSIDE IDENTITY.mp3',subs:'INSIDE IDENTITY.srt',fill:'assets/ref/inside-identity/fill-ja.json',cover:'assets/ref/inside-identity/cover.jpg',lead:0,cast:'inside'}
 ];
 // 每首歌的字幕／音訊檔放在同一個資料夾，執行時才讀取
 const cfgOf = id => DEFAULT_SONGS.find(d => d.id === id) || {};
@@ -824,10 +824,11 @@ function switchKey(key){
   fillMap = new Map();
   const fd = key.startsWith('yt:') ? fileFill[key.slice(3)] : null;
   if(fd?.lines){
+    const byCue = new Map(fd.lines.map((spec, index) => [spec.i ?? index, spec]));
     let cue = 0;
     for(const l of lines){
       if(l.text === '') continue;
-      const spec = fd.lines[cue++];
+      const spec = byCue.get(cue++);
       if(spec && LyricText.clean(spec.jp) === l.text) fillMap.set(l, spec.t);
     }
   }
