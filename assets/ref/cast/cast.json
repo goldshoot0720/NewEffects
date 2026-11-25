@@ -2099,5 +2099,63 @@
    "name": "兵藤和尊",
    "intact": true
   }
+ ],
+ "inside": [
+  {
+   "file": "inside-0.png",
+   "w": 218,
+   "h": 586,
+   "headX": 118,
+   "headY": 59,
+   "source": [
+    175,
+    88
+   ],
+   "sheet": "inside-ref",
+   "name": "白河しらせ",
+   "intact": true
+  },
+  {
+   "file": "inside-1.png",
+   "w": 243,
+   "h": 600,
+   "headX": 113,
+   "headY": 60,
+   "source": [
+    408,
+    86
+   ],
+   "sheet": "inside-ref",
+   "name": "ももしき",
+   "intact": true
+  },
+  {
+   "file": "inside-2.png",
+   "w": 222,
+   "h": 675,
+   "headX": 116,
+   "headY": 68,
+   "source": [
+    642,
+    12
+   ],
+   "sheet": "inside-ref",
+   "name": "綿宮あひる",
+   "intact": true
+  },
+  {
+   "file": "inside-3.png",
+   "w": 248,
+   "h": 601,
+   "headX": 147,
+   "headY": 60,
+   "source": [
+    866,
+    70
+   ],
+   "sheet": "inside-ref",
+   "name": "すいみゃ",
+   "intact": true
+  }
  ]
 }

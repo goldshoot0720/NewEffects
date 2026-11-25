@@ -47,6 +47,7 @@
     '才女のお世話':['完璧じゃないわたし','最最最高級のお世話して'],
     'ローリング☆ガールズ':['人にやさしく','月の爆撃機','英雄にあこがれて','1000のバイオリン','脳天気','TRAIN-TRAIN','シャララ','STONES','夕暮れ','終わらない歌'],
     '逆境無頼カイジ':['未来は僕等の手の中','負け犬たちのレクイエム','Chase the Light!','CからはじまるABC'],
+    '中二病でも恋がしたい！':['INSIDE IDENTITY'],
     '[C] THE MONEY OF SOUL AND POSSIBILITY CONTROL':['マトリョーシカ','RPG']
   };
   const animeByTitle=new Map(Object.entries(animeTitles).flatMap(([name,titles])=>titles.map(t=>[t,name])));

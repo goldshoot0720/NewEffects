@@ -64,7 +64,10 @@ const ARTS = {
     faces: [[114, 282], [332, 284], [535, 287], [762, 287], [990, 291], [1212, 290], [1434, 285], [1733, 291]]},
   // マトリョーシカ：黑底九人立繪由 tools/cutout-matryoshka.py 去背並拼成群像
   matryoshka: {src: 'assets/ref/matryoshka-group.png', crop: [0, 0, 1920, 1080],
-    faces: [[300, 300], [530, 300], [740, 300], [960, 300], [1180, 300], [1390, 300], [1570, 300], [1740, 300]]}
+    faces: [[300, 300], [530, 300], [740, 300], [960, 300], [1180, 300], [1390, 300], [1570, 300], [1740, 300]]},
+  // INSIDE IDENTITY：使用者提供的封面（紅底撕紙邊），四人由 tools/cutout-inside.py 用 Vision 切出
+  inside: {src: 'assets/ref/inside-identity/cover.jpg', crop: [0, 0, 1279, 720],
+    faces: [[293, 147], [521, 146], [758, 79], [1013, 130]]}
 };
 const SONGS = [
   {title: '大好きだよって叫ぶんだ', ver: '小日向理瀬 ver.', file: '大好きだよって叫ぶんだ [小日向理瀬ver.]',
@@ -345,7 +348,10 @@ const SONGS = [
    cast:[['rolling',0,'森友望未','#9db06a'],['rolling',3,'御園千綾','#f0a8c0'],['rolling',2,'響逢衣','#e08a5a'],['rolling',1,'小坂結季奈','#9fb8c8']]},
   {title:'終わらない歌', ver:'THE ROLLING GIRLS', file:'終わらない歌', subs:'終わらない歌.srt', theme:'owaranai', art:'rolling', lead:0, noBike:true,
    series:'ローリング☆ガールズ', tv:'ローリング☆ガールズ', kicker:'挿入歌',
-   cast:[['rolling',0,'森友望未','#9db06a'],['rolling',3,'御園千綾','#f0a8c0'],['rolling',2,'響逢衣','#e08a5a'],['rolling',1,'小坂結季奈','#9fb8c8']]}
+   cast:[['rolling',0,'森友望未','#9db06a'],['rolling',3,'御園千綾','#f0a8c0'],['rolling',2,'響逢衣','#e08a5a'],['rolling',1,'小坂結季奈','#9fb8c8']]},
+  {title:'INSIDE IDENTITY', ver:'Black Raison d’être', file:'INSIDE IDENTITY', subs:'INSIDE IDENTITY.srt', theme:'inside', art:'inside', lead:0,
+   series:'中二病でも恋がしたい！', tv:'中二病でも恋がしたい！', kicker:'EDテーマ',
+   cast:[['inside',0,'白河しらせ','#d9a05b'],['inside',1,'ももしき','#c9c9d6'],['inside',2,'綿宮あひる','#f07a9a'],['inside',3,'すいみゃ','#f0c95a']]}
 ];
 
 // 每首歌一組配色：夏日向日葵、日出、黃昏星空、晴空疾風
@@ -410,7 +416,9 @@ const THEMES = {
   // 夕暮れ：晚霞的橘紅到紫
   yuugure:  {sky: ['#2a1030', '#c2452f', '#ffcf7a'], pastel: ['#fff3e0', '#ffd8c0'], accent: '#ff8a3a', accent2: '#c9305a', cool: '#8f6bd6', deep: '#1c0a1e', particle: 'spark'},
   // 終わらない歌：深夜的紅與黑，配白色標語
-  owaranai: {sky: ['#0a0508', '#4a0f18', '#c8302a'], pastel: ['#f6eeee', '#e0c8c8'], accent: '#e83a32', accent2: '#ffd24a', cool: '#8a8a9a', deep: '#060304', particle: 'star'}
+  owaranai: {sky: ['#0a0508', '#4a0f18', '#c8302a'], pastel: ['#f6eeee', '#e0c8c8'], accent: '#e83a32', accent2: '#ffd24a', cool: '#8a8a9a', deep: '#060304', particle: 'star'},
+  // INSIDE IDENTITY：封面的紅底與黑色撕紙邊，舞台走暗紅到緋紅，配白色手寫字
+  inside:   {sky: ['#1a0207', '#8c0f1c', '#ff5f74'], pastel: ['#fff0f2', '#ffd3da'], accent: '#ffd166', accent2: '#ff3f5f', cool: '#ff9fb0', deep: '#140208', particle: 'spark'}
 };
 const LOGO = [['B', '#2ba6e1'], ['E', '#f6a531'], ['S', '#ee5b97'], ['T', '#2ba6e1'], [' ', ''], ['4', '#f6a531'], ['U', '#8d6ad6']];
 const POP = ['#ee5b97', '#2ba6e1', '#f6a531', '#8d6ad6', '#3cc39a', '#f08a4b'];
@@ -524,6 +532,9 @@ const CHARACTER_GROUPS = song.cast[0][0] === 'anaru'
   : song.cast[0][0] === 'kaiji'
   // 逆境無頼カイジ：OP/ED 共用同一組八人官方立繪
   ? [{sheet:'kaiji', title:'逆境無頼カイジ · 八人', src:'assets/ref/kaiji-group.png', colors:['#1a1a22','#e8b45a'], count:8, solo:true, lineup:true}]
+  : song.cast[0][0] === 'inside'
+  // INSIDE IDENTITY：封面四人（紅底撕紙邊）由 tools/cutout-inside.py 切出
+  ? [{sheet:'inside', title:'INSIDE IDENTITY · 四人', src:'assets/ref/inside-identity/cover.jpg', colors:['#8c0f1c','#ff8a9e'], count:4, solo:true, lineup:true}]
   : song.art === 'breakshoot'
   ? [{sheet:'casual', title:'Extreme Hearts · 十二人', src:'assets/ref/casual-remade/group.png', colors:['#5cabe0','#f3afd3'], count:12,solo:true}]
   : BASE_CHARACTER_GROUPS;
