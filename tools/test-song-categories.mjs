@@ -34,7 +34,7 @@ for(const song of [SONGS[13],vwest]){
   const [category]=SongOrder.categories([song]);
   assert.equal(category.kind,'anime');
   assert.equal(category.label,'メジャー');
-  assert.equal(SongOrder.optionLabel(song,category),'さらば碧き面影（原曲：ロードオブメジャー）');
+  assert.equal(SongOrder.optionLabel(song,category),'さらば碧き面影（原唱：ロードオブメジャー）');
 }
 const family=groups.find(g=>g.items.some(s=>s.index===18));
 assert.equal(family.items.length,4);

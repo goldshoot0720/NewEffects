@@ -443,7 +443,7 @@ function updateTitleFromYt(){
   if(media.kind !== 'yt' || !media.ready) return;
   const d = media.yt.getVideoData && media.yt.getVideoData();
   if(!d || !d.title || !d.video_id) return;
-  // 翻唱影片可能另取片名；有原曲署名時保留曲庫的正式歌名。
+  // 翻唱影片可能另取片名；有原唱署名時保留曲庫的正式歌名。
   if(cfgOf(d.video_id).originalArtist) return;
   const s = songs.find(x => x.id === d.video_id);
   if(s && s.title !== d.title){ s.title = d.title; saveSongs(); renderSongs(); }
@@ -497,7 +497,7 @@ const DEFAULT_SONGS = [
   {id: 'suno-497ce6b7', title: '統一發票頭獎得主鋒兄威力彩頭獎得主塗哥(粵文歌詞)',
    audio: '統一發票頭獎得主鋒兄威力彩頭獎得主塗哥(粵文歌詞).mp3',
    subs: '統一發票頭獎得主鋒兄威力彩頭獎得主塗哥(粵文歌詞).srt', lead: 2, cast: 'lucky', cover: 'assets/ref/lucky8.png'},
-  {id:'GGWhqMmOC3E',title:'さらば碧き面影 [原曲：ロードオブメジャー／V西2025 カバー]',originalArtist:'ロードオブメジャー',audio:'後はやるだけ！.mp3',subs:'後はやるだけ！.srt',cover:'assets/ref/vwest/group.png',lead:0,cast:'vwest'},
+  {id:'GGWhqMmOC3E',title:'さらば碧き面影 [原唱：ロードオブメジャー／V西2025 カバー]',originalArtist:'ロードオブメジャー',audio:'後はやるだけ！.mp3',subs:'後はやるだけ！.srt',cover:'assets/ref/vwest/group.png',lead:0,cast:'vwest'},
   {id:'suno-a5f4dd34',title:'最瞎結婚理由',audio:'最瞎結婚理由.mp3',subs:'最瞎結婚理由.srt',cover:'assets/ref/lucky8.png',lead:2,cast:'lucky'},
   {id:'suno-c7446110',title:'最瞎結婚理由(英文歌詞)',audio:'最瞎結婚理由(英文歌詞).mp3',subs:'最瞎結婚理由(英文歌詞).srt',cover:'assets/ref/lucky8.png',lead:2,cast:'lucky'},
   {id:'suno-06d8d042',title:'最瞎結婚理由(粵文歌詞)',audio:'最瞎結婚理由(粵文歌詞).mp3',subs:'最瞎結婚理由(粵文歌詞).srt',cover:'assets/ref/lucky8.png',lead:2,cast:'lucky'},

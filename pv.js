@@ -2081,9 +2081,9 @@ const SHOTS = {film: shotFilm, typo: shotTypo, windows: shotWindows, stage: shot
 function kickerOf(s){
   if(s.tv){
     const theme = `TVアニメ「${s.tv}」${s.kicker || ''}`;
-    return s.originalArtist ? `${theme} · 原曲：${s.originalArtist}` : theme;
+    return s.originalArtist ? `${theme} · 原唱：${s.originalArtist}` : theme;
   }
-  if(s.originalArtist) return `原曲：${s.originalArtist}`;
+  if(s.originalArtist) return `原唱：${s.originalArtist}`;
   return s.kicker || 'EXH KANAGAWA TOURNAMENT 2048 · TOP-4 TEAM COMPILATION ALBUM';
 }
 function titleCard(t){
@@ -2141,7 +2141,7 @@ function hud(t, sh){
   }
   const sec = sectionAt(t), b = beatPos(t), bar = Math.max(1, Math.floor((b - A.barOff)/4) + 1), total = Math.floor((beatPos(A.dur) - A.barOff)/4) + 1;
   g.font = `600 22px ${FONT.cond}`; g.letterSpacing = '3px';
-  const credit = song.originalArtist ? `原曲：${song.originalArtist}` : song.series || 'BEST 4U';
+  const credit = song.originalArtist ? `原唱：${song.originalArtist}` : song.series || 'BEST 4U';
   g.fillText(`${credit}  /  ${song.title}`, 60, 70);
   g.font = `15px ${FONT.mono}`; g.letterSpacing = '1px';
   g.fillText(`SEC.${pad(sec.no)}  ${sec.label}`, 60, 96);
