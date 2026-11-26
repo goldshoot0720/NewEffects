@@ -14,6 +14,7 @@ const $ = s => document.querySelector(s);
 
 // 主視覺：參考圖與臉部座標（Ken Burns 鏡頭的目標）；cast 第一位是主唱，sprite 由 tools/cutout.mjs 從參考圖去背
 const ARTS = {
+  ace: {src:'assets/ref/ace/cover.webp', crop:[0,0,1600,900], faces:[[800,166],[478,257],[190,172],[1405,191],[1110,397]]},
   kokoroe: {src:'assets/ref/kokoroe/cover.webp', crop:[0,0,1231,693], faces:[[828,251]]},
   major: {src:'assets/ref/kokoroe/major.webp', crop:[0,0,750,421], faces:[[374,213],[74,76],[196,32],[594,34],[147,325],[642,293]]},
   since: {src:'assets/ref/since/cover.webp', crop:[0,0,750,421], faces:[[76,100],[222,100],[370,98],[522,95],[676,99]]},
@@ -363,11 +364,16 @@ const SONGS = [
    cast:[['major',0,'茂野吾郎','#5795df'], ['major',1,'ジェフ・キーン','#8279a8'], ['major',2,'清水薫','#51b8d2'], ['major',3,'陣内アリス','#d76b9c'], ['major',4,'サンダース','#9a795c'], ['major',5,'佐藤寿也','#ac586d']]},
   {title:'光と影のラプラス', ver:'亜咲花', file:'光と影のラプラス', subs:'光と影のラプラス.srt', theme:'twilight', art:'since', lead:0,
    series:'SINce Memories', kicker:'ゲーム「シンスメモリーズ 星天の下で」オープニングテーマ',
-   cast:[['since',0,'大山優梨子','#805974'], ['since',1,'北條ちはや','#5380b5'], ['since',2,'里美英','#8697ad'], ['since',3,'伊勢陽詩','#b9799a'], ['since',4,'黄春玉','#606eac']]}
+   cast:[['since',0,'大山優梨子','#805974'], ['since',1,'北條ちはや','#5380b5'], ['since',2,'里美英','#8697ad'], ['since',3,'伊勢陽詩','#b9799a'], ['since',4,'黄春玉','#606eac']]},
+  {title:'逆転Winner', ver:'WEST.', file:'逆転Winner', subs:'逆転Winner.srt', theme:'court', art:'ace', lead:0,
+   series:'逆転裁判', tv:'逆転裁判', kicker:'第1期 OP1', cast:[['ace',0,'成歩堂龍一','#6593cd'], ['ace',1,'綾里真宵','#bf83bc'], ['ace',2,'糸鋸圭介','#93a66c'],['ace',3,'矢張政志','#6eacc7'], ['ace',4,'綾里春美','#df9eb4']]},
+  {title:'人生は素晴らしい', ver:'WEST.', file:'人生は素晴らしい', subs:'人生は素晴らしい.srt', theme:'court', art:'ace', lead:1,
+   series:'逆転裁判', tv:'逆転裁判', kicker:'第1期 OP2', cast:[['ace',0,'成歩堂龍一','#6593cd'], ['ace',1,'綾里真宵','#bf83bc'], ['ace',2,'糸鋸圭介','#93a66c'],['ace',3,'矢張政志','#6eacc7'], ['ace',4,'綾里春美','#df9eb4']]}
 ];
 
 // 每首歌一組配色：夏日向日葵、日出、黃昏星空、晴空疾風
 const THEMES = {
+  court: {sky:['#10203a','#41668b','#d5ad79'],pastel:['#eef5ff','#fff0dc'],accent:'#ffcf6e',accent2:'#ed6968',cool:'#94d6f5',deep:'#162d49',particle:'spark'},
   baseball: {sky:['#06374d','#237ca4','#c0e9f4'],pastel:['#fff8da','#e7f4fb'],accent:'#ffcc43',accent2:'#f49c36',cool:'#55cee4',deep:'#09283d',particle:'star'},
   growup:   {sky: ['#351429', '#b84b3b', '#ffcb42'], pastel: ['#fff8df', '#ffebbb'], accent: '#ffd64c', accent2: '#dd4058', cool: '#69c7c3', deep: '#301326', particle: 'spark'},
   summer:   {sky: ['#0b3d74', '#2f8fe0', '#bfeaff'], pastel: ['#fff8dc', '#d6f0ff'], accent: '#ffd23f', accent2: '#ff7b54', cool: '#5fd0ff', deep: '#0b2d55', particle: 'petal'},
@@ -519,7 +525,7 @@ const CHARACTER_GROUPS = song.cast[0][0] === 'anaru'
   ? [{sheet:'aiura', title:'あいうら · 奏香・彩生・歩子', src:'assets/ref/aiura-group.png', colors:['#7fbfba','#ffe3b2'], count:3, solo:true}]
   : song.cast[0][0] === 'growup'
   ? [{sheet:'growup', title:'ひまわりサーカス · 十人', src:'assets/ref/growup/group.png', colors:['#e8a72f','#ffd968'], count:10, solo:true}]
-  : ['major','since'].includes(song.cast[0][0])
+  : ['major','since','ace'].includes(song.cast[0][0])
   ? [{sheet:song.cast[0][0], title:song.series, src:ART.src, colors:[T.accent,T.cool], count:MEMBERS.length, indices:MEMBERS.map(m=>m.idx), solo:true, lineup:true}]
   : song.cast[0][0] === 'vwest'
   ? [{sheet:'vwest',title:'V西2025 · 選手16人＋監督',src:'assets/ref/vwest/group.png',colors:['#ffcc43','#55cee4'],count:17,solo:true}]

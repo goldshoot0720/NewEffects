@@ -37,6 +37,7 @@
     }).map(e=>e.song);
   }
   const animeTitles={
+    '逆転裁判':['逆転Winner','人生は素晴らしい'],
     'Extreme Hearts':['大好きだよって叫ぶんだ','SUNRISE','HELLO HERO','明日へのBreakShoot'],
     '生徒会にも穴はある！':['風の中は走るっきゃないっ！','ぴ'],
     '超かぐや姫！':['私は、わたしの事が好き。'],

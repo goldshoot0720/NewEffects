@@ -2329,5 +2329,77 @@
    "name": "黄春玉",
    "intact": true
   }
+ ],
+ "ace": [
+  {
+   "file": "ace-0.png",
+   "w": 371,
+   "h": 1100,
+   "headX": 186,
+   "headY": 132,
+   "source": [
+    0,
+    0
+   ],
+   "sheet": "ace",
+   "name": "成歩堂龍一",
+   "intact": true
+  },
+  {
+   "file": "ace-1.png",
+   "w": 394,
+   "h": 1100,
+   "headX": 197,
+   "headY": 132,
+   "source": [
+    0,
+    0
+   ],
+   "sheet": "ace",
+   "name": "綾里真宵",
+   "intact": true
+  },
+  {
+   "file": "ace-2.png",
+   "w": 449,
+   "h": 1100,
+   "headX": 224,
+   "headY": 132,
+   "source": [
+    0,
+    0
+   ],
+   "sheet": "ace",
+   "name": "糸鋸圭介",
+   "intact": true
+  },
+  {
+   "file": "ace-3.png",
+   "w": 346,
+   "h": 1100,
+   "headX": 173,
+   "headY": 132,
+   "source": [
+    0,
+    0
+   ],
+   "sheet": "ace",
+   "name": "矢張政志",
+   "intact": true
+  },
+  {
+   "file": "ace-4.png",
+   "w": 399,
+   "h": 1100,
+   "headX": 200,
+   "headY": 132,
+   "source": [
+    0,
+    0
+   ],
+   "sheet": "ace",
+   "name": "綾里春美",
+   "intact": true
+  }
  ]
 }
