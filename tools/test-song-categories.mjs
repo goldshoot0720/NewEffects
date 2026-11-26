@@ -24,6 +24,15 @@ assert.equal(SongOrder.optionLabel(memories.items[0],memories),'Forever＆ever�
 assert.equal(SONGS[46].kicker,'ゲーム「メモリーズオフ 双想 Break out of my shell」オープニングテーマ');
 assert.equal(SONGS[46].tv,undefined);
 assert.equal(SongOrder.categories([{title:'Forever&ever'}])[0].kind,'game');
+const vwest=DEFAULT_SONGS.find(s=>s.id==='GGWhqMmOC3E');
+assert.equal(SONGS[13].title,'さらば碧き面影');
+assert.equal(SONGS[13].originalArtist,'ロードオブメジャー');
+assert.equal(vwest.originalArtist,SONGS[13].originalArtist);
+for(const song of [SONGS[13],vwest]){
+  const [category]=SongOrder.categories([song]);
+  assert.equal(category.label,'さらば碧き面影');
+  assert.equal(SongOrder.optionLabel(song,category),'原曲：ロードオブメジャー');
+}
 const family=groups.find(g=>g.items.some(s=>s.index===18));
 assert.equal(family.items.length,4);
 assert.deepEqual(Array.from(family.items,s=>SongOrder.optionLabel(s,family)),['中文','英文','日文','粵文']);
@@ -46,6 +55,16 @@ assert.equal(SongOrder.categories(DEFAULT_SONGS.filter(s=>s.id!=='rpg-sfp'),DEFA
   vm.runInNewContext(v2.slice(a,b),state);
   assert.equal(stale.cast,'kaiji');assert.equal(stale.lead,4);assert.equal(saves,1);
   assert.equal(custom.cast,'custom-art');assert.ok(!state.songs.some(s=>s.id==='rpg-sfp'));
+}
+// YouTube supplies the cover video's upload title when playback starts.
+{
+  const saved={...vwest};
+  const state={songs:[saved],songTitle:saved.title,mediaKey:'yt:'+saved.id,cfgOf:()=>vwest,
+    media:{kind:'yt',ready:true,yt:{getVideoData:()=>({video_id:saved.id,title:'後はやるだけ！'})}}};
+  const start=v2.indexOf('function updateTitleFromYt()');
+  vm.runInNewContext(v2.slice(start,v2.indexOf('function setTitle()',start))+';updateTitleFromYt();',state);
+  assert.equal(state.songTitle,vwest.title);
+  assert.equal(saved.title,vwest.title);
 }
 class Option{constructor(text,value,_default=false,selected=false){this.text=text;this.value=String(value);this.selected=selected;}}
 class Element{

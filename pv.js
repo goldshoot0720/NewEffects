@@ -127,8 +127,8 @@ const SONGS = [
    series: '招財喵布布', kicker: '鋒兄生日祝福曲 · 粵語版',
    cast: [['lucky', 0, '鯨魚娘', '#3f7fd0'], ['lucky', 1, '咕咕嘎嘎', '#3a4250'], ['lucky', 2, '鋒兄', '#b08a4a'], ['lucky', 3, '塗哥', '#7b8794'],
           ['lucky', 4, '喵布布', '#d9822b'], ['lucky', 5, '喵白白', '#8d97a3'], ['lucky', 6, 'Claude 娘', '#d9874e'], ['lucky', 7, 'GPT 娘', '#c2b9e9']]},
-  {title:'後はやるだけ！', ver:'V西2025', file:'後はやるだけ！', subs:'後はやるだけ！.srt', theme:'baseball', art:'vwest', lead:0,
-   series:'にじさんじ · V西2025', kicker:'さらば碧き面影 · VRWEST',
+  {title:'さらば碧き面影', originalArtist:'ロードオブメジャー', ver:'V西2025 カバー', file:'さらば碧き面影', audio:'後はやるだけ！.mp3', subs:'後はやるだけ！.srt', theme:'baseball', art:'vwest', lead:0,
+   series:'にじさんじ · V西2025',
    cast:[['vwest',0,'壱百満天原サロメ','#b89be4'],['vwest',1,'家長むぎ','#ddb65a'],['vwest',2,'Zeal Ginjoka','#5b9e7b'],['vwest',3,'小野町春香','#51c9e2'],
          ['vwest',4,'矢車りね','#a4c98f'],['vwest',5,'ハユン','#bd5262'],['vwest',6,'早瀬走','#8a75b8'],['vwest',7,'Etna Crimson','#e76443'],
          ['vwest',8,'渋谷ハジメ','#9dc06f'],['vwest',9,'戌亥とこ','#579b76'],['vwest',10,'狂蘭メロコ','#a177bd'],['vwest',11,'本間ひまわり','#f0ac3d'],
@@ -466,7 +466,7 @@ if(!RENDER){
     }catch{}
   }
 }
-song.audio = song.file + '.mp3';
+song.audio ??= song.file + '.mp3';
 const T = THEMES[song.theme];
 // 鏡頭裡的深色底（膠卷窗、LED 螢幕、地板、歌詞描邊）預設是原本的深藍紫；
 // 主題沒特別寫就沿用，其他歌的畫面不會跟著動。
@@ -2078,7 +2078,11 @@ const SHOTS = {film: shotFilm, typo: shotTypo, windows: shotWindows, stage: shot
 /* ---------------- 覆蓋層：片頭標題、轉場、HUD ---------------- */
 // 片頭最上方那行來源標注：來源是 TV 動畫的曲子一律標「TVアニメ「作品名」」再接 OP／ED／角色歌；
 // 電影、原創曲等照 kicker 原樣。新增歌曲時只要填 tv，片頭就會自動標上 TVアニメ。
-const kickerOf = s => s.tv ? `TVアニメ「${s.tv}」${s.kicker || ''}` : (s.kicker || 'EXH KANAGAWA TOURNAMENT 2048 · TOP-4 TEAM COMPILATION ALBUM');
+function kickerOf(s){
+  if(s.originalArtist) return `原曲：${s.originalArtist}`;
+  if(s.tv) return `TVアニメ「${s.tv}」${s.kicker || ''}`;
+  return s.kicker || 'EXH KANAGAWA TOURNAMENT 2048 · TOP-4 TEAM COMPILATION ALBUM';
+}
 function titleCard(t){
   let end = clamp(cues[0].start - .2, 4, 8);
   // 第一句人聲比鼓點晚。標題若跟著字幕走，節奏段仍會蓋著 Forever。
@@ -2134,7 +2138,8 @@ function hud(t, sh){
   }
   const sec = sectionAt(t), b = beatPos(t), bar = Math.max(1, Math.floor((b - A.barOff)/4) + 1), total = Math.floor((beatPos(A.dur) - A.barOff)/4) + 1;
   g.font = `600 22px ${FONT.cond}`; g.letterSpacing = '3px';
-  g.fillText(`${song.series || 'BEST 4U'}  /  ${song.title}`, 60, 70);
+  const credit = song.originalArtist ? `原曲：${song.originalArtist}` : song.series || 'BEST 4U';
+  g.fillText(`${credit}  /  ${song.title}`, 60, 70);
   g.font = `15px ${FONT.mono}`; g.letterSpacing = '1px';
   g.fillText(`SEC.${pad(sec.no)}  ${sec.label}`, 60, 96);
   g.textAlign = 'right';

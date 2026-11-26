@@ -83,7 +83,7 @@ let dur = 141.57;
 try{
   const {execFileSync} = await import('node:child_process');
   const out = execFileSync('ffprobe', ['-v', 'error', '-show_entries', 'format=duration', '-of', 'csv=p=0',
-    path.join(ROOT, `${song.file}.mp3`)], {stdio: ['ignore', 'pipe', 'ignore']}).toString().trim();
+    path.join(ROOT, song.audio)], {stdio: ['ignore', 'pipe', 'ignore']}).toString().trim();
   if(+out > 1) dur = +out;
 }catch{}
 

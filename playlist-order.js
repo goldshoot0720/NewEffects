@@ -72,6 +72,7 @@
   }
   function optionLabel(item,category){
     if(category.kind!=='song') return item.ver?`${item.title}（${item.ver}）`:item.title;
+    if(category.items.length===1 && item.originalArtist) return `原曲：${item.originalArtist}`;
     const {language}=describe(item.title||item.file||item.audio?.replace(/\.mp3$/,''));
     return ['中文','英文','日文','粵文'][language]=== '中文' && category.items.length===1
       ? '原版' : ['中文','英文','日文','粵文'][language];

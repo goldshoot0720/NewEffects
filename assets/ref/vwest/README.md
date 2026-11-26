@@ -1,4 +1,4 @@
-# 後はやるだけ！ · V西2025
+# さらば碧き面影（ロードオブメジャー原曲／V西2025 翻唱）
 
 - 音訊為使用者提供的 `後はやるだけ！.mp3`，224.92 秒；內附 metadata 指向[原影片](https://www.youtube.com/watch?v=GGWhqMmOC3E)，原曲為ロードオブメジャー〈さらば碧き面影〉。
 - 兩張團體截圖 `source-a.png`、`source-b.png` 各有八位球員；`source-lead.png` 是監督樋口楓。合計十六位演唱／出場球員與一位監督。角色名稱依影片 credit 及[官方角色資料](https://www.nijisanji.jp/talents)核對。
