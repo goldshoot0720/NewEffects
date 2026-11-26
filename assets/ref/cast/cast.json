@@ -2401,5 +2401,49 @@
    "name": "綾里春美",
    "intact": true
   }
+ ],
+ "unmei": [
+  {
+   "file": "unmei-0.png",
+   "w": 462,
+   "h": 1100,
+   "headX": 231,
+   "headY": 132,
+   "source": [
+    0,
+    0
+   ],
+   "sheet": "unmei",
+   "name": "春日未来",
+   "intact": true
+  },
+  {
+   "file": "unmei-1.png",
+   "w": 512,
+   "h": 1100,
+   "headX": 256,
+   "headY": 132,
+   "source": [
+    0,
+    0
+   ],
+   "sheet": "unmei",
+   "name": "最上静香",
+   "intact": true
+  },
+  {
+   "file": "unmei-2.png",
+   "w": 524,
+   "h": 1100,
+   "headX": 262,
+   "headY": 132,
+   "source": [
+    0,
+    0
+   ],
+   "sheet": "unmei",
+   "name": "箱崎星梨花",
+   "intact": true
+  }
  ]
 }

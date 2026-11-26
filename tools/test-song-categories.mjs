@@ -29,6 +29,9 @@ assert.deepEqual(Array.from(major.items,s=>s.index).sort((a,b)=>a-b),[13,71,72])
 assert.equal(groups.find(g=>g.items.some(s=>s.index===73)).label,'Memories Offシリーズ');
 const ace=groups.find(g=>g.label==='逆転裁判');
 assert.deepEqual(Array.from(ace.items,s=>[s.index,s.title,s.ver]),[[74,'逆転Winner','WEST.'],[75,'人生は素晴らしい','WEST.']]);
+const million=groups.find(g=>g.items.some(s=>s.index===76));
+assert.equal(million.kind,'radio');
+assert.equal(million.label,'アイドルマスター ミリオンライブ！');
 const vwest=DEFAULT_SONGS.find(s=>s.id==='GGWhqMmOC3E');
 assert.equal(SONGS[13].title,'さらば碧き面影');
 assert.equal(SONGS[13].tv,'メジャー');

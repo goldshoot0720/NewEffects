@@ -14,6 +14,7 @@ const $ = s => document.querySelector(s);
 
 // 主視覺：參考圖與臉部座標（Ken Burns 鏡頭的目標）；cast 第一位是主唱，sprite 由 tools/cutout.mjs 從參考圖去背
 const ARTS = {
+  unmei: {src:'assets/ref/unmei/cover.webp', crop:[0,0,1600,900], faces:[[800,205],[425,203],[1175,270]]},
   ace: {src:'assets/ref/ace/cover.webp', crop:[0,0,1600,900], faces:[[800,166],[478,257],[190,172],[1405,191],[1110,397]]},
   kokoroe: {src:'assets/ref/kokoroe/cover.webp', crop:[0,0,1231,693], faces:[[828,251]]},
   major: {src:'assets/ref/kokoroe/major.webp', crop:[0,0,750,421], faces:[[374,213],[74,76],[196,32],[594,34],[147,325],[642,293]]},
@@ -368,7 +369,10 @@ const SONGS = [
   {title:'逆転Winner', ver:'WEST.', file:'逆転Winner', subs:'逆転Winner.srt', theme:'court', art:'ace', lead:0,
    series:'逆転裁判', tv:'逆転裁判', kicker:'第1期 OP1', cast:[['ace',0,'成歩堂龍一','#6593cd'], ['ace',1,'綾里真宵','#bf83bc'], ['ace',2,'糸鋸圭介','#93a66c'],['ace',3,'矢張政志','#6eacc7'], ['ace',4,'綾里春美','#df9eb4']]},
   {title:'人生は素晴らしい', ver:'WEST.', file:'人生は素晴らしい', subs:'人生は素晴らしい.srt', theme:'court', art:'ace', lead:1,
-   series:'逆転裁判', tv:'逆転裁判', kicker:'第1期 OP2', cast:[['ace',0,'成歩堂龍一','#6593cd'], ['ace',1,'綾里真宵','#bf83bc'], ['ace',2,'糸鋸圭介','#93a66c'],['ace',3,'矢張政志','#6eacc7'], ['ace',4,'綾里春美','#df9eb4']]}
+   series:'逆転裁判', tv:'逆転裁判', kicker:'第1期 OP2', cast:[['ace',0,'成歩堂龍一','#6593cd'], ['ace',1,'綾里真宵','#bf83bc'], ['ace',2,'糸鋸圭介','#93a66c'],['ace',3,'矢張政志','#6eacc7'], ['ace',4,'綾里春美','#df9eb4']]},
+  {title:'U・N・M・E・Iライブ', ver:'春日未来・最上静香・箱崎星梨花', file:'U・N・M・E・Iライブ', subs:'U・N・M・E・Iライブ.srt', theme:'summer', art:'unmei', lead:0, compactIntro:true,
+   series:'アイドルマスター ミリオンライブ！', kicker:'ラジオ「アイドルマスター ミリオンラジオ！」テーマソング',
+   cast:[['unmei',0,'春日未来','#eb6e88'],['unmei',1,'最上静香','#648bdc'],['unmei',2,'箱崎星梨花','#dfaf59']]}
 ];
 
 // 每首歌一組配色：夏日向日葵、日出、黃昏星空、晴空疾風
@@ -525,7 +529,7 @@ const CHARACTER_GROUPS = song.cast[0][0] === 'anaru'
   ? [{sheet:'aiura', title:'あいうら · 奏香・彩生・歩子', src:'assets/ref/aiura-group.png', colors:['#7fbfba','#ffe3b2'], count:3, solo:true}]
   : song.cast[0][0] === 'growup'
   ? [{sheet:'growup', title:'ひまわりサーカス · 十人', src:'assets/ref/growup/group.png', colors:['#e8a72f','#ffd968'], count:10, solo:true}]
-  : ['major','since','ace'].includes(song.cast[0][0])
+  : ['major','since','ace','unmei'].includes(song.cast[0][0])
   ? [{sheet:song.cast[0][0], title:song.series, src:ART.src, colors:[T.accent,T.cool], count:MEMBERS.length, indices:MEMBERS.map(m=>m.idx), solo:true, lineup:true}]
   : song.cast[0][0] === 'vwest'
   ? [{sheet:'vwest',title:'V西2025 · 選手16人＋監督',src:'assets/ref/vwest/group.png',colors:['#ffcc43','#55cee4'],count:17,solo:true}]

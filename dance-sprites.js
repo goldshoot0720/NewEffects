@@ -5,6 +5,7 @@
   // best4u 依主唱選單：小日向理瀬、葉山陽和、前原純華、小鷹咲希、橘雪乃、御社智
   // anaru 是「生徒会にも穴はある！」六人，lucky 是招財喵布布八人，都只在該首歌使用
   const SETS = {
+    unmei: {sheet:'unmei', idx:[0,1,2]},
     ace: {sheet:'ace', idx:[0,1,2,3,4]},
     major: {sheet:'major', idx:[0,1,2,3,4,5]},
     kokoroe: {sheet:'major', idx:[0,1,2,3,4,5,6]},

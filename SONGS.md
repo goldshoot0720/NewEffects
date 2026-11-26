@@ -1,6 +1,6 @@
 # 完整曲目
 
-歌詞 PV 共收錄 49 個不同曲名、76 個可播放版本。下表依收錄順序排列，各語言版本分列。
+歌詞 PV 共收錄 50 個不同曲名、77 個可播放版本。下表依收錄順序排列，各語言版本分列。
 
 | 序號 | 歌曲 | 演唱或版本 |
 | ---: | --- | --- |
@@ -80,3 +80,4 @@
 | 74 | [光と影のラプラス](https://neweffects.vercel.app/pv.html?song=73) | 亜咲花 |
 | 75 | [逆転Winner](https://neweffects.vercel.app/pv.html?song=74) | WEST. |
 | 76 | [人生は素晴らしい](https://neweffects.vercel.app/pv.html?song=75) | WEST. |
+| 77 | [U・N・M・E・Iライブ](https://neweffects.vercel.app/pv.html?song=76) | 春日未来・最上静香・箱崎星梨花 |

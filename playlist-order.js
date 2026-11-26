@@ -53,10 +53,11 @@
     '[C] THE MONEY OF SOUL AND POSSIBILITY CONTROL':['マトリョーシカ','RPG']
   };
   const animeByTitle=new Map(Object.entries(animeTitles).flatMap(([name,titles])=>titles.map(t=>[t,name])));
-  const gameKey=title=>title.normalize('NFKC').replace(/\s*&\s*/g,'&');
-  const gameByTitle=new Map([
-    [gameKey('光と影のラプラス'),'Memories Offシリーズ'],
-    [gameKey('Forever＆ever'),'ゲーム「メモリーズオフ 双想 Break out of my shell」']
+  const workKey=title=>title.normalize('NFKC').replace(/\s*&\s*/g,'&');
+  const worksByTitle=new Map([
+    [workKey('光と影のラプラス'),{kind:'game',label:'Memories Offシリーズ'}],
+    [workKey('Forever＆ever'),{kind:'game',label:'ゲーム「メモリーズオフ 双想 Break out of my shell」'}],
+    [workKey('U・N・M・E・Iライブ'),{kind:'radio',label:'アイドルマスター ミリオンライブ！'}]
   ]);
   function categories(items,reference=items){
     const result=new Map(),byId=new Map(reference.filter(s=>s.id!=null).map(s=>[s.id,s]));
@@ -66,8 +67,8 @@
       // aliases (ユラリユレル is stored as yurariyureru.mp3).
       const {base}=describe(song.title||song.file||song.audio?.replace(/\.mp3$/,''));
       const anime=animeByTitle.get(bareName(base));
-      const game=gameByTitle.get(gameKey(bareName(base)));
-      const kind=anime?'anime':game?'game':'song',label=anime||game||base,id=`${kind}:${label}`;
+      const work=worksByTitle.get(workKey(bareName(base)));
+      const kind=anime?'anime':work?.kind||'song',label=anime||work?.label||base,id=`${kind}:${label}`;
       if(!result.has(id))result.set(id,{id,label,kind,items:[]});
       result.get(id).items.push(item);
     }

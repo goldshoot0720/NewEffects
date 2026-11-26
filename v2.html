@@ -559,7 +559,8 @@ const DEFAULT_SONGS = [
   {id:'g16paOtpuS4',title:'PLAY THE GAME [ロードオブメジャー]',audio:'PLAY THE GAME.mp3',subs:'PLAY THE GAME.srt',cover:'assets/ref/kokoroe/major.webp',lead:0,cast:'major'},
   {id:'Q6C6n0fLkUA',title:'光と影のラプラス [亜咲花]',audio:'光と影のラプラス.mp3',subs:'光と影のラプラス.srt',cover:'assets/ref/since/cover.webp',lead:0,cast:'since'},
   {id:'FG5AQv41Nss',title:'逆転Winner [WEST.]',audio:'逆転Winner.mp3',subs:'逆転Winner.srt',cover:'assets/ref/ace/cover.webp',lead:0,cast:'ace'},
-  {id:'Zn8ot7SSsjs',title:'人生は素晴らしい [WEST.]',audio:'人生は素晴らしい.mp3',subs:'人生は素晴らしい.srt',cover:'assets/ref/ace/cover.webp',lead:1,cast:'ace'}
+  {id:'Zn8ot7SSsjs',title:'人生は素晴らしい [WEST.]',audio:'人生は素晴らしい.mp3',subs:'人生は素晴らしい.srt',cover:'assets/ref/ace/cover.webp',lead:1,cast:'ace'},
+  {id:'NhLbMsll6Aw',title:'U・N・M・E・Iライブ [春日未来・最上静香・箱崎星梨花]',audio:'U・N・M・E・Iライブ.mp3',subs:'U・N・M・E・Iライブ.srt',cover:'assets/ref/unmei/cover.webp',lead:0,cast:'unmei'}
 ];
 // 每首歌的字幕／音訊檔放在同一個資料夾，執行時才讀取
 const cfgOf = id => DEFAULT_SONGS.find(d => d.id === id) || {};
@@ -722,6 +723,7 @@ $('#srcSeg').addEventListener('click', e => {
   applySource(curSong, was, t);
 });
 const LEAD_NAMES = {
+  unmei:['春日未来','最上静香','箱崎星梨花'],
   ace:['成歩堂龍一','綾里真宵','糸鋸圭介','矢張政志','綾里春美'],
   major:['茂野吾郎', 'ジェフ・キーン', '清水薫', '陣内アリス', 'サンダース', '佐藤寿也'],
   kokoroe:['茂野吾郎', 'ジェフ・キーン', '清水薫', '陣内アリス', 'サンダース', '佐藤寿也', '鳴海星來'],
