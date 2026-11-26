@@ -26,12 +26,15 @@ assert.equal(SONGS[46].tv,undefined);
 assert.equal(SongOrder.categories([{title:'Forever&ever'}])[0].kind,'game');
 const vwest=DEFAULT_SONGS.find(s=>s.id==='GGWhqMmOC3E');
 assert.equal(SONGS[13].title,'さらば碧き面影');
+assert.equal(SONGS[13].tv,'メジャー');
+assert.equal(SONGS[13].kicker,'第2シリーズ OP');
 assert.equal(SONGS[13].originalArtist,'ロードオブメジャー');
 assert.equal(vwest.originalArtist,SONGS[13].originalArtist);
 for(const song of [SONGS[13],vwest]){
   const [category]=SongOrder.categories([song]);
-  assert.equal(category.label,'さらば碧き面影');
-  assert.equal(SongOrder.optionLabel(song,category),'原曲：ロードオブメジャー');
+  assert.equal(category.kind,'anime');
+  assert.equal(category.label,'メジャー');
+  assert.equal(SongOrder.optionLabel(song,category),'さらば碧き面影（原曲：ロードオブメジャー）');
 }
 const family=groups.find(g=>g.items.some(s=>s.index===18));
 assert.equal(family.items.length,4);

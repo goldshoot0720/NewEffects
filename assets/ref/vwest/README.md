@@ -1,6 +1,6 @@
 # さらば碧き面影（ロードオブメジャー原曲／V西2025 翻唱）
 
-- 音訊為使用者提供的 `後はやるだけ！.mp3`，224.92 秒；內附 metadata 指向[原影片](https://www.youtube.com/watch?v=GGWhqMmOC3E)，原曲為ロードオブメジャー〈さらば碧き面影〉。
+- 音訊為使用者提供的 `後はやるだけ！.mp3`，224.92 秒；內附 metadata 指向[原影片](https://www.youtube.com/watch?v=GGWhqMmOC3E)，原曲為ロードオブメジャー演唱的《メジャー》第二季片頭曲〈さらば碧き面影〉。參見[日本媒體藝術資料庫](https://mediaarts-db.artmuseums.go.jp/id/C13091)。
 - 兩張團體截圖 `source-a.png`、`source-b.png` 各有八位球員；`source-lead.png` 是監督樋口楓。合計十六位演唱／出場球員與一位監督。角色名稱依影片 credit 及[官方角色資料](https://www.nijisanji.jp/talents)核對。
 - 歌詞 PV 編號 `13`（歌曲選單第 14 首）；第二版 YouTube ID `GGWhqMmOC3E`。預設舞台主唱為壱百満天原サロメ；樋口楓在選單中標示為「監督」。
 - `lyrics-ja.txt` 逐行保存使用者提供的 41 行日文；`lyrics-zh.txt` 為繁中翻譯。以 faster-whisper medium 詞級時間戳對齊，補查末段英文重複句；不把間奏期間的辨識幻覺寫進字幕。輸出為根目錄的 `後はやるだけ！.srt`，時間不重疊且均在音訊長度內。

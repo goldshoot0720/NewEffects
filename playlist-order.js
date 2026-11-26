@@ -41,6 +41,7 @@
     '生徒会にも穴はある！':['風の中は走るっきゃないっ！','ぴ'],
     '超かぐや姫！':['私は、わたしの事が好き。'],
     'あいうら':['カニ☆Do-Luck!'],
+    'メジャー':['さらば碧き面影'],
     'グロウアップショウ ～ひまわりのサーカス団～':['ユラリユレル','DAYS!'],
     '真夜中ハートチューン':['月に向かって撃て','声の軌跡'],
     'FX戦士くるみちゃん':['$・¥・€','FX戦士くるみちゃん'],
@@ -71,6 +72,7 @@
     return [...result.values()];
   }
   function optionLabel(item,category){
+    if(category.kind==='anime' && item.originalArtist) return `${describe(item.title).base}（原曲：${item.originalArtist}）`;
     if(category.kind!=='song') return item.ver?`${item.title}（${item.ver}）`:item.title;
     if(category.items.length===1 && item.originalArtist) return `原曲：${item.originalArtist}`;
     const {language}=describe(item.title||item.file||item.audio?.replace(/\.mp3$/,''));
