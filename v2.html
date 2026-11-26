@@ -554,7 +554,10 @@ const DEFAULT_SONGS = [
   {id:'stones',title:'STONES [THE ROLLING GIRLS]',audio:'STONES.mp3',subs:'STONES.srt',cover:'assets/ref/rolling-group.png',lead:0,cast:'rolling'},
   {id:'yuugure',title:'夕暮れ [THE ROLLING GIRLS]',audio:'夕暮れ.mp3',subs:'夕暮れ.srt',cover:'assets/ref/rolling-group.png',lead:0,cast:'rolling'},
   {id:'owaranai-uta',title:'終わらない歌 [THE ROLLING GIRLS]',audio:'終わらない歌.mp3',subs:'終わらない歌.srt',cover:'assets/ref/rolling-group.png',lead:0,cast:'rolling'},
-  {id:'inside-identity',title:'INSIDE IDENTITY [Black Raison d’être]',audio:'INSIDE IDENTITY.mp3',subs:'INSIDE IDENTITY.srt',fill:'assets/ref/inside-identity/fill-ja.json',cover:'assets/ref/inside-identity/cover.jpg',lead:0,cast:'inside'}
+  {id:'inside-identity',title:'INSIDE IDENTITY [Black Raison d’être]',audio:'INSIDE IDENTITY.mp3',subs:'INSIDE IDENTITY.srt',fill:'assets/ref/inside-identity/fill-ja.json',cover:'assets/ref/inside-identity/cover.jpg',lead:0,cast:'inside'},
+  {id:'tw1ixVZD6lM',title:'心絵 [原唱：ロードオブメジャー／鳴海星來 カバー]',originalArtist:'ロードオブメジャー',audio:'心絵.mp3',subs:'心絵.srt',cover:'assets/ref/kokoroe/cover.webp',lead:6,cast:'kokoroe'},
+  {id:'g16paOtpuS4',title:'PLAY THE GAME [ロードオブメジャー]',audio:'PLAY THE GAME.mp3',subs:'PLAY THE GAME.srt',cover:'assets/ref/kokoroe/major.webp',lead:0,cast:'major'},
+  {id:'Q6C6n0fLkUA',title:'光と影のラプラス [亜咲花]',audio:'光と影のラプラス.mp3',subs:'光と影のラプラス.srt',cover:'assets/ref/since/cover.webp',lead:0,cast:'since'}
 ];
 // 每首歌的字幕／音訊檔放在同一個資料夾，執行時才讀取
 const cfgOf = id => DEFAULT_SONGS.find(d => d.id === id) || {};
@@ -717,6 +720,9 @@ $('#srcSeg').addEventListener('click', e => {
   applySource(curSong, was, t);
 });
 const LEAD_NAMES = {
+  major:['茂野吾郎', 'ジェフ・キーン', '清水薫', '陣内アリス', 'サンダース', '佐藤寿也'],
+  kokoroe:['茂野吾郎', 'ジェフ・キーン', '清水薫', '陣内アリス', 'サンダース', '佐藤寿也', '鳴海星來'],
+  since:['大山優梨子', '北條ちはや', '里美英', '伊勢陽詩', '黄春玉'],
   vwest:['壱百満天原サロメ','家長むぎ','Zeal Ginjoka','小野町春香','矢車りね','ハユン','早瀬走','Etna Crimson','渋谷ハジメ','戌亥とこ','狂蘭メロコ','本間ひまわり','Nagisa Arcinia','ラトナ・プティ','エリー・コニファー','緋八マナ','樋口楓（監督）'],
   best4u: ['小日向理瀬', '葉山陽和', '前原純華', '小鷹咲希', '橘雪乃', '御社智'],
   anaru: ['水之江梅', '古都吹寿子', '陸奥こころ', '尾鳥たん', '照井有栖', '平塚敏深'],

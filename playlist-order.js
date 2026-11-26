@@ -41,7 +41,7 @@
     '生徒会にも穴はある！':['風の中は走るっきゃないっ！','ぴ'],
     '超かぐや姫！':['私は、わたしの事が好き。'],
     'あいうら':['カニ☆Do-Luck!'],
-    'メジャー':['さらば碧き面影'],
+    'メジャー':['心絵','さらば碧き面影','PLAY THE GAME'],
     'グロウアップショウ ～ひまわりのサーカス団～':['ユラリユレル','DAYS!'],
     '真夜中ハートチューン':['月に向かって撃て','声の軌跡'],
     'FX戦士くるみちゃん':['$・¥・€','FX戦士くるみちゃん'],
@@ -54,6 +54,7 @@
   const animeByTitle=new Map(Object.entries(animeTitles).flatMap(([name,titles])=>titles.map(t=>[t,name])));
   const gameKey=title=>title.normalize('NFKC').replace(/\s*&\s*/g,'&');
   const gameByTitle=new Map([
+    [gameKey('光と影のラプラス'),'Memories Offシリーズ'],
     [gameKey('Forever＆ever'),'ゲーム「メモリーズオフ 双想 Break out of my shell」']
   ]);
   function categories(items,reference=items){

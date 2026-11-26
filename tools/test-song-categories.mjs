@@ -24,6 +24,9 @@ assert.equal(SongOrder.optionLabel(memories.items[0],memories),'Forever＆ever�
 assert.equal(SONGS[46].kicker,'ゲーム「メモリーズオフ 双想 Break out of my shell」オープニングテーマ');
 assert.equal(SONGS[46].tv,undefined);
 assert.equal(SongOrder.categories([{title:'Forever&ever'}])[0].kind,'game');
+const major=groups.find(g=>g.label==='メジャー');
+assert.deepEqual(Array.from(major.items,s=>s.index).sort((a,b)=>a-b),[13,71,72]);
+assert.equal(groups.find(g=>g.items.some(s=>s.index===73)).label,'Memories Offシリーズ');
 const vwest=DEFAULT_SONGS.find(s=>s.id==='GGWhqMmOC3E');
 assert.equal(SONGS[13].title,'さらば碧き面影');
 assert.equal(SONGS[13].tv,'メジャー');

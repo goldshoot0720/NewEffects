@@ -20,7 +20,7 @@ const hook = `window.__t = {buildShots, SHOTS, MEMBERS, LEAD, OTHERS, parseSrt, 
   setA(a){ A = a; },
   setup(list, cast){
     for(const group of CHARACTER_GROUPS){
-      group.members=(cast[group.sheet]||[]).map(meta=>({meta,img:{width:meta.w,height:meta.h}}));
+      group.members=characterEntries(group,cast).map(meta=>({meta,img:{width:meta.w,height:meta.h}}));
       group.backdrop={width:1920,height:1080};
     }
     if(song.art==='vwest') FACES.push(...cast.vwest.map(m=>m.groupFace));

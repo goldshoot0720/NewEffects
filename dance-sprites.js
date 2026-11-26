@@ -5,6 +5,9 @@
   // best4u 依主唱選單：小日向理瀬、葉山陽和、前原純華、小鷹咲希、橘雪乃、御社智
   // anaru 是「生徒会にも穴はある！」六人，lucky 是招財喵布布八人，都只在該首歌使用
   const SETS = {
+    major: {sheet:'major', idx:[0,1,2,3,4,5]},
+    kokoroe: {sheet:'major', idx:[0,1,2,3,4,5,6]},
+    since: {sheet:'since', idx:[0,1,2,3,4]},
     vwest:{sheet:'vwest',idx:Array.from({length:17},(_,i)=>i)},
     best4u: {sheet: 'casual', idx: [4, 1, 0, 2, 3, 8]},
     anaru: {sheet: 'anaru', idx: [0, 1, 2, 3, 4, 5]},
@@ -24,7 +27,7 @@
     kaiji: {sheet: 'kaiji', idx: [0, 1, 2, 3, 4, 5, 6, 7]},
     inside: {sheet: 'inside', idx: [0, 1, 2, 3]}
   };
-  const actors = {best4u: [], anaru: [], lucky: [], kaguya: [], aiura: [], growup: [], extreme: [], vwest:[], forever:[], tsuki:[], kaze:[], osewa:[], fx:[], rolling:[], mirai:[], matryoshka:[], kaiji:[], inside:[]};
+  const actors = Object.fromEntries(Object.keys(SETS).map(name=>[name,[]]));
   let active = 'best4u';
   const api = window.SpriteDancers = {ready: false, error: null, draw, use, count};
   function use(name){ active = Object.hasOwn(SETS, name) ? name : 'best4u'; }

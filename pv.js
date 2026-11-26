@@ -14,6 +14,9 @@ const $ = s => document.querySelector(s);
 
 // 主視覺：參考圖與臉部座標（Ken Burns 鏡頭的目標）；cast 第一位是主唱，sprite 由 tools/cutout.mjs 從參考圖去背
 const ARTS = {
+  kokoroe: {src:'assets/ref/kokoroe/cover.webp', crop:[0,0,1231,693], faces:[[828,251]]},
+  major: {src:'assets/ref/kokoroe/major.webp', crop:[0,0,750,421], faces:[[374,213],[74,76],[196,32],[594,34],[147,325],[642,293]]},
+  since: {src:'assets/ref/since/cover.webp', crop:[0,0,750,421], faces:[[76,100],[222,100],[370,98],[522,95],[676,99]]},
   vwest: {src:'assets/ref/vwest/group.png', crop:[0,0,1920,1080], faces:[]},
   breakshoot: {src: 'assets/ref/breakshoot-cover.png', crop: [0, 0, 720, 720],
     faces: [[142, 145], [288, 145], [433, 145], [579, 145], [142, 338], [288, 338], [433, 338], [579, 338], [142, 531], [288, 531], [433, 531], [579, 531]]},
@@ -351,7 +354,16 @@ const SONGS = [
    cast:[['rolling',0,'森友望未','#9db06a'],['rolling',3,'御園千綾','#f0a8c0'],['rolling',2,'響逢衣','#e08a5a'],['rolling',1,'小坂結季奈','#9fb8c8']]},
   {title:'INSIDE IDENTITY', ver:'Black Raison d’être', file:'INSIDE IDENTITY', subs:'INSIDE IDENTITY.srt', fill:'assets/ref/inside-identity/fill-ja.json', theme:'inside', art:'inside', lead:0,
    series:'中二病でも恋がしたい！', tv:'中二病でも恋がしたい！', kicker:'EDテーマ',
-   cast:[['inside',0,'白河しらせ','#d9a05b'],['inside',1,'ももしき','#c9c9d6'],['inside',2,'綿宮あひる','#f07a9a'],['inside',3,'すいみゃ','#f0c95a']]}
+   cast:[['inside',0,'白河しらせ','#d9a05b'],['inside',1,'ももしき','#c9c9d6'],['inside',2,'綿宮あひる','#f07a9a'],['inside',3,'すいみゃ','#f0c95a']]},
+  {title:'心絵', ver:'鳴海星來 カバー', originalArtist:'ロードオブメジャー', file:'心絵', subs:'心絵.srt', theme:'baseball', art:'kokoroe', lead:6, compactIntro:true,
+   series:'メジャー', tv:'メジャー', kicker:'第1シリーズ OP',
+   cast:[['major',0,'茂野吾郎','#5795df'], ['major',1,'ジェフ・キーン','#8279a8'], ['major',2,'清水薫','#51b8d2'], ['major',3,'陣内アリス','#d76b9c'], ['major',4,'サンダース','#9a795c'], ['major',5,'佐藤寿也','#ac586d'], ['major',6,'鳴海星來','#54bfd8']]},
+  {title:'PLAY THE GAME', ver:'ロードオブメジャー', file:'PLAY THE GAME', subs:'PLAY THE GAME.srt', theme:'baseball', art:'major', lead:0,
+   series:'メジャー', tv:'メジャー', kicker:'第3シリーズ OP',
+   cast:[['major',0,'茂野吾郎','#5795df'], ['major',1,'ジェフ・キーン','#8279a8'], ['major',2,'清水薫','#51b8d2'], ['major',3,'陣内アリス','#d76b9c'], ['major',4,'サンダース','#9a795c'], ['major',5,'佐藤寿也','#ac586d']]},
+  {title:'光と影のラプラス', ver:'亜咲花', file:'光と影のラプラス', subs:'光と影のラプラス.srt', theme:'twilight', art:'since', lead:0,
+   series:'SINce Memories', kicker:'ゲーム「シンスメモリーズ 星天の下で」オープニングテーマ',
+   cast:[['since',0,'大山優梨子','#805974'], ['since',1,'北條ちはや','#5380b5'], ['since',2,'里美英','#8697ad'], ['since',3,'伊勢陽詩','#b9799a'], ['since',4,'黄春玉','#606eac']]}
 ];
 
 // 每首歌一組配色：夏日向日葵、日出、黃昏星空、晴空疾風
@@ -507,6 +519,8 @@ const CHARACTER_GROUPS = song.cast[0][0] === 'anaru'
   ? [{sheet:'aiura', title:'あいうら · 奏香・彩生・歩子', src:'assets/ref/aiura-group.png', colors:['#7fbfba','#ffe3b2'], count:3, solo:true}]
   : song.cast[0][0] === 'growup'
   ? [{sheet:'growup', title:'ひまわりサーカス · 十人', src:'assets/ref/growup/group.png', colors:['#e8a72f','#ffd968'], count:10, solo:true}]
+  : ['major','since'].includes(song.cast[0][0])
+  ? [{sheet:song.cast[0][0], title:song.series, src:ART.src, colors:[T.accent,T.cool], count:MEMBERS.length, indices:MEMBERS.map(m=>m.idx), solo:true, lineup:true}]
   : song.cast[0][0] === 'vwest'
   ? [{sheet:'vwest',title:'V西2025 · 選手16人＋監督',src:'assets/ref/vwest/group.png',colors:['#ffcc43','#55cee4'],count:17,solo:true}]
   : song.cast[0][0] === 'forever'
@@ -2014,6 +2028,10 @@ function characterLineup(actors){
   });
 }
 // 每組保留全身，輪替至整首歌曲結束。
+function characterEntries(group,cast){
+  const sheet=cast[group.sheet]||[];
+  return group.indices ? group.indices.map(index=>sheet[index]).filter(Boolean) : sheet;
+}
 function shotCharacters(t,sh,u){
   const group=CHARACTER_GROUPS[sh.group], local=t-sh.start, actors=group.members;
   g.drawImage(group.backdrop,0,0);
@@ -2087,6 +2105,16 @@ function kickerOf(s){
   return s.kicker || 'EXH KANAGAWA TOURNAMENT 2048 · TOP-4 TEAM COMPILATION ALBUM';
 }
 function titleCard(t){
+  if(song.compactIntro){
+    if(t>4.7) return;
+    g.save();
+    g.globalAlpha=clamp((4.7-t)/.7);
+    g.textAlign='center'; g.font=`600 24px ${FONT.jp}`;
+    g.fillStyle='#fff'; g.shadowColor='#132238'; g.shadowBlur=6;
+    g.fillText(kickerOf(song)+' · '+song.ver,W/2,104);
+    g.restore();
+    return;
+  }
   let end = clamp(cues[0].start - .2, 4, 8);
   // 第一句人聲比鼓點晚。標題若跟著字幕走，節奏段仍會蓋著 Forever。
   if(song.file === 'Forever＆ever') end = Math.min(end, 4.4);
@@ -2300,7 +2328,7 @@ async function init(){
     else if(RENDER) throw new Error(`缺少人物切圖：${m.sheet} / ${m.idx}`);
   }));
   if(CHARACTER_PV) await Promise.all(CHARACTER_GROUPS.map(async group=>{
-    const entries=castJson[group.sheet]||[];
+    const entries=characterEntries(group,castJson);
     if(RENDER && entries.length!==group.count) throw new Error(`${group.title}切圖未齊全`);
     group.members=await Promise.all(entries.map(async meta=>({meta,img:await loadImg('assets/ref/cast/'+meta.file)})));
     if(group.sheet==='stage') group.matte=await loadImg('assets/ref/stage9-matte.png');

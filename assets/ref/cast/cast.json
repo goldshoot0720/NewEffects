@@ -2157,5 +2157,177 @@
    "name": "すいみゃ",
    "intact": true
   }
+ ],
+ "major": [
+  {
+   "file": "major-0.png",
+   "w": 392,
+   "h": 1100,
+   "headX": 196,
+   "headY": 132,
+   "source": [
+    0,
+    0
+   ],
+   "sheet": "major",
+   "name": "茂野吾郎",
+   "intact": true
+  },
+  {
+   "file": "major-1.png",
+   "w": 353,
+   "h": 1100,
+   "headX": 176,
+   "headY": 132,
+   "source": [
+    0,
+    0
+   ],
+   "sheet": "major",
+   "name": "ジェフ・キーン",
+   "intact": true
+  },
+  {
+   "file": "major-2.png",
+   "w": 366,
+   "h": 1100,
+   "headX": 183,
+   "headY": 132,
+   "source": [
+    0,
+    0
+   ],
+   "sheet": "major",
+   "name": "清水薫",
+   "intact": true
+  },
+  {
+   "file": "major-3.png",
+   "w": 571,
+   "h": 1100,
+   "headX": 286,
+   "headY": 132,
+   "source": [
+    0,
+    0
+   ],
+   "sheet": "major",
+   "name": "陣内アリス",
+   "intact": true
+  },
+  {
+   "file": "major-4.png",
+   "w": 494,
+   "h": 1100,
+   "headX": 247,
+   "headY": 132,
+   "source": [
+    0,
+    0
+   ],
+   "sheet": "major",
+   "name": "サンダース",
+   "intact": true
+  },
+  {
+   "file": "major-5.png",
+   "w": 385,
+   "h": 1100,
+   "headX": 192,
+   "headY": 132,
+   "source": [
+    0,
+    0
+   ],
+   "sheet": "major",
+   "name": "佐藤寿也",
+   "intact": true
+  },
+  {
+   "file": "major-6.png",
+   "w": 680,
+   "h": 1100,
+   "headX": 340,
+   "headY": 132,
+   "source": [
+    0,
+    0
+   ],
+   "sheet": "major",
+   "name": "鳴海星來",
+   "intact": true
+  }
+ ],
+ "since": [
+  {
+   "file": "since-0.png",
+   "w": 430,
+   "h": 1100,
+   "headX": 215,
+   "headY": 132,
+   "source": [
+    0,
+    0
+   ],
+   "sheet": "since",
+   "name": "大山優梨子",
+   "intact": true
+  },
+  {
+   "file": "since-1.png",
+   "w": 397,
+   "h": 1100,
+   "headX": 198,
+   "headY": 132,
+   "source": [
+    0,
+    0
+   ],
+   "sheet": "since",
+   "name": "北條ちはや",
+   "intact": true
+  },
+  {
+   "file": "since-2.png",
+   "w": 346,
+   "h": 1100,
+   "headX": 173,
+   "headY": 132,
+   "source": [
+    0,
+    0
+   ],
+   "sheet": "since",
+   "name": "里美英",
+   "intact": true
+  },
+  {
+   "file": "since-3.png",
+   "w": 373,
+   "h": 1100,
+   "headX": 186,
+   "headY": 132,
+   "source": [
+    0,
+    0
+   ],
+   "sheet": "since",
+   "name": "伊勢陽詩",
+   "intact": true
+  },
+  {
+   "file": "since-4.png",
+   "w": 363,
+   "h": 1100,
+   "headX": 182,
+   "headY": 132,
+   "source": [
+    0,
+    0
+   ],
+   "sheet": "since",
+   "name": "黄春玉",
+   "intact": true
+  }
  ]
 }
