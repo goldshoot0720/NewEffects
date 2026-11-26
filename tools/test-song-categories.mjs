@@ -11,6 +11,18 @@ const SONGS=registry(pv,'SONGS'),DEFAULT_SONGS=registry(v2,'DEFAULT_SONGS');
 const box={window:{}};vm.runInNewContext(fs.readFileSync(path.join(root,'playlist-order.js'),'utf8'),box);
 const {SongOrder}=box.window;
 const entries=SONGS.map((s,index)=>({...s,index})),groups=SongOrder.categories(entries);
+const playback=SongOrder.group(entries);
+assert.equal(playback[0].title,'SUNRISE');
+assert.deepEqual(Array.from(SongOrder.group(DEFAULT_SONGS),s=>s.audio),Array.from(playback,s=>s.audio||s.file+'.mp3'));
+const catalog=fs.readFileSync(path.join(root,'SONGS.md'),'utf8');
+const linkedIndices=Array.from(catalog.matchAll(/pv\.html\?song=(\d+)\)/g),m=>Number(m[1]));
+assert.deepEqual(linkedIndices,Array.from(playback,s=>s.index));
+const resume=pv.slice(pv.indexOf('const LAST_SONG_KEY'),pv.indexOf('function rememberSong'))+';savedSong()';
+for(const [stored,expected] of [[null,1],['',1],['bad',1],['999',1],['0',0],['76',76]]){
+  const localStorage={getItem:()=>stored};
+  assert.equal(vm.runInNewContext(resume,{SONGS,SongOrder,localStorage}),expected);
+}
+assert.equal(vm.runInNewContext(resume,{SONGS,SongOrder}),1);
 const flat=groups.flatMap(g=>g.items.map(s=>s.index));
 assert.equal(flat.length,SONGS.length);assert.equal(new Set(flat).size,SONGS.length);
 for(const [label,count] of [['ローリング☆ガールズ',10],['逆境無頼カイジ',4],['[C] THE MONEY OF SOUL AND POSSIBILITY CONTROL',2],['Extreme Hearts',4],['グロウアップショウ ～ひまわりのサーカス団～',2]])assert.equal(groups.find(g=>g.label===label).items.length,count,label);

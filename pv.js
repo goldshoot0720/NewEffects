@@ -464,14 +464,14 @@ const frac = x => x - Math.floor(x);
 const pad = (n, l = 2) => String(Math.max(0, n)).padStart(l, '0');
 const mk = (w, h) => { const c = document.createElement('canvas'); c.width = w; c.height = h; return c; };
 
-// 網址沒帶 song 時接上次看的那一首。?song= 優先；逐格輸出不讀、也不寫這份紀錄。
+// 網址指定的歌曲優先；首次造訪依播放順序選曲，回訪時接續上次選曲。
 const LAST_SONG_KEY = 'pv-last-song';
 function savedSong(){
   try{
-    const n = +localStorage.getItem(LAST_SONG_KEY);
-    if(Number.isInteger(n) && n >= 0 && n < SONGS.length) return n;
+    const stored = localStorage.getItem(LAST_SONG_KEY);
+    if(/^\d+$/.test(stored) && Number(stored) < SONGS.length) return Number(stored);
   }catch{}
-  return 0;
+  return SONGS.indexOf(SongOrder.group(SONGS)[0]);
 }
 function rememberSong(i){
   try{ localStorage.setItem(LAST_SONG_KEY, String(i)); }catch{}
