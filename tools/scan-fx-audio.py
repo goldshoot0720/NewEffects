@@ -13,7 +13,7 @@ import numpy as np
 from faster_whisper import WhisperModel
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-AUDIO = os.path.join(ROOT, 'FX戦士くるみちゃん.mp3')
+AUDIO = os.path.join(ROOT, 'audio', 'FX戦士くるみちゃん.mp3')
 FFMPEG = '/opt/homebrew/bin/ffmpeg'
 MODEL = 'mobiuslabsgmbh/faster-whisper-large-v3-turbo'
 

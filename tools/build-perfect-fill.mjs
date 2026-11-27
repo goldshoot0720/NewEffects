@@ -15,7 +15,7 @@ import path from 'node:path';
 import {fileURLToPath} from 'node:url';
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
-const SRT = path.join(root, '完璧じゃないわたし.srt');
+const SRT = path.join(root, 'subtitles', '完璧じゃないわたし.srt');
 const ASR = path.join(root, 'assets/ref/perfect/asr-ja.json');
 const OUT = path.join(root, 'assets/ref/perfect/fill-ja.json');
 const WIN = 2.0;          // 每句對齊時往前往後多看幾秒

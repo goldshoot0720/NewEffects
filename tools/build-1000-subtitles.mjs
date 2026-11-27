@@ -5,7 +5,7 @@ import fs from 'node:fs';
 import path from 'node:path';
 import {fileURLToPath} from 'node:url';
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
-const OUT = path.join(root, '1000のバイオリン.srt');
+const OUT = path.join(root, 'subtitles', '1000のバイオリン.srt');
 const LINES = [
   [1.28, 6.32, 'ヒマラヤほどの消しゴムひとつ', '一塊像喜馬拉雅那麼大的橡皮擦'],
   [7.70, 13.18, '楽しい事をたくさんしたい', '想做好多好多開心的事'],

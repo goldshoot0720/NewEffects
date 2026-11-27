@@ -10,7 +10,7 @@ import path from 'node:path';
 import {fileURLToPath} from 'node:url';
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
-const OUT = path.join(root, 'Chase the Light!.srt');
+const OUT = path.join(root, 'subtitles', 'Chase the Light!.srt');
 
 // 固定錨點：[起, 訖, 原文, 繁中]
 const FIXED = [

@@ -5,7 +5,7 @@ import fs from 'node:fs';
 import path from 'node:path';
 import {fileURLToPath} from 'node:url';
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
-const OUT = path.join(root, '英雄にあこがれて.srt');
+const OUT = path.join(root, 'subtitles', '英雄にあこがれて.srt');
 const LINES = [
   [30.66, 37.08, 'いばらの道を見つけだし　クツをぬぎすてる', '找出荊棘之路 把鞋子脫掉'],
   [38.26, 44.00, 'あんまり平和な世の中じゃ　カッコ悪すぎる', '太過和平的世界 實在太遜了'],

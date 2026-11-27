@@ -7,7 +7,7 @@ import path from 'node:path';
 import {fileURLToPath} from 'node:url';
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
-const OUT = path.join(root, '月の爆撃機.srt');
+const OUT = path.join(root, 'subtitles', '月の爆撃機.srt');
 
 // [起, 訖, 日文, 繁中]
 const LINES = [

@@ -9,7 +9,7 @@ TV 動畫《ローリング☆ガールズ》ED 主題曲的翻唱版。PV 編�
 | `lineup-hi.jpg` | 使用者提供的四人並排立繪（純白背景，1677×938），目前切圖來源 |
 | `lineup.jpg` | 較早的 1024×1536 版本，僅作備份 |
 | `asr-ja.json` | `tools/asr.py`（faster-whisper large-v3-turbo）的逐句與逐詞時間 |
-| `../../人にやさしく.srt` | 35 句日中雙語字幕，由 `tools/build-rolling-subtitles.mjs` 產生 |
+| `../../../subtitles/人にやさしく.srt` | 35 句日中雙語字幕，由 `tools/build-rolling-subtitles.mjs` 產生 |
 
 ## 字幕時間軸
 

@@ -2,13 +2,13 @@
 // 「最最最高級のお世話して」／angela（TVアニメ『才女のお世話』OP）
 // 使用者提供的日文歌詞＋本專案的繁中翻譯，時間軸依 194.11 秒的音源逐句對齊
 // （faster-whisper large-v3-turbo 取詞級時間戳，再由 tools/align-lyrics.py 的同一套邏輯人工核對）。
-// 用法：node tools/build-osewa-subtitles.mjs → 最最最高級のお世話して.srt
+// 用法：node tools/build-osewa-subtitles.mjs → subtitles/最最最高級のお世話して.srt
 import fs from 'node:fs';
 import path from 'node:path';
 import {fileURLToPath} from 'node:url';
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
-const OUT = path.join(root, '最最最高級のお世話して.srt');
+const OUT = path.join(root, 'subtitles', '最最最高級のお世話して.srt');
 const DURATION = 194.112;
 
 // start / end 是實際唱出的起訖（秒）；輸出時開頭提前 0.15 秒、句尾最多延 0.9 秒，

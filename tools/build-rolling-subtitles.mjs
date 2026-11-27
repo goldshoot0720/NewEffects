@@ -7,7 +7,7 @@ import path from 'node:path';
 import {fileURLToPath} from 'node:url';
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
-const OUT = path.join(root, '人にやさしく.srt');
+const OUT = path.join(root, 'subtitles', '人にやさしく.srt');
 
 // [起, 訖, 日文, 繁中]
 const LINES = [

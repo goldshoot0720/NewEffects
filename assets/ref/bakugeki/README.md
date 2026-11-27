@@ -7,7 +7,7 @@ PV 編號 61，長度 209.20 秒。
 | 檔案 | 內容 |
 | --- | --- |
 | `asr-ja.json` | `tools/asr.py`（faster-whisper large-v3-turbo）的逐句時間 |
-| `../../月の爆撃機.srt` | 20 句日中雙語字幕，由 `tools/build-bakugeki-subtitles.mjs` 產生 |
+| `../../../subtitles/月の爆撃機.srt` | 20 句日中雙語字幕，由 `tools/build-bakugeki-subtitles.mjs` 產生 |
 
 角色素材沿用 `assets/ref/rolling/`（ローリング☆ガールズ 四人），沒有另外切圖。
 

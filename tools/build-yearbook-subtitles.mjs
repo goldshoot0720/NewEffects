@@ -19,6 +19,6 @@ for(const [lang,title,count] of [['zh','我與國中畢業紀念冊的對話',95
     if(!Number.isInteger(c.line)||c.line<1||c.line>count||!Number.isFinite(c.start)||!Number.isFinite(c.end)||c.start<0||c.end-c.start<.5-1e-6||c.end>duration||(i&&c.start<cues[i-1].end-1e-6)) throw Error(`Invalid ${lang} cue ${i+1}`);
     return `${i+1}\n${stamp(c.start)} --> ${stamp(c.end)}\n${lines[c.line-1]}\n`;
   });
-  fs.writeFileSync(path.join(root,title+'.srt'),blocks.join('\n'));
+  fs.writeFileSync(path.join(root,'subtitles',title+'.srt'),blocks.join('\n'));
   console.log(`${title}: ${cues.length} cues, ${duration.toFixed(2)} seconds`);
 }

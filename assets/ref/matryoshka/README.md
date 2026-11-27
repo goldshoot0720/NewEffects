@@ -9,7 +9,7 @@ PV 編號 59，長度 300.35 秒。同作的 ED「RPG」為 PV 60，共用這組
 | `lineup-clean.jpg` | 使用者提供的九人立繪（黑底、無名牌，1821×864），目前切圖來源 |
 | `lineup.jpg` | 較早的版本（附名牌，1822×863），僅作備份 |
 | `asr-ja.json` | `tools/asr.py`（faster-whisper large-v3-turbo）的逐句時間 |
-| `../../マトリョーシカ.srt` | 33 句日中雙語字幕，由 `tools/build-matryoshka-subtitles.mjs` 產生 |
+| `../../../subtitles/マトリョーシカ.srt` | 33 句日中雙語字幕，由 `tools/build-matryoshka-subtitles.mjs` 產生 |
 
 ## 字幕時間軸
 

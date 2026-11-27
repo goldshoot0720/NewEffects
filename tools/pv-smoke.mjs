@@ -75,15 +75,15 @@ vm.runInContext(raw.slice(0, cut) + hook, sandbox, {filename: 'pv.js'});
 const T = sandbox.window.__t;
 const song = T.SONGS[songIndex];
 if(!song) throw new Error(`pv.js 沒有第 ${songIndex} 首歌`);
-const srtPath = path.join(ROOT, song.subs);
-if(!fs.existsSync(srtPath)) throw new Error(`找不到字幕檔 ${song.subs}（本機檔案，不在 repo 內時請先放好）`);
+const srtPath = path.join(ROOT, 'subtitles', song.subs);
+if(!fs.existsSync(srtPath)) throw new Error(`找不到字幕檔 ${srtPath}`);
 const cues = T.parseSrt(fs.readFileSync(srtPath, 'utf8'));
 // 用真實音檔長度（沒有 ffprobe 或音檔不在本機時退回 141.57 秒）
 let dur = 141.57;
 try{
   const {execFileSync} = await import('node:child_process');
   const out = execFileSync('ffprobe', ['-v', 'error', '-show_entries', 'format=duration', '-of', 'csv=p=0',
-    path.join(ROOT, song.audio)], {stdio: ['ignore', 'pipe', 'ignore']}).toString().trim();
+    path.join(ROOT, 'audio', song.audio)], {stdio: ['ignore', 'pipe', 'ignore']}).toString().trim();
   if(+out > 1) dur = +out;
 }catch{}
 

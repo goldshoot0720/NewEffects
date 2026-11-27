@@ -2320,10 +2320,15 @@ async function init(){
     }
     return images.get(src);
   }
-  const get = async (name, kind) => { const r = await fetch(encodeURIComponent(name)); if(!r.ok) throw new Error('找不到 ' + name); return r[kind](); };
-  const [cover, srt, buf] = await Promise.all([loadImg(ART.src), get(song.subs, 'text'), get(song.audio, 'arrayBuffer')]);
+  const get = async (folder, name, kind) => {
+    const response = await fetch(folder + '/' + encodeURIComponent(name));
+    if(!response.ok) throw new Error('找不到 ' + folder + '/' + name);
+    return response[kind]();
+  };
+  const [cover, srt, buf] = await Promise.all([
+    loadImg(ART.src), get('subtitles', song.subs, 'text'), get('audio', song.audio, 'arrayBuffer')
+  ]);
   // 逐字填色時間軸（有的歌才有）：由 ASR 對到音訊後產生，見 tools/build-forever-fill.mjs
-  // 路徑含斜線，不要像字幕那樣整段編碼，Vercel 才找得到檔案。
   const fillData = song.fill ? await fetch(song.fill).then(r => r.ok ? r.json() : null).catch(() => null) : null;
   await Promise.all([jpFont(40), zhFont(40), `300 40px ${FONT.mincho}`, `40px ${FONT.maru}`, `italic 800 40px ${FONT.logo}`, `600 40px ${FONT.cond}`]
     .map(f => document.fonts.load(f, 'あ漢字ABC')));

@@ -113,7 +113,7 @@ function runJob(index){
         const audioArgs = ['-ss', String(m.from), '-t', String(m.to - m.from)];
         const fades=mode==='characters' ? ['-af',`afade=t=in:st=0:d=0.4,afade=t=out:st=${Math.max(0,m.to-m.from-2.4)}:d=2.4`] : [];
         ff = spawn('ffmpeg', ['-y', '-loglevel', 'error', '-f', 'image2pipe', '-framerate', String(m.fps), '-c:v', 'mjpeg', '-threads','2','-i', 'pipe:0',
-          ...audioArgs, '-i', path.join(ROOT, m.audio), '-map', '0:v', '-map', '1:a', ...videoArgs,
+          ...audioArgs, '-i', path.join(ROOT, 'audio', m.audio), '-map', '0:v', '-map', '1:a', ...videoArgs,
           '-pix_fmt', 'yuv420p', '-c:a', 'aac', '-b:a', '192k',...fades, '-shortest', '-movflags', '+faststart', outFile], {stdio: ['pipe', 'inherit', 'inherit'], windowsHide: true});
         ff.on('error', e=>job.fail(e));
         ff.stdin.on('error', e=>job.fail(e));

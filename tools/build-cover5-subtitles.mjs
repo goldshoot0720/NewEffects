@@ -182,6 +182,6 @@ const stamp = t => {
 for (const [name, lines] of Object.entries(SONGS)) {
   const out = lines.map(([a, b, ja, zh], i) =>
     `${i + 1}\n${stamp(a)} --> ${stamp(b)}\n${ja}\n${zh}\n`).join('\n');
-  fs.writeFileSync(path.join(root, name + '.srt'), out);
-  console.log(`${lines.length} 句 → ${name}.srt`);
+  fs.writeFileSync(path.join(root, 'subtitles', name + '.srt'), out);
+  console.log(`${lines.length} 句 → subtitles/${name}.srt`);
 }

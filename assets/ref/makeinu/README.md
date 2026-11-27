@@ -7,7 +7,7 @@ TV 動畫《ろくでなしBLUES》插入曲。PV 編號 56，長度 322.20 秒�
 | 檔案 | 內容 |
 | --- | --- |
 | `asr-ja.json` | `tools/asr.py`（faster-whisper large-v3-turbo）的逐句與逐詞時間 |
-| `../../負け犬たちのレクイエム.srt` | 33 句日中雙語字幕，由 `tools/build-makeinu-subtitles.mjs` 產生 |
+| `../../../subtitles/負け犬たちのレクイエム.srt` | 33 句日中雙語字幕，由 `tools/build-makeinu-subtitles.mjs` 產生 |
 
 角色素材沿用 `assets/ref/mirai/`（同一部作品的九人合圖），沒有另外切圖。
 

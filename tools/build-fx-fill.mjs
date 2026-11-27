@@ -400,7 +400,7 @@ fs.writeFileSync(path.join(root, '.zwork/fx/timings-proposed.json'), JSON.string
 fs.writeFileSync(path.join(REF, 'timings-ja.json'), JSON.stringify(proposed, null, 1) + '\n');
 execFileSync('python3', [path.join(root, 'tools/build-srt.py'),
   path.join(REF, 'timings-ja.json'), path.join(REF, 'lyrics-zh.txt'),
-  path.join(root, 'FX戦士くるみちゃん.srt')], {stdio: 'inherit'});
+  path.join(root, 'subtitles', 'FX戦士くるみちゃん.srt')], {stdio: 'inherit'});
 
 console.log(`${out.length}/${lines.length} 行 → assets/ref/fx/fill-ja.json`);
 console.log('  行  方法      覆蓋  句首  舊起點   新起點   位移   舊訖點   新訖點  歌詞');

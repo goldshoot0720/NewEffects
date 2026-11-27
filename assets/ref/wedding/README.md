@@ -13,6 +13,6 @@
 
 音源由公開分享頁的播放來源取得，轉為 192 kbps MP3。中文約 165.89 秒、英文約 179.37 秒、粵文約 164.01 秒、日文約 190.81 秒，均為全曲。字幕使用本機 faster-whisper medium 的詞級時間戳，日文模糊段落另以 small 模型切段複核，依使用者原文逐句核對斷句；保留片頭、吉他間奏與片尾空白，沒有將整曲歌詞平均分配到音訊長度。
 
-`timings-zh.json`（33 句）、`timings-en.json`（34 句）、`timings-yue.json`（34 句）、`timings-ja.json`（34 句）保存時間軸。執行 `node tools/build-wedding-subtitles.mjs` 可重建根目錄的四份 SRT，並檢查句數、時間先後、重疊及音源長度。
+`timings-zh.json`（33 句）、`timings-en.json`（34 句）、`timings-yue.json`（34 句）、`timings-ja.json`（34 句）保存時間軸。執行 `node tools/build-wedding-subtitles.mjs` 可重建`subtitles/` 下的四份 SRT，並檢查句數、時間先後、重疊及音源長度。
 
 兩版播放器與人物 PV 沿用現有幸運八人（含 Claude 娘與 GPT 娘），鋒兄、塗哥預設並列中央，其他人物輪流出現。這次未更換既有人物素材，也未修改其他歌曲。

@@ -7,7 +7,7 @@
 | 檔案 | 內容 |
 | --- | --- |
 | `asr-ja.json` | `tools/asr.py`（faster-whisper large-v3-turbo）的逐句時間 |
-| `../../STONES.srt` | 字幕，由 `tools/build-cover5-subtitles.mjs` 產生 |
+| `../../../subtitles/STONES.srt` | 字幕，由 `tools/build-cover5-subtitles.mjs` 產生 |
 
 角色素材沿用 `assets/ref/rolling/`（ローリング☆ガールズ 四人），沒有另外切圖。
 

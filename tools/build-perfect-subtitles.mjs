@@ -9,7 +9,7 @@ import path from 'node:path';
 import {fileURLToPath} from 'node:url';
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
-const OUT = path.join(root, '完璧じゃないわたし.srt');
+const OUT = path.join(root, 'subtitles', '完璧じゃないわたし.srt');
 
 const LINES = [
   [0.79, 2.94, "完璧じゃないわたし", "不完美的我"],

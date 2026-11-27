@@ -8,7 +8,7 @@ TV 動畫《ろくでなしBLUES》ED 主題曲。PV 編號 55，長度 149.00 �
 | --- | --- |
 | `lineup.png` | 使用者提供的九人合圖（純白背景，446×667） |
 | `asr-ja.json` | `tools/asr.py`（faster-whisper large-v3-turbo）的逐句與逐詞時間 |
-| `../../未来は僕等の手の中.srt` | 28 句日中雙語字幕，由 `tools/build-mirai-subtitles.mjs` 產生 |
+| `../../../subtitles/未来は僕等の手の中.srt` | 28 句日中雙語字幕，由 `tools/build-mirai-subtitles.mjs` 產生 |
 
 ## 字幕時間軸
 

@@ -36,9 +36,10 @@ assert.equal(a[0].zh,'你好世界');
 assert.equal(a[0].start,1);assert.equal(a[0].end,2.5);assert.equal(b[0].end,2.5);
 assert.equal(a[1].jp,'雨(あめ)');
 assert.equal(JSON.stringify(a.map(c=>[c.jp,c.zh])),JSON.stringify(b.map(c=>[c.text,c.zh])));
+const subtitleDir=path.join(root,'subtitles');
 let count=0;
-for(const name of fs.readdirSync(root).filter(f=>f.endsWith('.srt'))){
-  const text=fs.readFileSync(path.join(root,name),'utf8');
+for(const name of fs.readdirSync(subtitleDir).filter(f=>f.endsWith('.srt'))){
+  const text=fs.readFileSync(path.join(subtitleDir,name),'utf8');
   const p=pv(text),q=v2(text).filter(c=>c.text);
   assert.equal(p.length,q.length,name);
   for(let i=0;i<p.length;i++){
@@ -79,7 +80,7 @@ for(const name of fs.readdirSync(root).filter(f=>f.endsWith('.srt'))){
   vm.runInNewContext(`const PUNCT='、。・「」『』…,.';\n${code.slice(tokStart,tokEnd)}\n__out={tokenize}`,box);
   const {tokenize}=box.__out;
   const fill=JSON.parse(fs.readFileSync(path.join(root,'assets/ref/forever/fill-ja.json'),'utf8'));
-  const srtText=fs.readFileSync(path.join(root,'Forever＆ever.srt'),'utf8');
+  const srtText=fs.readFileSync(path.join(subtitleDir,'Forever＆ever.srt'),'utf8');
   const cues=pv(srtText);
   assert.equal(fill.lines.length,cues.length,'逐字填色的句數');
   cues.forEach((c,i)=>{

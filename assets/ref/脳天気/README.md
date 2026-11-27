@@ -7,7 +7,7 @@ PV 編號見 README。長度 257.13 秒，17 句日中雙語字幕。
 | 檔案 | 內容 |
 | --- | --- |
 | `asr-ja.json` | `tools/asr.py`（faster-whisper large-v3-turbo）的逐句時間 |
-| `../../脳天気.srt` | 字幕，由 `tools/build-notenki-subtitles.mjs` 產生 |
+| `../../../subtitles/脳天気.srt` | 字幕，由 `tools/build-notenki-subtitles.mjs` 產生 |
 
 角色素材沿用 `assets/ref/rolling/`（ローリング☆ガールズ 四人），沒有另外切圖。
 

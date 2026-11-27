@@ -7,7 +7,7 @@ PV 編號 60，長度 245.32 秒。
 | 檔案 | 內容 |
 | --- | --- |
 | `asr-ja.json` | `tools/asr.py`（faster-whisper large-v3-turbo）的逐句時間 |
-| `../../RPG.srt` | 43 句日中雙語字幕，由 `tools/build-rpg-subtitles.mjs` 產生 |
+| `../../../subtitles/RPG.srt` | 43 句日中雙語字幕，由 `tools/build-rpg-subtitles.mjs` 產生 |
 
 角色素材沿用 `assets/ref/matryoshka/`（同一組九人精靈），沒有另外切圖。
 

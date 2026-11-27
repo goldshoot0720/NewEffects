@@ -427,7 +427,7 @@ WEST. 演唱的兩首第一季片頭曲共用五位重新繪製的人物立繪�
 
 ## 歌曲檔案
 
-本機 MP3 與字幕檔（SRT／LRC）通常不放在這個 repo（見 `.gitignore`）。「風の中は走るっきゃないっ！」、「ぴ [ナナヲアカリ]」、「統一發票頭獎得主鋒兄威力彩頭獎得主塗哥」、「私は、わたしの事が好き。」、「月に向かって撃て」、「声の軌跡」、「$・¥・€」、「完璧じゃないわたし」、「最最最高級のお世話して」、「DAYS!」、「FX戦士くるみちゃん」、「人にやさしく」、「未来は僕等の手の中」與「負け犬たちのレクイエム」與「Chase the Light!」與「CからはじまるABC」與「マトリョーシカ」與「RPG」與「月の爆撃機」、「英雄にあこがれて」、「1000のバイオリン」與「脳天気」、「TRAIN-TRAIN」、「シャララ」、「STONES」、「夕暮れ」與「終わらない歌」與「INSIDE IDENTITY」的 MP3 和字幕已納入 repo，供部署版播放及顯示字幕；其他音訊與字幕仍由使用者本機提供。
+內建歌曲的 MP3 放在 [audio/](audio/)，對應的 SRT 放在 [subtitles/](subtitles/)。兩個資料夾都隨播放器部署。
 
 「統一發票頭獎得主鋒兄威力彩頭獎得主塗哥」是 Suno 生成的曲子（`v6`，141.6 秒），沒有 YouTube 影片，播放器直接播本機 MP3。它的中文 SRT 是拿歌詞對音訊做強制對齊產生的：`ffmpeg` 轉 16 kHz 單聲道，用本機 `faster-whisper medium` 取詞級時間戳（`language=zh`、`word_timestamps`），再把歌詞逐字對到 ASR 詞上。音訊檔是從 Suno 分享頁的 CDN 取回、以 AES-CTR 解密後轉成 MP3。
 
@@ -435,11 +435,9 @@ WEST. 演唱的兩首第一季片頭曲共用五位重新繪製的人物立繪�
 
 「私は、わたしの事が好き。」的 SRT 走同一條流程，工具留在 `tools/`：`faster-whisper medium` 取詞級時間戳後，`tools/align-lyrics.py` 把歌詞逐字與 ASR 逐字做 Levenshtein 對齊（對上的字沿用 ASR 時間），再由 `tools/build-srt.py` 寫成日中雙語 SRT 並把每句結束時間收到下一句開始前。ASR 對唱歌的辨識本來就零散，但對齊後每句仍有 5–12 個字對上，時間軸足夠貼合。
 
-把檔案放在與 `index.html` 同一個資料夾，並在 `v2.html` 的 `DEFAULT_SONGS`（播放器）與 `pv.js` 的 `SONGS`（PV）設定檔名：
-
 「カニ☆Do-Luck! [あいうらぶ]」已加入兩版歌曲清單（PV 編號 7），使用使用者提供的 `カニ☆Do-Luck!.mp3` 與日中雙語 `カニ☆Do-Luck!.srt`。日文保留使用者提供的歌詞，字幕依音訊逐句對時。人物使用使用者提供封面中的天谷奏香、岩沢彩生、上原歩子三人，預設主唱為奏香；歌詞 PV、人物 PV 與第二版播放器均使用這三位，人物 PV 固定此組造型。透明素材由內建 imagegen 參照封面重建，補齊原圖被遮擋與裁掉的下半身；原圖存為 `assets/ref/aiura-cover.png`，圖集為 `assets/ref/aiura-sprites.png`。執行 `node tools/build-aiura.mjs` 可重建三張獨立切圖、`cast.json` 與 `assets/ref/aiura-group.png`；提示記錄於 [assets/ref/AIURA.md](assets/ref/AIURA.md)。音檔內附的 YouTube ID `lk7NsqwWiA0` 用於播放器切換音源。本曲音訊與字幕已納入 repo，供部署版播放及顯示字幕。
 
-部署版若缺少其他歌曲的本機 MP3，播放器會自動切換到該曲的 YouTube 音源；部署版未附其他歌曲的 SRT／LRC，請在歌詞面板匯入字幕檔。
+新增歌曲時，把音檔和字幕放入對應資料夾，再將檔名填入 `pv.js` 的 `SONGS` 與 `v2.html` 的 `DEFAULT_SONGS`。例如，`audio/歌曲.mp3` 和 `subtitles/字幕.srt` 在第二版播放器的設定如下。
 
 ```js
 {id: 'YouTube 影片 ID', title: '歌名', audio: '歌曲.mp3', subs: '字幕.srt', lead: 0}

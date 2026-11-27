@@ -5,7 +5,7 @@ import fs from 'node:fs';
 import path from 'node:path';
 import {fileURLToPath} from 'node:url';
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
-const OUT = path.join(root, '脳天気.srt');
+const OUT = path.join(root, 'subtitles', '脳天気.srt');
 const LINES = [
   [30.00, 36.80, 'いい天気だ　いい天気だ', '天氣真好啊 天氣真好'],
   [36.80, 43.74, 'いい天気だ　ノーテンキだ', '天氣真好 沒神經啊'],

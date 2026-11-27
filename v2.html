@@ -562,14 +562,14 @@ const DEFAULT_SONGS = [
   {id:'Zn8ot7SSsjs',title:'人生は素晴らしい [WEST.]',audio:'人生は素晴らしい.mp3',subs:'人生は素晴らしい.srt',cover:'assets/ref/ace/cover.webp',lead:1,cast:'ace'},
   {id:'NhLbMsll6Aw',title:'U・N・M・E・Iライブ [春日未来・最上静香・箱崎星梨花]',audio:'U・N・M・E・Iライブ.mp3',subs:'U・N・M・E・Iライブ.srt',cover:'assets/ref/unmei/cover.webp',lead:0,cast:'unmei'}
 ];
-// 每首歌的字幕／音訊檔放在同一個資料夾，執行時才讀取
+// 清單保存檔名，載入時分別從 subtitles/ 與 audio/ 讀取。
 const cfgOf = id => DEFAULT_SONGS.find(d => d.id === id) || {};
 const fileLrc = {};   // id → LRC、翻譯、依 LRC 起點索引的原始 SRT 句子
 const hashStr = s => { let h = 5381; for(let i = 0; i < s.length; i++) h = (h*33 ^ s.charCodeAt(i)) >>> 0; return h.toString(36); };
 async function preloadFiles(){
   await Promise.all(DEFAULT_SONGS.filter(d => d.subs).map(async d => {
     try{
-      const r = await fetch(encodeURIComponent(d.subs), {cache: 'no-cache'});
+      const r = await fetch('subtitles/' + encodeURIComponent(d.subs), {cache: 'no-cache'});
       if(!r.ok) return;
       const ls = parse(await r.text());
       const lrc = toLRC(ls);
@@ -707,7 +707,7 @@ function applySource(id, autoplay, at = 0){
 }
 const audioUrls = {};
 function audioUrl(id){
-  return audioUrls[id] ||= fetch(encodeURIComponent(cfgOf(id).audio))
+  return audioUrls[id] ||= fetch('audio/' + encodeURIComponent(cfgOf(id).audio))
     .then(r => r.ok ? r.blob() : null).then(b => b && URL.createObjectURL(b)).catch(() => null);
 }
 function showCover(id){

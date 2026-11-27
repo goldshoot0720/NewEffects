@@ -17,5 +17,5 @@ const blocks=cues.map((c,i)=>{
   if(c.line!==i+1 || !Number.isFinite(c.start) || !Number.isFinite(c.end) || c.start<0 || c.start>=c.end || c.end>duration || (i&&c.start<cues[i-1].end)) throw Error('Invalid cue '+(i+1));
   return `${c.line}\n${stamp(c.start)} --> ${stamp(c.end)}\n${ja[i]}\n${zh[i]}\n`;
 });
-fs.writeFileSync(path.join(root,'後はやるだけ！.srt'),blocks.join('\n'));
+fs.writeFileSync(path.join(root,'subtitles','後はやるだけ！.srt'),blocks.join('\n'));
 console.log('Rebuilt 41 bilingual cues with reviewed second-half timings');

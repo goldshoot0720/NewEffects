@@ -3,7 +3,7 @@
 - 音訊為使用者提供的 `後はやるだけ！.mp3`，224.92 秒；內附 metadata 指向[原影片](https://www.youtube.com/watch?v=GGWhqMmOC3E)，本版翻唱《メジャー》第二季片頭曲〈さらば碧き面影〉，原唱為ロードオブメジャー。參見[日本媒體藝術資料庫](https://mediaarts-db.artmuseums.go.jp/id/C13091)。
 - 兩張團體截圖 `source-a.png`、`source-b.png` 各有八位球員；`source-lead.png` 是監督樋口楓。合計十六位演唱／出場球員與一位監督。角色名稱依影片 credit 及[官方角色資料](https://www.nijisanji.jp/talents)核對。
 - 歌詞 PV 編號 `13`（歌曲選單第 14 首）；第二版 YouTube ID `GGWhqMmOC3E`。預設舞台主唱為壱百満天原サロメ；樋口楓在選單中標示為「監督」。
-- `lyrics-ja.txt` 逐行保存使用者提供的 41 行日文；`lyrics-zh.txt` 為繁中翻譯。以 faster-whisper medium 詞級時間戳對齊，補查末段英文重複句；不把間奏期間的辨識幻覺寫進字幕。輸出為根目錄的 `後はやるだけ！.srt`，時間不重疊且均在音訊長度內。
+- `lyrics-ja.txt` 逐行保存使用者提供的 41 行日文；`lyrics-zh.txt` 為繁中翻譯。以 faster-whisper medium 詞級時間戳對齊，補查末段英文重複句；不把間奏期間的辨識幻覺寫進字幕。輸出為`subtitles/後はやるだけ！.srt`，時間不重疊且均在音訊長度內。
 - 後半段另以獨立裁切音訊核對日文入唱點與英文重複句，修正第二次副歌部分句子提早約 0.6～0.8 秒、末段副歌及三句 Run 的時間，並保留換氣空檔。最後一段 Run 另以 214.3～217.0 秒裁切確認；完整 41 行歌詞不變。已核對的起訖保存在 [timings.json](timings.json)，執行 `node tools/build-vwest-subtitles.mjs` 可重建字幕。
 
 ## 人物與原圖位置

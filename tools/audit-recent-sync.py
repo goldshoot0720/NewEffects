@@ -45,10 +45,11 @@ def align(chars,ls):
  return p[::-1]
 out=[]
 for index,s in enumerate(R['pv']):
- if s['file']+'.mp3' not in ADDED:continue
+ audio=pathlib.Path('audio') / s.get('audio', s['file']+'.mp3')
+ if str(audio) not in ADDED and audio.name not in ADDED:continue
  
  if not 54<=index<=69: raise RuntimeError(f'No saved ASR mapping for new song: {s["title"]}')
- ref=REF[index-54]; ap=f'assets/ref/{ref}/asr-ja.json'; segs=json.load(open(ap));cues=parse(s['subs']);dur=float(subprocess.check_output(['ffprobe','-v','error','-show_entries','format=duration','-of','csv=p=0',s['file']+'.mp3'],text=True))
+ ref=REF[index-54]; ap=f'assets/ref/{ref}/asr-ja.json'; segs=json.load(open(ap));cues=parse(pathlib.Path('subtitles') / s['subs']);dur=float(subprocess.check_output(['ffprobe','-v','error','-show_entries','format=duration','-of','csv=p=0',audio],text=True))
  chars=[]
  for seg in segs:
   for w in seg.get('words',[]):

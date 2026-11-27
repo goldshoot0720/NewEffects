@@ -14,6 +14,11 @@ const entries=SONGS.map((s,index)=>({...s,index})),groups=SongOrder.categories(e
 const playback=SongOrder.group(entries);
 assert.equal(playback[0].title,'SUNRISE');
 assert.deepEqual(Array.from(SongOrder.group(DEFAULT_SONGS),s=>s.audio),Array.from(playback,s=>s.audio||s.file+'.mp3'));
+assert.deepEqual(Array.from(SongOrder.group(DEFAULT_SONGS),s=>s.subs),Array.from(playback,s=>s.subs));
+for(const song of DEFAULT_SONGS){
+  assert.ok(fs.statSync(path.join(root,'audio',song.audio)).isFile(),song.audio);
+  assert.ok(fs.statSync(path.join(root,'subtitles',song.subs)).isFile(),song.subs);
+}
 const catalog=fs.readFileSync(path.join(root,'SONGS.md'),'utf8');
 const linkedIndices=Array.from(catalog.matchAll(/pv\.html\?song=(\d+)\)/g),m=>Number(m[1]));
 assert.deepEqual(linkedIndices,Array.from(playback,s=>s.index));

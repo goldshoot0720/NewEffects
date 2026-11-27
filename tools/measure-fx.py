@@ -29,7 +29,7 @@ import numpy as np
 from scipy.signal import find_peaks
 
 SR, HOP, NFFT = 22050, 256, 2048
-AUDIO = 'FX戦士くるみちゃん.mp3'
+AUDIO = 'audio/FX戦士くるみちゃん.mp3'
 FFMPEG = '/opt/homebrew/bin/ffmpeg'
 CACHE = '/tmp/fx-envelope.npz'
 
@@ -158,7 +158,7 @@ def main():
     E, T = envelope()
     timings = json.load(open('assets/ref/fx/timings-ja.json'))
     zh = [l.rstrip('\n') for l in open('assets/ref/fx/lyrics-zh.txt') if l.strip()]
-    starts = srt_starts('FX戦士くるみちゃん.srt')
+    starts = srt_starts('subtitles/FX戦士くるみちゃん.srt')
     if len(starts) == len(timings):
         drift = max(abs(a - b['start']) for a, b in zip(starts, timings))
         assert drift < 0.05, f'SRT 與 timings 的起點差了 {drift:.2f} 秒，請先確認時間軸沒被改過'

@@ -46,7 +46,7 @@ function attachFill(units, times, total){
   return fill;
 }
 
-const srt = fs.readFileSync(path.join(root, 'FX戦士くるみちゃん.srt'), 'utf8');
+const srt = fs.readFileSync(path.join(root, 'subtitles', 'FX戦士くるみちゃん.srt'), 'utf8');
 const cues = [];
 for(const block of srt.trim().split(/\n\n/)){
   const ls = block.split('\n');

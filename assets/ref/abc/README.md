@@ -7,7 +7,7 @@ PV 編號 58，長度 172.33 秒。
 | 檔案 | 內容 |
 | --- | --- |
 | `asr-ja.json` | `tools/asr.py`（faster-whisper large-v3-turbo）的逐句時間 |
-| `../../CからはじまるABC.srt` | 22 句日中雙語字幕，由 `tools/build-abc-subtitles.mjs` 產生 |
+| `../../../subtitles/CからはじまるABC.srt` | 22 句日中雙語字幕，由 `tools/build-abc-subtitles.mjs` 產生 |
 
 角色素材沿用 `assets/ref/mirai/`（同一組九人合圖），沒有另外切圖。
 

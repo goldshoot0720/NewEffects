@@ -7,7 +7,7 @@ import path from 'node:path';
 import {fileURLToPath} from 'node:url';
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
-const OUT = path.join(root, 'INSIDE IDENTITY.srt');
+const OUT = path.join(root, 'subtitles', 'INSIDE IDENTITY.srt');
 const fillPath = path.join(root, 'assets/ref/inside-identity/fill-ja.json');
 
 // [起, 訖, 日文, 繁中]

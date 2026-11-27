@@ -7,7 +7,7 @@ PV 編號 57，長度 221.77 秒。
 | 檔案 | 內容 |
 | --- | --- |
 | `asr-ja.json` | `tools/asr.py`（faster-whisper large-v3-turbo）的逐句時間，**僅供段落邊界參考** |
-| `../../Chase the Light!.srt` | 39 句日中雙語字幕，由 `tools/build-chase-subtitles.mjs` 產生 |
+| `../../../subtitles/Chase the Light!.srt` | 39 句日中雙語字幕，由 `tools/build-chase-subtitles.mjs` 產生 |
 
 ## 時間軸
 
