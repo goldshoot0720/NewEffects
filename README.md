@@ -2,7 +2,89 @@
 
 首頁會直接開啟歌詞 PV（`pv.html`）。角色圖鑑（`characters.html`）收錄十位角色的全身立繪與三視圖，可從 PV 的「角色圖鑑」連結進入，依分類瀏覽、切換圖片並下載。選擇「旋轉檢視」後，可左右拖曳或使用按鈕切換正面、側面與背面。第二版本 `v2.html` 是動態歌詞播放器：在 YouTube 影片或本機 MP3 上疊加動態歌詞特效，並提供參考人物與 Q 版偶像的「載歌載舞」舞台。
 
-[完整曲目與播放連結](SONGS.md)
+## 歌曲清單
+
+**總歌曲數：77 個可播放版本，涵蓋 50 個不同曲名。** 各語言版本分列，點選歌名即可播放。
+
+| 播放順序 | 歌曲 | 演唱或版本 | 收錄序號 |
+| ---: | --- | --- | ---: |
+| 1 | [SUNRISE](https://neweffects.vercel.app/pv.html?song=1) | 小日向理瀬 ver. | 2 |
+| 2 | [HELLO HERO](https://neweffects.vercel.app/pv.html?song=2) | 御社 智 ver. | 3 |
+| 3 | [Forever＆ever](https://neweffects.vercel.app/pv.html?song=46) | 彩音 | 47 |
+| 4 | [DAYS!](https://neweffects.vercel.app/pv.html?song=52) | Aooo | 53 |
+| 5 | [Chase the Light!](https://neweffects.vercel.app/pv.html?song=57) | Fear, and Loathing in Las Vegas | 58 |
+| 6 | [RPG](https://neweffects.vercel.app/pv.html?song=60) | School Food Punishment | 61 |
+| 7 | [TRAIN-TRAIN](https://neweffects.vercel.app/pv.html?song=65) | THE ROLLING GIRLS | 66 |
+| 8 | [STONES](https://neweffects.vercel.app/pv.html?song=67) | THE ROLLING GIRLS | 68 |
+| 9 | [INSIDE IDENTITY](https://neweffects.vercel.app/pv.html?song=70) | Black Raison d’être | 71 |
+| 10 | [PLAY THE GAME](https://neweffects.vercel.app/pv.html?song=72) | ロードオブメジャー | 73 |
+| 11 | [大好きだよって叫ぶんだ](https://neweffects.vercel.app/pv.html?song=0) | 小日向理瀬 ver. | 1 |
+| 12 | [風の中は走るっきゃないっ！](https://neweffects.vercel.app/pv.html?song=3) | 三月のパンタシア | 4 |
+| 13 | [ぴ](https://neweffects.vercel.app/pv.html?song=4) | ナナヲアカリ | 5 |
+| 14 | [私は、わたしの事が好き。](https://neweffects.vercel.app/pv.html?song=6) | かぐや(cv.夏吉ゆうこ) | 7 |
+| 15 | [カニ☆Do-Luck!](https://neweffects.vercel.app/pv.html?song=7) | あいうらぶ | 8 |
+| 16 | [ユラリユレル](https://neweffects.vercel.app/pv.html?song=8) | NOMELON NOLEMON | 9 |
+| 17 | [明日へのBreakShoot](https://neweffects.vercel.app/pv.html?song=9) | 葉山陽和 ver. | 10 |
+| 18 | [さらば碧き面影](https://neweffects.vercel.app/pv.html?song=13) | V西2025 カバー（原唱：ロードオブメジャー） | 14 |
+| 19 | [月に向かって撃て](https://neweffects.vercel.app/pv.html?song=47) | 星街すいせい | 48 |
+| 20 | [声の軌跡](https://neweffects.vercel.app/pv.html?song=48) | Soala | 49 |
+| 21 | [$・¥・€](https://neweffects.vercel.app/pv.html?song=49) | ドル・円・ユーロ | 50 |
+| 22 | [完璧じゃないわたし](https://neweffects.vercel.app/pv.html?song=50) | 前島亜美 | 51 |
+| 23 | [最最最高級のお世話して](https://neweffects.vercel.app/pv.html?song=51) | angela | 52 |
+| 24 | [FX戦士くるみちゃん](https://neweffects.vercel.app/pv.html?song=53) | 福賀くるみ(CV.鈴木愛奈) | 54 |
+| 25 | [人にやさしく](https://neweffects.vercel.app/pv.html?song=54) | THE ROLLING GIRLS | 55 |
+| 26 | [未来は僕等の手の中](https://neweffects.vercel.app/pv.html?song=55) | 逆境無頼カイジ | 56 |
+| 27 | [負け犬たちのレクイエム](https://neweffects.vercel.app/pv.html?song=56) | 逆境無頼カイジ | 57 |
+| 28 | [CからはじまるABC](https://neweffects.vercel.app/pv.html?song=58) | 忘れらんねえよ | 59 |
+| 29 | [マトリョーシカ](https://neweffects.vercel.app/pv.html?song=59) | NICO Touches the Walls | 60 |
+| 30 | [月の爆撃機](https://neweffects.vercel.app/pv.html?song=61) | THE ROLLING GIRLS | 62 |
+| 31 | [英雄にあこがれて](https://neweffects.vercel.app/pv.html?song=62) | THE ROLLING GIRLS | 63 |
+| 32 | [1000のバイオリン](https://neweffects.vercel.app/pv.html?song=63) | THE ROLLING GIRLS | 64 |
+| 33 | [脳天気](https://neweffects.vercel.app/pv.html?song=64) | THE ROLLING GIRLS | 65 |
+| 34 | [シャララ](https://neweffects.vercel.app/pv.html?song=66) | THE ROLLING GIRLS | 67 |
+| 35 | [夕暮れ](https://neweffects.vercel.app/pv.html?song=68) | THE ROLLING GIRLS | 69 |
+| 36 | [終わらない歌](https://neweffects.vercel.app/pv.html?song=69) | THE ROLLING GIRLS | 70 |
+| 37 | [光と影のラプラス](https://neweffects.vercel.app/pv.html?song=73) | 亜咲花 | 74 |
+| 38 | [逆転Winner](https://neweffects.vercel.app/pv.html?song=74) | WEST. | 75 |
+| 39 | [人生は素晴らしい](https://neweffects.vercel.app/pv.html?song=75) | WEST. | 76 |
+| 40 | [U・N・M・E・Iライブ](https://neweffects.vercel.app/pv.html?song=76) | 春日未来・最上静香・箱崎星梨花 | 77 |
+| 41 | [統一發票頭獎得主鋒兄威力彩頭獎得主塗哥](https://neweffects.vercel.app/pv.html?song=5) | Suno v6 | 6 |
+| 42 | [統一發票頭獎得主鋒兄威力彩頭獎得主塗哥(英文歌詞)](https://neweffects.vercel.app/pv.html?song=10) | Suno v6 | 11 |
+| 43 | [統一發票頭獎得主鋒兄威力彩頭獎得主塗哥(日文歌詞)](https://neweffects.vercel.app/pv.html?song=11) | Suno v6 | 12 |
+| 44 | [統一發票頭獎得主鋒兄威力彩頭獎得主塗哥(粵文歌詞)](https://neweffects.vercel.app/pv.html?song=12) | Suno v6 | 13 |
+| 45 | [最瞎結婚理由](https://neweffects.vercel.app/pv.html?song=14) | Suno v6-mini | 15 |
+| 46 | [最瞎結婚理由(英文歌詞)](https://neweffects.vercel.app/pv.html?song=15) | Suno v6-mini | 16 |
+| 47 | [最瞎結婚理由(日文歌詞)](https://neweffects.vercel.app/pv.html?song=17) | Suno v6-mini | 18 |
+| 48 | [最瞎結婚理由(粵文歌詞)](https://neweffects.vercel.app/pv.html?song=16) | Suno v6-mini | 17 |
+| 49 | [鋒兄進化 Show！🔥](https://neweffects.vercel.app/pv.html?song=18) | Suno | 19 |
+| 50 | [鋒兄進化 Show！🔥(英文歌詞)](https://neweffects.vercel.app/pv.html?song=19) | Suno v6-mini | 20 |
+| 51 | [鋒兄進化 Show！🔥(日文歌詞)](https://neweffects.vercel.app/pv.html?song=21) | Suno v6-mini | 22 |
+| 52 | [鋒兄進化 Show！🔥(粵文歌詞)](https://neweffects.vercel.app/pv.html?song=20) | Suno v6-mini | 21 |
+| 53 | [喵布布本喵掉的毛](https://neweffects.vercel.app/pv.html?song=22) | Suno | 23 |
+| 54 | [喵布布本喵掉的毛(英文歌詞)](https://neweffects.vercel.app/pv.html?song=23) | Suno v6-mini | 24 |
+| 55 | [喵布布本喵掉的毛(日文歌詞)](https://neweffects.vercel.app/pv.html?song=24) | Suno v6-mini | 25 |
+| 56 | [喵布布本喵掉的毛(粵文歌詞)](https://neweffects.vercel.app/pv.html?song=25) | Suno v6-mini | 26 |
+| 57 | [水電進化 Show](https://neweffects.vercel.app/pv.html?song=26) | Suno | 27 |
+| 58 | [水電進化 Show(英文歌詞)](https://neweffects.vercel.app/pv.html?song=27) | Suno v6-mini | 28 |
+| 59 | [水電進化 Show(日文歌詞)](https://neweffects.vercel.app/pv.html?song=28) | Suno v6-mini | 29 |
+| 60 | [水電進化 Show(粵文歌詞)](https://neweffects.vercel.app/pv.html?song=29) | Suno v6-mini | 30 |
+| 61 | [鋒塗力百年夢](https://neweffects.vercel.app/pv.html?song=30) | Suno | 31 |
+| 62 | [鋒塗力百年夢(英文歌詞)](https://neweffects.vercel.app/pv.html?song=31) | Suno v6-mini | 32 |
+| 63 | [鋒塗力百年夢(日文歌詞)](https://neweffects.vercel.app/pv.html?song=32) | Suno v6-mini | 33 |
+| 64 | [鋒塗力百年夢(粵文歌詞)](https://neweffects.vercel.app/pv.html?song=33) | Suno v6-mini | 34 |
+| 65 | [我與國中畢業紀念冊的對話](https://neweffects.vercel.app/pv.html?song=34) | Suno | 35 |
+| 66 | [我與國中畢業紀念冊的對話(英文歌詞)](https://neweffects.vercel.app/pv.html?song=35) | Suno v6-mini | 36 |
+| 67 | [我與國中畢業紀念冊的對話(日文歌詞)](https://neweffects.vercel.app/pv.html?song=36) | Suno v6-mini | 37 |
+| 68 | [我與國中畢業紀念冊的對話(粵文歌詞)](https://neweffects.vercel.app/pv.html?song=37) | Suno v6-mini | 38 |
+| 69 | [塗哥水電王子爆紅](https://neweffects.vercel.app/pv.html?song=38) | Suno | 39 |
+| 70 | [塗哥水電王子爆紅(英文歌詞)](https://neweffects.vercel.app/pv.html?song=39) | Suno v6-mini | 40 |
+| 71 | [塗哥水電王子爆紅(日文歌詞)](https://neweffects.vercel.app/pv.html?song=40) | Suno v6-mini | 41 |
+| 72 | [塗哥水電王子爆紅(粵文歌詞)](https://neweffects.vercel.app/pv.html?song=41) | Suno v6-mini | 42 |
+| 73 | [鋒兄的傳奇人生](https://neweffects.vercel.app/pv.html?song=42) | Suno | 43 |
+| 74 | [鋒兄的傳奇人生(英文歌詞)](https://neweffects.vercel.app/pv.html?song=43) | Suno v6-mini | 44 |
+| 75 | [鋒兄的傳奇人生(日文歌詞)](https://neweffects.vercel.app/pv.html?song=44) | Suno v6-mini | 45 |
+| 76 | [鋒兄的傳奇人生(粵文歌詞)](https://neweffects.vercel.app/pv.html?song=45) | Suno v6-mini | 46 |
+| 77 | [心絵](https://neweffects.vercel.app/pv.html?song=71) | 鳴海星來 カバー（原唱：ロードオブメジャー） | 72 |
 
 ## 啟動
 
