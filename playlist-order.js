@@ -72,7 +72,18 @@
       if(!result.has(id))result.set(id,{id,label,kind,items:[]});
       result.get(id).items.push(item);
     }
+    let firstNumber=1;
+    for(const category of result.values()){
+      category.firstNumber=firstNumber;
+      firstNumber+=category.items.length;
+    }
     return [...result.values()];
+  }
+  const numberLabel=number=>String(number).padStart(2,'0');
+  function categoryLabel(category){
+    const first=numberLabel(category.firstNumber);
+    const last=numberLabel(category.firstNumber+category.items.length-1);
+    return (first===last ? first : first+'–'+last)+'　'+category.label;
   }
   function optionLabel(item,category){
     if(category.kind==='anime' && item.originalArtist) return `${describe(item.title).base}（原唱：${item.originalArtist}）`;
@@ -82,5 +93,8 @@
     return ['中文','英文','日文','粵文'][language]=== '中文' && category.items.length===1
       ? '原版' : ['中文','英文','日文','粵文'][language];
   }
-  window.SongOrder={group,categories,optionLabel};
+  function numberedOption(category,offset){
+    return numberLabel(category.firstNumber+offset)+'　'+optionLabel(category.items[offset],category);
+  }
+  window.SongOrder={group,categories,optionLabel,numberLabel,categoryLabel,numberedOption};
 })();

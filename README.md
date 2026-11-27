@@ -4,87 +4,87 @@
 
 ## 歌曲清單
 
-**總歌曲數：77 個可播放版本，涵蓋 50 個不同曲名。** 各語言版本分列，點選歌名即可播放。
+**總歌曲數：77 個可播放版本，涵蓋 50 個不同曲名。** 各版本按播放器的分類與曲目順序編為 01–77，點選歌名即可播放。
 
-| 播放順序 | 歌曲 | 演唱或版本 | 收錄序號 |
-| ---: | --- | --- | ---: |
-| 1 | [SUNRISE](https://neweffects.vercel.app/pv.html?song=1) | 小日向理瀬 ver. | 2 |
-| 2 | [HELLO HERO](https://neweffects.vercel.app/pv.html?song=2) | 御社 智 ver. | 3 |
-| 3 | [Forever＆ever](https://neweffects.vercel.app/pv.html?song=46) | 彩音 | 47 |
-| 4 | [DAYS!](https://neweffects.vercel.app/pv.html?song=52) | Aooo | 53 |
-| 5 | [Chase the Light!](https://neweffects.vercel.app/pv.html?song=57) | Fear, and Loathing in Las Vegas | 58 |
-| 6 | [RPG](https://neweffects.vercel.app/pv.html?song=60) | School Food Punishment | 61 |
-| 7 | [TRAIN-TRAIN](https://neweffects.vercel.app/pv.html?song=65) | THE ROLLING GIRLS | 66 |
-| 8 | [STONES](https://neweffects.vercel.app/pv.html?song=67) | THE ROLLING GIRLS | 68 |
-| 9 | [INSIDE IDENTITY](https://neweffects.vercel.app/pv.html?song=70) | Black Raison d’être | 71 |
-| 10 | [PLAY THE GAME](https://neweffects.vercel.app/pv.html?song=72) | ロードオブメジャー | 73 |
-| 11 | [大好きだよって叫ぶんだ](https://neweffects.vercel.app/pv.html?song=0) | 小日向理瀬 ver. | 1 |
-| 12 | [風の中は走るっきゃないっ！](https://neweffects.vercel.app/pv.html?song=3) | 三月のパンタシア | 4 |
-| 13 | [ぴ](https://neweffects.vercel.app/pv.html?song=4) | ナナヲアカリ | 5 |
-| 14 | [私は、わたしの事が好き。](https://neweffects.vercel.app/pv.html?song=6) | かぐや(cv.夏吉ゆうこ) | 7 |
-| 15 | [カニ☆Do-Luck!](https://neweffects.vercel.app/pv.html?song=7) | あいうらぶ | 8 |
-| 16 | [ユラリユレル](https://neweffects.vercel.app/pv.html?song=8) | NOMELON NOLEMON | 9 |
-| 17 | [明日へのBreakShoot](https://neweffects.vercel.app/pv.html?song=9) | 葉山陽和 ver. | 10 |
-| 18 | [さらば碧き面影](https://neweffects.vercel.app/pv.html?song=13) | V西2025 カバー（原唱：ロードオブメジャー） | 14 |
-| 19 | [月に向かって撃て](https://neweffects.vercel.app/pv.html?song=47) | 星街すいせい | 48 |
-| 20 | [声の軌跡](https://neweffects.vercel.app/pv.html?song=48) | Soala | 49 |
-| 21 | [$・¥・€](https://neweffects.vercel.app/pv.html?song=49) | ドル・円・ユーロ | 50 |
-| 22 | [完璧じゃないわたし](https://neweffects.vercel.app/pv.html?song=50) | 前島亜美 | 51 |
-| 23 | [最最最高級のお世話して](https://neweffects.vercel.app/pv.html?song=51) | angela | 52 |
-| 24 | [FX戦士くるみちゃん](https://neweffects.vercel.app/pv.html?song=53) | 福賀くるみ(CV.鈴木愛奈) | 54 |
-| 25 | [人にやさしく](https://neweffects.vercel.app/pv.html?song=54) | THE ROLLING GIRLS | 55 |
-| 26 | [未来は僕等の手の中](https://neweffects.vercel.app/pv.html?song=55) | 逆境無頼カイジ | 56 |
-| 27 | [負け犬たちのレクイエム](https://neweffects.vercel.app/pv.html?song=56) | 逆境無頼カイジ | 57 |
-| 28 | [CからはじまるABC](https://neweffects.vercel.app/pv.html?song=58) | 忘れらんねえよ | 59 |
-| 29 | [マトリョーシカ](https://neweffects.vercel.app/pv.html?song=59) | NICO Touches the Walls | 60 |
-| 30 | [月の爆撃機](https://neweffects.vercel.app/pv.html?song=61) | THE ROLLING GIRLS | 62 |
-| 31 | [英雄にあこがれて](https://neweffects.vercel.app/pv.html?song=62) | THE ROLLING GIRLS | 63 |
-| 32 | [1000のバイオリン](https://neweffects.vercel.app/pv.html?song=63) | THE ROLLING GIRLS | 64 |
-| 33 | [脳天気](https://neweffects.vercel.app/pv.html?song=64) | THE ROLLING GIRLS | 65 |
-| 34 | [シャララ](https://neweffects.vercel.app/pv.html?song=66) | THE ROLLING GIRLS | 67 |
-| 35 | [夕暮れ](https://neweffects.vercel.app/pv.html?song=68) | THE ROLLING GIRLS | 69 |
-| 36 | [終わらない歌](https://neweffects.vercel.app/pv.html?song=69) | THE ROLLING GIRLS | 70 |
-| 37 | [光と影のラプラス](https://neweffects.vercel.app/pv.html?song=73) | 亜咲花 | 74 |
-| 38 | [逆転Winner](https://neweffects.vercel.app/pv.html?song=74) | WEST. | 75 |
-| 39 | [人生は素晴らしい](https://neweffects.vercel.app/pv.html?song=75) | WEST. | 76 |
-| 40 | [U・N・M・E・Iライブ](https://neweffects.vercel.app/pv.html?song=76) | 春日未来・最上静香・箱崎星梨花 | 77 |
-| 41 | [統一發票頭獎得主鋒兄威力彩頭獎得主塗哥](https://neweffects.vercel.app/pv.html?song=5) | Suno v6 | 6 |
-| 42 | [統一發票頭獎得主鋒兄威力彩頭獎得主塗哥(英文歌詞)](https://neweffects.vercel.app/pv.html?song=10) | Suno v6 | 11 |
-| 43 | [統一發票頭獎得主鋒兄威力彩頭獎得主塗哥(日文歌詞)](https://neweffects.vercel.app/pv.html?song=11) | Suno v6 | 12 |
-| 44 | [統一發票頭獎得主鋒兄威力彩頭獎得主塗哥(粵文歌詞)](https://neweffects.vercel.app/pv.html?song=12) | Suno v6 | 13 |
-| 45 | [最瞎結婚理由](https://neweffects.vercel.app/pv.html?song=14) | Suno v6-mini | 15 |
-| 46 | [最瞎結婚理由(英文歌詞)](https://neweffects.vercel.app/pv.html?song=15) | Suno v6-mini | 16 |
-| 47 | [最瞎結婚理由(日文歌詞)](https://neweffects.vercel.app/pv.html?song=17) | Suno v6-mini | 18 |
-| 48 | [最瞎結婚理由(粵文歌詞)](https://neweffects.vercel.app/pv.html?song=16) | Suno v6-mini | 17 |
-| 49 | [鋒兄進化 Show！🔥](https://neweffects.vercel.app/pv.html?song=18) | Suno | 19 |
-| 50 | [鋒兄進化 Show！🔥(英文歌詞)](https://neweffects.vercel.app/pv.html?song=19) | Suno v6-mini | 20 |
-| 51 | [鋒兄進化 Show！🔥(日文歌詞)](https://neweffects.vercel.app/pv.html?song=21) | Suno v6-mini | 22 |
-| 52 | [鋒兄進化 Show！🔥(粵文歌詞)](https://neweffects.vercel.app/pv.html?song=20) | Suno v6-mini | 21 |
-| 53 | [喵布布本喵掉的毛](https://neweffects.vercel.app/pv.html?song=22) | Suno | 23 |
-| 54 | [喵布布本喵掉的毛(英文歌詞)](https://neweffects.vercel.app/pv.html?song=23) | Suno v6-mini | 24 |
-| 55 | [喵布布本喵掉的毛(日文歌詞)](https://neweffects.vercel.app/pv.html?song=24) | Suno v6-mini | 25 |
-| 56 | [喵布布本喵掉的毛(粵文歌詞)](https://neweffects.vercel.app/pv.html?song=25) | Suno v6-mini | 26 |
-| 57 | [水電進化 Show](https://neweffects.vercel.app/pv.html?song=26) | Suno | 27 |
-| 58 | [水電進化 Show(英文歌詞)](https://neweffects.vercel.app/pv.html?song=27) | Suno v6-mini | 28 |
-| 59 | [水電進化 Show(日文歌詞)](https://neweffects.vercel.app/pv.html?song=28) | Suno v6-mini | 29 |
-| 60 | [水電進化 Show(粵文歌詞)](https://neweffects.vercel.app/pv.html?song=29) | Suno v6-mini | 30 |
-| 61 | [鋒塗力百年夢](https://neweffects.vercel.app/pv.html?song=30) | Suno | 31 |
-| 62 | [鋒塗力百年夢(英文歌詞)](https://neweffects.vercel.app/pv.html?song=31) | Suno v6-mini | 32 |
-| 63 | [鋒塗力百年夢(日文歌詞)](https://neweffects.vercel.app/pv.html?song=32) | Suno v6-mini | 33 |
-| 64 | [鋒塗力百年夢(粵文歌詞)](https://neweffects.vercel.app/pv.html?song=33) | Suno v6-mini | 34 |
-| 65 | [我與國中畢業紀念冊的對話](https://neweffects.vercel.app/pv.html?song=34) | Suno | 35 |
-| 66 | [我與國中畢業紀念冊的對話(英文歌詞)](https://neweffects.vercel.app/pv.html?song=35) | Suno v6-mini | 36 |
-| 67 | [我與國中畢業紀念冊的對話(日文歌詞)](https://neweffects.vercel.app/pv.html?song=36) | Suno v6-mini | 37 |
-| 68 | [我與國中畢業紀念冊的對話(粵文歌詞)](https://neweffects.vercel.app/pv.html?song=37) | Suno v6-mini | 38 |
-| 69 | [塗哥水電王子爆紅](https://neweffects.vercel.app/pv.html?song=38) | Suno | 39 |
-| 70 | [塗哥水電王子爆紅(英文歌詞)](https://neweffects.vercel.app/pv.html?song=39) | Suno v6-mini | 40 |
-| 71 | [塗哥水電王子爆紅(日文歌詞)](https://neweffects.vercel.app/pv.html?song=40) | Suno v6-mini | 41 |
-| 72 | [塗哥水電王子爆紅(粵文歌詞)](https://neweffects.vercel.app/pv.html?song=41) | Suno v6-mini | 42 |
-| 73 | [鋒兄的傳奇人生](https://neweffects.vercel.app/pv.html?song=42) | Suno | 43 |
-| 74 | [鋒兄的傳奇人生(英文歌詞)](https://neweffects.vercel.app/pv.html?song=43) | Suno v6-mini | 44 |
-| 75 | [鋒兄的傳奇人生(日文歌詞)](https://neweffects.vercel.app/pv.html?song=44) | Suno v6-mini | 45 |
-| 76 | [鋒兄的傳奇人生(粵文歌詞)](https://neweffects.vercel.app/pv.html?song=45) | Suno v6-mini | 46 |
-| 77 | [心絵](https://neweffects.vercel.app/pv.html?song=71) | 鳴海星來 カバー（原唱：ロードオブメジャー） | 72 |
+| 曲號 | 歌曲 | 演唱或版本 |
+| ---: | --- | --- |
+| 01 | [SUNRISE](https://neweffects.vercel.app/pv.html?track=1) | 小日向理瀬 ver. |
+| 02 | [HELLO HERO](https://neweffects.vercel.app/pv.html?track=2) | 御社 智 ver. |
+| 03 | [大好きだよって叫ぶんだ](https://neweffects.vercel.app/pv.html?track=3) | 小日向理瀬 ver. |
+| 04 | [明日へのBreakShoot](https://neweffects.vercel.app/pv.html?track=4) | 葉山陽和 ver. |
+| 05 | [Forever＆ever](https://neweffects.vercel.app/pv.html?track=5) | 彩音 |
+| 06 | [DAYS!](https://neweffects.vercel.app/pv.html?track=6) | Aooo |
+| 07 | [ユラリユレル](https://neweffects.vercel.app/pv.html?track=7) | NOMELON NOLEMON |
+| 08 | [Chase the Light!](https://neweffects.vercel.app/pv.html?track=8) | Fear, and Loathing in Las Vegas |
+| 09 | [未来は僕等の手の中](https://neweffects.vercel.app/pv.html?track=9) | 逆境無頼カイジ |
+| 10 | [負け犬たちのレクイエム](https://neweffects.vercel.app/pv.html?track=10) | 逆境無頼カイジ |
+| 11 | [CからはじまるABC](https://neweffects.vercel.app/pv.html?track=11) | 忘れらんねえよ |
+| 12 | [RPG](https://neweffects.vercel.app/pv.html?track=12) | School Food Punishment |
+| 13 | [マトリョーシカ](https://neweffects.vercel.app/pv.html?track=13) | NICO Touches the Walls |
+| 14 | [TRAIN-TRAIN](https://neweffects.vercel.app/pv.html?track=14) | THE ROLLING GIRLS |
+| 15 | [STONES](https://neweffects.vercel.app/pv.html?track=15) | THE ROLLING GIRLS |
+| 16 | [人にやさしく](https://neweffects.vercel.app/pv.html?track=16) | THE ROLLING GIRLS |
+| 17 | [月の爆撃機](https://neweffects.vercel.app/pv.html?track=17) | THE ROLLING GIRLS |
+| 18 | [英雄にあこがれて](https://neweffects.vercel.app/pv.html?track=18) | THE ROLLING GIRLS |
+| 19 | [1000のバイオリン](https://neweffects.vercel.app/pv.html?track=19) | THE ROLLING GIRLS |
+| 20 | [脳天気](https://neweffects.vercel.app/pv.html?track=20) | THE ROLLING GIRLS |
+| 21 | [シャララ](https://neweffects.vercel.app/pv.html?track=21) | THE ROLLING GIRLS |
+| 22 | [夕暮れ](https://neweffects.vercel.app/pv.html?track=22) | THE ROLLING GIRLS |
+| 23 | [終わらない歌](https://neweffects.vercel.app/pv.html?track=23) | THE ROLLING GIRLS |
+| 24 | [INSIDE IDENTITY](https://neweffects.vercel.app/pv.html?track=24) | Black Raison d’être |
+| 25 | [PLAY THE GAME](https://neweffects.vercel.app/pv.html?track=25) | ロードオブメジャー |
+| 26 | [さらば碧き面影](https://neweffects.vercel.app/pv.html?track=26) | V西2025 カバー（原唱：ロードオブメジャー） |
+| 27 | [心絵](https://neweffects.vercel.app/pv.html?track=27) | 鳴海星來 カバー（原唱：ロードオブメジャー） |
+| 28 | [風の中は走るっきゃないっ！](https://neweffects.vercel.app/pv.html?track=28) | 三月のパンタシア |
+| 29 | [ぴ](https://neweffects.vercel.app/pv.html?track=29) | ナナヲアカリ |
+| 30 | [私は、わたしの事が好き。](https://neweffects.vercel.app/pv.html?track=30) | かぐや(cv.夏吉ゆうこ) |
+| 31 | [カニ☆Do-Luck!](https://neweffects.vercel.app/pv.html?track=31) | あいうらぶ |
+| 32 | [月に向かって撃て](https://neweffects.vercel.app/pv.html?track=32) | 星街すいせい |
+| 33 | [声の軌跡](https://neweffects.vercel.app/pv.html?track=33) | Soala |
+| 34 | [$・¥・€](https://neweffects.vercel.app/pv.html?track=34) | ドル・円・ユーロ |
+| 35 | [FX戦士くるみちゃん](https://neweffects.vercel.app/pv.html?track=35) | 福賀くるみ(CV.鈴木愛奈) |
+| 36 | [完璧じゃないわたし](https://neweffects.vercel.app/pv.html?track=36) | 前島亜美 |
+| 37 | [最最最高級のお世話して](https://neweffects.vercel.app/pv.html?track=37) | angela |
+| 38 | [光と影のラプラス](https://neweffects.vercel.app/pv.html?track=38) | 亜咲花 |
+| 39 | [逆転Winner](https://neweffects.vercel.app/pv.html?track=39) | WEST. |
+| 40 | [人生は素晴らしい](https://neweffects.vercel.app/pv.html?track=40) | WEST. |
+| 41 | [U・N・M・E・Iライブ](https://neweffects.vercel.app/pv.html?track=41) | 春日未来・最上静香・箱崎星梨花 |
+| 42 | [統一發票頭獎得主鋒兄威力彩頭獎得主塗哥](https://neweffects.vercel.app/pv.html?track=42) | Suno v6 |
+| 43 | [統一發票頭獎得主鋒兄威力彩頭獎得主塗哥(英文歌詞)](https://neweffects.vercel.app/pv.html?track=43) | Suno v6 |
+| 44 | [統一發票頭獎得主鋒兄威力彩頭獎得主塗哥(日文歌詞)](https://neweffects.vercel.app/pv.html?track=44) | Suno v6 |
+| 45 | [統一發票頭獎得主鋒兄威力彩頭獎得主塗哥(粵文歌詞)](https://neweffects.vercel.app/pv.html?track=45) | Suno v6 |
+| 46 | [最瞎結婚理由](https://neweffects.vercel.app/pv.html?track=46) | Suno v6-mini |
+| 47 | [最瞎結婚理由(英文歌詞)](https://neweffects.vercel.app/pv.html?track=47) | Suno v6-mini |
+| 48 | [最瞎結婚理由(日文歌詞)](https://neweffects.vercel.app/pv.html?track=48) | Suno v6-mini |
+| 49 | [最瞎結婚理由(粵文歌詞)](https://neweffects.vercel.app/pv.html?track=49) | Suno v6-mini |
+| 50 | [鋒兄進化 Show！🔥](https://neweffects.vercel.app/pv.html?track=50) | Suno |
+| 51 | [鋒兄進化 Show！🔥(英文歌詞)](https://neweffects.vercel.app/pv.html?track=51) | Suno v6-mini |
+| 52 | [鋒兄進化 Show！🔥(日文歌詞)](https://neweffects.vercel.app/pv.html?track=52) | Suno v6-mini |
+| 53 | [鋒兄進化 Show！🔥(粵文歌詞)](https://neweffects.vercel.app/pv.html?track=53) | Suno v6-mini |
+| 54 | [喵布布本喵掉的毛](https://neweffects.vercel.app/pv.html?track=54) | Suno |
+| 55 | [喵布布本喵掉的毛(英文歌詞)](https://neweffects.vercel.app/pv.html?track=55) | Suno v6-mini |
+| 56 | [喵布布本喵掉的毛(日文歌詞)](https://neweffects.vercel.app/pv.html?track=56) | Suno v6-mini |
+| 57 | [喵布布本喵掉的毛(粵文歌詞)](https://neweffects.vercel.app/pv.html?track=57) | Suno v6-mini |
+| 58 | [水電進化 Show](https://neweffects.vercel.app/pv.html?track=58) | Suno |
+| 59 | [水電進化 Show(英文歌詞)](https://neweffects.vercel.app/pv.html?track=59) | Suno v6-mini |
+| 60 | [水電進化 Show(日文歌詞)](https://neweffects.vercel.app/pv.html?track=60) | Suno v6-mini |
+| 61 | [水電進化 Show(粵文歌詞)](https://neweffects.vercel.app/pv.html?track=61) | Suno v6-mini |
+| 62 | [鋒塗力百年夢](https://neweffects.vercel.app/pv.html?track=62) | Suno |
+| 63 | [鋒塗力百年夢(英文歌詞)](https://neweffects.vercel.app/pv.html?track=63) | Suno v6-mini |
+| 64 | [鋒塗力百年夢(日文歌詞)](https://neweffects.vercel.app/pv.html?track=64) | Suno v6-mini |
+| 65 | [鋒塗力百年夢(粵文歌詞)](https://neweffects.vercel.app/pv.html?track=65) | Suno v6-mini |
+| 66 | [我與國中畢業紀念冊的對話](https://neweffects.vercel.app/pv.html?track=66) | Suno |
+| 67 | [我與國中畢業紀念冊的對話(英文歌詞)](https://neweffects.vercel.app/pv.html?track=67) | Suno v6-mini |
+| 68 | [我與國中畢業紀念冊的對話(日文歌詞)](https://neweffects.vercel.app/pv.html?track=68) | Suno v6-mini |
+| 69 | [我與國中畢業紀念冊的對話(粵文歌詞)](https://neweffects.vercel.app/pv.html?track=69) | Suno v6-mini |
+| 70 | [塗哥水電王子爆紅](https://neweffects.vercel.app/pv.html?track=70) | Suno |
+| 71 | [塗哥水電王子爆紅(英文歌詞)](https://neweffects.vercel.app/pv.html?track=71) | Suno v6-mini |
+| 72 | [塗哥水電王子爆紅(日文歌詞)](https://neweffects.vercel.app/pv.html?track=72) | Suno v6-mini |
+| 73 | [塗哥水電王子爆紅(粵文歌詞)](https://neweffects.vercel.app/pv.html?track=73) | Suno v6-mini |
+| 74 | [鋒兄的傳奇人生](https://neweffects.vercel.app/pv.html?track=74) | Suno |
+| 75 | [鋒兄的傳奇人生(英文歌詞)](https://neweffects.vercel.app/pv.html?track=75) | Suno v6-mini |
+| 76 | [鋒兄的傳奇人生(日文歌詞)](https://neweffects.vercel.app/pv.html?track=76) | Suno v6-mini |
+| 77 | [鋒兄的傳奇人生(粵文歌詞)](https://neweffects.vercel.app/pv.html?track=77) | Suno v6-mini |
 
 ## 啟動
 
@@ -98,12 +98,12 @@ macOS 也可雙擊 `啟動播放器.command`，會在終端機啟動伺服器並
 
 ## 功能
 
-- 兩段式選單：先選動畫、遊戲或原創歌曲，再選作品曲目或同曲的中／英／日／粵版本；兩版共用分類，舊網址編號保留。
+- 分類選單顯示曲號範圍，曲目選單顯示各版本的曲號。歌詞 PV 與人物 PV 都可用 `?track=1` 開啟第 01 首，既有的 `?song=` 書籤會開啟原先的歌曲。
 
 - 首頁 PV 與第二版播放器皆提供 0–100% 音量滑桿及靜音按鈕；設定共用並自動記住，適用於 MP3、本機影音及第二版的 YouTube 音源。
 - 兩版播放器皆有「上一首／下一首」按鈕，依歌曲清單順序循環切換，保留播放或暫停狀態與音量；滑鼠移到按鈕上會提示會切到哪一首（「上一首：歌名」／「下一首：歌名」，第二版切歌或清單變動後即時更新）；首頁切歌也會保留人物 PV 模式。
 - 兩版播放器都有「單曲循環」（🔁）與「自動下一首」兩個開關：循環開啟時按鈕亮起，歌曲播完回到 0 秒重播（片頭、填色一起重跑）；自動下一首則在播完後接著播清單的下一首，最後一首會接回第一首。兩者互斥，開啟一個會自動關掉另一個。設定存在瀏覽器，兩版與重新開啟頁面都共用。
-- 兩版歌曲清單依歌名語言排序，依序是英文 → 日文 → 中文（歌名有假名算日文、有漢字算中文，其餘算英文；`[歌手ver.]` 不列入判斷；全漢字的日文歌名再以新字體辨認，`脳`、`気`、`変` 這類繁簡都不用的寫法算日文，所以「脳天気」排在日文區而不是中文區後面）；同一首歌的版本放在一起，版本之間固定依中文 → 英文 → 日文 → 粵文排列；上一首／下一首跟隨此順序。既有歌曲網址編號與第二版已存的歌曲 ID 保持不變，使用者匯入的歌曲也會保留。
+- 播放器依選單從上往下播放，每個分類播完後接續下一個分類。同一首歌的語言版本依中文、英文、日文、粵文排列。第二版新增或移除歌曲後，曲號會依個人清單重新排列。
 - 兩版皆可按「−5秒／+5秒」倒退或快轉，會限制在歌曲起訖範圍內；進度條拖曳、鍵盤操作及中斷拖曳後均會繼續跟隨播放時間。
 - 歌詞特效：卡拉OK填色、逐字彈跳、霓虹燈、逐字浮現、柔焦夢幻
 - 雙語字幕（原文＋繁中）：SRT 每段第二行放繁中翻譯，顯示在英文、日文或粵文原文下方並隨時間填色；下一句預覽也同步顯示雙語
@@ -127,7 +127,7 @@ macOS 也可雙擊 `啟動播放器.command`，會在終端機啟動伺服器並
 
 `pv.html` 是每首歌的歌詞 PV（1920×1080），用同一套 `pv.js` 在瀏覽器即時預覽，或輸出成 MP4；原本的動態歌詞播放器改為第二版本 `v2.html`，兩頁互相有連結：
 
-- 預覽：開啟 `http://127.0.0.1:8765/pv.html?song=0`（0 大好きだよって叫ぶんだ、1 SUNRISE、2 HELLO HERO、3 風の中は走るっきゃないっ！、4 ぴ、5 統一發票頭獎得主鋒兄威力彩頭獎得主塗哥、6 私は、わたしの事が好き。、7 カニ☆Do-Luck!、8 ユラリユレル、9 明日へのBreakShoot [葉山陽和ver.]、10 統一發票頭獎得主鋒兄威力彩頭獎得主塗哥(英文歌詞)、11 統一發票頭獎得主鋒兄威力彩頭獎得主塗哥(日文歌詞)、12 統一發票頭獎得主鋒兄威力彩頭獎得主塗哥(粵文歌詞)、13 さらば碧き面影 [メジャー 第二季片頭曲／V西2025 翻唱]）
+- 開啟 `http://127.0.0.1:8765/pv.html?track=1` 即可從〈SUNRISE〉開始預覽。下方製作紀錄與 MP4 匯出指令中的「收錄索引」以 `pv.js` 的 `SONGS` 陣列為準，從 0 起算。
 - 輸出：`node render-pv.mjs`（`pv.js` 裡的全部歌曲分批輸出到 `pv/`，預設同時兩首，可用 `--jobs 3` 調整），或 `node render-pv.mjs 1 --from 60 --to 72` 只輸出片段。需要 Google Chrome 與 ffmpeg；Windows 可自動找到標準安裝位置的 Chrome，NVIDIA 顯示卡可加 `--encoder h264_nvenc` 使用硬體 H.264 編碼。
 
 每首歌有自己的配色主題（`pv.js` 的 `THEMES`）。〈我與國中畢業紀念冊的對話〉四語版用 `yearbook`（牛皮紙與午後陽光，天空 `#4a2e06 → #d99b1d → #ffeaa8`、歌詞填色 `#ffd63c → #ff9227`），其餘歌曲沿用原本的 `twilight`、`sunrise`、`lucky` 等。膠卷窗、舞台 LED 螢幕、地板倒影、歌詞描邊與壓暗、騎車路面這些深色底會跟著主題走；主題沒指定時仍是原本的深藍紫，換色不會動到別首。
@@ -154,65 +154,65 @@ macOS 也可雙擊 `啟動播放器.command`，會在終端機啟動伺服器並
 - `node tools/build-group.mjs`：單獨把目前八張切圖拼成 1920×1080 群像主視覺 `assets/ref/lucky8.png`，並印出 `ARTS.lucky8` 要用的臉部座標。
 - 這一組在人物 PV 裡只有一組造型（沒有四組輪替），因為切圖來自各自獨立的立繪，改用 4×2 網格排列。
 
-英文版「統一發票頭獎得主鋒兄威力彩頭獎得主塗哥(英文歌詞)」獨立加入兩版歌曲清單（PV 編號 10），使用使用者提供的 [Suno 音源](https://suno.com/s/NNjWp4nInpeloTf5)，附 20 段英中雙語同步字幕。沿用相同八人與鋒兄主唱，MP3、SRT 均納入 repo 供線上版使用；來源與原始歌詞見 [assets/ref/LUCKY-EN.md](assets/ref/LUCKY-EN.md)。
+英文版「統一發票頭獎得主鋒兄威力彩頭獎得主塗哥(英文歌詞)」獨立加入兩版歌曲清單（PV 收錄索引 10），使用使用者提供的 [Suno 音源](https://suno.com/s/NNjWp4nInpeloTf5)，附 20 段英中雙語同步字幕。沿用相同八人與鋒兄主唱，MP3、SRT 均納入 repo 供線上版使用；來源與原始歌詞見 [assets/ref/LUCKY-EN.md](assets/ref/LUCKY-EN.md)。
 
-日文版「統一發票頭獎得主鋒兄威力彩頭獎得主塗哥(日文歌詞)」獨立加入兩版歌曲清單（PV 編號 11），使用使用者提供的 [Suno 音源](https://suno.com/s/xb8brpvBy23lIyfx)，附 20 段日中雙語同步字幕。沿用相同八人與鋒兄主唱，MP3、SRT 均納入 repo 供線上版使用；來源與原始歌詞見 [assets/ref/LUCKY-JA.md](assets/ref/LUCKY-JA.md)。
+日文版「統一發票頭獎得主鋒兄威力彩頭獎得主塗哥(日文歌詞)」獨立加入兩版歌曲清單（PV 收錄索引 11），使用使用者提供的 [Suno 音源](https://suno.com/s/xb8brpvBy23lIyfx)，附 20 段日中雙語同步字幕。沿用相同八人與鋒兄主唱，MP3、SRT 均納入 repo 供線上版使用；來源與原始歌詞見 [assets/ref/LUCKY-JA.md](assets/ref/LUCKY-JA.md)。
 
-粵文版「統一發票頭獎得主鋒兄威力彩頭獎得主塗哥(粵文歌詞)」獨立加入兩版歌曲清單（PV 編號 12），使用使用者提供的 [Suno 音源](https://suno.com/s/a0XTF9CAMxLNOtBc)，附 20 段粵中雙語同步字幕。沿用相同八人與鋒兄主唱，MP3、SRT 均納入 repo 供線上版使用；來源與原始歌詞見 [assets/ref/LUCKY-YUE.md](assets/ref/LUCKY-YUE.md)。
+粵文版「統一發票頭獎得主鋒兄威力彩頭獎得主塗哥(粵文歌詞)」獨立加入兩版歌曲清單（PV 收錄索引 12），使用使用者提供的 [Suno 音源](https://suno.com/s/a0XTF9CAMxLNOtBc)，附 20 段粵中雙語同步字幕。沿用相同八人與鋒兄主唱，MP3、SRT 均納入 repo 供線上版使用；來源與原始歌詞見 [assets/ref/LUCKY-YUE.md](assets/ref/LUCKY-YUE.md)。
 
 ### 最瞎結婚理由：中、英、粵、日四版
 
-已新增〈最瞎結婚理由〉（PV 編號 14）、〈最瞎結婚理由(英文歌詞)〉（15）、〈最瞎結婚理由(粵文歌詞)〉（16）、〈最瞎結婚理由(日文歌詞)〉（17）。四版各有完整 MP3 與依音訊對時的原文字幕（33／34／34／34 句），兩版播放器與人物 PV 共用既有幸運八人，鋒兄、塗哥預設並列中央。歌詞保留使用者提供的牙妹／魚妹、日文假名與空格等原文；來源、歌詞與可重建的時間軸見 [assets/ref/wedding/README.md](assets/ref/wedding/README.md)。音訊與字幕均納入 repo，供部署版播放。
+已新增〈最瞎結婚理由〉（PV 收錄索引 14）、〈最瞎結婚理由(英文歌詞)〉（15）、〈最瞎結婚理由(粵文歌詞)〉（16）、〈最瞎結婚理由(日文歌詞)〉（17）。四版各有完整 MP3 與依音訊對時的原文字幕（33／34／34／34 句），兩版播放器與人物 PV 共用既有幸運八人，鋒兄、塗哥預設並列中央。歌詞保留使用者提供的牙妹／魚妹、日文假名與空格等原文；來源、歌詞與可重建的時間軸見 [assets/ref/wedding/README.md](assets/ref/wedding/README.md)。音訊與字幕均納入 repo，供部署版播放。
 
-執行 `node tools/build-wedding-subtitles.mjs` 可重建四版字幕；直接開啟 `/?song=14`、`/?song=15`、`/?song=16`、`/?song=17` 預覽。
+執行 `node tools/build-wedding-subtitles.mjs` 可重建四版字幕；直接開啟 `/?track=46`、`/?track=47`、`/?track=49`、`/?track=48` 預覽。
 
 ### 鋒兄進化 Show！🔥：中、英、粵、日四版
 
-已加入使用者提供的〈鋒兄進化 Show！🔥〉中文（PV 編號 18）、英文（19）、粵文（20）、日文（21）四首完整音源與同步歌詞。兩版播放器、人物 PV 使用幸運八人，鋒兄、塗哥預設並列中央。原文及來源保存在 [assets/ref/evolution/README.md](assets/ref/evolution/README.md)，可執行 `node tools/build-evolution-subtitles.mjs` 重建字幕。
+已加入使用者提供的〈鋒兄進化 Show！🔥〉中文（PV 收錄索引 18）、英文（19）、粵文（20）、日文（21）四首完整音源與同步歌詞。兩版播放器、人物 PV 使用幸運八人，鋒兄、塗哥預設並列中央。原文及來源保存在 [assets/ref/evolution/README.md](assets/ref/evolution/README.md)，可執行 `node tools/build-evolution-subtitles.mjs` 重建字幕。
 
 ### 喵布布本喵掉的毛
 
-已加入〈喵布布本喵掉的毛〉（PV 編號 22）完整 MP3 與 48 句同步歌詞，保留使用者原文及和聲。兩版播放器使用幸運八人，由喵布布擔任預設主唱與中央人物，其他成員同場演出；人物 PV 沿用八人造型。來源、原文與可重建的時間軸見 [assets/ref/bubu-fur/README.md](assets/ref/bubu-fur/README.md)，執行 `node tools/build-bubu-fur-subtitles.mjs` 可重建字幕。
+已加入〈喵布布本喵掉的毛〉（PV 收錄索引 22）完整 MP3 與 48 句同步歌詞，保留使用者原文及和聲。兩版播放器使用幸運八人，由喵布布擔任預設主唱與中央人物，其他成員同場演出；人物 PV 沿用八人造型。來源、原文與可重建的時間軸見 [assets/ref/bubu-fur/README.md](assets/ref/bubu-fur/README.md)，執行 `node tools/build-bubu-fur-subtitles.mjs` 可重建字幕。
 
-英文版「喵布布本喵掉的毛(英文歌詞)」（PV 編號 23）使用另一首完整 Suno 音源及 48 句英文原文同步字幕，保留喵聲與和聲。沿用同一八人卡司與喵布布中央站位，中英版音源及時間軸各自獨立；兩版播放器與人物 PV 都可選取。
+英文版「喵布布本喵掉的毛(英文歌詞)」（PV 收錄索引 23）使用另一首完整 Suno 音源及 48 句英文原文同步字幕，保留喵聲與和聲。沿用同一八人卡司與喵布布中央站位，中英版音源及時間軸各自獨立；兩版播放器與人物 PV 都可選取。
 
-日文版「喵布布本喵掉的毛(日文歌詞)」（PV 編號 24）附完整音源及 48 句日文原文同步字幕，保留假名、空格與和聲；同樣沿用喵布布中央站位，時間軸依日文音源獨立對齊。
+日文版「喵布布本喵掉的毛(日文歌詞)」（PV 收錄索引 24）附完整音源及 48 句日文原文同步字幕，保留假名、空格與和聲；同樣沿用喵布布中央站位，時間軸依日文音源獨立對齊。
 
-粵文版「喵布布本喵掉的毛(粵文歌詞)」（PV 編號 25）附完整音源及 48 句粵文原文同步字幕，保留「甩嘅毛」等粵文用字與和聲；同樣沿用喵布布中央站位，時間軸依粵語音源獨立對齊。
+粵文版「喵布布本喵掉的毛(粵文歌詞)」（PV 收錄索引 25）附完整音源及 48 句粵文原文同步字幕，保留「甩嘅毛」等粵文用字與和聲；同樣沿用喵布布中央站位，時間軸依粵語音源獨立對齊。
 
 ### 水電進化 Show
 
-已加入〈水電進化 Show〉（PV 編號 26）完整 MP3 與原文同步歌詞，依使用者提供的新音源獨立對時。兩版播放器與人物 PV 沿用幸運八人，鋒兄、塗哥預設並列中央。來源、27 行原文與時間軸見 [assets/ref/plumbing-evolution/README.md](assets/ref/plumbing-evolution/README.md)，可用 `node tools/build-plumbing-subtitles.mjs` 重建 SRT。
+已加入〈水電進化 Show〉（PV 收錄索引 26）完整 MP3 與原文同步歌詞，依使用者提供的新音源獨立對時。兩版播放器與人物 PV 沿用幸運八人，鋒兄、塗哥預設並列中央。來源、27 行原文與時間軸見 [assets/ref/plumbing-evolution/README.md](assets/ref/plumbing-evolution/README.md)，可用 `node tools/build-plumbing-subtitles.mjs` 重建 SRT。
 
-英文版「水電進化 Show(英文歌詞)」（PV 編號 27）另存完整音源、使用者英文原文與同步字幕，兩版播放器與人物 PV 皆可選取，時間軸不沿用中文版。
+英文版「水電進化 Show(英文歌詞)」（PV 收錄索引 27）另存完整音源、使用者英文原文與同步字幕，兩版播放器與人物 PV 皆可選取，時間軸不沿用中文版。
 
-日文版「水電進化 Show(日文歌詞)」（PV 編號 28）保留完整音源、28 行假名歌詞與和聲，依日文音源獨立對時，沿用幸運八人卡司。
+日文版「水電進化 Show(日文歌詞)」（PV 收錄索引 28）保留完整音源、28 行假名歌詞與和聲，依日文音源獨立對時，沿用幸運八人卡司。
 
-粵文版「水電進化 Show(粵文歌詞)」（PV 編號 29）保留完整音源、28 行粵文原文及和聲，依粵語音源獨立對時，同樣使用幸運八人，鋒兄、塗哥預設並列中央。
+粵文版「水電進化 Show(粵文歌詞)」（PV 收錄索引 29）保留完整音源、28 行粵文原文及和聲，依粵語音源獨立對時，同樣使用幸運八人，鋒兄、塗哥預設並列中央。
 
 ### 鋒塗力百年夢
 
-已加入〈鋒塗力百年夢〉（PV 編號 30）完整 MP3 與原文同步字幕，保留使用者的 32 行歌詞與重複段落。兩版播放器、人物 PV 沿用幸運八人，鋒兄、塗哥預設並列中央。來源、原文與時間軸見 [assets/ref/fengtuli/README.md](assets/ref/fengtuli/README.md)，可用 `node tools/build-fengtuli-subtitles.mjs` 重建 SRT。
+已加入〈鋒塗力百年夢〉（PV 收錄索引 30）完整 MP3 與原文同步字幕，保留使用者的 32 行歌詞與重複段落。兩版播放器、人物 PV 沿用幸運八人，鋒兄、塗哥預設並列中央。來源、原文與時間軸見 [assets/ref/fengtuli/README.md](assets/ref/fengtuli/README.md)，可用 `node tools/build-fengtuli-subtitles.mjs` 重建 SRT。
 
-英文版「鋒塗力百年夢(英文歌詞)」（PV 編號 31）附獨立完整音源、32 行英文原文及同步字幕，沿用相同八人卡司與雙中央站位，兩版播放器與人物 PV 皆可選取。
+英文版「鋒塗力百年夢(英文歌詞)」（PV 收錄索引 31）附獨立完整音源、32 行英文原文及同步字幕，沿用相同八人卡司與雙中央站位，兩版播放器與人物 PV 皆可選取。
 
-日文版「鋒塗力百年夢(日文歌詞)」（PV 編號 32）附獨立完整音源、32 行假名原文及同步字幕，保留全形空格與和聲，沿用相同八人卡司與雙中央站位。
+日文版「鋒塗力百年夢(日文歌詞)」（PV 收錄索引 32）附獨立完整音源、32 行假名原文及同步字幕，保留全形空格與和聲，沿用相同八人卡司與雙中央站位。
 
-粵文版「鋒塗力百年夢(粵文歌詞)」（PV 編號 33）附獨立完整音源、32 行粵文原文及同步字幕，保留粵文用字與和聲，沿用相同八人卡司與雙中央站位。
+粵文版「鋒塗力百年夢(粵文歌詞)」（PV 收錄索引 33）附獨立完整音源、32 行粵文原文及同步字幕，保留粵文用字與和聲，沿用相同八人卡司與雙中央站位。
 
 ### 我與國中畢業紀念冊的對話
 
-已加入中文（PV 編號 34）、英文（35）、日文（36）、粵文（37）四份完整音源與原文同步字幕。中文長篇對話拆成 95 個短句；其餘三版保留各自的原文分段，獨立對時，實際重唱的句子再次顯示。同一首的四語版本排在一起，舊網址編號保持不變。來源、全文與重建方法見 [assets/ref/yearbook/README.md](assets/ref/yearbook/README.md)，可用 `node tools/build-yearbook-subtitles.mjs` 重建 SRT。
+已加入中文（PV 收錄索引 34）、英文（35）、日文（36）、粵文（37）四份完整音源與原文同步字幕。中文長篇對話拆成 95 個短句；其餘三版保留各自的原文分段，獨立對時，實際重唱的句子再次顯示。同一首的四語版本排在一起，舊網址編號保持不變。來源、全文與重建方法見 [assets/ref/yearbook/README.md](assets/ref/yearbook/README.md)，可用 `node tools/build-yearbook-subtitles.mjs` 重建 SRT。
 
 ### 塗哥水電王子爆紅
 
-已加入使用者提供的長篇故事歌曲〈塗哥水電王子爆紅〉（PV 編號 38），完整音源與同步字幕均隨 repo 部署。全文保留，拆成 83 個短句方便閱讀；沿用幸運八人，塗哥為預設主唱，鋒兄、塗哥並列中央。來源、全文與時間軸見 [assets/ref/plumbing-prince/README.md](assets/ref/plumbing-prince/README.md)，可用 `node tools/build-prince-subtitles.mjs` 重建 SRT。
+已加入使用者提供的長篇故事歌曲〈塗哥水電王子爆紅〉（PV 收錄索引 38），完整音源與同步字幕均隨 repo 部署。全文保留，拆成 83 個短句方便閱讀；沿用幸運八人，塗哥為預設主唱，鋒兄、塗哥並列中央。來源、全文與時間軸見 [assets/ref/plumbing-prince/README.md](assets/ref/plumbing-prince/README.md)，可用 `node tools/build-prince-subtitles.mjs` 重建 SRT。
 
-英文版（PV 編號 39）、日文版（40）及粵文版（41）各附獨立完整音源、使用者原文與同步字幕，兩版播放器與人物 PV 皆可選取。原文完整保存，粵文重唱段落重複引用原文行，實際略唱的三行記錄於時間軸，字幕依演唱顯示。四版依中文、英文、日文、粵文排列。
+英文版（PV 收錄索引 39）、日文版（40）及粵文版（41）各附獨立完整音源、使用者原文與同步字幕，兩版播放器與人物 PV 皆可選取。原文完整保存，粵文重唱段落重複引用原文行，實際略唱的三行記錄於時間軸，字幕依演唱顯示。四版依中文、英文、日文、粵文排列。
 
 ### 鋒兄的傳奇人生
 
-已加入中文（PV 編號 42）、英文（43）、日文（44）、粵文（45）的完整 MP3、使用者原文與同步字幕，兩版播放器及人物 PV 均使用幸運八人，鋒兄預設主唱，鋒兄、塗哥並列中央。各版音訊獨立對時，重唱及略唱另記於時間軸，完整原文不刪改。來源與重建方法見 [assets/ref/feng-legend/README.md](assets/ref/feng-legend/README.md)，可用 `node tools/build-legend-subtitles.mjs` 重建字幕。
+已加入中文（PV 收錄索引 42）、英文（43）、日文（44）、粵文（45）的完整 MP3、使用者原文與同步字幕，兩版播放器及人物 PV 均使用幸運八人，鋒兄預設主唱，鋒兄、塗哥並列中央。各版音訊獨立對時，重唱及略唱另記於時間軸，完整原文不刪改。來源與重建方法見 [assets/ref/feng-legend/README.md](assets/ref/feng-legend/README.md)，可用 `node tools/build-legend-subtitles.mjs` 重建字幕。
 
 ### さらば碧き面影（ロードオブメジャー原唱／V西2025 翻唱）
 
@@ -222,15 +222,15 @@ macOS 也可雙擊 `啟動播放器.command`，會在終端機啟動伺服器並
 
 | 歌詞 PV | 分類 | 此版本演唱者 | 人物 |
 | --- | --- | --- | --- |
-| [心絵](https://neweffects.vercel.app/pv.html?song=71) | メジャー 第 1 季 OP | 鳴海星來翻唱，原唱為ロードオブメジャー | 翻唱者與參考圖中的六位動畫人物 |
-| [PLAY THE GAME](https://neweffects.vercel.app/pv.html?song=72) | メジャー 第 3 季 OP | ロードオブメジャー | 六位動畫人物 |
-| [光と影のラプラス](https://neweffects.vercel.app/pv.html?song=73) | Memories Offシリーズ | 亜咲花 | 《シンスメモリーズ 星天の下で》的五位女主角 |
+| [心絵](https://neweffects.vercel.app/pv.html?track=27) | メジャー 第 1 季 OP | 鳴海星來翻唱，原唱為ロードオブメジャー | 翻唱者與參考圖中的六位動畫人物 |
+| [PLAY THE GAME](https://neweffects.vercel.app/pv.html?track=25) | メジャー 第 3 季 OP | ロードオブメジャー | 六位動畫人物 |
+| [光と影のラプラス](https://neweffects.vercel.app/pv.html?track=38) | Memories Offシリーズ | 亜咲花 | 《シンスメモリーズ 星天の下で》的五位女主角 |
 
 三首都使用提供的完整 MP3 和日文歌詞，附繁中翻譯。日中字幕分別為 37、34、24 句，依各版本的人聲對時。人物立繪以附圖生成，供歌詞 PV、人物 PV、第二版播放器和切圖頁共用。
 
 ### アイドルマスター ミリオンライブ！
 
-〈U・N・M・E・Iライブ〉使用 4 分 21 秒完整版，附 52 句日文與繁中字幕。春日未来、最上静香、箱崎星梨花的立繪依參考圖重繪。這首歌是《アイドルマスター ミリオンラジオ！》的主題曲。[歌詞 PV](https://neweffects.vercel.app/pv.html?song=76) · [Lantis 發行資料](https://www.lantis.jp/imas/release_LACM-14234.html)
+〈U・N・M・E・Iライブ〉使用 4 分 21 秒完整版，附 52 句日文與繁中字幕。春日未来、最上静香、箱崎星梨花的立繪依參考圖重繪。這首歌是《アイドルマスター ミリオンラジオ！》的主題曲。[歌詞 PV](https://neweffects.vercel.app/pv.html?track=41) · [Lantis 發行資料](https://www.lantis.jp/imas/release_LACM-14234.html)
 
 ### 逆転裁判
 
@@ -238,32 +238,32 @@ WEST. 演唱的兩首第一季片頭曲共用五位重新繪製的人物立繪�
 
 | 歌詞 PV | 片頭曲 | 字幕 |
 | --- | --- | ---: |
-| [逆転Winner](https://neweffects.vercel.app/pv.html?song=74) | 第 1 首 | 54 句 |
-| [人生は素晴らしい](https://neweffects.vercel.app/pv.html?song=75) | 第 2 首 | 24 句 |
+| [逆転Winner](https://neweffects.vercel.app/pv.html?track=39) | 第 1 首 | 54 句 |
+| [人生は素晴らしい](https://neweffects.vercel.app/pv.html?track=40) | 第 2 首 | 24 句 |
 
 ### ユラリユレル：ひまわりサーカス十人
 
-「ユラリユレル [NOMELON NOLEMON]」已加入歌詞 PV（編號 8）與第二版播放器，使用 `yurariyureru.mp3` 與 39 段日中雙語 `yurariyureru.srt`，兩檔均納入 repo 供部署版使用。十位人物依使用者提供的圖片獨立去背，PV、人物 PV、播放器及主唱選單使用相同十人，預設主唱為鶴巻瑞佳；人物 PV 固定此組，以 5×2 排列。
+「ユラリユレル [NOMELON NOLEMON]」已加入歌詞 PV（收錄索引 8）與第二版播放器，使用 `yurariyureru.mp3` 與 39 段日中雙語 `yurariyureru.srt`，兩檔均納入 repo 供部署版使用。十位人物依使用者提供的圖片獨立去背，PV、人物 PV、播放器及主唱選單使用相同十人，預設主唱為鶴巻瑞佳；人物 PV 固定此組，以 5×2 排列。
 
 原圖、透明圖、群像與完整提示記錄在 [assets/ref/growup/README.md](assets/ref/growup/README.md)。執行 `node tools/build-growup.mjs` 可重建十張切圖、`cast.json` 與群像 `assets/ref/growup/group.png`。
 
 ### Forever＆ever：メモリーズオフ 双想
 
-已加入彩音的〈Forever＆ever〉（PV 編號 46，約 256.92 秒），為遊戲《メモリーズオフ 双想 Break out of my shell》的片頭曲。兩版播放器使用使用者提供的 MP3、封面與日中雙語字幕；YouTube ID `31bvn6GUtaI`。六位女主角依封面重建為可舞動的透明立繪，預設主唱為畫面中央的洲宮紗絵。人物 PV 固定此組。原文、翻譯與時間軸見 [assets/ref/forever/README.md](assets/ref/forever/README.md)。
+已加入彩音的〈Forever＆ever〉（PV 收錄索引 46，約 256.92 秒），為遊戲《メモリーズオフ 双想 Break out of my shell》的片頭曲。兩版播放器使用使用者提供的 MP3、封面與日中雙語字幕；YouTube ID `31bvn6GUtaI`。六位女主角依封面重建為可舞動的透明立繪，預設主唱為畫面中央的洲宮紗絵。人物 PV 固定此組。原文、翻譯與時間軸見 [assets/ref/forever/README.md](assets/ref/forever/README.md)。
 
 歌詞時間軸改成逐句對到實際唱出的那一段：`timings-ja.json` 存的是每句量到的起唱與唱完時間（`final: true`），SRT 句尾不再一律拖到下一句開始前，間奏前那幾句不會再多留 0.4～2 秒；填色也不會在沒人唱的時候才亮完。這首一句常有兩段（「宝物みたいな時間　未来動かす小さな願い」中間隔了兩秒半），`assets/ref/forever/fill-ja.json` 另記每個字的起唱與唱完時間，填色跟著字走，句中停頓就停在那裡；資料由 `tools/build-forever-fill.mjs` 從 `asr-ja.json` 重建。
 
 ### 月に向かって撃て：星街すいせい
 
-已加入歌詞 PV（編號 47，約 208.26 秒）與第二版播放器，使用使用者提供的 MP3、官方 MV 截圖（已裁掉底部播放器 UI）與 47 段日中雙語字幕。十一位人物由使用者提供的透明角色卡去背：`tools/cutout-tsuki.py` 只保留每張卡的最大 alpha 連通塊（人物本體），去掉左側名字與裝飾星，輸出 `assets/ref/cast/tsuki-0..10.png`，並拼成 1920×1080 群像 `assets/ref/tsuki-group.png`。PV 與人物 PV 固定這十一人，主唱預設為山吹有栖。
+已加入歌詞 PV（收錄索引 47，約 208.26 秒）與第二版播放器，使用使用者提供的 MP3、官方 MV 截圖（已裁掉底部播放器 UI）與 47 段日中雙語字幕。十一位人物由使用者提供的透明角色卡去背：`tools/cutout-tsuki.py` 只保留每張卡的最大 alpha 連通塊（人物本體），去掉左側名字與裝飾星，輸出 `assets/ref/cast/tsuki-0..10.png`，並拼成 1920×1080 群像 `assets/ref/tsuki-group.png`。PV 與人物 PV 固定這十一人，主唱預設為山吹有栖。
 
 ### 声の軌跡：Soala
 
-已加入歌詞 PV（編號 48，約 199.08 秒）與第二版播放器，為 TV 動畫《真夜中ハートチューン》ED 主題曲；使用使用者提供的 2026-01-28 音源 MP3 與 32 段日中雙語字幕。這份是 3 分 19 秒的正式音檔，字幕含第三次副歌；先前 MV 音檔間奏後的「(忘れられなかったの)」這句，這份音檔沒有唱。人物與同作 OP「月に向かって撃て」共用十一位角色（山吹有栖、井ノ華六花、日芽川寧々、霧乃イコ、雨月しのぶ、安藤檸檬、アイコ、百歳あお、ヒズミ、山吹りいな、山吹美兎），主視覺 `assets/ref/tsuki-cover.jpg`，群像 `assets/ref/tsuki-group.png`。主題 `voice` 仍把畫面壓成夜藍與霧青，和 OP 的月面紫分開；主唱預設為山吹有栖。
+已加入歌詞 PV（收錄索引 48，約 199.08 秒）與第二版播放器，為 TV 動畫《真夜中ハートチューン》ED 主題曲；使用使用者提供的 2026-01-28 音源 MP3 與 32 段日中雙語字幕。這份是 3 分 19 秒的正式音檔，字幕含第三次副歌；先前 MV 音檔間奏後的「(忘れられなかったの)」這句，這份音檔沒有唱。人物與同作 OP「月に向かって撃て」共用十一位角色（山吹有栖、井ノ華六花、日芽川寧々、霧乃イコ、雨月しのぶ、安藤檸檬、アイコ、百歳あお、ヒズミ、山吹りいな、山吹美兎），主視覺 `assets/ref/tsuki-cover.jpg`，群像 `assets/ref/tsuki-group.png`。主題 `voice` 仍把畫面壓成夜藍與霧青，和 OP 的月面紫分開；主唱預設為山吹有栖。
 
 ### $・¥・€：ドル・円・ユーロ
 
-已加入歌詞 PV（編號 49，約 218.67 秒）與第二版播放器，使用使用者提供的 MP3 與 53 段日中雙語字幕。這首是各國貨幣名的唸唱，用 `lucky` 主題（紅金、金幣粒子）；這首是 TV 動畫《FX戦士くるみちゃん》的 ED，卡司與主視覺都用同作的久留美四人（福賀くるみ、小金萌智子、山師芽吹、高根やす子），主唱預設為福賀くるみ。音檔與字幕均納入 repo。
+已加入歌詞 PV（收錄索引 49，約 218.67 秒）與第二版播放器，使用使用者提供的 MP3 與 53 段日中雙語字幕。這首是各國貨幣名的唸唱，用 `lucky` 主題（紅金、金幣粒子）；這首是 TV 動畫《FX戦士くるみちゃん》的 ED，卡司與主視覺都用同作的久留美四人（福賀くるみ、小金萌智子、山師芽吹、高根やす子），主唱預設為福賀くるみ。音檔與字幕均納入 repo。
 
 日文原文與繁中翻譯存在 `assets/ref/money/lyrics-ja.txt`、`lyrics-zh.txt`，時間軸是 `timings-ja.json`。歌詞是使用者提供的完整 53 行，對時走 `faster-whisper large-v3-turbo` 取詞級時間戳後由 `tools/align-lyrics.py` 逐字對齊；唸唱段（セント／コペイカ 起那幾句）與末段副歌 ASR 認不出來，改用帶歌詞提示的分段轉錄結果手動定起唱點，`timings-ja.json` 全部標了 `final`，`tools/build-srt.py` 因此不再套用提前與延長的舊規則。八個句子起點另外用 `large-v3-turbo` 重聽確認，聽到的詞與該句歌詞一致。
 
@@ -271,13 +271,13 @@ WEST. 演唱的兩首第一季片頭曲共用五位重新繪製的人物立繪�
 
 ### 最最最高級のお世話して：angela
 
-已加入歌詞 PV（編號 51，約 194.11 秒）與第二版播放器，為 TV 動畫《才女のお世話》OP 主題曲；使用使用者提供的 MP3 與 46 句日中雙語字幕。八位角色由使用者提供的八張官方全身立繪去背：`tools/build-osewa.mjs` 對已去背的 PNG 直接用 alpha、對白底 JPG 從邊緣做白色洪水填充，輸出 `assets/ref/cast/osewa-0..7.png`、`cast.json` 的 `osewa` 群組與學院禮堂群像 `assets/ref/osewa/group.png`；歌詞 PV、人物 PV、切圖庫與第二版播放器共用同一組。主題 `osewa` 走貴皇學院的深夜藍到金色午後，主唱預設為友成伊月。
+已加入歌詞 PV（收錄索引 51，約 194.11 秒）與第二版播放器，為 TV 動畫《才女のお世話》OP 主題曲；使用使用者提供的 MP3 與 46 句日中雙語字幕。八位角色由使用者提供的八張官方全身立繪去背：`tools/build-osewa.mjs` 對已去背的 PNG 直接用 alpha、對白底 JPG 從邊緣做白色洪水填充，輸出 `assets/ref/cast/osewa-0..7.png`、`cast.json` 的 `osewa` 群組與學院禮堂群像 `assets/ref/osewa/group.png`；歌詞 PV、人物 PV、切圖庫與第二版播放器共用同一組。主題 `osewa` 走貴皇學院的深夜藍到金色午後，主唱預設為友成伊月。
 
 長句依實際唱出的樂句拆成 46 句，第二輪副歌比第一輪短（少了兩句「最最最高級／最最最大限」的呼應），與原曲一致；時間軸用 `faster-whisper large-v3-turbo` 的詞級時間戳逐句核對，`node tools/build-osewa-subtitles.mjs` 可重建字幕。來源、角色索引與重建方法見 [assets/ref/osewa/README.md](assets/ref/osewa/README.md)。音檔與字幕均納入 repo。
 
 ### 完璧じゃないわたし：前島亜美
 
-已加入歌詞 PV（編號 50，約 216.64 秒）與第二版播放器，為 TV 動畫《才女のお世話》ED 主題曲；使用使用者提供的 MP3 與 42 段日中雙語字幕。人物與同作的 OP「最最最高級のお世話して」共用同一組八位官方立繪（友成伊月、此花雛子、天王寺美麗、都島成香、鶴見静音、大将勝也、朝日花蓮、此花華玄），主視覺 `assets/ref/osewa/group.png`；主題 `perfect` 走薔薇色聚光燈配金邊與火花粒子，與 OP 的學院夜藍區隔，主唱預設為友成伊月。
+已加入歌詞 PV（收錄索引 50，約 216.64 秒）與第二版播放器，為 TV 動畫《才女のお世話》ED 主題曲；使用使用者提供的 MP3 與 42 段日中雙語字幕。人物與同作的 OP「最最最高級のお世話して」共用同一組八位官方立繪（友成伊月、此花雛子、天王寺美麗、都島成香、鶴見静音、大将勝也、朝日花蓮、此花華玄），主視覺 `assets/ref/osewa/group.png`；主題 `perfect` 走薔薇色聚光燈配金邊與火花粒子，與 OP 的學院夜藍區隔，主唱預設為友成伊月。
 
 對時同樣是 `ffmpeg` 轉 16 kHz 單聲道後，用本機 `whisper-cli`（`large-v3-turbo`）取逐字時間戳，再由 `tools/align-lyrics.py` 對齊歌詞、`tools/build-srt.py` 輸出。使用者提供的歌詞少了 C 段四句（「孤独から／救ってくれたヒーロー／どんな日々も／もう怖くないよ」，約 149.7–162.6 秒），三次獨立辨識結果一致，已補進字幕；其餘句子照原文，間奏前的句尾不再拖到下一句。
 
@@ -287,47 +287,47 @@ WEST. 演唱的兩首第一季片頭曲共用五位重新繪製的人物立繪�
 
 ### DAYS!：Aooo
 
-已加入歌詞 PV（編號 52，約 231.00 秒）與第二版播放器，為 TV 動畫《グロウアップショウ ～ひまわりのサーカス団～》ED 主題曲；使用使用者提供的 MP3 與 57 段日中雙語字幕。人物沿用同作的十人（`growup`），主視覺 `assets/ref/growup/group.png`，主題 `days` 是放學後的晴空到向日葵黃，主唱預設為鶴巻瑞佳。原文、翻譯與時間軸保存在 `assets/ref/days/`（見 [assets/ref/days/README.md](assets/ref/days/README.md)），可用 `node tools/build-days-subtitles.mjs` 重建 SRT。
+已加入歌詞 PV（收錄索引 52，約 231.00 秒）與第二版播放器，為 TV 動畫《グロウアップショウ ～ひまわりのサーカス団～》ED 主題曲；使用使用者提供的 MP3 與 57 段日中雙語字幕。人物沿用同作的十人（`growup`），主視覺 `assets/ref/growup/group.png`，主題 `days` 是放學後的晴空到向日葵黃，主唱預設為鶴巻瑞佳。原文、翻譯與時間軸保存在 `assets/ref/days/`（見 [assets/ref/days/README.md](assets/ref/days/README.md)），可用 `node tools/build-days-subtitles.mjs` 重建 SRT。
 
 ### FX戦士くるみちゃん：福賀くるみ(CV.鈴木愛奈)
 
-已加入歌詞 PV（編號 53，約 203.75 秒）與第二版播放器，為 TV 動畫《FX戦士くるみちゃん》OP 主題曲；使用使用者提供的 MP3 與 60 段日中雙語字幕（日文原文取自歌ネット，依實際唱出的樂句拆句）。整句字幕與逐字填色共用時間軸，由 `node tools/build-fx-fill.mjs` 同時重建 SRT、句框及填色，`node tools/test-fx-fill.mjs` 驗證 60 句資料一致。2026-11-18 再次修正前段填色漏掉句首、後段追証だ起點、英文尾段及重複喊聲；約97–105秒的三句相似對話仍需人耳確認，樂句內插值的限制見 `assets/ref/fx/README.md`。四位角色福賀くるみ、小金萌智子、山師芽吹、高根やす子由 `tools/cutout-fx.py` 裁切並拼成群像 `assets/ref/fx-group.png`；主題 `fx` 走交易畫面的深夜藍到洋紅、K 線紅綠，主唱預設為福賀くるみ。四人卡司在舞台分鏡另有一組站位（兩位配角站前排兩側、第三位站主唱左後方，後排中央會整個被主唱擋住）；片頭與 HUD 的 `series` 用主唱名「福賀くるみ」，避免和歌名重複顯示。
+已加入歌詞 PV（收錄索引 53，約 203.75 秒）與第二版播放器，為 TV 動畫《FX戦士くるみちゃん》OP 主題曲；使用使用者提供的 MP3 與 60 段日中雙語字幕（日文原文取自歌ネット，依實際唱出的樂句拆句）。整句字幕與逐字填色共用時間軸，由 `node tools/build-fx-fill.mjs` 同時重建 SRT、句框及填色，`node tools/test-fx-fill.mjs` 驗證 60 句資料一致。2026-11-18 再次修正前段填色漏掉句首、後段追証だ起點、英文尾段及重複喊聲；約97–105秒的三句相似對話仍需人耳確認，樂句內插值的限制見 `assets/ref/fx/README.md`。四位角色福賀くるみ、小金萌智子、山師芽吹、高根やす子由 `tools/cutout-fx.py` 裁切並拼成群像 `assets/ref/fx-group.png`；主題 `fx` 走交易畫面的深夜藍到洋紅、K 線紅綠，主唱預設為福賀くるみ。四人卡司在舞台分鏡另有一組站位（兩位配角站前排兩側、第三位站主唱左後方，後排中央會整個被主唱擋住）；片頭與 HUD 的 `series` 用主唱名「福賀くるみ」，避免和歌名重複顯示。
 
 ### 人にやさしく：THE ROLLING GIRLS
 
-已加入歌詞 PV（編號 54，約 201.45 秒）與第二版播放器，為 TV 動畫《ローリング☆ガールズ》ED 主題曲的翻唱版；使用使用者提供的 MP3 與 35 段日中雙語字幕。時間軸以 `tools/asr.py`（large-v3-turbo）的逐句結果為底，長句依樂句切開，103.4–136 秒是純間奏不掛字幕，可用 `node tools/build-rolling-subtitles.mjs` 重建 SRT。四位角色森友望未、御園千綾、響逢衣、小坂結季奈由 `tools/cutout-rolling.py` 從並排立繪去背、只保留最大連通域（避免夾到鄰人的頭髮與身體），拼成群像 `assets/ref/rolling-group.png`；主題 `rolling` 走旅途小鎮的黃昏到夜色，路燈暖橘配藍紫天空，主唱預設為森友望未。
+已加入歌詞 PV（收錄索引 54，約 201.45 秒）與第二版播放器，為 TV 動畫《ローリング☆ガールズ》ED 主題曲的翻唱版；使用使用者提供的 MP3 與 35 段日中雙語字幕。時間軸以 `tools/asr.py`（large-v3-turbo）的逐句結果為底，長句依樂句切開，103.4–136 秒是純間奏不掛字幕，可用 `node tools/build-rolling-subtitles.mjs` 重建 SRT。四位角色森友望未、御園千綾、響逢衣、小坂結季奈由 `tools/cutout-rolling.py` 從並排立繪去背、只保留最大連通域（避免夾到鄰人的頭髮與身體），拼成群像 `assets/ref/rolling-group.png`；主題 `rolling` 走旅途小鎮的黃昏到夜色，路燈暖橘配藍紫天空，主唱預設為森友望未。
 
 ### 未来は僕等の手の中：逆境無頼カイジ
 
-已加入歌詞 PV（編號 55，約 149.00 秒）與第二版播放器，為 TV 動畫《逆境無頼カイジ》OP 主題曲；使用使用者提供的 MP3 與 28 段日中雙語字幕。時間軸由 `tools/asr.py`（large-v3-turbo）加上開頭 0–36 秒的局部視窗重跑取得：0–11.98 秒前奏、60.98–93.30 秒吉他間奏、96.14–101.04 秒間奏都不掛字幕，可用 `node tools/build-mirai-subtitles.mjs` 重建 SRT。角色改用 `tools/cutout-kaiji.py` 從白底八人立繪切出的八張獨立精靈（船井、遠藤勇次、古畑、北見、伊藤開司、石田、大槻、兵藤和尊），主唱伊藤開司；主題 `mirai` 走夕陽與鐵鏽紅。
+已加入歌詞 PV（收錄索引 55，約 149.00 秒）與第二版播放器，為 TV 動畫《逆境無頼カイジ》OP 主題曲；使用使用者提供的 MP3 與 28 段日中雙語字幕。時間軸由 `tools/asr.py`（large-v3-turbo）加上開頭 0–36 秒的局部視窗重跑取得：0–11.98 秒前奏、60.98–93.30 秒吉他間奏、96.14–101.04 秒間奏都不掛字幕，可用 `node tools/build-mirai-subtitles.mjs` 重建 SRT。角色改用 `tools/cutout-kaiji.py` 從白底八人立繪切出的八張獨立精靈（船井、遠藤勇次、古畑、北見、伊藤開司、石田、大槻、兵藤和尊），主唱伊藤開司；主題 `mirai` 走夕陽與鐵鏽紅。
 
 ### 負け犬たちのレクイエム：逆境無頼カイジ
 
-已加入歌詞 PV（編號 56，約 322.20 秒）與第二版播放器，為 TV 動畫《逆境無頼カイジ》ED 主題曲；使用使用者提供的 MP3 與 33 段日中雙語字幕。歌詞唱兩輪，末尾多一次「今 負け犬達の勝負の時が始まる」與一句「アーメン」；197–199 秒 ASR 冒出的「作詞・作曲」是幻聽，不採計。時間軸寫在 `tools/build-makeinu-subtitles.mjs`，可用 `node tools/build-makeinu-subtitles.mjs` 重建。角色沿用同一組 `kaiji` 八人精靈，主題 `makeinu` 是深紫黑到血紅的黑暗版配色。
+已加入歌詞 PV（收錄索引 56，約 322.20 秒）與第二版播放器，為 TV 動畫《逆境無頼カイジ》ED 主題曲；使用使用者提供的 MP3 與 33 段日中雙語字幕。歌詞唱兩輪，末尾多一次「今 負け犬達の勝負の時が始まる」與一句「アーメン」；197–199 秒 ASR 冒出的「作詞・作曲」是幻聽，不採計。時間軸寫在 `tools/build-makeinu-subtitles.mjs`，可用 `node tools/build-makeinu-subtitles.mjs` 重建。角色沿用同一組 `kaiji` 八人精靈，主題 `makeinu` 是深紫黑到血紅的黑暗版配色。
 
 ### Chase the Light!：Fear, and Loathing in Las Vegas
 
-已加入歌詞 PV（編號 57，約 221.77 秒）與第二版播放器，使用使用者提供的 MP3 與 39 段日中雙語字幕。這首是高速電子金屬，英文段落的 ASR 幾乎辨識不出來（實測兩次都只得到 "Time to die"、"I can't do it with my life" 這類幻聽），因此時間軸改用段落錨點＋段內字數比例分配：30.00 進歌、39.70 英文 A 段、69.80 第二個 A 段、78.20 日文副歌、151.70 英文 B 段、216.34 收；98.12–151.70 是嘶吼／間奏，不掛字幕。時間表寫在 `tools/build-chase-subtitles.mjs`，可重建。主視覺與兩版舞台統一使用 `kaiji` 八人，主題 `chase` 是深夜藍到電光青、配洋紅脈衝。人物 PV 改用 `kaiji` 那組八張已切好的精靈排排站：九人合圖裡的角色本來就互相重疊，整張當一個精靈只會擠在畫面中央、還被標成 1 MEMBERS。
+已加入歌詞 PV（收錄索引 57，約 221.77 秒）與第二版播放器，使用使用者提供的 MP3 與 39 段日中雙語字幕。這首是高速電子金屬，英文段落的 ASR 幾乎辨識不出來（實測兩次都只得到 "Time to die"、"I can't do it with my life" 這類幻聽），因此時間軸改用段落錨點＋段內字數比例分配：30.00 進歌、39.70 英文 A 段、69.80 第二個 A 段、78.20 日文副歌、151.70 英文 B 段、216.34 收；98.12–151.70 是嘶吼／間奏，不掛字幕。時間表寫在 `tools/build-chase-subtitles.mjs`，可重建。主視覺與兩版舞台統一使用 `kaiji` 八人，主題 `chase` 是深夜藍到電光青、配洋紅脈衝。人物 PV 改用 `kaiji` 那組八張已切好的精靈排排站：九人合圖裡的角色本來就互相重疊，整張當一個精靈只會擠在畫面中央、還被標成 1 MEMBERS。
 
 ### CからはじまるABC：忘れらんねえよ
 
-已加入歌詞 PV（編號 58，約 172.33 秒）與第二版播放器，使用使用者提供的 MP3 與 22 段日中雙語字幕。時間軸由 `tools/asr.py`（large-v3-turbo）取得：24.74 秒先唱一次副歌鉤子，35.36 才進主歌，142.00 再唱一次收尾，148 之後是吆喝聲不掛字幕。時間表寫在 `tools/build-abc-subtitles.mjs`，可重建。主視覺與兩版舞台統一使用 `kaiji` 八人，主題 `abc` 是奶油黃到橙紅的日式搖滾晴天配色；人物 PV 同樣改用 `kaiji` 的八張精靈排排站。
+已加入歌詞 PV（收錄索引 58，約 172.33 秒）與第二版播放器，使用使用者提供的 MP3 與 22 段日中雙語字幕。時間軸由 `tools/asr.py`（large-v3-turbo）取得：24.74 秒先唱一次副歌鉤子，35.36 才進主歌，142.00 再唱一次收尾，148 之後是吆喝聲不掛字幕。時間表寫在 `tools/build-abc-subtitles.mjs`，可重建。主視覺與兩版舞台統一使用 `kaiji` 八人，主題 `abc` 是奶油黃到橙紅的日式搖滾晴天配色；人物 PV 同樣改用 `kaiji` 的八張精靈排排站。
 
 ### マトリョーシカ：NICO Touches the Walls
 
-已加入歌詞 PV（編號 59，約 300.35 秒）與第二版播放器，為 TV 動畫《[C] - THE MONEY OF SOUL AND POSSIBILITY CONTROL》OP；使用使用者提供的 MP3 與 33 段日中雙語字幕。整首 ASR 漏掉開頭，23.00 秒的第一句「生き抜くために着込んだ」是另外用 16–36 秒的局部視窗補回來的；134.48–156.72 與 217.12–234.12 是間奏，不掛字幕。時間表寫在 `tools/build-matryoshka-subtitles.mjs`。九位角色井稲田、真坂本、真朱、余賀公磨、三國壮一郎、Q、生田羽奈日、ジェニファー・サトウ、竹田崎重臣由 `tools/cutout-matryoshka.py` 從黑底立繪去背，切成九張獨立精靈（黑衣服因為被輪廓包住不會被吃掉），主唱預設余賀公磨；主題 `matryoshka` 是深紫與暗紅的俄羅斯娃娃配色。
+已加入歌詞 PV（收錄索引 59，約 300.35 秒）與第二版播放器，為 TV 動畫《[C] - THE MONEY OF SOUL AND POSSIBILITY CONTROL》OP；使用使用者提供的 MP3 與 33 段日中雙語字幕。整首 ASR 漏掉開頭，23.00 秒的第一句「生き抜くために着込んだ」是另外用 16–36 秒的局部視窗補回來的；134.48–156.72 與 217.12–234.12 是間奏，不掛字幕。時間表寫在 `tools/build-matryoshka-subtitles.mjs`。九位角色井稲田、真坂本、真朱、余賀公磨、三國壮一郎、Q、生田羽奈日、ジェニファー・サトウ、竹田崎重臣由 `tools/cutout-matryoshka.py` 從黑底立繪去背，切成九張獨立精靈（黑衣服因為被輪廓包住不會被吃掉），主唱預設余賀公磨；主題 `matryoshka` 是深紫與暗紅的俄羅斯娃娃配色。
 
 ### RPG：School Food Punishment
 
-已加入歌詞 PV（編號 60，約 245.32 秒）與第二版播放器，為同作《[C]》的 ED；使用使用者提供的 MP3 與 43 段日中雙語字幕。整首 ASR 漏掉開頭兩句，22.94 秒起是另外用 18–36 秒的局部視窗補的；120–135 秒那段（闇に飛び込んで／play or fadeout／君の中…）也用局部視窗細分。時間表寫在 `tools/build-rpg-subtitles.mjs`。角色沿用 `matryoshka` 那組九人精靈，主題 `rpg` 是深藍到霓虹青、配洋紅的遊戲畫面配色。
+已加入歌詞 PV（收錄索引 60，約 245.32 秒）與第二版播放器，為同作《[C]》的 ED；使用使用者提供的 MP3 與 43 段日中雙語字幕。整首 ASR 漏掉開頭兩句，22.94 秒起是另外用 18–36 秒的局部視窗補的；120–135 秒那段（闇に飛び込んで／play or fadeout／君の中…）也用局部視窗細分。時間表寫在 `tools/build-rpg-subtitles.mjs`。角色沿用 `matryoshka` 那組九人精靈，主題 `rpg` 是深藍到霓虹青、配洋紅的遊戲畫面配色。
 
 ### 月の爆撃機：THE ROLLING GIRLS
 
-已加入歌詞 PV（編號 61，約 209.20 秒）與第二版播放器，為 TV 動畫《ローリング☆ガールズ》的插入歌，由劇中樂團 THE ROLLING GIRLS 演唱；使用使用者提供的 MP3 與 20 段日中雙語字幕。時間軸由 `tools/asr.py`（large-v3-turbo）取得，ASR 把「手がかりになるのは／薄い月明かり」與「白い月の／真ん中の／黒い影」拆成小段，字幕按歌詞合回一句；97.82–124.43 是間奏。時間表寫在 `tools/build-bakugeki-subtitles.mjs`。角色沿用 `rolling` 那組四人精靈，主題 `bakugeki` 是深夜鈷藍配銀白月光與警示紅。九首劇中歌（編號 61–69）的標籤統一比照〈人にやさしく〉：`ver` 為 THE ROLLING GIRLS，`series` 與 `tv` 為「ローリング☆ガールズ」，`kicker` 為「挿入歌」，片頭因此顯示「TVアニメ「ローリング☆ガールズ」挿入歌」，HUD 也不會再把歌名重複顯示成「月の爆撃機 / 月の爆撃機」。
+已加入歌詞 PV（收錄索引 61，約 209.20 秒）與第二版播放器，為 TV 動畫《ローリング☆ガールズ》的插入歌，由劇中樂團 THE ROLLING GIRLS 演唱；使用使用者提供的 MP3 與 20 段日中雙語字幕。時間軸由 `tools/asr.py`（large-v3-turbo）取得，ASR 把「手がかりになるのは／薄い月明かり」與「白い月の／真ん中の／黒い影」拆成小段，字幕按歌詞合回一句；97.82–124.43 是間奏。時間表寫在 `tools/build-bakugeki-subtitles.mjs`。角色沿用 `rolling` 那組四人精靈，主題 `bakugeki` 是深夜鈷藍配銀白月光與警示紅。九首劇中歌（收錄索引 61–69）的標籤統一比照〈人にやさしく〉：`ver` 為 THE ROLLING GIRLS，`series` 與 `tv` 為「ローリング☆ガールズ」，`kicker` 為「挿入歌」，片頭因此顯示「TVアニメ「ローリング☆ガールズ」挿入歌」，HUD 也不會再把歌名重複顯示成「月の爆撃機 / 月の爆撃機」。
 
 ### 英雄にあこがれて／1000のバイオリン／脳天気：THE ROLLING GIRLS
 
-三首一起加入（編號 62–64）與第二版播放器，使用使用者提供的 MP3 與日中雙語字幕。時間軸都由 `tools/asr.py`（large-v3-turbo）取得，重建指令分別是 `node tools/build-eiyuu-subtitles.mjs`、`node tools/build-1000-subtitles.mjs`、`node tools/build-notenki-subtitles.mjs`。
+三首一起加入（收錄索引 62–64）與第二版播放器，使用使用者提供的 MP3 與日中雙語字幕。時間軸都由 `tools/asr.py`（large-v3-turbo）取得，重建指令分別是 `node tools/build-eiyuu-subtitles.mjs`、`node tools/build-1000-subtitles.mjs`、`node tools/build-notenki-subtitles.mjs`。
 
 - **英雄にあこがれて**（226.72 秒，23 句）：0–30 秒是前奏，副歌「おしまれながら死んでゆく英雄にあこがれ」在 172 秒之後才出現（使用者提供的歌詞把它列在最前面）。主題 `eiyuu` 是鏽紅與鐵灰。
 - **1000のバイオリン**（272.68 秒，32 句）：副歌重複三次，125–174 秒是間奏。主題 `violin` 是晴空藍與草原綠。
@@ -337,7 +337,7 @@ WEST. 演唱的兩首第一季片頭曲共用五位重新繪製的人物立繪�
 
 ### TRAIN-TRAIN／シャララ／STONES／夕暮れ／終わらない歌：THE ROLLING GIRLS
 
-五首一起加入（編號 65–69）與第二版播放器，使用使用者提供的 MP3 與日中雙語字幕。時間軸都由 `tools/asr.py`（large-v3-turbo）取得，統一由 `node tools/build-cover5-subtitles.mjs` 重建（五首的表都在同一支腳本裡）。
+五首一起加入（收錄索引 65–69）與第二版播放器，使用使用者提供的 MP3 與日中雙語字幕。時間軸都由 `tools/asr.py`（large-v3-turbo）取得，統一由 `node tools/build-cover5-subtitles.mjs` 重建（五首的表都在同一支腳本裡）。
 
 - **TRAIN-TRAIN**（246.13 秒，52 句）：ASR 很準，主要是把「走って行け／どこまでも」照歌詞拆成獨立句。
 - **シャララ**（169.61 秒，18 句）：開頭 7 秒是「シャララ」的清唱，副歌重複多次。
@@ -349,13 +349,13 @@ WEST. 演唱的兩首第一季片頭曲共用五位重新繪製的人物立繪�
 
 ### INSIDE IDENTITY：Black Raison d’être
 
-已加入歌詞 PV（編號 70，約 260.37 秒）與第二版播放器，為 TV 動畫《中二病でも恋がしたい！》的 ED；使用者提供的是白河しらせ・ももしき・綿宮あひる・すいみゃ 四人的翻唱版，`ver` 沿用原唱 Black Raison d’être。歌詞由使用者提供，時間軸以 `tools/asr.py`（large-v3-turbo）取得，ASR 把「可愛い～って誰かが言って／となりでこだまして」這類句子拆成兩段，字幕照歌詞合回一句；片頭、橋段和副歌的部分句界依這個翻唱版本的人聲校正。九句另有逐詞填色時間，供兩個播放器共用。執行 `node tools/build-inside-subtitles.mjs` 可一起重建 SRT 與填色時間檔。
+已加入歌詞 PV（收錄索引 70，約 260.37 秒）與第二版播放器，為 TV 動畫《中二病でも恋がしたい！》的 ED；使用者提供的是白河しらせ・ももしき・綿宮あひる・すいみゃ 四人的翻唱版，`ver` 沿用原唱 Black Raison d’être。歌詞由使用者提供，時間軸以 `tools/asr.py`（large-v3-turbo）取得，ASR 把「可愛い～って誰かが言って／となりでこだまして」這類句子拆成兩段，字幕照歌詞合回一句；片頭、橋段和副歌的部分句界依這個翻唱版本的人聲校正。九句另有逐詞填色時間，供兩個播放器共用。執行 `node tools/build-inside-subtitles.mjs` 可一起重建 SRT 與填色時間檔。
 
 歌詞 PV 的主視覺採用原版紅底封面 `assets/ref/inside-identity/cover.jpg`。四位歌手的全身立繪依封面與影片畫面重繪，存於透明人物圖 `assets/ref/inside-identity/lineup.png`。執行 `python3 tools/cutout-inside.py` 可重建四張切圖與清單。歌詞 PV、人物 PV、切圖頁與第二版播放器共用這組立繪。
 
 ### 明日へのBreakShoot：葉山陽和 ver.
 
-已加入歌詞 PV（編號 9）與第二版播放器，使用 `明日へのBreakShoot [葉山陽和ver.].mp3`、35 段日中雙語 `明日へのBreakShoot.srt` 及使用者提供的專輯封面 `assets/ref/breakshoot-cover.png`。十二位人物使用依新參考合圖重製的 `casual` 透明切圖；兩版主唱皆預設為葉山陽和（索引 1），第二版提供十二人的主唱選單，人物 PV 固定使用這組十二人，排成 6×2。音檔與字幕均納入 repo。
+已加入歌詞 PV（收錄索引 9）與第二版播放器，使用 `明日へのBreakShoot [葉山陽和ver.].mp3`、35 段日中雙語 `明日へのBreakShoot.srt` 及使用者提供的專輯封面 `assets/ref/breakshoot-cover.png`。十二位人物使用依新參考合圖重製的 `casual` 透明切圖；兩版主唱皆預設為葉山陽和（索引 1），第二版提供十二人的主唱選單，人物 PV 固定使用這組十二人，排成 6×2。音檔與字幕均納入 repo。
 
 漢字與英文的假名讀音保留在日文字幕中並顯示為 ruby，例如 `眩(まば)`、`Break shoot(ブレイクシュート)`、`New Dream(ニュードリーム)`；英文和聲中的讀音不會打斷和聲樣式。來源與對時說明見 [assets/ref/BREAKSHOOT.md](assets/ref/BREAKSHOOT.md)。
 
@@ -387,7 +387,7 @@ WEST. 演唱的兩首第一季片頭曲共用五位重新繪製的人物立繪�
 - 完整歌曲、1920×1080、30 fps；一般歌曲會輪替十二人制服與便服、屋頂六人、RISE 五人演出服、黃昏九人舞台服（每 15 秒換一組），持續到配樂結束，並隨整首歌曲驅動節拍、側擺、微跳、聚光與轉場；招財喵布布則固定用幸運八人這一組。
 - `cast.html` 可檢查與下載全部 115 張透明 PNG，十五組分別為 `casual`（12）、`rooftop`（6）、`idol`（5）、`stage`（9）、`anaru`（6）、`kaze`（7）、`lucky`（8）、`kaguya`（3）、`aiura`（3）、`growup`（10）、`vwest`（17）、`forever`（6）、`tsuki`（11）、`osewa`（8）、`fx`（4）。這是各組造型切圖數量，包含重複人物。
 - 屋頂與黃昏原圖背景先使用內建 imagegen 分離，透明圖層保存在 `assets/ref/*-matte.png`；切圖工具保留 alpha 並依連通區塊分配人物。去背提示記錄於 [assets/ref/CUTOUTS.md](assets/ref/CUTOUTS.md)。原圖中互相遮擋的部分未補畫；黃昏段落用完整透明群像側彎，保留相連裙襬的接縫。
-- 輸出：`node render-pv.mjs --mode characters --out pv/characters/full`；預設輸出三首完整歌曲 MP4，含音樂淡入淡出。可指定一首歌曲編號，例如 `node render-pv.mjs 1 --mode characters`；需要短片段時使用 `--from` / `--to`。
+- 輸出：`node render-pv.mjs --mode characters --out pv/characters/full`；預設輸出三首完整歌曲 MP4，含音樂淡入淡出。可指定一首歌曲的收錄索引，例如 `node render-pv.mjs 1 --mode characters`；需要短片段時使用 `--from` / `--to`。
 - macOS 可加 `--encoder h264_videotoolbox` 使用硬體 H.264 編碼（16 Mbps）；預設仍使用 `libx264`。
 - 每支壓縮至 100 MB 以下：`node tools/compress-pv.mjs`。輸出至 `pv/characters/under100mb/`，保留全曲、原解析度與幀率；使用兩遍 H.264 編碼、128 kbps AAC 音訊，並驗證實際大小及完整解碼。MB 以 1,000,000 bytes 計算，預留 5% 空間。可用 `--in 資料夾 --out 資料夾 --max-mb 100` 自訂。
 - 播放進度支援跳轉；切換配樂保留人物模式。MP4 依既有規則留在本機，程式與切圖提交 Git。
@@ -435,7 +435,7 @@ WEST. 演唱的兩首第一季片頭曲共用五位重新繪製的人物立繪�
 
 「私は、わたしの事が好き。」的 SRT 走同一條流程，工具留在 `tools/`：`faster-whisper medium` 取詞級時間戳後，`tools/align-lyrics.py` 把歌詞逐字與 ASR 逐字做 Levenshtein 對齊（對上的字沿用 ASR 時間），再由 `tools/build-srt.py` 寫成日中雙語 SRT 並把每句結束時間收到下一句開始前。ASR 對唱歌的辨識本來就零散，但對齊後每句仍有 5–12 個字對上，時間軸足夠貼合。
 
-「カニ☆Do-Luck! [あいうらぶ]」已加入兩版歌曲清單（PV 編號 7），使用使用者提供的 `カニ☆Do-Luck!.mp3` 與日中雙語 `カニ☆Do-Luck!.srt`。日文保留使用者提供的歌詞，字幕依音訊逐句對時。人物使用使用者提供封面中的天谷奏香、岩沢彩生、上原歩子三人，預設主唱為奏香；歌詞 PV、人物 PV 與第二版播放器均使用這三位，人物 PV 固定此組造型。透明素材由內建 imagegen 參照封面重建，補齊原圖被遮擋與裁掉的下半身；原圖存為 `assets/ref/aiura-cover.png`，圖集為 `assets/ref/aiura-sprites.png`。執行 `node tools/build-aiura.mjs` 可重建三張獨立切圖、`cast.json` 與 `assets/ref/aiura-group.png`；提示記錄於 [assets/ref/AIURA.md](assets/ref/AIURA.md)。音檔內附的 YouTube ID `lk7NsqwWiA0` 用於播放器切換音源。本曲音訊與字幕已納入 repo，供部署版播放及顯示字幕。
+「カニ☆Do-Luck! [あいうらぶ]」已加入兩版歌曲清單（PV 收錄索引 7），使用使用者提供的 `カニ☆Do-Luck!.mp3` 與日中雙語 `カニ☆Do-Luck!.srt`。日文保留使用者提供的歌詞，字幕依音訊逐句對時。人物使用使用者提供封面中的天谷奏香、岩沢彩生、上原歩子三人，預設主唱為奏香；歌詞 PV、人物 PV 與第二版播放器均使用這三位，人物 PV 固定此組造型。透明素材由內建 imagegen 參照封面重建，補齊原圖被遮擋與裁掉的下半身；原圖存為 `assets/ref/aiura-cover.png`，圖集為 `assets/ref/aiura-sprites.png`。執行 `node tools/build-aiura.mjs` 可重建三張獨立切圖、`cast.json` 與 `assets/ref/aiura-group.png`；提示記錄於 [assets/ref/AIURA.md](assets/ref/AIURA.md)。音檔內附的 YouTube ID `lk7NsqwWiA0` 用於播放器切換音源。本曲音訊與字幕已納入 repo，供部署版播放及顯示字幕。
 
 新增歌曲時，把音檔和字幕放入對應資料夾，再將檔名填入 `pv.js` 的 `SONGS` 與 `v2.html` 的 `DEFAULT_SONGS`。例如，`audio/歌曲.mp3` 和 `subtitles/字幕.srt` 在第二版播放器的設定如下。
 

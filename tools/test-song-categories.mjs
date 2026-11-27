@@ -11,23 +11,49 @@ const SONGS=registry(pv,'SONGS'),DEFAULT_SONGS=registry(v2,'DEFAULT_SONGS');
 const box={window:{}};vm.runInNewContext(fs.readFileSync(path.join(root,'playlist-order.js'),'utf8'),box);
 const {SongOrder}=box.window;
 const entries=SONGS.map((s,index)=>({...s,index})),groups=SongOrder.categories(entries);
-const playback=SongOrder.group(entries);
+const playback=groups.flatMap(g=>g.items);
+assert.deepEqual(Array.from(playback.slice(0,5),s=>s.title),['SUNRISE','HELLO HERO','大好きだよって叫ぶんだ','明日へのBreakShoot','Forever＆ever']);
+assert.equal(SongOrder.categoryLabel(groups[0]),'01–04　Extreme Hearts');
+const v2Playback=SongOrder.categories(DEFAULT_SONGS).flatMap(g=>g.items);
 assert.equal(playback[0].title,'SUNRISE');
-assert.deepEqual(Array.from(SongOrder.group(DEFAULT_SONGS),s=>s.audio),Array.from(playback,s=>s.audio||s.file+'.mp3'));
-assert.deepEqual(Array.from(SongOrder.group(DEFAULT_SONGS),s=>s.subs),Array.from(playback,s=>s.subs));
+assert.deepEqual(Array.from(v2Playback,s=>s.audio),Array.from(playback,s=>s.audio||s.file+'.mp3'));
+assert.deepEqual(Array.from(v2Playback,s=>s.subs),Array.from(playback,s=>s.subs));
 for(const song of DEFAULT_SONGS){
   assert.ok(fs.statSync(path.join(root,'audio',song.audio)).isFile(),song.audio);
   assert.ok(fs.statSync(path.join(root,'subtitles',song.subs)).isFile(),song.subs);
 }
-const catalog=fs.readFileSync(path.join(root,'SONGS.md'),'utf8');
-const linkedIndices=Array.from(catalog.matchAll(/pv\.html\?song=(\d+)\)/g),m=>Number(m[1]));
-assert.deepEqual(linkedIndices,Array.from(playback,s=>s.index));
-const resume=pv.slice(pv.indexOf('const LAST_SONG_KEY'),pv.indexOf('function rememberSong'))+';savedSong()';
-for(const [stored,expected] of [[null,1],['',1],['bad',1],['999',1],['0',0],['76',76]]){
-  const localStorage={getItem:()=>stored};
-  assert.equal(vm.runInNewContext(resume,{SONGS,SongOrder,localStorage}),expected);
+for (const filename of ['README.md','SONGS.md']){
+  const catalog=fs.readFileSync(path.join(root,filename),'utf8');
+  const rows=Array.from(catalog.matchAll(/^\| (\d+) \| \[(.*?)\]\(https:\/\/neweffects\.vercel\.app\/pv\.html\?track=(\d+)\)/gm),m=>[m[1],m[2],Number(m[3])]);
+  assert.deepEqual(rows,Array.from(playback,(song,i)=>[String(i+1).padStart(2,'0'),song.title,i+1]),filename);
 }
-assert.equal(vm.runInNewContext(resume,{SONGS,SongOrder}),1);
+const startup=pv.slice(pv.indexOf('const LAST_SONG_KEY'),pv.indexOf('song.audio ??='));
+function openSong(query='',stored=null){
+  const location={pathname:'/pv.html',search:query,hash:'#here'};
+  let url,remembered;
+  const context={SONGS,SongOrder,params:new URLSearchParams(query),URLSearchParams,location,RENDER:false,
+    clamp:(v,a,b)=>Math.min(b,Math.max(v,a)),localStorage:{getItem:()=>stored,setItem:(_,v)=>remembered=v},
+    history:{replaceState:(_,__,v)=>url=v}};
+  const songIndex=vm.runInNewContext(startup+';songIndex',context);
+  return {songIndex,remembered,url:url||location.pathname+location.search+location.hash};
+}
+for(const [stored,expected] of [[null,1],['',1],['bad',1],['999',1],['0',0],['76',76]]){
+  assert.equal(openSong('',stored).songIndex,expected);
+}
+for(const [i,s] of playback.entries()){
+  const track=i+1;
+  for(const query of ['?track='+track,'?song='+s.index]){
+    const visit=openSong(query+'&speed=1.5','0');
+    assert.equal(visit.songIndex,s.index);assert.equal(visit.remembered,String(s.index));
+    const url=new URL(visit.url,'http://localhost');
+    assert.equal(url.searchParams.get('track'),String(track));assert.ok(!url.searchParams.has('song'));
+    assert.equal(url.searchParams.get('speed'),'1.5');assert.equal(url.hash,'#here');
+  }
+}
+assert.equal(openSong('?track=999','0').songIndex,0);
+assert.equal(openSong('?track=0&song=2').songIndex,2);
+assert.equal(openSong('?track=1&song=0').songIndex,playback[0].index);
+assert.equal(vm.runInNewContext(startup+';songIndex',{SONGS,SongOrder,params:new URLSearchParams(),RENDER:true}),playback[0].index);
 const flat=groups.flatMap(g=>g.items.map(s=>s.index));
 assert.equal(flat.length,SONGS.length);assert.equal(new Set(flat).size,SONGS.length);
 for(const [label,count] of [['ローリング☆ガールズ',10],['逆境無頼カイジ',4],['[C] THE MONEY OF SOUL AND POSSIBILITY CONTROL',2],['Extreme Hearts',4],['グロウアップショウ ～ひまわりのサーカス団～',2]])assert.equal(groups.find(g=>g.label===label).items.length,count,label);
@@ -72,6 +98,22 @@ for(const g of groups){
 assert.equal(SongOrder.categories([]).length,0);
 assert.equal(SongOrder.categories([{id:'custom',title:'My own song'}])[0].items.length,1);
 assert.equal(SongOrder.categories(DEFAULT_SONGS.filter(s=>s.id!=='rpg-sfp'),DEFAULT_SONGS).find(g=>g.label.startsWith('[C]')).items.length,1);
+// Walk the second player's live list in both directions, including edited libraries.
+{
+  const nav=v2.slice(v2.indexOf('const orderedSongs='),v2.indexOf('let selectedSongCategory='))+
+    v2.slice(v2.indexOf('function neighborSong('),v2.indexOf('function updateNeighborTitles()'));
+  const state={SongOrder,DEFAULT_SONGS,songs:DEFAULT_SONGS,curSong:null};
+  vm.runInNewContext(nav,state);
+  for(const [i,song] of v2Playback.entries()){
+    state.curSong=song.id;
+    assert.equal(state.neighborSong(1).id,v2Playback[(i+1)%v2Playback.length].id);
+    assert.equal(state.neighborSong(-1).id,v2Playback[(i-1+v2Playback.length)%v2Playback.length].id);
+  }
+  state.songs=[v2Playback[0],{id:'custom',title:'My song'}];
+  state.curSong=v2Playback[0].id;
+  assert.equal(state.neighborSong(1).id,'custom');
+  assert.equal(SongOrder.categories(state.songs,DEFAULT_SONGS)[1].firstNumber,2);
+}
 // Previously saved defaults must receive the new cast and default lead;
 // custom records and explicitly removed defaults must be preserved.
 {
@@ -110,11 +152,16 @@ const a=pv.indexOf("  const sel = $('#song');",pv.indexOf('async function init()
 const b=pv.indexOf("  const speed = $('#speed');",a);
 for(let songIndex=0;songIndex<SONGS.length;songIndex++){
   const els=new Map();const $=id=>{if(!els.has(id))els.set(id,new Element());return els.get(id);};const calls=[];
-  vm.runInNewContext(pv.slice(a,b),{SongOrder,SONGS,songIndex,$,Option,changeSong:i=>calls.push(i)});
+  const pos=playback.findIndex(s=>s.index===songIndex);
+  const context={SongOrder,SONGS,songIndex,songGroups:groups,playback,position:pos,$,Option,changeSong:i=>calls.push(i)};
+  vm.runInNewContext(pv.slice(pv.indexOf('function nextSongIndex()'),pv.indexOf('async function init()'))+pv.slice(a,b),context);
   assert.equal(+$('#song').value,songIndex);
   const group=groups.find(g=>g.id===$('#category').value);
   assert.equal($('#song').options.length,group.items.length);
-  $('#nextSong').onclick();assert.ok(Number.isInteger(calls.pop()));
+  assert.equal($('#song').options.find(o=>+o.value===songIndex).text,SongOrder.numberLabel(pos+1)+'　'+SongOrder.optionLabel(SONGS[songIndex],group));
+  $('#nextSong').onclick();assert.equal(calls.pop(),playback[(pos+1)%playback.length].index);
+  assert.equal(context.nextSongIndex(),playback[(pos+1)%playback.length].index);
+  $('#prevSong').onclick();assert.equal(calls.pop(),playback[(pos-1+playback.length)%playback.length].index);
   const other=groups.find(g=>g.id!==group.id);$('#category').value=other.id;$('#category').onchange();
   assert.equal(+$('#song').value,other.items[0].index);
   assert.equal(calls.pop(),other.items[0].index,'switching PV categories plays the first song');
@@ -127,6 +174,7 @@ for(let songIndex=0;songIndex<SONGS.length;songIndex++){
  const a=v2.indexOf('function renderSongs(){'),b=v2.indexOf("$('#songs').addEventListener",a);vm.createContext(context);vm.runInContext(v2.slice(a,b)+';renderSongs();',context);
  assert.equal($('#songChoice').options.length,10);assert.equal($('#songs').children.length,10);
  $('#songCategory').value=family.id;$('#songCategory').onchange();assert.equal($('#songs').children.length,4);assert.equal($('#songChoice').value,'');assert.equal(calls.length,0);
+ assert.ok($('#songChoice').options[1].text.startsWith(SongOrder.numberLabel(family.firstNumber)+'　'));
  const id=$('#songChoice').options[1].value;$('#songChoice').value=id;$('#songChoice').onchange();assert.equal(calls.pop(),id);
  context.songs=[];vm.runInContext('renderSongs()',context);assert.equal($('#songChoice').disabled,true);
 }

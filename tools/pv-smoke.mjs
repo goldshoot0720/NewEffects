@@ -69,6 +69,7 @@ const sandbox = {
 sandbox.window = sandbox;
 sandbox.self = sandbox;
 vm.createContext(sandbox);
+vm.runInContext(fs.readFileSync(path.join(ROOT,'playlist-order.js'),'utf8'),sandbox,{filename:'playlist-order.js'});
 vm.runInContext(fs.readFileSync(path.join(ROOT,'lyric-text.js'),'utf8'),sandbox,{filename:'lyric-text.js'});
 vm.runInContext(raw.slice(0, cut) + hook, sandbox, {filename: 'pv.js'});
 

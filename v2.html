@@ -614,7 +614,7 @@ for(const d of DEFAULT_SONGS){
   }
 }
 if(metaChanged) saveSongs();
-const orderedSongs=()=>SongOrder.group(songs,DEFAULT_SONGS);
+const orderedSongs=()=>SongOrder.categories(songs,DEFAULT_SONGS).flatMap(group=>group.items);
 let selectedSongCategory=null;
 
 function renderSongs(){
@@ -625,11 +625,11 @@ function renderSongs(){
   const category=$('#songCategory'),choice=$('#songChoice');
   category.innerHTML='';choice.innerHTML='';
   category.disabled=choice.disabled=!active;
-  groups.forEach(g=>category.add(new Option(g.label,g.id,false,g===active)));
+  groups.forEach(g=>category.add(new Option(SongOrder.categoryLabel(g),g.id,false,g===active)));
   if(active){
     const playing=active.items.some(s=>s.id===curSong);
     if(!playing)choice.add(new Option('選擇歌曲或語言版本…','',true,true));
-    active.items.forEach(s=>choice.add(new Option(SongOrder.optionLabel(s,active),s.id,false,s.id===curSong)));
+    active.items.forEach((s,i)=>choice.add(new Option(SongOrder.numberedOption(active,i),s.id,false,s.id===curSong)));
   }
   const ul = $('#songs'); ul.innerHTML = '';
   (active?.items||[]).forEach((s, i) => {
@@ -639,7 +639,7 @@ function renderSongs(){
     const li = document.createElement('li');
     li.dataset.id = s.id;
     li.classList.toggle('on', mediaKey === 'yt:' + s.id);
-    li.innerHTML = `<span class="no">${i + 1}</span><span class="nm"></span><span class="st"></span><button class="del" title="從清單移除">×</button>`;
+    li.innerHTML = `<span class="no">${SongOrder.numberLabel(active.firstNumber+i)}</span><span class="nm"></span><span class="st"></span><button class="del" title="從清單移除">×</button>`;
     li.querySelector('.nm').textContent = s.title;
     const st = li.querySelector('.st');
     st.textContent = (cfgOf(s.id).audio ? 'MP3 · ' : '') + (!n ? '無歌詞' : nt === n ? '已對時' : `${nt}/${n} 句`);

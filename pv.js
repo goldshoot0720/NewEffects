@@ -466,25 +466,37 @@ const mk = (w, h) => { const c = document.createElement('canvas'); c.width = w; 
 
 // 網址指定的歌曲優先；首次造訪依播放順序選曲，回訪時接續上次選曲。
 const LAST_SONG_KEY = 'pv-last-song';
+const songGroups = SongOrder.categories(SONGS.map((s,index)=>({...s,index})));
+const playback = songGroups.flatMap(group=>group.items);
 function savedSong(){
   try{
     const stored = localStorage.getItem(LAST_SONG_KEY);
     if(/^\d+$/.test(stored) && Number(stored) < SONGS.length) return Number(stored);
   }catch{}
-  return SONGS.indexOf(SongOrder.group(SONGS)[0]);
+  return playback[0].index;
 }
 function rememberSong(i){
   try{ localStorage.setItem(LAST_SONG_KEY, String(i)); }catch{}
 }
-const songIndex = params.has('song') ? clamp(+params.get('song') | 0, 0, SONGS.length - 1) : savedSong();
+// track 是選單曲號；舊網址的 song 和本機播放紀錄使用固定的收錄索引。
+const trackParam = params.get('track');
+function initialSongIndex(){
+  const track = /^\d+$/.test(trackParam) ? playback[Number(trackParam)-1] : undefined;
+  if(track) return track.index;
+  if(params.has('song')) return clamp(+params.get('song') | 0, 0, SONGS.length - 1);
+  return savedSong();
+}
+const songIndex = initialSongIndex();
+const position = playback.findIndex(s=>s.index===songIndex);
 const song = SONGS[songIndex];
 if(!RENDER){
   rememberSong(songIndex);
-  if(!params.has('song')){
+  if(trackParam!==String(position+1) || params.has('song')){
     try{
       const q = new URLSearchParams(location.search);
-      q.set('song', String(songIndex));
-      history.replaceState(null, '', `${location.pathname}?${q}`);
+      q.delete('song');
+      q.set('track', String(position+1));
+      history.replaceState(null, '', `${location.pathname}?${q}${location.hash}`);
     }catch{}
   }
 }
@@ -2234,7 +2246,7 @@ let loopControl = null;
 // 自動下一首開關（loop.js）：開啟時播完直接換到清單的下一首並自動播放。
 let autoNextControl = null;
 function pvQuery(index, characterMode){
-  const query = new URLSearchParams({song:String(index)});
+  const query = new URLSearchParams({track:String(playback.findIndex(s=>s.index===index)+1)});
   if(characterMode) query.set('mode','characters');
   const speed = $('#speed').value;
   if(speed !== '1') query.set('speed', speed);
@@ -2254,9 +2266,7 @@ function changeSong(index, autoplay){
 }
 // 自動下一首要跳的那一首：跟「下一首」按鈕用同一份排序
 function nextSongIndex(){
-  const order = SongOrder.group(SONGS.map((s,index)=>({title:s.title,index})));
-  const position = order.findIndex(item => item.index === songIndex);
-  return order[(position+1) % order.length].index;
+  return playback[(position+1) % playback.length].index;
 }
 async function init(){
   // 播放模式開關先綁好，不用等音訊解碼完才能按
@@ -2265,22 +2275,19 @@ async function init(){
   window.SpriteRig?.setCacheLimit?.(Math.max(MEMBERS.length,...(CHARACTER_PV?CHARACTER_GROUPS.map(g=>g.count):[])));
   if(RENDER) document.body.classList.add('render');
   const sel = $('#song');
-  const entries=SONGS.map((s,index)=>({...s,index}));
-  const order=SongOrder.group(entries);
-  const position=order.findIndex(item=>item.index===songIndex);
-  const groups=SongOrder.categories(entries),category=$('#category');
-  const currentGroup=groups.find(g=>g.items.some(s=>s.index===songIndex));
-  groups.forEach(g=>category.add(new Option(g.label,g.id,false,g===currentGroup)));
+  const category=$('#category');
+  const currentGroup=songGroups.find(g=>g.items.some(s=>s.index===songIndex));
+  songGroups.forEach(g=>category.add(new Option(SongOrder.categoryLabel(g),g.id,false,g===currentGroup)));
   const showSongs=(group,selected)=>{
     sel.innerHTML='';
     if(!group?.items.length){ sel.add(new Option('沒有歌曲','',true,true)); return; }
-    group.items.forEach(s=>sel.add(new Option(SongOrder.optionLabel(s,group),s.index,false,s.index===selected)));
+    group.items.forEach((s,i)=>sel.add(new Option(SongOrder.numberedOption(group,i),s.index,false,s.index===selected)));
   };
   showSongs(currentGroup,songIndex);
   // 換分類時直接選第一首（正在播的那首若屬於這個分類就留著），不要停在「請選擇」；
   // 選到的不是正在播的那首就跟著切過去，免得下拉顯示的歌和畫面上播的不一樣。
   category.onchange=()=>{
-    const group=groups.find(g=>g.id===category.value);
+    const group=songGroups.find(g=>g.id===category.value);
     if(!group?.items.length) return;
     const keep=group.items.some(s=>s.index===songIndex);
     const target=keep?songIndex:group.items[0].index;
@@ -2288,7 +2295,7 @@ async function init(){
     if(target!==songIndex) changeSong(target);
   };
   sel.onchange = () => {if(sel.value!=='')changeSong(+sel.value);};
-  const prevItem=order[(position-1+order.length)%order.length],nextItem=order[(position+1)%order.length];
+  const prevItem=playback[(position-1+playback.length)%playback.length],nextItem=playback[(position+1)%playback.length];
   $('#prevSong').onclick = () => changeSong(prevItem.index);
   $('#nextSong').onclick = () => changeSong(nextItem.index);
   $('#prevSong').disabled = $('#nextSong').disabled = SONGS.length<2;
