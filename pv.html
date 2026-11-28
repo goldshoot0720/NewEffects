@@ -25,10 +25,11 @@ body{--ui-h:104px;display:grid;place-items:center;box-sizing:border-box;padding-
 .timeline-row{padding-top:10px;border-top:1px solid #323248}
 #seek{flex:1;min-width:0;max-width:320px;margin-inline:0;accent-color:#f6a531}
 .seek-controls{display:flex;align-items:center;gap:8px;flex:1 1 280px;min-width:0}
-/* 下拉選單寬度跟這個控制項走，所以不要被控制列撐開，只留最長歌名的寬度。 */
 .song-picker{display:flex;flex-wrap:wrap;gap:8px;flex:1 1 440px;min-width:0}
-.song-picker label{display:flex;align-items:center;gap:6px;min-width:0;font-size:12px;color:#c4c4d8;flex:1 1 190px}
-#category,#song{min-width:0;width:100%;max-width:100%;flex:1}
+.song-picker label{display:flex;align-items:center;gap:6px;min-width:0;max-width:100%;white-space:nowrap;font-size:12px;color:#c4c4d8}
+.song-picker label:first-child{flex:1 1 190px}
+#category{min-width:0;flex:1}
+#song{field-sizing:content;min-width:0}
 .transport{display:flex;flex-wrap:wrap;align-items:center;gap:8px;flex:none;max-width:100%}
 .speed-control{display:flex;align-items:center;gap:6px;font-size:13px;flex:none}
 .volume-control{display:flex;align-items:center;gap:6px;flex:none}
