@@ -141,6 +141,7 @@ class Element{
   constructor(){this.options=[];this.children=[];this.dataset={};this.classList={toggle(){}};this._value=undefined;}
   set innerHTML(_){this.options=[];this.children=[];this._value=undefined;}
   get value(){return this._value??this.options.find(o=>o.selected)?.value??this.options[0]?.value??'';}
+  get selectedOptions(){return this.options.filter(o=>o.value===this.value);}
   set value(v){this._value=String(v);}
   setAttribute(name,value){this[name]=value;}
   add(o){this.options.push(o);if(o.selected)this._value=o.value;}
@@ -157,6 +158,8 @@ for(let songIndex=0;songIndex<SONGS.length;songIndex++){
   vm.runInNewContext(pv.slice(pv.indexOf('function nextSongIndex()'),pv.indexOf('async function init()'))+pv.slice(a,b),context);
   assert.equal(+$('#song').value,songIndex);
   const group=groups.find(g=>g.id===$('#category').value);
+  assert.equal($('#categoryText').textContent,SongOrder.categoryLabel(group));
+  assert.equal($('#songText').textContent,SongOrder.numberLabel(pos+1)+'　'+SongOrder.optionLabel(SONGS[songIndex],group));
   assert.equal($('#song').options.length,group.items.length);
   assert.equal($('#song').options.find(o=>+o.value===songIndex).text,SongOrder.numberLabel(pos+1)+'　'+SongOrder.optionLabel(SONGS[songIndex],group));
   $('#nextSong').onclick();assert.equal(calls.pop(),playback[(pos+1)%playback.length].index);
@@ -164,6 +167,8 @@ for(let songIndex=0;songIndex<SONGS.length;songIndex++){
   $('#prevSong').onclick();assert.equal(calls.pop(),playback[(pos-1+playback.length)%playback.length].index);
   const other=groups.find(g=>g.id!==group.id);$('#category').value=other.id;$('#category').onchange();
   assert.equal(+$('#song').value,other.items[0].index);
+  assert.equal($('#categoryText').textContent,SongOrder.categoryLabel(other));
+  assert.equal($('#songText').textContent,SongOrder.numberedOption(other,0));
   assert.equal(calls.pop(),other.items[0].index,'switching PV categories plays the first song');
   $('#song').value=other.items[0].index;$('#song').onchange();assert.equal(calls.pop(),other.items[0].index);
 }

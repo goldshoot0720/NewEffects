@@ -2276,12 +2276,21 @@ async function init(){
   if(RENDER) document.body.classList.add('render');
   const sel = $('#song');
   const category=$('#category');
+  function syncPickerText(){
+    $('#categoryText').textContent=category.selectedOptions[0]?.text ?? '';
+    $('#songText').textContent=sel.selectedOptions[0]?.text ?? '';
+  }
+  category.oninput=sel.oninput=syncPickerText;
   const currentGroup=songGroups.find(g=>g.items.some(s=>s.index===songIndex));
   songGroups.forEach(g=>category.add(new Option(SongOrder.categoryLabel(g),g.id,false,g===currentGroup)));
   const showSongs=(group,selected)=>{
     sel.innerHTML='';
-    if(!group?.items.length){ sel.add(new Option('沒有歌曲','',true,true)); return; }
-    group.items.forEach((s,i)=>sel.add(new Option(SongOrder.numberedOption(group,i),s.index,false,s.index===selected)));
+    if(group?.items.length){
+      group.items.forEach((s,i)=>sel.add(new Option(SongOrder.numberedOption(group,i),s.index,false,s.index===selected)));
+    }else{
+      sel.add(new Option('沒有歌曲','',true,true));
+    }
+    syncPickerText();
   };
   showSongs(currentGroup,songIndex);
   // 換分類時直接選第一首（正在播的那首若屬於這個分類就留著），不要停在「請選擇」；
