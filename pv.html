@@ -25,10 +25,10 @@ body{--ui-h:104px;display:grid;place-items:center;box-sizing:border-box;padding-
 .timeline-row{padding-top:10px;border-top:1px solid #323248}
 #seek{flex:1;min-width:0;max-width:320px;margin-inline:0;accent-color:#f6a531}
 .seek-controls{display:flex;align-items:center;gap:8px;flex:1 1 280px;min-width:0}
-.song-picker{display:flex;flex-wrap:wrap;gap:8px;flex:1 1 440px;min-width:0}
-.song-picker label{display:flex;align-items:center;gap:6px;min-width:0;max-width:100%;white-space:nowrap;font-size:12px;color:#c4c4d8}
-.song-picker label:first-child{flex:1 1 190px}
-#category{min-width:0;flex:1}
+.song-picker{display:grid;grid-template-columns:max-content minmax(0,max-content);align-items:center;gap:8px 6px;flex:1 1 440px;min-width:0}
+.song-picker label{white-space:nowrap;font-size:12px;color:#c4c4d8}
+/* 共用曲目決定的欄寬，分類名稱不額外撐寬選單。 */
+#category{width:0;min-width:100%;box-sizing:border-box}
 #song{field-sizing:content;min-width:0}
 .transport{display:flex;flex-wrap:wrap;align-items:center;gap:8px;flex:none;max-width:100%}
 .speed-control{display:flex;align-items:center;gap:6px;font-size:13px;flex:none}
@@ -51,8 +51,10 @@ body.render #pv{width:min(100vw,calc(100vh*16/9))}
 <div id="ui">
   <div class="control-row">
     <div class="song-picker" role="group" aria-label="分類選曲">
-      <label>分類 <select id="category" aria-label="作品或歌曲分類"></select></label>
-      <label>曲目 <select id="song" aria-label="歌曲或語言版本"></select></label>
+      <label for="category">分類</label>
+      <select id="category" aria-label="作品或歌曲分類"></select>
+      <label for="song">曲目</label>
+      <select id="song" aria-label="歌曲或語言版本"></select>
     </div>
     <div class="transport" role="group" aria-label="播放控制">
       <button id="prevSong" type="button" aria-label="上一首" title="上一首">⏮ 上一首</button>
